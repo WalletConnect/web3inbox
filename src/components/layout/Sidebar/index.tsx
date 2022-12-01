@@ -4,6 +4,7 @@ import Notifications from "../../../assets/Notifications.svg";
 import Settings from "../../../assets/Settings.svg";
 import Logo from "../../../assets/Logo.svg";
 import "./Sidebar.scss";
+import { Link } from "react-router-dom";
 
 /* Types */
 interface SidebarProps {}
@@ -26,7 +27,9 @@ const Sidebar: React.FC<SidebarProps> = () => {
             [Notifications, "notifications"],
             [Settings, "settings"],
           ].map(([itemSrc, itemName]) => (
-            <img key={itemName} alt={itemName} src={itemSrc} />
+            <Link key={itemName} to={`/${itemName}`}>
+              <img alt={itemName} src={itemSrc} />
+            </Link>
           ))}
         </div>
       </SidebarItem>
