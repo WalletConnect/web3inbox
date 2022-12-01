@@ -1,10 +1,12 @@
 import React from "react";
+import MessagesFilled from "../../../assets/MessagesFilled.svg";
 import Messages from "../../../assets/Messages.svg";
 import Notifications from "../../../assets/Notifications.svg";
+import NotificationsFilled from "../../../assets/NotificationsFilled.svg";
 import Settings from "../../../assets/Settings.svg";
 import Logo from "../../../assets/Logo.svg";
 import "./Sidebar.scss";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 /* Types */
 interface SidebarProps {}
@@ -17,14 +19,20 @@ const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({
 };
 
 const Sidebar: React.FC<SidebarProps> = () => {
+  const { pathname } = useLocation();
   return (
     <div className="Sidebar">
       <SidebarItem></SidebarItem>
       <SidebarItem>
         <div className="Sidebar__Navigation">
           {[
-            [Messages, "messages"],
-            [Notifications, "notifications"],
+            [pathname === "/messages" ? MessagesFilled : Messages, "messages"],
+            [
+              pathname === "/notifications"
+                ? NotificationsFilled
+                : Notifications,
+              "notifications",
+            ],
             [Settings, "settings"],
           ].map(([itemSrc, itemName]) => (
             <Link key={itemName} to={`/${itemName}`}>
