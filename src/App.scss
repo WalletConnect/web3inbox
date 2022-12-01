@@ -1,0 +1,27 @@
+.App {
+	background: var(--bg-color-1);
+	min-height: 100vh;
+	min-width: 100vw;
+	display: grid;
+	grid-template: "sidebar header header"
+	"sidebar target-selector main";
+	gap: 1em;
+	grid-template-columns: minmax(0.5em, 0.5fr) 5fr 10fr;
+	grid-template-rows: 1fr 14fr;
+
+	.TargetSelector {
+		grid-area: target-selector;
+	}
+
+	.Sidebar {
+		grid-area: sidebar;
+	}
+
+	.Header {
+		grid-area: header;
+	}
+
+	.Main {
+		grid-area: main;
+	}
+}
