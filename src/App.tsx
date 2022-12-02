@@ -3,15 +3,18 @@ import Header from "./components/layout/Header";
 import Main from "./components/layout/Main";
 import Sidebar from "./components/layout/Sidebar";
 import TargetSelector from "./components/layout/TargetSelector";
+import AuthProtectedPage from "./components/utils/AuthProtectedPage";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Sidebar />
-      <TargetSelector />
-      <Main />
-    </div>
+    <AuthProtectedPage>
+      <div className="App">
+        <Header />
+        <Sidebar />
+        <TargetSelector />
+        <Main />
+      </div>
+    </AuthProtectedPage>
   );
 }
 

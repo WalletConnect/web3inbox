@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ByWalletConnect from "../../assets/by_walletconnect.png";
 import Logo from "../../assets/Logo.svg";
 import Messages from "../../assets/MessagesFilled.svg";
@@ -8,6 +8,8 @@ import ChatDisplay from "../../assets/chat.png";
 import NotificationDisplay from "../../assets/notifs.png";
 import "./Login.scss";
 import Button from "../../components/general/Button";
+import { useWeb3Modal, Web3Button } from "@web3modal/react";
+import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
 
 interface LoginProps {}
@@ -28,7 +30,12 @@ const Web3InboxFeatures = [
 ];
 
 const Login: React.FC<LoginProps> = (props) => {
-  const navigate = useNavigate();
+  const { address } = useAccount();
+  const nav = useNavigate();
+
+  useEffect(() => {
+    if (address) nav("/");
+  }, [address]);
 
   return (
     <div className="Login">
@@ -61,7 +68,7 @@ const Login: React.FC<LoginProps> = (props) => {
         </div>
         <div className="Login__actions">
           <div className="Login__actions-container">
-            <Button onClick={() => navigate("/")}>Connect Wallet</Button>
+            <Web3Button />
             <Button type="secondary">Learn More</Button>
           </div>
         </div>
