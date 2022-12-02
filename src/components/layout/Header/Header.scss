@@ -1,4 +1,12 @@
 .Header {
 	display: flex;
 	justify-content: flex-end;
+		padding: 0.5em;
+
+	&__account {
+		padding: 1em;
+		border-radius: 16px;
+		border: solid 1px var(--fg-color-2);
+		background: var(--bg-color-2);
+	}
 }

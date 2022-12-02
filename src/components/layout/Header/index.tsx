@@ -7,7 +7,11 @@ interface HeaderProps {}
 const Header: React.FC<HeaderProps> = (props) => {
   const { address } = useAccount();
   const { data } = useEnsName({ address });
-  return <div className="Header">{data || address}</div>;
+  return (
+    <div className="Header">
+      <div className="Header__account">{data || address}</div>
+    </div>
+  );
 };
 
 export default Header;
