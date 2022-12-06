@@ -25,6 +25,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({
   const { chatClient } = useContext(ChatContext);
   const ref = useRef<HTMLInputElement>(null);
 
+  console.log("MESSAGEBOX", topic);
+
   // Using a ref to avoid to regenerating this function every time
   // messageText state changes.
   const onSend = useCallback(async () => {
@@ -53,7 +55,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({
     return () => {
       document.removeEventListener("keydown", onKeydown);
     };
-  }, []);
+  }, [onSend]);
 
   return (
     <div className="MessageBox">

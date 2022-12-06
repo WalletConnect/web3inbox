@@ -13,15 +13,20 @@ interface ThreadWindowProps {}
 const ThreadWindow: React.FC<ThreadWindowProps> = () => {
   const { peer } = useParams<{ peer: string }>();
   const peerAddress = (peer?.split(":")[2] || `0x`) as `0x${string}`;
+  const [topic, setTopic] = useState("");
   const { address } = useAccount();
   const { search } = useLocation();
   const { data: ensAvatar } = useEnsAvatar({
     address: peerAddress,
   });
-  const topic = new URLSearchParams(search).get("topic");
   const { chatClient } = useContext(ChatContext);
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([]);
+
+  console.log("aa", topic);
+  useEffect(() => {
+    setTopic(new URLSearchParams(search).get("topic") || "");
+  }, [search]);
 
   const refreshMessages = useCallback(() => {
     if (!chatClient || !topic) return;
@@ -33,7 +38,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
 
     if (threadMessages) setMessages(threadMessages);
     else setMessages([]);
-  }, [chatClient, setMessages, topic]);
+  }, [chatClient, search, setMessages, topic]);
 
   useEffect(() => {
     if (!chatClient) return;
@@ -41,7 +46,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
       if (messageEvent.topic !== topic) return;
       refreshMessages();
     });
-  }, [chatClient, refreshMessages]);
+  }, [chatClient, refreshMessages, topic]);
 
   useEffect(() => {
     refreshMessages();
@@ -65,7 +70,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
       <MessageBox
         onSuccessfulSend={refreshMessages}
         authorAccount={`eip155:1:${address}`}
-        topic={topic ?? ""}
+        topic={topic}
       />
     </div>
   );
