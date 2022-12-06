@@ -53,7 +53,7 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
         },
       });
     },
-    [address]
+    [address, chatClient]
   );
 
   return (
@@ -88,7 +88,12 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
       </div>
       <div className="ThreadSelector__action">
         {Object.keys(threads).length === 0 && search && (
-          <Button type="primary" onClick={() => invite(search)}>
+          <Button
+            type="primary"
+            onClick={() => {
+              invite(search);
+            }}
+          >
             Send Contact Request
           </Button>
         )}

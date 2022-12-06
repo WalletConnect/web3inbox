@@ -19,6 +19,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
   const { data: ensAvatar } = useEnsAvatar({
     address: peerAddress,
   });
+  const { data: ensName } = useEnsName({ address: peerAddress });
   const { chatClient } = useContext(ChatContext);
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([]);
@@ -56,7 +57,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
     <div className="ThreadWindow">
       <div className="ThreadWindow__peer">
         <Avatar width="1.25em" height="1.25em" src={ensAvatar} />
-        <span>{peer}</span>
+        <span>{peer || ensName}</span>
       </div>
       <div className="ThreadWindow__messages">
         {messages.map((message) => (
