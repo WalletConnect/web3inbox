@@ -46,15 +46,17 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
   const invite = useCallback(
     (inviteeAddress: string) => {
       if (!address || !chatClient) return;
-      chatClient.invite({
-        account: inviteeAddress,
-        invite: {
-          account: `eip155:1:${address}`,
-          message: "Inviting",
-        },
-      });
+      chatClient
+        .invite({
+          account: inviteeAddress,
+          invite: {
+            account: `eip155:1:${address}`,
+            message: "Inviting",
+          },
+        })
+        .then(refreshThreads);
     },
-    [address, chatClient]
+    [address, chatClient, refreshThreads]
   );
 
   return (
@@ -71,16 +73,20 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
             <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
           );
         })}
-        {invites.length > 0 && <span>Invites:</span>}
-        {invites.map(({ account, id, message }) => (
-          <Invite
-            address={account}
-            key={account}
-            message={message}
-            id={id || 0}
-            onSuccessfulAccept={refreshThreads}
-          />
-        ))}
+        {!search && (
+          <div className="Invites">
+            {invites.length > 0 && <span>Invites:</span>}
+            {invites.map(({ account, id, message }) => (
+              <Invite
+                address={account}
+                key={account}
+                message={message}
+                id={id || 0}
+                onSuccessfulAccept={refreshThreads}
+              />
+            ))}
+          </div>
+        )}
         {threads.length === 0 && search && (
           <span className="ThreadSelector__contact">
             {search} is not in your contacts, send contact request
@@ -93,6 +99,7 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
             type="primary"
             onClick={() => {
               invite(search);
+              setSearch("");
             }}
           >
             Send Contact Request
