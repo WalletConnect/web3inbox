@@ -25,11 +25,13 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
 
   const refreshMessages = useCallback(() => {
     if (!chatClient || !topic) return;
-    const { messages: threadMessages } = chatClient.chatMessages.getAll({
+    const chatMessages = chatClient.chatMessages.getAll({
       topic,
-    })[0];
+    })?.[0];
 
-    setMessages(threadMessages);
+    const threadMessages = chatMessages?.messages;
+
+    if (threadMessages) setMessages(threadMessages);
   }, [chatClient, setMessages, topic]);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
 
   useEffect(() => {
     refreshMessages();
-  }, [refreshMessages]);
+  }, [refreshMessages, chatClient]);
 
   return (
     <div className="ThreadWindow">
