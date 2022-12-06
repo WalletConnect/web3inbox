@@ -1,0 +1,8 @@
+.Avatar {
+		border-radius: 50%;
+		background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+radial-gradient(70.19% 70.19% at 64.96% 24.36%, #FAF8FE 2.08%, #FFDFC8 6.25%, #FFC633 23.44%, #F99C59 42.71%, #ACB8CA 68.75%, #958F9D 82.29%, #797176 100%);
+	&__icon {
+		border-radius: 50%;
+	}
+}

@@ -1,16 +1,17 @@
+@import './styles/mixins.scss';
+
 .App {
 	background: var(--bg-color-1);
-	min-height: 100vh;
-	min-width: 100vw;
+	height: 100vh;
+	width: 100vw;
 	display: grid;
-	grid-template: "sidebar header header"
-	"sidebar target-selector main";
+	grid-template: "sidebar target-selector main header";
 	gap: 1em;
-	grid-template-columns: minmax(0.5em, 0.5fr) 5fr 10fr;
-	grid-template-rows: 1fr 14fr;
+	grid-template-columns: minmax(0.5em, 0.5fr) 5fr 10fr minmax(min-content, 1fr);
 
 	.TargetSelector {
 		grid-area: target-selector;
+		@include padding-y(2em);
 	}
 
 	.Sidebar {
@@ -22,6 +23,7 @@
 	}
 
 	.Main {
+		@include padding-y(2em);
 		grid-area: main;
 	}
 }

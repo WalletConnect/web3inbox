@@ -1,10 +1,12 @@
 #root {
   --bg-color-1: #1e1e1e;
-  --bg-color-2: #1e1e1e;
+  --bg-color-2: #272a2a;
   --fg-color-1: #c9cfcf;
   --fg-color-2: #272a2a;
   --fg-color-3: #798686;
   --accent-1: #0d7df2;
+  --accent-gradient-1: hsla(211, 50%, 20%, 1);
+  --accent-gradient-2: hsla(211, 50%, 20%, 0.5);
 }
 
 html {

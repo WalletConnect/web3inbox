@@ -1,0 +1,21 @@
+.ThreadWindow {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	justify-content: space-between;
+
+	&__peer {
+		padding: 0.5em;
+		display: flex;
+		gap: 1em;
+		backdrop-filter: blur(10px);
+		align-items: center;
+		font-size: 1.25em;
+	}
+
+	&__messages {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4em;
+	}
+}

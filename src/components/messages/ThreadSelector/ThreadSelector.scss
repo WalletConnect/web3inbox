@@ -1,0 +1,10 @@
+.ThreadSelector {
+	display: flex;
+	flex-direction: column;
+	justify-items: space-between;
+	gap: 1em;
+
+	.Thread {
+		width: 100%;
+	}
+}

@@ -26,9 +26,12 @@ const Sidebar: React.FC<SidebarProps> = () => {
       <SidebarItem>
         <div className="Sidebar__Navigation">
           {[
-            [pathname === "/messages" ? MessagesFilled : Messages, "messages"],
             [
-              pathname === "/notifications"
+              pathname.includes("/messages") ? MessagesFilled : Messages,
+              "messages",
+            ],
+            [
+              pathname.includes("/notifications")
                 ? NotificationsFilled
                 : Notifications,
               "notifications",

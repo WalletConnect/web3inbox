@@ -13,6 +13,9 @@ import {
   modalConnectors,
   walletConnectProvider,
 } from "@web3modal/ethereum";
+import MessagesLayout from "./components/messages/MessagesLayout";
+import NotificationsLayout from "./components/notifications/NotificationsLayout";
+import ThreadWindow from "./components/messages/ThreadWindow";
 
 const projectId = import.meta.env.VITE_PROJECT_ID;
 
@@ -33,9 +36,15 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <ChatContextProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/messages" element={<App />} />
-            <Route path="/notifications" element={<App />} />
             <Route path="/login" element={<Login />} />
+
+            <Route path="/" element={<App />}>
+              <Route path="notifications" element={<NotificationsLayout />} />
+              <Route path="messages" element={<MessagesLayout />}>
+                <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
+              </Route>
+            </Route>
+
             <Route index element={<Navigate to="/messages" />} />
           </Routes>
         </BrowserRouter>

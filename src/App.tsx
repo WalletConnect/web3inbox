@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import "./App.scss";
 import Header from "./components/layout/Header";
 import Main from "./components/layout/Main";
@@ -11,8 +12,7 @@ function App() {
       <div className="App">
         <Header />
         <Sidebar />
-        <TargetSelector />
-        <Main />
+        <Outlet />
       </div>
     </AuthProtectedPage>
   );
