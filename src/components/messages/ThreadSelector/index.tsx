@@ -40,6 +40,7 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
     if (!chatClient) return;
 
     chatClient.on("chat_invite", refreshThreads);
+    chatClient.on("chat_joined", refreshThreads);
   }, [chatClient]);
 
   const invite = useCallback(
