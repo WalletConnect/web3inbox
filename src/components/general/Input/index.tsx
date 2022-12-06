@@ -1,12 +1,12 @@
-import React, { forwardRef, MutableRefObject, useState } from "react";
-import "./Input.scss";
+import React, { forwardRef, MutableRefObject, useState } from 'react'
+import './Input.scss'
 
 interface InputProps {
-  type?: "text";
-  placeholder?: string;
-  icon?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: 'text'
+  placeholder?: string
+  icon?: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -22,8 +22,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           placeholder={placeholder}
         />
       </div>
-    );
+    )
   }
-);
+)
 
-export default Input;
+export default Input

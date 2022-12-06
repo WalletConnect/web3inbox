@@ -1,17 +1,18 @@
-import React, { Fragment } from "react";
-import { Navigate } from "react-router-dom";
-import { useAccount } from "wagmi";
+import React, { Fragment } from 'react'
+import { Navigate } from 'react-router-dom'
+import { useAccount } from 'wagmi'
 
 interface AuthProtectedPageProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const AuthProtectedPage: React.FC<AuthProtectedPageProps> = ({ children }) => {
-  const { address } = useAccount();
+  const { address } = useAccount()
   if (!address) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" />
   }
-  return <Fragment>{children}</Fragment>;
-};
 
-export default AuthProtectedPage;
+  return <Fragment>{children}</Fragment>
+}
+
+export default AuthProtectedPage
