@@ -57,7 +57,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
     <div className="ThreadWindow">
       <div className="ThreadWindow__peer">
         <Avatar width="1.25em" height="1.25em" src={ensAvatar} />
-        <span>{peer || ensName}</span>
+        <span>{ensName || peer}</span>
       </div>
       <div className="ThreadWindow__messages">
         {messages.map((message) => (
