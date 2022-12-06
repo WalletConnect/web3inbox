@@ -32,6 +32,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
     const threadMessages = chatMessages?.messages;
 
     if (threadMessages) setMessages(threadMessages);
+    else setMessages([]);
   }, [chatClient, setMessages, topic]);
 
   useEffect(() => {
