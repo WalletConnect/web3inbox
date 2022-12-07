@@ -1,63 +1,90 @@
-import { ChatClientTypes } from "@walletconnect/chat-client";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import Input from "../../general/Input";
-import Search from "../../../assets/Search.svg";
-import ChatContext from "../../../contexts/ChatContext/context";
-import { useAccount } from "wagmi";
-import Thread from "../Thread";
-import "./ThreadSelector.scss";
-import Button from "../../general/Button";
-import Invite from "../Invite";
+import type { ChatClientTypes } from '@walletconnect/chat-client'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import Input from '../../general/Input'
+import Search from '../../../assets/Search.svg'
+import ChatContext from '../../../contexts/ChatContext/context'
+import { useAccount } from 'wagmi'
+import { fetchEnsAddress } from '@wagmi/core'
+import Thread from '../Thread'
+import './ThreadSelector.scss'
+import Button from '../../general/Button'
+import Invite from '../Invite'
 
-interface ThreadSelectorProps {}
-
-const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
-  const { chatClient } = useContext(ChatContext);
-  const { address } = useAccount();
-  const [search, setSearch] = useState<string>("");
-  const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([]);
-  const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([]);
+const ThreadSelector: React.FC = () => {
+  const { chatClient } = useContext(ChatContext)
+  const { address } = useAccount()
+  const [search, setSearch] = useState<string>('')
+  const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
+  const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
 
   const refreshThreads = useCallback(() => {
-    if (!chatClient) return;
+    if (!chatClient) {
+      return
+    }
 
-    setInvites(chatClient.chatInvites.getAll());
-    setThreads(chatClient.chatThreads.getAll());
-  }, [chatClient, setThreads, setInvites]);
-
-  useEffect(() => {
-    refreshThreads();
-  }, [refreshThreads]);
+    setInvites(chatClient.chatInvites.getAll())
+    setThreads(chatClient.chatThreads.getAll())
+  }, [chatClient, setThreads, setInvites])
 
   useEffect(() => {
-    if (!search && chatClient) setThreads(chatClient.chatThreads.getAll());
-    setThreads((oldThreads) => {
-      return oldThreads.filter((thread) => thread.peerAccount.includes(search));
-    });
-  }, [setThreads, search, chatClient]);
+    refreshThreads()
+  }, [refreshThreads])
 
   useEffect(() => {
-    if (!chatClient) return;
+    if (!search && chatClient) {
+      setThreads(chatClient.chatThreads.getAll())
+    }
+    setThreads(oldThreads => {
+      return oldThreads.filter(thread => thread.peerAccount.includes(search))
+    })
+  }, [setThreads, search, chatClient])
 
-    chatClient.on("chat_invite", refreshThreads);
-    chatClient.on("chat_joined", refreshThreads);
-  }, [chatClient]);
+  useEffect(() => {
+    if (!chatClient) {
+      return
+    }
+
+    chatClient.on('chat_invite', refreshThreads)
+    chatClient.on('chat_joined', refreshThreads)
+  }, [chatClient])
+
+  const resolveAddress = async (inviteeAddress: string) => {
+    // eslint-disable-next-line prefer-regex-literals
+    const isEnsDomain = new RegExp('.*.eth', 'u').test(inviteeAddress)
+    if (isEnsDomain) {
+      const resolvedAddress = await fetchEnsAddress({
+        name: inviteeAddress
+      })
+
+      if (resolvedAddress) {
+        return resolvedAddress
+      }
+    }
+
+    return inviteeAddress
+  }
 
   const invite = useCallback(
     (inviteeAddress: string) => {
-      if (!address || !chatClient) return;
-      chatClient
-        .invite({
-          account: inviteeAddress,
-          invite: {
-            account: `eip155:1:${address}`,
-            message: "Inviting",
-          },
-        })
-        .then(refreshThreads);
+      if (!address || !chatClient) {
+        return
+      }
+      resolveAddress(inviteeAddress).then(resolvedAddress => {
+        console.log('inviting', resolvedAddress)
+
+        chatClient
+          .invite({
+            account: resolvedAddress,
+            invite: {
+              account: `eip155:1:${address}`,
+              message: 'Inviting'
+            }
+          })
+          .then(refreshThreads)
+      })
     },
     [address, chatClient, refreshThreads]
-  );
+  )
 
   return (
     <div className="ThreadSelector">
@@ -69,9 +96,7 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
       />
       <div className="ThreadSelector__threads">
         {threads.map(({ peerAccount, topic }) => {
-          return (
-            <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
-          );
+          return <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
         })}
         {!search && (
           <div className="Invites">
@@ -81,7 +106,7 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
                 address={account}
                 key={account}
                 message={message}
-                id={id || 0}
+                id={id ?? 0}
                 onSuccessfulAccept={refreshThreads}
               />
             ))}
@@ -98,8 +123,8 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
           <Button
             type="primary"
             onClick={() => {
-              invite(search);
-              setSearch("");
+              invite(search)
+              setSearch('')
             }}
           >
             Send Contact Request
@@ -107,7 +132,7 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = (props) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ThreadSelector;
+export default ThreadSelector

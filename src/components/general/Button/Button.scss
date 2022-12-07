@@ -1,20 +1,20 @@
 .Button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 14px;
-	padding: 0.5em;
-	font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  padding: 0.5em;
+  font-weight: 700;
 }
 
 .Button__primary {
-	background: var(--accent-1);
-	border: solid 1px var(--accent-1);
-	color: var(--fg-color-1);
+  background: var(--accent-1);
+  border: solid 1px var(--accent-1);
+  color: var(--fg-color-1);
 }
 
 .Button__secondary {
-	background: transparent;
-	border: solid 1px var(--accent-1);
-	color: var(--accent-1);
+  background: transparent;
+  border: solid 1px var(--accent-1);
+  color: var(--accent-1);
 }

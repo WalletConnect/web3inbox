@@ -1,16 +1,16 @@
 .Input {
-	display: flex;
-	gap: 0.5em;
-	color: var(--fg-color-1);
-	border-radius: 16px;
-	border: 1px solid var(--fg-color-2);
-	padding: 0.5em;
+  display: flex;
+  gap: 0.5em;
+  color: var(--fg-color-1);
+  border-radius: 16px;
+  border: 1px solid var(--fg-color-2);
+  padding: 0.5em;
 
-	&__input {
-		border: none;
-		padding: 0.25em;
-		width: 100%;
-		background: transparent;
-		outline: none;
-	}
+  &__input {
+    border: none;
+    padding: 0.25em;
+    width: 100%;
+    background: transparent;
+    outline: none;
+  }
 }

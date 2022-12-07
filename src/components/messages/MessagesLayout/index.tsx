@@ -1,10 +1,8 @@
-import React, { Fragment } from "react";
-import { Outlet } from "react-router-dom";
-import ThreadSelector from "../ThreadSelector";
+import React, { Fragment } from 'react'
+import { Outlet } from 'react-router-dom'
+import ThreadSelector from '../ThreadSelector'
 
-interface MessagesLayoutProps {}
-
-const MessagesLayout: React.FC<MessagesLayoutProps> = (props) => {
+const MessagesLayout: React.FC = () => {
   return (
     <Fragment>
       <div className="TargetSelector">
@@ -14,7 +12,7 @@ const MessagesLayout: React.FC<MessagesLayoutProps> = (props) => {
         <Outlet />
       </div>
     </Fragment>
-  );
-};
+  )
+}
 
-export default MessagesLayout;
+export default MessagesLayout

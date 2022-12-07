@@ -1,26 +1,24 @@
 .MessageBox {
-	display: grid;
-	grid-template-areas: "messagebox send-button";
-	grid-template-columns: auto 2.5em;
-	gap: 1em;
+  display: grid;
+  grid-template-areas: 'messagebox send-button';
+  grid-template-columns: auto 2.5em;
+  gap: 1em;
 
-	.Input {
-		grid-area: messagebox;
-		padding: 0.5em;
+  .Input {
+    grid-area: messagebox;
+    padding: 0.5em;
     border-radius: 16px 16px 6px 16px;
-	}
+  }
 
-	&__send {
-		background: transparent;
-		cursor: pointer;
-		grid-area: send-button;
-		display: grid;
-		place-items: center;
-		border-radius: 50%;
+  &__send {
+    background: transparent;
+    cursor: pointer;
+    grid-area: send-button;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
 
-		width: 100%;
-		height: 100%;
-	}
-
-
+    width: 100%;
+    height: 100%;
+  }
 }

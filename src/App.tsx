@@ -1,10 +1,10 @@
-import { Outlet } from "react-router-dom";
-import "./App.scss";
-import Header from "./components/layout/Header";
-import Sidebar from "./components/layout/Sidebar";
-import AuthProtectedPage from "./components/utils/AuthProtectedPage";
+import { Outlet } from 'react-router-dom'
+import './App.scss'
+import Header from './components/layout/Header'
+import Sidebar from './components/layout/Sidebar'
+import AuthProtectedPage from './components/utils/AuthProtectedPage'
 
-function App() {
+const App = () => {
   return (
     <AuthProtectedPage>
       <div className="App">
@@ -13,7 +13,7 @@ function App() {
         <Outlet />
       </div>
     </AuthProtectedPage>
-  );
+  )
 }
 
-export default App;
+export default App

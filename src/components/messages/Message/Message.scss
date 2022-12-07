@@ -1,28 +1,28 @@
 .Message {
-	display: flex;
+  display: flex;
 
-	&__from-peer {
-		justify-content: flex-start;
-	}
+  &__from-peer {
+    justify-content: flex-start;
+  }
 
-	&__from-sender {
-		justify-content: flex-end;
-	}
+  &__from-sender {
+    justify-content: flex-end;
+  }
 
-	&__bubble {
-		padding: 0.4em 0.8em;
-	}
+  &__bubble {
+    padding: 0.4em 0.8em;
+  }
 
-	&__from-peer &__bubble {
-		background: #272A2A;
-		box-shadow: inset 1px 1px 4px #585F5F, inset -1px -1px 4px #141414;
-		border-radius: 16px 16px 16px 6px;
-		color: #E4E7E7;
-	}
+  &__from-peer &__bubble {
+    background: #272a2a;
+    box-shadow: inset 1px 1px 4px #585f5f, inset -1px -1px 4px #141414;
+    border-radius: 16px 16px 16px 6px;
+    color: #e4e7e7;
+  }
 
-	&__from-sender &__bubble {
-    box-shadow: inset 1px 1px 4px #99CBFF, inset -1px -1px 4px #1464B8;
-		background: #3396FF;
+  &__from-sender &__bubble {
+    box-shadow: inset 1px 1px 4px #99cbff, inset -1px -1px 4px #1464b8;
+    background: #3396ff;
     border-radius: 16px 16px 6px 16px;
-	}
+  }
 }

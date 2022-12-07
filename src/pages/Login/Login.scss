@@ -1,76 +1,75 @@
-@import "../../styles/mixins.scss";
+@import '../../styles/mixins.scss';
 
 .Login {
-	@include padding-y(5%);
-	display: grid;
-	place-items: center;
+  @include padding-y(5%);
+  display: grid;
+  place-items: center;
 
-	min-height: 100vh;
+  min-height: 100vh;
 
-	background: var(--bg-color-1);
+  background: var(--bg-color-1);
 
-	&__container {
-		max-width: 50%;
-		display: flex;
-		flex-direction: column;
-		gap: 3em;
-		margin-bottom: 2em;
-	}
+  &__container {
+    max-width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+    margin-bottom: 2em;
+  }
 
-	&__displays {
-		display: flex;
-		justify-content: space-between;
-	}
+  &__displays {
+    display: flex;
+    justify-content: space-between;
+  }
 
-	&__splash-text {
-		color: var(--fg-color-1);
-		font-size: 2em;
-	}
+  &__splash-text {
+    color: var(--fg-color-1);
+    font-size: 2em;
+  }
 
-	&__web3inbox-features {
-		display: flex;
-		justify-content: space-between;
-		gap: 2em;
-	}
+  &__web3inbox-features {
+    display: flex;
+    justify-content: space-between;
+    gap: 2em;
+  }
 
-	&__web3inbox-feature {
-		display: flex;
-		flex-direction: column;
-		gap: 1em;
+  &__web3inbox-feature {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 
-		&-header {
-			color: var(--fg-color-1);
-			display: flex;
-			gap: 0.5em;
-		}
+    &-header {
+      color: var(--fg-color-1);
+      display: flex;
+      gap: 0.5em;
+    }
 
-		&-description {
-			color: var(--fg-color-3);
-		}
-	}
+    &-description {
+      color: var(--fg-color-3);
+    }
+  }
 
-	&__actions {
-		display: flex;
-		justify-content: center;
+  &__actions {
+    display: flex;
+    justify-content: center;
 
-		&-container {
-			width: 25%;
-			display: flex;
-			flex-direction: column;
-			gap: 1em;
+    &-container {
+      width: 25%;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
 
-			button {
-				width: 90%;
-			}
-		}
+      button {
+        width: 90%;
+      }
+    }
+  }
 
-	}
-
-	&__footer {
-		display: flex;
-		margin-top: auto;
-		gap: 1em;
-		flex-direction: column;
-		align-items: center;
-	}
+  &__footer {
+    display: flex;
+    margin-top: auto;
+    gap: 1em;
+    flex-direction: column;
+    align-items: center;
+  }
 }

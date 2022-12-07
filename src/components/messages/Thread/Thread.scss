@@ -1,29 +1,36 @@
 .Thread {
-	display: flex;
-	align-items: center;
-	gap: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 
-	cursor: pointer;
+  cursor: pointer;
 
-	outline: none;
-	border: none;
+  outline: none;
+  border: none;
 
-	background: linear-gradient(92.29deg, #19324D 0%, rgba(25, 50, 77, 0.5) 100%);
-	border-radius: 10px;
+  background: linear-gradient(92.29deg, #19324d 0%, rgba(25, 50, 77, 0.5) 100%);
+  border-radius: 10px;
 
-	padding: 0.75em;
+  padding: 0.75em;
 
-	&__icon {
-		border-radius: 50%;
-		width: 1em;
-		height: 1em;
-		background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
-radial-gradient(70.19% 70.19% at 64.96% 24.36%, #FAF8FE 2.08%, #FFDFC8 6.25%, #FFC633 23.44%, #F99C59 42.71%, #ACB8CA 68.75%, #958F9D 82.29%, #797176 100%);
+  &__icon {
+    border-radius: 50%;
+    width: 1em;
+    height: 1em;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+      radial-gradient(
+        70.19% 70.19% at 64.96% 24.36%,
+        #faf8fe 2.08%,
+        #ffdfc8 6.25%,
+        #ffc633 23.44%,
+        #f99c59 42.71%,
+        #acb8ca 68.75%,
+        #958f9d 82.29%,
+        #797176 100%
+      );
+  }
 
-	}
-
-	&__peer-name {
-		font-weight: bold;
-	}
-
+  &__peer-name {
+    font-weight: bold;
+  }
 }
