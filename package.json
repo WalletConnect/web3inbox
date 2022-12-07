@@ -11,7 +11,6 @@
     "prettier": "prettier --check ."
   },
   "dependencies": {
-    "@walletconnect/chat-client": "^0.1.6",
     "@walletconnect/sign-client": "^2.1.4",
     "@web3modal/ethereum": "^2.0.0-beta.7",
     "@web3modal/react": "^2.0.0-beta.7",

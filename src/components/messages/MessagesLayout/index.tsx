@@ -2,9 +2,7 @@ import React, { Fragment } from 'react'
 import { Outlet } from 'react-router-dom'
 import ThreadSelector from '../ThreadSelector'
 
-interface MessagesLayoutProps {}
-
-const MessagesLayout: React.FC<MessagesLayoutProps> = props => {
+const MessagesLayout: React.FC = () => {
   return (
     <Fragment>
       <div className="TargetSelector">

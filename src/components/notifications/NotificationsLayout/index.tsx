@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react'
 
-interface NotificationsLayoutProps {}
-
-const NotificationsLayout: React.FC<NotificationsLayoutProps> = props => {
+const NotificationsLayout: React.FC = () => {
   return (
     <Fragment>
       <div className="TargetSelector">Notifications Target selector</div>

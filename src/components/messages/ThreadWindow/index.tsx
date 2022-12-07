@@ -8,11 +8,9 @@ import MessageBox from '../MessageBox'
 import { useAccount, useEnsAvatar, useEnsName } from 'wagmi'
 import Avatar from '../../account/Avatar'
 
-interface ThreadWindowProps {}
-
-const ThreadWindow: React.FC<ThreadWindowProps> = () => {
+const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
-  const peerAddress = (peer?.split(':')[2] || `0x`) as `0x${string}`
+  const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
   const [topic, setTopic] = useState('')
   const { address } = useAccount()
   const { search } = useLocation()
@@ -24,20 +22,21 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 
-  console.log('aa', topic)
   useEffect(() => {
-    setTopic(new URLSearchParams(search).get('topic') || '')
+    setTopic(new URLSearchParams(search).get('topic') ?? '')
   }, [search])
 
   const refreshMessages = useCallback(() => {
     if (!chatClient || !topic) {
       return
     }
-    const chatMessages = chatClient.chatMessages.getAll({
-      topic
-    })[0]
 
-    const threadMessages = chatMessages.messages
+    const allChatMessages = chatClient.chatMessages.getAll({
+      topic
+    })
+    const chatMessages = allChatMessages.length > 0 ? allChatMessages[0] : null
+
+    const threadMessages = chatMessages?.messages
 
     if (threadMessages) {
       setMessages(threadMessages)
@@ -66,7 +65,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
     <div className="ThreadWindow">
       <div className="ThreadWindow__peer">
         <Avatar width="1.25em" height="1.25em" src={ensAvatar} />
-        <span>{ensName || peer}</span>
+        <span>{ensName ?? peer}</span>
       </div>
       <div className="ThreadWindow__messages">
         {messages.map(message => (
@@ -79,7 +78,7 @@ const ThreadWindow: React.FC<ThreadWindowProps> = () => {
       </div>
       <MessageBox
         onSuccessfulSend={refreshMessages}
-        authorAccount={`eip155:1:${address}`}
+        authorAccount={`eip155:1:${address ?? ''}`}
         topic={topic}
       />
     </div>

@@ -4,7 +4,7 @@ import Header from './components/layout/Header'
 import Sidebar from './components/layout/Sidebar'
 import AuthProtectedPage from './components/utils/AuthProtectedPage'
 
-function App() {
+const App = () => {
   return (
     <AuthProtectedPage>
       <div className="App">

@@ -8,11 +8,9 @@ import ChatDisplay from '../../assets/chat.png'
 import NotificationDisplay from '../../assets/notifs.png'
 import './Login.scss'
 import Button from '../../components/general/Button'
-import { useWeb3Modal, Web3Button } from '@web3modal/react'
+import { Web3Button } from '@web3modal/react'
 import { useAccount } from 'wagmi'
 import { useNavigate } from 'react-router-dom'
-
-interface LoginProps {}
 
 const Web3InboxFeatures = [
   {
@@ -29,7 +27,7 @@ const Web3InboxFeatures = [
   }
 ]
 
-const Login: React.FC<LoginProps> = props => {
+const Login: React.FC = () => {
   const { address } = useAccount()
   const nav = useNavigate()
 

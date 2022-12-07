@@ -8,15 +8,11 @@ import Logo from '../../../assets/Logo.svg'
 import './Sidebar.scss'
 import { Link, useLocation } from 'react-router-dom'
 
-/* Types */
-interface SidebarProps {}
-
-/* Utils */
 const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <div className="Sidebar__Item">{children}</div>
 }
 
-const Sidebar: React.FC<SidebarProps> = () => {
+const Sidebar: React.FC = () => {
   const { pathname } = useLocation()
 
   return (

@@ -34,8 +34,6 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
     }).then(setChatClient)
   }, [setChatClient, chatClient])
 
-  console.log({ registeredKey })
-
   return (
     <ChatContext.Provider value={{ chatClient, registeredKey }}>{children}</ChatContext.Provider>
   )

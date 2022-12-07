@@ -4,14 +4,13 @@ import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
 import { useAccount } from 'wagmi'
+import { fetchEnsName } from '@wagmi/core'
 import Thread from '../Thread'
 import './ThreadSelector.scss'
 import Button from '../../general/Button'
 import Invite from '../Invite'
 
-interface ThreadSelectorProps {}
-
-const ThreadSelector: React.FC<ThreadSelectorProps> = props => {
+const ThreadSelector: React.FC = () => {
   const { chatClient } = useContext(ChatContext)
   const { address } = useAccount()
   const [search, setSearch] = useState<string>('')
@@ -49,20 +48,39 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = props => {
     chatClient.on('chat_joined', refreshThreads)
   }, [chatClient])
 
+  const resolveAddress = async (inviteeAddress: string) => {
+    // eslint-disable-next-line prefer-regex-literals
+    const isEnsDomain = new RegExp('.*.eth', 'u').test(inviteeAddress)
+    if (isEnsDomain) {
+      const resolvedAddress = await fetchEnsName({
+        address: inviteeAddress as `0x${string}`,
+        chainId: 1
+      })
+
+      if (resolvedAddress) {
+        return resolvedAddress
+      }
+    }
+
+    return inviteeAddress
+  }
+
   const invite = useCallback(
     (inviteeAddress: string) => {
       if (!address || !chatClient) {
         return
       }
-      chatClient
-        .invite({
-          account: inviteeAddress,
-          invite: {
-            account: `eip155:1:${address}`,
-            message: 'Inviting'
-          }
-        })
-        .then(refreshThreads)
+      resolveAddress(inviteeAddress).then(resolvedAddress => {
+        chatClient
+          .invite({
+            account: resolvedAddress,
+            invite: {
+              account: `eip155:1:${address}`,
+              message: 'Inviting'
+            }
+          })
+          .then(refreshThreads)
+      })
     },
     [address, chatClient, refreshThreads]
   )
@@ -87,7 +105,7 @@ const ThreadSelector: React.FC<ThreadSelectorProps> = props => {
                 address={account}
                 key={account}
                 message={message}
-                id={id || 0}
+                id={id ?? 0}
                 onSuccessfulAccept={refreshThreads}
               />
             ))}

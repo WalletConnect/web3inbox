@@ -4,6 +4,7 @@
   "ignorePatterns": [
     "*.d.ts",
     "*.config.js",
+		"vite.config.js",
     "server.js",
     "Whatamesh.ts",
     "dist",
@@ -37,11 +38,10 @@
     "max-lines": "off",
     "require-atomic-updates": "off",
     "arrow-body-style": "off",
-    "func-style": ["error", "declaration"],
     "newline-before-return": "error",
     "camelcase": "off",
     "class-methods-use-this": "off",
-
+		"prefer-destructuring": "off",
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/explicit-function-return-type": "off",

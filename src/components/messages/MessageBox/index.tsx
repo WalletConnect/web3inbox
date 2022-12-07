@@ -15,8 +15,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
   const { chatClient } = useContext(ChatContext)
   const ref = useRef<HTMLInputElement>(null)
 
-  console.log('MESSAGEBOX', topic)
-
   /*
    * Using a ref to avoid to regenerating this function every time
    * messageText state changes.
@@ -25,7 +23,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
     if (!chatClient || !ref.current) {
       return
     }
-    console.log({ authorAccount, message: ref.current.value, topic })
     await chatClient.message({
       topic,
       payload: {
@@ -43,7 +40,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
       if (keydownEvent.key !== 'Enter') {
         return
       }
-      onSend().then(() => console.log('aaa'))
+      onSend()
     }
 
     document.addEventListener('keydown', onKeydown)
