@@ -4,7 +4,7 @@ import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
 import { useAccount } from 'wagmi'
-import { fetchEnsName } from '@wagmi/core'
+import { fetchEnsAddress } from '@wagmi/core'
 import Thread from '../Thread'
 import './ThreadSelector.scss'
 import Button from '../../general/Button'
@@ -52,9 +52,8 @@ const ThreadSelector: React.FC = () => {
     // eslint-disable-next-line prefer-regex-literals
     const isEnsDomain = new RegExp('.*.eth', 'u').test(inviteeAddress)
     if (isEnsDomain) {
-      const resolvedAddress = await fetchEnsName({
-        address: inviteeAddress as `0x${string}`,
-        chainId: 1
+      const resolvedAddress = await fetchEnsAddress({
+        name: inviteeAddress
       })
 
       if (resolvedAddress) {
@@ -71,6 +70,8 @@ const ThreadSelector: React.FC = () => {
         return
       }
       resolveAddress(inviteeAddress).then(resolvedAddress => {
+        console.log('inviting', resolvedAddress)
+
         chatClient
           .invite({
             account: resolvedAddress,
