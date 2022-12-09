@@ -32,7 +32,7 @@ const App = () => {
         })
       }
     })
-  }, [chatClient])
+  }, [chatClient, peer])
 
   return (
     <AuthProtectedPage>
