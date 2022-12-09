@@ -1,23 +1,15 @@
 import { useContext, useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom'
 import './App.scss'
 import Header from './components/layout/Header'
 import Sidebar from './components/layout/Sidebar'
 import AuthProtectedPage from './components/utils/AuthProtectedPage'
 import ChatContext from './contexts/ChatContext/context'
+import { truncate } from './utils/string'
 
 const App = () => {
   const { chatClient } = useContext(ChatContext)
-
-  console.log('send message')
-  navigator.serviceWorker.ready.then(() => {
-    console.log({ controller: navigator.serviceWorker.controller })
-    navigator.serviceWorker.controller?.postMessage({
-      type: 'MESSAGE_RECEIVED',
-      author: 'SOME AUTHOR',
-      message: 'MESSAGE'
-    })
-  })
+  const { peer } = useParams()
 
   useEffect(() => {
     if (Notification.permission === 'default') {
@@ -29,12 +21,16 @@ const App = () => {
     }
 
     chatClient.on('chat_message', messageEvent => {
-      navigator.serviceWorker.getRegistration().then(swRegistration => {
-        swRegistration?.showNotification(messageEvent.params.authorAccount, {
-          body: messageEvent.params.message,
-          icon: `${window.location.origin}/logo.svg`
+      if (!peer || peer !== messageEvent.params.authorAccount) {
+        navigator.serviceWorker.getRegistration().then(swRegistration => {
+          swRegistration?.showNotification(truncate(messageEvent.params.authorAccount, 6), {
+            body: messageEvent.params.message,
+            timestamp: messageEvent.params.timestamp,
+            silent: false,
+            icon: `${window.location.origin}/logo.png`
+          })
         })
-      })
+      }
     })
   }, [chatClient])
 
