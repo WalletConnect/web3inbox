@@ -1,1 +1,2 @@
 **/*.js
+src/main-sw.ts

@@ -53,6 +53,7 @@ const ThreadWindow: React.FC = () => {
       if (messageEvent.topic !== topic) {
         return
       }
+
       refreshMessages()
     })
   }, [chatClient, refreshMessages, topic])
