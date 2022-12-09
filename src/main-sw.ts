@@ -18,10 +18,6 @@ self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting()
   }
-
-  if (event.data && event.data.type === 'MESSAGE_RECEIVED') {
-    const notification = new Notification(event.data.author, event.data.message)
-  }
 })
 
 // Self.__WB_MANIFEST is default injection point

@@ -29,12 +29,11 @@ const App = () => {
     }
 
     chatClient.on('chat_message', messageEvent => {
-      console.log('sending message event')
-
-      navigator.serviceWorker.controller?.postMessage({
-        type: 'MESSAGE_RECEIVED',
-        author: messageEvent.params.authorAccount,
-        message: messageEvent.params.message
+      navigator.serviceWorker.getRegistration().then(swRegistration => {
+        swRegistration?.showNotification(messageEvent.params.authorAccount, {
+          body: messageEvent.params.message,
+          icon: `${window.location.origin}/logo.svg`
+        })
       })
     })
   }, [chatClient])
