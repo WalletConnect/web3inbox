@@ -24,10 +24,7 @@ const App = () => {
       if (!peer || peer !== messageEvent.params.authorAccount) {
         navigator.serviceWorker.getRegistration().then(swRegistration => {
           swRegistration?.showNotification(truncate(messageEvent.params.authorAccount, 6), {
-            body: messageEvent.params.message,
-            timestamp: messageEvent.params.timestamp,
-            silent: false,
-            icon: `${window.location.origin}/logo.png`
+            body: messageEvent.params.message
           })
         })
       }
