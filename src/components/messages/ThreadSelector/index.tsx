@@ -57,7 +57,7 @@ const ThreadSelector: React.FC = () => {
       })
 
       if (resolvedAddress) {
-        return resolvedAddress
+        return `eip155:1:${resolvedAddress}`
       }
     }
 
