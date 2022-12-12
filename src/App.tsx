@@ -22,7 +22,9 @@ const App = () => {
 
     chatClient.on('chat_message', messageEvent => {
       if (!peer || peer !== messageEvent.params.authorAccount) {
+        console.log('Sending notification')
         navigator.serviceWorker.getRegistration().then(swRegistration => {
+          console.log('Using the following registration', swRegistration)
           swRegistration?.showNotification(truncate(messageEvent.params.authorAccount, 6), {
             body: messageEvent.params.message
           })
