@@ -16,7 +16,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     theme_color: '#ffffff',
     icons: [
       {
-        src: '/logo.svg',
+        src: '/logo.png',
         sizes: '512x512',
         type: 'image/png'
       }

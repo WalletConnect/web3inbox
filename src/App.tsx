@@ -1,5 +1,6 @@
+import type { ChatClientTypes } from '@walletconnect/chat-client'
 import { useContext, useEffect } from 'react'
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import './App.scss'
 import Header from './components/layout/Header'
 import Sidebar from './components/layout/Sidebar'
@@ -9,29 +10,40 @@ import { truncate } from './utils/string'
 
 const App = () => {
   const { chatClient } = useContext(ChatContext)
-  const { peer } = useParams()
 
   useEffect(() => {
     if (Notification.permission === 'default') {
       Notification.requestPermission()
     }
 
-    if (!chatClient) {
-      return
-    }
-
-    chatClient.on('chat_message', messageEvent => {
+    const messageEventListener = (
+      messageEvent: ChatClientTypes.BaseEventArgs<ChatClientTypes.Message>
+    ) => {
+      /*
+       * We can't use hooks like `useLocation` or `useParam` to prevent
+       * constantly reregistering the listener.
+       */
+      const peer = new URLSearchParams(window.location.search).get('peer')
       if (!peer || peer !== messageEvent.params.authorAccount) {
-        console.log('Sending notification')
         navigator.serviceWorker.getRegistration().then(swRegistration => {
-          console.log('Using the following registration', swRegistration)
           swRegistration?.showNotification(truncate(messageEvent.params.authorAccount, 6), {
             body: messageEvent.params.message
           })
         })
       }
-    })
-  }, [chatClient, peer])
+    }
+
+    if (!chatClient) {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      return () => {}
+    }
+
+    chatClient.on('chat_message', messageEventListener)
+
+    return () => {
+      chatClient.off('chat_message', messageEventListener)
+    }
+  }, [chatClient])
 
   return (
     <AuthProtectedPage>
