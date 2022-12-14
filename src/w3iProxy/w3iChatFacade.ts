@@ -131,10 +131,16 @@ class W3iChatFacade implements W3iChat {
     if (!this.chatClient) {
       throw new Error('Can not observe internal events when no chat client is initiated')
     }
-    const observable = fromEvent(this.chatClient, eventName) as Observable<ChatFacadeEvents[K]>
 
-    this.observables.set('chat_message', observable)
-    observable.subscribe(observer)
+    const observableExists = this.observables.has('chat_message')
+    if (!observableExists) {
+      this.observables.set(
+        'chat_message',
+        fromEvent(this.chatClient, eventName) as Observable<ChatFacadeEvents[K]>
+      )
+    }
+    const eventObservable = this.observables.get('chat_message') as Observable<ChatFacadeEvents[K]>
+    eventObservable.subscribe(observer)
   }
 }
 
