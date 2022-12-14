@@ -1,5 +1,6 @@
 import type { ChatClient, ChatClientTypes } from '@walletconnect/chat-client'
-import type { Observer } from 'rxjs'
+import type { Observable, Observer } from 'rxjs'
+import type { ChatFacadeEvents } from './listenerTypes'
 import { fromEvent } from 'rxjs'
 
 type OmittedChatKeys =
@@ -25,6 +26,14 @@ export type W3iChat = Omit<ChatClient, OmittedChatKeys>
 
 class W3iChatFacade implements W3iChat {
   private chatClient: ChatClient | undefined
+  private readonly observables: Map<
+    keyof ChatFacadeEvents,
+    Observable<ChatFacadeEvents[keyof ChatFacadeEvents]>
+  >
+
+  public constructor() {
+    this.observables = new Map()
+  }
 
   private formatClientRelatedError(method: string) {
     return `An initialized chat client is required for method: [${method}].`
@@ -115,12 +124,16 @@ class W3iChatFacade implements W3iChat {
     return this.chatClient.resolve(params)
   }
 
-  public observe(eventName: string, observer: Observer<unknown>) {
+  public observe<K extends keyof ChatFacadeEvents>(
+    eventName: K,
+    observer: Observer<ChatFacadeEvents[K]>
+  ) {
     if (!this.chatClient) {
       throw new Error('Can not observe internal events when no chat client is initiated')
     }
+    const observable = fromEvent(this.chatClient, eventName) as Observable<ChatFacadeEvents[K]>
 
-    const observable = fromEvent(this.chatClient, eventName)
+    this.observables.set('chat_message', observable)
     observable.subscribe(observer)
   }
 }
