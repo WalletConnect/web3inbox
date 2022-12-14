@@ -136,7 +136,7 @@ class W3iChatFacade implements W3iChat {
     const observableExists = this.observables.has('chat_message')
     if (!observableExists) {
       this.observables.set(
-        'chat_message',
+        eventName,
         fromEvent(this.chatClient, eventName) as Observable<ChatFacadeEvents[K]>
       )
     }
