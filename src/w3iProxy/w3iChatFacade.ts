@@ -3,6 +3,7 @@ import type { Observable, Observer } from 'rxjs'
 import type { ChatFacadeEvents } from './listenerTypes'
 import { fromEvent } from 'rxjs'
 
+// Omitting chat client management keys
 type OmittedChatKeys =
   | 'chatInvites'
   | 'chatKeys'
@@ -140,7 +141,10 @@ class W3iChatFacade implements W3iChat {
       )
     }
     const eventObservable = this.observables.get('chat_message') as Observable<ChatFacadeEvents[K]>
-    eventObservable.subscribe(observer)
+
+    const subscribtion = eventObservable.subscribe(observer)
+
+    return subscribtion.unsubscribe
   }
 }
 
