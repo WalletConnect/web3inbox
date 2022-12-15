@@ -38,10 +38,10 @@ const App = () => {
       return () => {}
     }
 
-    chatClient.on('chat_message', messageEventListener)
+    chatClient.observe('chat_message', { next: messageEventListener })
 
     return () => {
-      chatClient.off('chat_message', messageEventListener)
+      chatClient.observe('chat_message', { next: messageEventListener })
     }
   }, [chatClient])
 

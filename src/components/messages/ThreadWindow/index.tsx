@@ -49,12 +49,14 @@ const ThreadWindow: React.FC = () => {
     if (!chatClient) {
       return
     }
-    chatClient.on('chat_message', messageEvent => {
-      if (messageEvent.topic !== topic) {
-        return
-      }
+    chatClient.observe('chat_message', {
+      next: messageEvent => {
+        if (messageEvent.topic !== topic) {
+          return
+        }
 
-      refreshMessages()
+        refreshMessages()
+      }
     })
   }, [chatClient, refreshMessages, topic])
 

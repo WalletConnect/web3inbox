@@ -1,6 +1,8 @@
 import { ChatClient } from '@walletconnect/chat-client'
 import React, { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
+import W3i from '../../w3iProxy'
+import type { W3iChatClient } from '../../w3iProxy'
 import ChatContext from './context'
 
 interface ChatContextProviderProps {
@@ -8,7 +10,10 @@ interface ChatContextProviderProps {
 }
 
 const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) => {
-  const [chatClient, setChatClient] = useState<ChatClient | null>(null)
+  const relayUrl = import.meta.env.VITE_RELAY_URL
+  const projectId = import.meta.env.VITE_PROJECT_ID
+
+  const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
 
   const { address } = useAccount()
@@ -24,14 +29,9 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
     if (chatClient) {
       return
     }
-    const relayUrl = import.meta.env.VITE_RELAY_URL
-    const projectId = import.meta.env.VITE_PROJECT_ID
 
-    ChatClient.init({
-      logger: 'debug',
-      relayUrl,
-      projectId
-    }).then(setChatClient)
+    const w3iProxy = new W3i(projectId, relayUrl)
+    w3iProxy.init().then(() => setChatClient(w3iProxy.chat))
   }, [setChatClient, chatClient])
 
   return (

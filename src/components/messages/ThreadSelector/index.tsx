@@ -22,8 +22,8 @@ const ThreadSelector: React.FC = () => {
       return
     }
 
-    setInvites(chatClient.chatInvites.getAll())
-    setThreads(chatClient.chatThreads.getAll())
+    setInvites(Array.from(chatClient.getInvites().values()))
+    setThreads(Array.from(chatClient.getThreads().values()))
   }, [chatClient, setThreads, setInvites])
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const ThreadSelector: React.FC = () => {
 
   useEffect(() => {
     if (!search && chatClient) {
-      setThreads(chatClient.chatThreads.getAll())
+      setThreads(Array.from(chatClient.getThreads().values()))
     }
     setThreads(oldThreads => {
       return oldThreads.filter(thread => thread.peerAccount.includes(search))
@@ -44,8 +44,8 @@ const ThreadSelector: React.FC = () => {
       return
     }
 
-    chatClient.on('chat_invite', refreshThreads)
-    chatClient.on('chat_joined', refreshThreads)
+    chatClient.observe('chat_invite', { next: refreshThreads })
+    chatClient.observe('chat_joined', { next: refreshThreads })
   }, [chatClient])
 
   const resolveAddress = async (inviteeAddress: string) => {

@@ -1,6 +1,8 @@
 import { ChatClient } from '@walletconnect/chat-client'
 import W3iChatFacade from './w3iChatFacade'
 
+export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
+
 class W3i {
   private chatClient: ChatClient | undefined
   private readonly chatFacade: W3iChatFacade
@@ -16,8 +18,8 @@ class W3i {
     this.chatFacade = new W3iChatFacade()
   }
 
-  public get chat() {
-    return this.chatFacade as Omit<W3iChatFacade, 'initState'>
+  public get chat(): W3iChatClient {
+    return this.chatFacade
   }
 
   public async init() {

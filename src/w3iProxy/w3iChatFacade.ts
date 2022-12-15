@@ -1,5 +1,5 @@
 import type { ChatClient, ChatClientTypes } from '@walletconnect/chat-client'
-import type { Observable, Observer } from 'rxjs'
+import type { NextObserver, Observable } from 'rxjs'
 import type { ChatFacadeEvents } from './listenerTypes'
 import { fromEvent } from 'rxjs'
 
@@ -7,7 +7,6 @@ import { fromEvent } from 'rxjs'
 type OmittedChatKeys =
   | 'chatInvites'
   | 'chatKeys'
-  | 'chatMessages'
   | 'chatThreads'
   | 'chatThreadsPending'
   | 'core'
@@ -34,6 +33,14 @@ class W3iChatFacade implements W3iChat {
 
   public constructor() {
     this.observables = new Map()
+  }
+
+  public get chatMessages() {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('chatMessages'))
+    }
+
+    return this.chatClient.chatMessages
   }
 
   private formatClientRelatedError(method: string) {
@@ -127,7 +134,7 @@ class W3iChatFacade implements W3iChat {
 
   public observe<K extends keyof ChatFacadeEvents>(
     eventName: K,
-    observer: Observer<ChatFacadeEvents[K]>
+    observer: NextObserver<ChatFacadeEvents[K]>
   ) {
     if (!this.chatClient) {
       throw new Error('Can not observe internal events when no chat client is initiated')
@@ -140,7 +147,7 @@ class W3iChatFacade implements W3iChat {
         fromEvent(this.chatClient, eventName) as Observable<ChatFacadeEvents[K]>
       )
     }
-    const eventObservable = this.observables.get('chat_message') as Observable<ChatFacadeEvents[K]>
+    const eventObservable = this.observables.get(eventName) as Observable<ChatFacadeEvents[K]>
 
     const subscribtion = eventObservable.subscribe(observer)
 
