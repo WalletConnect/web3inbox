@@ -172,7 +172,7 @@ class W3iChatFacade implements W3iChat {
     }
     const eventObservable = this.observables.get(eventName) as Observable<ChatFacadeEvents[K]>
 
-    const subscribtion = eventObservable.subscribe(observer)
+    const subscription = eventObservable.subscribe(observer)
 
     return subscribtion.unsubscribe
   }
