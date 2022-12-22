@@ -18,7 +18,7 @@ const ThreadWindow: React.FC = () => {
     address: peerAddress
   })
   const { data: ensName } = useEnsName({ address: peerAddress })
-  const { chatClient } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(ChatContext)
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 
@@ -27,26 +27,26 @@ const ThreadWindow: React.FC = () => {
   }, [search])
 
   const refreshMessages = useCallback(() => {
-    if (!chatClient || !topic) {
+    if (!chatClientProxy || !topic) {
       return
     }
 
     console.log('Refreshing')
 
-    const allChatMessages = chatClient.getMessages({
+    const allChatMessages = chatClientProxy.getMessages({
       topic
     })
 
     console.log('All Chat Messages', allChatMessages)
 
     setMessages(allChatMessages.messages)
-  }, [chatClient, search, setMessages, topic])
+  }, [chatClientProxy, search, setMessages, topic])
 
   useEffect(() => {
-    if (!chatClient) {
+    if (!chatClientProxy) {
       return
     }
-    chatClient.observe('chat_message', {
+    chatClientProxy.observe('chat_message', {
       next: messageEvent => {
         console.log('Observing')
         if (messageEvent.topic !== topic) {
@@ -56,11 +56,11 @@ const ThreadWindow: React.FC = () => {
         refreshMessages()
       }
     })
-  }, [chatClient, refreshMessages, topic])
+  }, [chatClientProxy, refreshMessages, topic])
 
   useEffect(() => {
     refreshMessages()
-  }, [refreshMessages, chatClient])
+  }, [refreshMessages, chatClientProxy])
 
   return (
     <div className="ThreadWindow">

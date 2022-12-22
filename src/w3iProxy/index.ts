@@ -3,7 +3,7 @@ import W3iChatFacade from './w3iChatFacade'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 
-class W3i {
+class Web3InboxProxy {
   private chatClient: ChatClient | undefined
   private readonly chatFacade: W3iChatFacade
   private readonly relayUrl: string
@@ -35,4 +35,4 @@ class W3i {
   }
 }
 
-export default W3i
+export default Web3InboxProxy

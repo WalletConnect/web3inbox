@@ -2,12 +2,12 @@ import { createContext } from 'react'
 import type { W3iChatClient } from '../../w3iProxy'
 
 interface ChatContextState {
-  chatClient: W3iChatClient | null
+  chatClientProxy: W3iChatClient | null
   registeredKey: string | null
 }
 
 const context = createContext<ChatContextState>({
-  chatClient: null,
+  chatClientProxy: null,
   registeredKey: null
 })
 

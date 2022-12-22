@@ -9,7 +9,7 @@ import ChatContext from './contexts/ChatContext/context'
 import { truncate } from './utils/string'
 
 const App = () => {
-  const { chatClient } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(ChatContext)
 
   useEffect(() => {
     if (Notification.permission === 'default') {
@@ -33,17 +33,17 @@ const App = () => {
       }
     }
 
-    if (!chatClient) {
+    if (!chatClientProxy) {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       return () => {}
     }
 
-    chatClient.observe('chat_message', { next: messageEventListener })
+    chatClientProxy.observe('chat_message', { next: messageEventListener })
 
     return () => {
-      chatClient.observe('chat_message', { next: messageEventListener })
+      chatClientProxy.observe('chat_message', { next: messageEventListener })
     }
-  }, [chatClient])
+  }, [chatClientProxy])
 
   return (
     <AuthProtectedPage>

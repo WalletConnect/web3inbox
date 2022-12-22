@@ -11,44 +11,44 @@ import Button from '../../general/Button'
 import Invite from '../Invite'
 
 const ThreadSelector: React.FC = () => {
-  const { chatClient } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(ChatContext)
   const { address } = useAccount()
   const [search, setSearch] = useState<string>('')
   const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
   const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
 
-  console.log('Chat Client: ', chatClient)
+  console.log('Chat Client: ', chatClientProxy)
 
   const refreshThreads = useCallback(() => {
-    if (!chatClient) {
+    if (!chatClientProxy) {
       return
     }
 
-    setInvites(Array.from(chatClient.getInvites().values()))
-    setThreads(Array.from(chatClient.getThreads().values()))
-  }, [chatClient, setThreads, setInvites])
+    setInvites(Array.from(chatClientProxy.getInvites().values()))
+    setThreads(Array.from(chatClientProxy.getThreads().values()))
+  }, [chatClientProxy, setThreads, setInvites])
 
   useEffect(() => {
     refreshThreads()
   }, [refreshThreads])
 
   useEffect(() => {
-    if (!search && chatClient) {
-      setThreads(Array.from(chatClient.getThreads().values()))
+    if (!search && chatClientProxy) {
+      setThreads(Array.from(chatClientProxy.getThreads().values()))
     }
     setThreads(oldThreads => {
       return oldThreads.filter(thread => thread.peerAccount.includes(search))
     })
-  }, [setThreads, search, chatClient])
+  }, [setThreads, search, chatClientProxy])
 
   useEffect(() => {
-    if (!chatClient) {
+    if (!chatClientProxy) {
       return
     }
 
-    chatClient.observe('chat_invite', { next: refreshThreads })
-    chatClient.observe('chat_joined', { next: refreshThreads })
-  }, [chatClient])
+    chatClientProxy.observe('chat_invite', { next: refreshThreads })
+    chatClientProxy.observe('chat_joined', { next: refreshThreads })
+  }, [chatClientProxy])
 
   const resolveAddress = async (inviteeAddress: string) => {
     // eslint-disable-next-line prefer-regex-literals
@@ -68,13 +68,13 @@ const ThreadSelector: React.FC = () => {
 
   const invite = useCallback(
     (inviteeAddress: string) => {
-      if (!address || !chatClient) {
+      if (!address || !chatClientProxy) {
         return
       }
       resolveAddress(inviteeAddress).then(resolvedAddress => {
         console.log('inviting', resolvedAddress)
 
-        chatClient
+        chatClientProxy
           .invite({
             account: resolvedAddress,
             invite: {
@@ -85,7 +85,7 @@ const ThreadSelector: React.FC = () => {
           .then(refreshThreads)
       })
     },
-    [address, chatClient, refreshThreads]
+    [address, chatClientProxy, refreshThreads]
   )
 
   return (

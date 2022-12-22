@@ -1,7 +1,7 @@
 import { ChatClient } from '@walletconnect/chat-client'
 import React, { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
-import W3i from '../../w3iProxy'
+import Web3InboxProxy from '../../w3iProxy'
 import type { W3iChatClient } from '../../w3iProxy'
 import ChatContext from './context'
 
@@ -30,12 +30,14 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
       return
     }
 
-    const w3iProxy = new W3i(projectId, relayUrl)
+    const w3iProxy = new Web3InboxProxy(projectId, relayUrl)
     w3iProxy.init().then(() => setChatClient(w3iProxy.chat))
   }, [setChatClient, chatClient])
 
   return (
-    <ChatContext.Provider value={{ chatClient, registeredKey }}>{children}</ChatContext.Provider>
+    <ChatContext.Provider value={{ chatClientProxy: chatClient, registeredKey }}>
+      {children}
+    </ChatContext.Provider>
   )
 }
 
