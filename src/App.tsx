@@ -6,7 +6,6 @@ import Header from './components/layout/Header'
 import Sidebar from './components/layout/Sidebar'
 import AuthProtectedPage from './components/utils/AuthProtectedPage'
 import ChatContext from './contexts/ChatContext/context'
-import { truncate } from './utils/string'
 
 const App = () => {
   const { chatClientProxy } = useContext(ChatContext)
@@ -25,11 +24,14 @@ const App = () => {
        */
       const peer = new URLSearchParams(window.location.search).get('peer')
       if (!peer || peer !== messageEvent.params.authorAccount) {
-        navigator.serviceWorker.getRegistration().then(swRegistration => {
-          swRegistration?.showNotification(truncate(messageEvent.params.authorAccount, 6), {
-            body: messageEvent.params.message
-          })
-        })
+        /*
+         * Navigator Notification
+         * navigator.serviceWorker.getRegistration().then(swRegistration => {
+         *   swRegistration?.showNotification(truncate(messageEvent.params.authorAccount, 6), {
+         *     body: messageEvent.params.message
+         *   })
+         * })
+         */
       }
     }
 

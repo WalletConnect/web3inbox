@@ -144,6 +144,11 @@ class W3iChatFacade implements W3iChat {
       throw new Error(this.formatClientRelatedError('register'))
     }
 
+    navigator.serviceWorker.controller?.postMessage({
+      type: 'CHAT_REGISTER',
+      account: params.account
+    })
+
     return this.chatClient.register(params)
   }
 

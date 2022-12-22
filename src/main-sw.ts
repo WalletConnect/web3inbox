@@ -6,11 +6,37 @@ import {
   precacheAndRoute
 } from 'workbox-precaching'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
+import ChatClient from '@walletconnect/chat-client'
 
 declare let self: ServiceWorkerGlobalScope
 
+let chatClient: ChatClient
+
+self.oninstall = () => {
+  console.log('Installing, init client')
+  ChatClient.init({
+    logger: 'debug',
+    relayUrl: import.meta.env.VITE_RELAY_URL,
+    projectId: import.meta.env.VITE_PROJECT_ID
+  }).then(client => {
+    console.log('Successful init')
+    chatClient = client
+    chatClient.on('chat_message', message => {
+      console.log('Got message')
+      const notification = new Notification(message.params.authorAccount, {
+        timestamp: message.params.timestamp,
+        body: message.params.message
+      })
+    })
+  })
+}
+
 self.onmessage = event => {
-  console.log('GOT AN EVENT', event)
+  console.log('Got event', event.data, event)
+  switch (event.data.type) {
+    case 'CHAT_REGISTER':
+      chatClient.register(event.data.account)
+  }
 }
 
 self.addEventListener('message', event => {
