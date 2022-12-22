@@ -48,7 +48,11 @@ const ThreadWindow: React.FC = () => {
     }
     chatClientProxy.observe('chat_message', {
       next: messageEvent => {
-        console.log('Observing')
+        /*
+         * Ignore message events from other threads
+         * this prevents unnecessary refresh of messages
+         * when a message from a different threads arrives
+         */
         if (messageEvent.topic !== topic) {
           return
         }
