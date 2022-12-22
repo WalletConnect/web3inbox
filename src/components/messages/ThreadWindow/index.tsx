@@ -31,18 +31,15 @@ const ThreadWindow: React.FC = () => {
       return
     }
 
-    const allChatMessages = chatClient.chatMessages.getAll({
+    console.log('Refreshing')
+
+    const allChatMessages = chatClient.getMessages({
       topic
     })
-    const chatMessages = allChatMessages.length > 0 ? allChatMessages[0] : null
 
-    const threadMessages = chatMessages?.messages
+    console.log('All Chat Messages', allChatMessages)
 
-    if (threadMessages) {
-      setMessages(threadMessages)
-    } else {
-      setMessages([])
-    }
+    setMessages(allChatMessages.messages)
   }, [chatClient, search, setMessages, topic])
 
   useEffect(() => {
@@ -51,6 +48,7 @@ const ThreadWindow: React.FC = () => {
     }
     chatClient.observe('chat_message', {
       next: messageEvent => {
+        console.log('Observing')
         if (messageEvent.topic !== topic) {
           return
         }

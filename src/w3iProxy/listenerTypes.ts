@@ -6,6 +6,7 @@ export interface ChatFacadeEvents {
   chat_joined: ChatClientTypes.BaseEventArgs
   chat_ping: ChatClientTypes.BaseEventArgs
   chat_left: ChatClientTypes.BaseEventArgs
+  chat_sent_message: null
 }
 
 type ChatFacadeEventsObservables = ChatFacadeEvents

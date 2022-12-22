@@ -1,4 +1,4 @@
-import { ChatClient } from '@walletconnect/chat-client'
+import ChatClient from '@walletconnect/chat-client'
 import W3iChatFacade from './w3iChatFacade'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
@@ -23,11 +23,14 @@ class W3i {
   }
 
   public async init() {
+    console.log('pre init', this.chatClient)
     this.chatClient = await ChatClient.init({
       logger: 'debug',
       relayUrl: this.relayUrl,
       projectId: this.projectId
     })
+
+    console.log('Post init', this.chatClient)
     this.chatFacade.initState(this.chatClient)
   }
 }

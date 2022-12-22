@@ -1,7 +1,8 @@
-import type { ChatClient, ChatClientTypes } from '@walletconnect/chat-client'
+import { fromEvent } from 'rxjs'
+import type ChatClient from '@walletconnect/chat-client'
+import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { NextObserver, Observable } from 'rxjs'
 import type { ChatFacadeEvents } from './listenerTypes'
-import { fromEvent } from 'rxjs'
 
 // Omitting chat client management keys
 type OmittedChatKeys =
@@ -13,6 +14,7 @@ type OmittedChatKeys =
   | 'emit'
   | 'engine'
   | 'events'
+  | 'getMessages'
   | 'history'
   | 'init'
   | 'logger'
@@ -26,6 +28,7 @@ export type W3iChat = Omit<ChatClient, OmittedChatKeys>
 
 class W3iChatFacade implements W3iChat {
   private chatClient: ChatClient | undefined
+
   private readonly observables: Map<
     keyof ChatFacadeEvents,
     Observable<ChatFacadeEvents[keyof ChatFacadeEvents]>
@@ -54,8 +57,18 @@ class W3iChatFacade implements W3iChat {
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('reject'))
     }
+    const queriedMessages = this.chatClient.chatMessages.getAll(params)
 
-    return this.chatClient.getMessages(params)
+    if (queriedMessages.length < 1) {
+      return { topic: params.topic, messages: [] }
+    }
+
+    const { topic, messages: sentAndReceivedMessages } = queriedMessages[0]
+
+    return {
+      topic,
+      messages: sentAndReceivedMessages
+    }
   }
 
   public async leave(params: { topic: string }) {
@@ -85,6 +98,8 @@ class W3iChatFacade implements W3iChat {
       throw new Error(this.formatClientRelatedError('getThreads'))
     }
 
+    console.log('Threads', this.chatClient.getThreads())
+
     return this.chatClient.getThreads()
   }
   public getInvites() {
@@ -113,7 +128,15 @@ class W3iChatFacade implements W3iChat {
       throw new Error(this.formatClientRelatedError('message'))
     }
 
-    return this.chatClient.message(params)
+    await this.chatClient.message(params)
+
+    this.chatClient.emit('chat_message', {
+      id: Math.random(),
+      params: params.payload,
+      topic: params.topic
+    })
+
+    return Promise.resolve()
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {
@@ -140,7 +163,7 @@ class W3iChatFacade implements W3iChat {
       throw new Error('Can not observe internal events when no chat client is initiated')
     }
 
-    const observableExists = this.observables.has('chat_message')
+    const observableExists = this.observables.has(eventName)
     if (!observableExists) {
       this.observables.set(
         eventName,

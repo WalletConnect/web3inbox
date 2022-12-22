@@ -17,6 +17,8 @@ const ThreadSelector: React.FC = () => {
   const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
   const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
 
+  console.log('Chat Client: ', chatClient)
+
   const refreshThreads = useCallback(() => {
     if (!chatClient) {
       return
