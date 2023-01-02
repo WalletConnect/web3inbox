@@ -12,6 +12,8 @@ interface ChatContextProviderProps {
 const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) => {
   const relayUrl = import.meta.env.VITE_RELAY_URL
   const projectId = import.meta.env.VITE_PROJECT_ID
+  const noClientModeQuery = new URLSearchParams(window.location.search).get('noClientMode')
+  const noClientMode = noClientModeQuery ? (JSON.parse(noClientModeQuery) as boolean) : false
 
   const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
@@ -30,7 +32,7 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
       return
     }
 
-    const w3iProxy = new Web3InboxProxy(projectId, relayUrl)
+    const w3iProxy = noClientMode ? new Web3InboxProxy() : new Web3InboxProxy(projectId, relayUrl)
     w3iProxy.init().then(() => setChatClient(w3iProxy.chat))
   }, [setChatClient, chatClient])
 

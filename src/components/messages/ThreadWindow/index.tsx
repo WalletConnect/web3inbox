@@ -31,15 +31,13 @@ const ThreadWindow: React.FC = () => {
       return
     }
 
-    console.log('Refreshing')
-
-    const allChatMessages = chatClientProxy.getMessages({
-      topic
-    })
-
-    console.log('All Chat Messages', allChatMessages)
-
-    setMessages(allChatMessages.messages)
+    chatClientProxy
+      .getMessages({
+        topic
+      })
+      .then(allChatMessages => {
+        setMessages(allChatMessages.messages)
+      })
   }, [chatClientProxy, search, setMessages, topic])
 
   useEffect(() => {

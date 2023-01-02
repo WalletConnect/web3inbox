@@ -1,41 +1,34 @@
 import { fromEvent } from 'rxjs'
+import { EventEmitter } from 'events'
+import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type ChatClient from '@walletconnect/chat-client'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { NextObserver, Observable } from 'rxjs'
-import type { ChatFacadeEvents } from './listenerTypes'
-
-// Omitting chat client management keys
-type OmittedChatKeys =
-  | 'chatInvites'
-  | 'chatKeys'
-  | 'chatThreads'
-  | 'chatThreadsPending'
-  | 'core'
-  | 'emit'
-  | 'engine'
-  | 'events'
-  | 'getMessages'
-  | 'history'
-  | 'init'
-  | 'logger'
-  | 'name'
-  | 'off'
-  | 'on'
-  | 'once'
-  | 'removeListener'
-
-export type W3iChat = Omit<ChatClient, OmittedChatKeys>
+import type { ChatFacadeEvents, EventMessage } from './listenerTypes'
+import type { W3iChat } from './chatProviders/types'
 
 class W3iChatFacade implements W3iChat {
   private chatClient: ChatClient | undefined
+  private readonly noClientMode: boolean
+  private readonly emitter: EventEmitter
 
   private readonly observables: Map<
     keyof ChatFacadeEvents,
     Observable<ChatFacadeEvents[keyof ChatFacadeEvents]>
   >
 
-  public constructor() {
+  public constructor(noClientMode: boolean) {
     this.observables = new Map()
+    this.noClientMode = noClientMode
+    this.emitter = new EventEmitter()
+  }
+
+  public postMessage(id: string, messageData: ChatClientTypes.BaseEventArgs<EventMessage>) {
+    this.emitter.emit(id, messageData.params)
+  }
+
+  public on(methodName: string, listener: (data: unknown) => void) {
+    this.emitter.on(methodName, listener)
   }
 
   public get chatMessages() {
@@ -53,22 +46,32 @@ class W3iChatFacade implements W3iChat {
   public initState(chatClient: ChatClient) {
     this.chatClient = chatClient
   }
-  public getMessages(params: { topic: string }) {
+  public async getMessages(params: { topic: string }) {
+    if (this.noClientMode) {
+      return new Promise(resolve => {
+        const getMessagesRequest = formatJsonRpcRequest('getMessages', params)
+        const getMessagesListener = (
+          getMessagesResponse: ReturnType<ChatClient['getMessages']>
+        ) => {
+          resolve(getMessagesResponse)
+        }
+        this.emitter.once(getMessagesRequest.id.toString(), getMessagesListener)
+        this.emitter.emit('getMessages', getMessagesRequest)
+      })
+    }
+
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('reject'))
     }
     const queriedMessages = this.chatClient.chatMessages.getAll(params)
 
     if (queriedMessages.length < 1) {
-      return { topic: params.topic, messages: [] }
+      return [] as ChatClientTypes.Message[]
     }
 
-    const { topic, messages: sentAndReceivedMessages } = queriedMessages[0]
+    const { messages: sentAndReceivedMessages } = queriedMessages[0]
 
-    return {
-      topic,
-      messages: sentAndReceivedMessages
-    }
+    return sentAndReceivedMessages
   }
 
   public async leave(params: { topic: string }) {
