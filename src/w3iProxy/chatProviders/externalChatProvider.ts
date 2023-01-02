@@ -64,17 +64,6 @@ export default class ExternalChatProvider implements W3iChat {
   }
   public async message(params: { topic: string; payload: ChatClientTypes.Message }) {
     return this.postToExternalProvider('message', params)
-
-    /*
-     * Rewrite this to central emitter
-     * this.chatClient.emit('chat_message', {
-     *   id: Math.random(),
-     *   params: params.payload,
-     *   topic: params.topic
-     * })
-     */
-
-    return Promise.resolve()
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {

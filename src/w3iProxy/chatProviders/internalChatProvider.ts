@@ -105,6 +105,8 @@ export default class InternalChatProvider implements W3iChat {
 
     await this.chatClient.message(params)
 
+    // eslint-disable-next-line no-warning-comments
+    // TODO: Rewrite this to use web3inbox proxy in a central fashion,
     this.chatClient.emit('chat_message', {
       id: Math.random(),
       params: params.payload,
