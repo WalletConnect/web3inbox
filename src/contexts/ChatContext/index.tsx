@@ -13,7 +13,11 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
   const relayUrl = import.meta.env.VITE_RELAY_URL
   const projectId = import.meta.env.VITE_PROJECT_ID
   const noClientModeQuery = new URLSearchParams(window.location.search).get('noClientMode')
-  const noClientMode = noClientModeQuery ? (JSON.parse(noClientModeQuery) as boolean) : false
+  const [noClientMode] = useState(
+    noClientModeQuery ? (JSON.parse(noClientModeQuery) as boolean) : false
+  )
+
+  console.log({ noClientMode })
 
   const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)

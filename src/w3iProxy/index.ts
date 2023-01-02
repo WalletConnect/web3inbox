@@ -23,7 +23,8 @@ class Web3InboxProxy {
     this.relayUrl = relayUrl
     this.projectId = projectId
     this.noClientMode = !(relayUrl && projectId)
-    this.chatFacade = new W3iChatFacade(true)
+    console.log({ clientModeInW3iProxy: this.noClientMode })
+    this.chatFacade = new W3iChatFacade(this.noClientMode)
     window.web3inbox = this
   }
 
@@ -42,7 +43,7 @@ class Web3InboxProxy {
       projectId: this.projectId
     })
 
-    this.chatFacade.initState(this.chatClient)
+    this.chatFacade.initInternalProvider(this.chatClient)
   }
 }
 

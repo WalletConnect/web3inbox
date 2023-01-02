@@ -36,7 +36,7 @@ const ThreadWindow: React.FC = () => {
         topic
       })
       .then(allChatMessages => {
-        setMessages(allChatMessages.messages)
+        setMessages(allChatMessages)
       })
   }, [chatClientProxy, search, setMessages, topic])
 

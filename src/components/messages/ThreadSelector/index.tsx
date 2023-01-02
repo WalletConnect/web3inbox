@@ -24,8 +24,8 @@ const ThreadSelector: React.FC = () => {
       return
     }
 
-    setInvites(Array.from(chatClientProxy.getInvites().values()))
-    setThreads(Array.from(chatClientProxy.getThreads().values()))
+    chatClientProxy.getInvites().then(invite => setInvites(Array.from(invite.values())))
+    chatClientProxy.getThreads().then(invite => setThreads(Array.from(invite.values())))
   }, [chatClientProxy, setThreads, setInvites])
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const ThreadSelector: React.FC = () => {
 
   useEffect(() => {
     if (!search && chatClientProxy) {
-      setThreads(Array.from(chatClientProxy.getThreads().values()))
+      chatClientProxy.getThreads().then(invite => setThreads(Array.from(invite.values())))
     }
     setThreads(oldThreads => {
       return oldThreads.filter(thread => thread.peerAccount.includes(search))
