@@ -14,7 +14,7 @@ const App = () => {
   useEffect(() => {
     // Notification isn't technically always truthy, eg: Webview.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (Notification && Notification.permission === 'default') {
+    if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
       Notification.requestPermission()
     }
 
