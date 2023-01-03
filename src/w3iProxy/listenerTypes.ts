@@ -13,8 +13,6 @@ export interface ChatFacadeEvents {
   chat_joined: ChatClientTypes.BaseEventArgs
   chat_ping: ChatClientTypes.BaseEventArgs
   chat_left: ChatClientTypes.BaseEventArgs
-  chat_sent_message: null
+  chat_sent_message: ChatClientTypes.Message & { topic: string }
   external_message_observer: MessageEvent<EventMessage>
 }
-
-type ChatFacadeEventsObservables = ChatFacadeEvents

@@ -2,9 +2,15 @@ import { EventEmitter } from 'events'
 import type ChatClient from '@walletconnect/chat-client'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { ChatFacadeEvents, EventMessage } from './listenerTypes'
-import type { ChatEventObserver, ObservableMap, W3iChat } from './chatProviders/types'
+import type {
+  ChatEventObservable,
+  ChatEventObserver,
+  ObservableMap,
+  W3iChat
+} from './chatProviders/types'
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
+import { fromEvent } from 'rxjs'
 
 class W3iChatFacade implements W3iChat {
   private readonly noClientMode: boolean
@@ -23,7 +29,6 @@ class W3iChatFacade implements W3iChat {
 
   public initInternalProvider(chatClient: ChatClient) {
     const internalProvider = this.provider as InternalChatProvider
-    console.log({ internalProvider })
     internalProvider.initState(chatClient)
   }
 
@@ -58,7 +63,12 @@ class W3iChatFacade implements W3iChat {
     return this.provider.ping(params)
   }
   public async message(params: { topic: string; payload: ChatClientTypes.Message }) {
-    return this.provider.message(params)
+    return this.provider.message(params).then(() => {
+      this.emitter.emit('chat_message_sent', {
+        ...params.payload,
+        topic: params.topic
+      })
+    })
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {
@@ -74,7 +84,15 @@ class W3iChatFacade implements W3iChat {
   }
 
   public observe<K extends keyof ChatFacadeEvents>(eventName: K, observer: ChatEventObserver<K>) {
-    this.provider.observe(eventName, observer)
+    const observableExists = this.observables.has(eventName)
+    if (!observableExists) {
+      this.observables.set(eventName, fromEvent(this.emitter, eventName) as ChatEventObservable<K>)
+    }
+    const eventObservable = this.observables.get(eventName) as ChatEventObservable<K>
+
+    const subscription = eventObservable.subscribe(observer)
+
+    return subscription.unsubscribe
   }
 }
 

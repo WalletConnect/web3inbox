@@ -41,6 +41,7 @@ export type ObservableMap = Map<
 >
 
 export type ChatEventObserver<K extends keyof ChatFacadeEvents> = NextObserver<ChatFacadeEvents[K]>
+export type ChatEventObservable<K extends keyof ChatFacadeEvents> = Observable<ChatFacadeEvents[K]>
 
 export type ChatClientFunctions = Omit<ChatClient, NonFunctionChatClientKeys>
 export type W3iChat = ModifiedChatClientFunctions &

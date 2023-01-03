@@ -1,24 +1,29 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 import type ChatClient from '@walletconnect/chat-client'
-import type { NextObserver, Observable } from 'rxjs'
-import type { ChatFacadeEvents } from '../listenerTypes'
-import type { ObservableMap, W3iChat } from './types'
-import { fromEvent } from 'rxjs'
+import type { W3iChat } from './types'
 
 export default class InternalChatProvider implements W3iChat {
   private chatClient: ChatClient | undefined
   private readonly emitter: EventEmitter
-  private readonly observables: ObservableMap
   public providerName = 'InternalChatProvider'
 
-  public constructor(observables: ObservableMap, emitter: EventEmitter) {
-    this.observables = observables
+  public constructor(emitter: EventEmitter) {
     this.emitter = emitter
   }
 
+  /*
+   * We need to re-register events from the chat client to the emitter
+   * to allow the observers in the facade to work seamlessly.
+   */
   public initState(chatClient: ChatClient) {
     this.chatClient = chatClient
+
+    this.chatClient.on('chat_ping', args => this.emitter.emit('chat_ping', args))
+    this.chatClient.on('chat_message', args => this.emitter.emit('chat_message', args))
+    this.chatClient.on('chat_joined', args => this.emitter.emit('chat_joined', args))
+    this.chatClient.on('chat_invite', args => this.emitter.emit('chat_invite', args))
+    this.chatClient.on('chat_left', args => this.emitter.emit('chat_left', args))
   }
 
   public get chatMessages() {
@@ -105,14 +110,6 @@ export default class InternalChatProvider implements W3iChat {
 
     await this.chatClient.message(params)
 
-    // eslint-disable-next-line no-warning-comments
-    // TODO: Rewrite this to use web3inbox proxy in a central fashion,
-    this.chatClient.emit('chat_message', {
-      id: Math.random(),
-      params: params.payload,
-      topic: params.topic
-    })
-
     return Promise.resolve()
   }
 
@@ -130,27 +127,5 @@ export default class InternalChatProvider implements W3iChat {
     }
 
     return this.chatClient.resolve(params)
-  }
-
-  public observe<K extends keyof ChatFacadeEvents>(
-    eventName: K,
-    observer: NextObserver<ChatFacadeEvents[K]>
-  ) {
-    if (!this.chatClient) {
-      throw new Error('Can not observe internal events when no chat client is initiated')
-    }
-
-    const observableExists = this.observables.has(eventName)
-    if (!observableExists) {
-      this.observables.set(
-        eventName,
-        fromEvent(this.chatClient, eventName) as Observable<ChatFacadeEvents[K]>
-      )
-    }
-    const eventObservable = this.observables.get(eventName) as Observable<ChatFacadeEvents[K]>
-
-    const subscription = eventObservable.subscribe(observer)
-
-    return subscription.unsubscribe
   }
 }

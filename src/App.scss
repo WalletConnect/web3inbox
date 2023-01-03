@@ -7,7 +7,7 @@
   display: grid;
   grid-template: 'sidebar target-selector main header';
   gap: 1em;
-  grid-template-columns: minmax(0.5em, 0.5fr) 5fr 10fr minmax(min-content, 1fr);
+  grid-template-columns: minmax(1.5em, 0.5fr) 5fr 10fr minmax(min-content, 1fr);
 
   .TargetSelector {
     grid-area: target-selector;

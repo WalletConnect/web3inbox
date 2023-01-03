@@ -2,19 +2,17 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { NextObserver, Observable } from 'rxjs'
-import type { ChatFacadeEvents } from '../listenerTypes'
-import type { ChatClientFunctions, ObservableMap, W3iChat } from './types'
-import { fromEvent } from 'rxjs'
-import type ChatClient from '@walletconnect/chat-client/'
+import type { ChatClientFunctions, W3iChat } from './types'
 
 export default class ExternalChatProvider implements W3iChat {
   private readonly emitter: EventEmitter
-  private readonly observables: ObservableMap
   public providerName = 'ExternalChatProvider'
 
-  public constructor(observables: ObservableMap, emitter: EventEmitter) {
-    this.observables = observables
+  /*
+   * We have no need to register events here like we do in internal provider
+   * because the events come through the emitter anyway.
+   */
+  public constructor(emitter: EventEmitter) {
     this.emitter = emitter
   }
 
@@ -28,7 +26,6 @@ export default class ExternalChatProvider implements W3iChat {
       const messageListener = (
         messageResponse: JsonRpcResult<ReturnType<ChatClientFunctions[MName]>>
       ) => {
-        console.log({ messageResponse })
         resolve(messageResponse.result)
       }
       this.emitter.once(message.id.toString(), messageListener)
@@ -72,23 +69,5 @@ export default class ExternalChatProvider implements W3iChat {
 
   public async resolve(params: { account: string }) {
     return this.postToExternalProvider('resolve', params)
-  }
-
-  public observe<K extends keyof ChatFacadeEvents>(
-    eventName: K,
-    observer: NextObserver<ChatFacadeEvents[K]>
-  ) {
-    const observableExists = this.observables.has(eventName)
-    if (!observableExists) {
-      this.observables.set(
-        eventName,
-        fromEvent(this.emitter, eventName) as Observable<ChatFacadeEvents[K]>
-      )
-    }
-    const eventObservable = this.observables.get(eventName) as Observable<ChatFacadeEvents[K]>
-
-    const subscription = eventObservable.subscribe(observer)
-
-    return subscription.unsubscribe
   }
 }
