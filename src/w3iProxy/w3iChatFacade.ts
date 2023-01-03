@@ -23,8 +23,8 @@ class W3iChatFacade implements W3iChat {
     this.noClientMode = noClientMode
     this.emitter = new EventEmitter()
     this.provider = this.noClientMode
-      ? new ExternalChatProvider(this.observables, this.emitter)
-      : new InternalChatProvider(this.observables, this.emitter)
+      ? new ExternalChatProvider(this.emitter)
+      : new InternalChatProvider(this.emitter)
   }
 
   public initInternalProvider(chatClient: ChatClient) {
