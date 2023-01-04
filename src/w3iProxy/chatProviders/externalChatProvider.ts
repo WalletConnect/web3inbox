@@ -4,6 +4,18 @@ import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { ChatClientFunctions, W3iChat } from './types'
 
+declare global {
+  interface Window {
+    webkit?: {
+      messageHandlers?: {
+        web3inbox?: {
+          postMessage: (message: unknown) => void
+        }
+      }
+    }
+  }
+}
+
 export default class ExternalChatProvider implements W3iChat {
   private readonly emitter: EventEmitter
   public providerName = 'ExternalChatProvider'
@@ -29,6 +41,12 @@ export default class ExternalChatProvider implements W3iChat {
         resolve(messageResponse.result)
       }
       this.emitter.once(message.id.toString(), messageListener)
+      if (window.webkit?.messageHandlers?.web3inbox) {
+        window.webkit.messageHandlers.web3inbox.postMessage({
+          ...message,
+          methodName
+        })
+      }
       this.emitter.emit(methodName, message)
     })
   }
