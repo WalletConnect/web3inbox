@@ -11,7 +11,7 @@ declare global {
 
 class Web3InboxProxy {
   private readonly chatFacade: W3iChatFacade
-  private readonly noClientMode: boolean
+  private readonly chatProvider: W3iChatFacade['providerName']
   private chatClient?: ChatClient
   private readonly relayUrl?: string
   private readonly projectId?: string
@@ -19,12 +19,15 @@ class Web3InboxProxy {
   /**
    *
    */
-  public constructor(projectId?: string, relayUrl?: string) {
+  public constructor(
+    chatProvider: Web3InboxProxy['chatProvider'],
+    projectId: string,
+    relayUrl: string
+  ) {
+    this.chatProvider = chatProvider
     this.relayUrl = relayUrl
     this.projectId = projectId
-    this.noClientMode = !(relayUrl && projectId)
-    console.log({ clientModeInW3iProxy: this.noClientMode })
-    this.chatFacade = new W3iChatFacade(this.noClientMode)
+    this.chatFacade = new W3iChatFacade(this.chatProvider)
     window.web3inbox = this
   }
 
@@ -33,7 +36,7 @@ class Web3InboxProxy {
   }
 
   public async init() {
-    if (this.noClientMode) {
+    if (this.chatProvider !== 'internal') {
       return
     }
 

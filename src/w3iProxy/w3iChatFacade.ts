@@ -11,20 +11,28 @@ import type {
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
 import { fromEvent } from 'rxjs'
+import AndroidChatProvider from './chatProviders/androidChatProvider'
+import iOSChatProvider from './chatProviders/iosChatProvider'
 
 class W3iChatFacade implements W3iChat {
-  private readonly noClientMode: boolean
+  private readonly providerMap = {
+    internal: InternalChatProvider,
+    external: ExternalChatProvider,
+    android: AndroidChatProvider,
+    ios: iOSChatProvider
+  }
+  private readonly providerName: keyof typeof this.providerMap
   private readonly emitter: EventEmitter
   private readonly observables: ObservableMap
   private readonly provider: ExternalChatProvider | InternalChatProvider
 
-  public constructor(noClientMode: boolean) {
+  public constructor(providerName: W3iChatFacade['providerName']) {
+    this.providerName = providerName
     this.observables = new Map()
-    this.noClientMode = noClientMode
     this.emitter = new EventEmitter()
-    this.provider = this.noClientMode
-      ? new ExternalChatProvider(this.emitter)
-      : new InternalChatProvider(this.emitter)
+
+    const ProviderClass = this.providerMap[this.providerName]
+    this.provider = new ProviderClass(this.emitter)
   }
 
   public initInternalProvider(chatClient: ChatClient) {
