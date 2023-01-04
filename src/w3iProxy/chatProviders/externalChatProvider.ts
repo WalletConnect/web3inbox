@@ -41,7 +41,18 @@ export default class ExternalChatProvider implements W3iChat {
         resolve(messageResponse.result)
       }
       this.emitter.once(message.id.toString(), messageListener)
+      console.log(
+        'Webkit Detected: ',
+        Boolean(window.webkit),
+        'Message Handlers Detected:',
+        Boolean(window.webkit?.messageHandlers)
+      )
       if (window.webkit?.messageHandlers?.web3inbox) {
+        console.log(
+          'Webkit message handler interfaces:',
+          Object.keys(window.webkit.messageHandlers)
+        )
+        console.log('Web3Inbox interface: ', window.webkit.messageHandlers.web3inbox)
         window.webkit.messageHandlers.web3inbox.postMessage({
           ...message,
           methodName
