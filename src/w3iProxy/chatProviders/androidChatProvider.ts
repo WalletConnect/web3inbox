@@ -3,6 +3,14 @@ import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
 import type { ChatClientFunctions } from './types'
 
+declare global {
+  interface Window {
+    android?: {
+      postMessage: (methodName: string, message: unknown) => void
+    }
+  }
+}
+
 export default class AndroidChatProvider extends ExternalChatProvider {
   protected async postToExternalProvider<MName extends keyof ChatClientFunctions>(
     methodName: MName,
@@ -17,7 +25,9 @@ export default class AndroidChatProvider extends ExternalChatProvider {
         resolve(messageResponse.result)
       }
       this.emitter.once(message.id.toString(), messageListener)
-      this.emitter.emit(methodName, message)
+      if (window.android) {
+        window.android.postMessage(methodName, message)
+      }
     })
   }
 }
