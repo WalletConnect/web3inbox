@@ -1,11 +1,19 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
-import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
+import type { JsonRpcRequest, JsonRpcResult } from '@walletconnect/jsonrpc-utils'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { ChatClientFunctions, W3iChat } from './types'
+import type { ChatClientFunctions, W3iChatProvider } from './types'
 
-export default class ExternalChatProvider implements W3iChat {
+export default class ExternalChatProvider implements W3iChatProvider {
   protected readonly emitter: EventEmitter
+  private readonly methodsListenedTo = [
+    'chat_message',
+    'chat_invite',
+    'chat_joined',
+    'chat_left',
+    'chat_ping',
+    'chat_set_account'
+  ]
   public providerName = 'ExternalChatProvider'
 
   /*
@@ -31,6 +39,26 @@ export default class ExternalChatProvider implements W3iChat {
       this.emitter.once(message.id.toString(), messageListener)
       this.emitter.emit(methodName, message)
     })
+  }
+
+  public isListeningToMethodFromPost(method: string) {
+    return this.methodsListenedTo.includes(method)
+  }
+
+  public handleMessage(request: JsonRpcRequest<unknown>) {
+    switch (request.method) {
+      case 'chat_message':
+      case 'chat_ping':
+      case 'chat_joined':
+      case 'chat_invite':
+      case 'chat_left':
+        this.emitter.emit(request.method, request.params)
+        break
+      case 'chat_set_account':
+        throw new Error('Setting an account externally is not supported yet')
+      default:
+        throw new Error(`Method ${request.method} unsupported by provider ${this.providerName}`)
+    }
   }
 
   public async getMessages(params: { topic: string }) {

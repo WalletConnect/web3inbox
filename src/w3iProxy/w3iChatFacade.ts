@@ -1,7 +1,8 @@
 import { EventEmitter } from 'events'
+import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type ChatClient from '@walletconnect/chat-client'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import type { ChatFacadeEvents, EventMessage } from './listenerTypes'
+import type { ChatFacadeEvents } from './listenerTypes'
 import type {
   ChatEventObservable,
   ChatEventObserver,
@@ -40,8 +41,12 @@ class W3iChatFacade implements W3iChat {
     internalProvider.initState(chatClient)
   }
 
-  public postMessage(id: string, messageData: ChatClientTypes.BaseEventArgs<EventMessage>) {
-    this.emitter.emit(id, messageData)
+  // Method to be used by external providers. Not internal use.
+  public postMessage(messageData: JsonRpcRequest<unknown>) {
+    this.emitter.emit(messageData.id.toString(), messageData)
+    if (this.provider.isListeningToMethodFromPost(messageData.method)) {
+      this.provider.handleMessage(messageData)
+    }
   }
 
   public on(methodName: string, listener: (data: unknown) => void) {

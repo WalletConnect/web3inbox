@@ -2040,10 +2040,10 @@
     "@walletconnect/window-metadata" "1.0.0"
     detect-browser "5.2.0"
 
-"@walletconnect/chat-client@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.1.9.tgz#e29f330bf4042a430072ecc3d1f712145f98c124"
-  integrity sha512-QHQamVtX5g0KX3o1kE8fZDE7W6lYNI0HnBo61xkSFjY5GGl9ufzAqG4LxwHvEmvdeOnuj6xyfFt1rSGcjjrP5w==
+"@walletconnect/chat-client@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.2.0.tgz#14aef35385754d4a7cea59445a186cfd1fd1121a"
+  integrity sha512-vlqDnf8BDbOYrb24W0QEbB2sy8JdNWQ4yaXFUyWh7Y5vPOXBo+QP+M291ZKoYRzBAWRNVsXaqH161w8XxCnTVQ==
   dependencies:
     "@walletconnect/core" "^2.1.4"
     "@walletconnect/jsonrpc-utils" "^1.0.3"

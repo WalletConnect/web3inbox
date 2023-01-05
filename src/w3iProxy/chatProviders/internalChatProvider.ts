@@ -1,9 +1,9 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 import type ChatClient from '@walletconnect/chat-client'
-import type { W3iChat } from './types'
+import type { W3iChatProvider } from './types'
 
-export default class InternalChatProvider implements W3iChat {
+export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
   private readonly emitter: EventEmitter
   public providerName = 'InternalChatProvider'
@@ -36,6 +36,14 @@ export default class InternalChatProvider implements W3iChat {
 
   private formatClientRelatedError(method: string) {
     return `An initialized chat client is required for method: [${method}].`
+  }
+
+  public isListeningToMethodFromPost() {
+    return false
+  }
+
+  public handleMessage() {
+    throw new Error(`${this.providerName} does not support listening to external messages`)
   }
 
   public async getMessages(params: { topic: string }) {

@@ -12,6 +12,7 @@ declare global {
 }
 
 export default class AndroidChatProvider extends ExternalChatProvider {
+  public providerName = 'AndroidChatProvider'
   protected async postToExternalProvider<MName extends keyof ChatClientFunctions>(
     methodName: MName,
     ...params: Parameters<ChatClientFunctions[MName]>

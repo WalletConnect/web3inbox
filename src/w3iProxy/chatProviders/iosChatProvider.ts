@@ -16,6 +16,7 @@ declare global {
 }
 
 export default class iOSChatProvider extends ExternalChatProvider {
+  public providerName = 'iOSChatProvider'
   protected async postToExternalProvider<MName extends keyof ChatClientFunctions>(
     methodName: MName,
     ...params: Parameters<ChatClientFunctions[MName]>

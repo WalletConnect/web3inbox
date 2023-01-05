@@ -1,4 +1,5 @@
 import type ChatClient from '@walletconnect/chat-client'
+import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NextObserver, Observable } from 'rxjs'
 import type { ChatFacadeEvents } from '../listenerTypes'
 
@@ -46,3 +47,8 @@ export type ChatEventObservable<K extends keyof ChatFacadeEvents> = Observable<C
 export type ChatClientFunctions = Omit<ChatClient, NonFunctionChatClientKeys>
 export type W3iChat = ModifiedChatClientFunctions &
   Omit<ChatClientFunctions, keyof ModifiedChatClientFunctions>
+
+export type W3iChatProvider = W3iChat & {
+  isListeningToMethodFromPost: (method: string) => boolean
+  handleMessage: (request: JsonRpcRequest<unknown>) => void
+}
