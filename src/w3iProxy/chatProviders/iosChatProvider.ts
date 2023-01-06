@@ -33,8 +33,7 @@ export default class iOSChatProvider extends ExternalChatProvider {
       if (window.webkit?.messageHandlers?.web3inbox) {
         console.log('Web3Inbox interface: ', window.webkit.messageHandlers.web3inbox)
         window.webkit.messageHandlers.web3inbox.postMessage({
-          ...message,
-          methodName
+          ...message
         })
       }
     })

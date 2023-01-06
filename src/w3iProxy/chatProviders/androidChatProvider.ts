@@ -6,7 +6,7 @@ import type { ChatClientFunctions } from './types'
 declare global {
   interface Window {
     android?: {
-      postMessage: (methodName: string, message: unknown) => void
+      postMessage: (message: unknown) => void
     }
   }
 }
@@ -27,7 +27,7 @@ export default class AndroidChatProvider extends ExternalChatProvider {
       }
       this.emitter.once(message.id.toString(), messageListener)
       if (window.android) {
-        window.android.postMessage(methodName, message)
+        window.android.postMessage(message)
       }
     })
   }
