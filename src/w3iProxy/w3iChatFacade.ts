@@ -63,11 +63,11 @@ class W3iChatFacade implements W3iChat {
   public async accept(params: { id: number }) {
     return this.provider.accept(params)
   }
-  public async getThreads() {
-    return this.provider.getThreads()
+  public async getThreads(params?: { account: string }) {
+    return this.provider.getThreads(params)
   }
-  public async getInvites() {
-    return this.provider.getInvites()
+  public async getInvites(params?: { account: string }) {
+    return this.provider.getInvites(params)
   }
   public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
     return this.provider.invite(params)

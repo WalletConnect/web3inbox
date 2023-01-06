@@ -9,6 +9,7 @@ import Thread from '../Thread'
 import './ThreadSelector.scss'
 import Button from '../../general/Button'
 import Invite from '../Invite'
+import { formatEthChainsAddress, getEthChainAddress } from '../../../utils/address'
 
 const ThreadSelector: React.FC = () => {
   const { chatClientProxy } = useContext(ChatContext)
@@ -24,8 +25,12 @@ const ThreadSelector: React.FC = () => {
       return
     }
 
-    chatClientProxy.getInvites().then(invite => setInvites(Array.from(invite.values())))
-    chatClientProxy.getThreads().then(invite => setThreads(Array.from(invite.values())))
+    chatClientProxy
+      .getInvites({ account: formatEthChainsAddress(address) })
+      .then(invite => setInvites(Array.from(invite.values())))
+    chatClientProxy
+      .getThreads({ account: formatEthChainsAddress(address) })
+      .then(invite => setThreads(Array.from(invite.values())))
   }, [chatClientProxy, setThreads, setInvites])
 
   useEffect(() => {
@@ -34,7 +39,9 @@ const ThreadSelector: React.FC = () => {
 
   useEffect(() => {
     if (!search && chatClientProxy) {
-      chatClientProxy.getThreads().then(invite => setThreads(Array.from(invite.values())))
+      chatClientProxy
+        .getThreads({ account: formatEthChainsAddress(address) })
+        .then(thread => setThreads(Array.from(thread.values())))
     }
     setThreads(oldThreads => {
       return oldThreads.filter(thread => thread.peerAccount.includes(search))

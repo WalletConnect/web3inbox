@@ -75,11 +75,11 @@ export default class ExternalChatProvider implements W3iChatProvider {
   public async accept(params: { id: number }) {
     return this.postToExternalProvider('accept', params)
   }
-  public async getThreads() {
-    return this.postToExternalProvider('getThreads')
+  public async getThreads(params?: { account: string }) {
+    return this.postToExternalProvider('getThreads', params)
   }
-  public async getInvites() {
-    return this.postToExternalProvider('getInvites')
+  public async getInvites(params?: { account: string }) {
+    return this.postToExternalProvider('getInvites', params)
   }
   public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
     return this.postToExternalProvider('invite', params)

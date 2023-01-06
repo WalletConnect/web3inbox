@@ -83,19 +83,19 @@ export default class InternalChatProvider implements W3iChatProvider {
 
     return this.chatClient.accept(params)
   }
-  public async getThreads() {
+  public async getThreads(params?: { account: string }) {
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('getThreads'))
     }
 
-    return Promise.resolve(this.chatClient.getThreads())
+    return Promise.resolve(this.chatClient.getThreads(params))
   }
-  public async getInvites() {
+  public async getInvites(params?: { account: string }) {
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('getInvites'))
     }
 
-    return Promise.resolve(this.chatClient.getInvites())
+    return Promise.resolve(this.chatClient.getInvites(params))
   }
   public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
     if (!this.chatClient) {
