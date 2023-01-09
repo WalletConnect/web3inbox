@@ -12,12 +12,6 @@ const App = () => {
   const { chatClientProxy } = useContext(ChatContext)
 
   useEffect(() => {
-    // Notification isn't technically always truthy, eg: Webview.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
-      Notification.requestPermission()
-    }
-
     const messageEventListener = (
       messageEvent: ChatClientTypes.BaseEventArgs<ChatClientTypes.Message>
     ) => {
