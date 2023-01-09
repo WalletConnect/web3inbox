@@ -12,6 +12,7 @@ import { EthereumClient, modalConnectors, walletConnectProvider } from '@web3mod
 import MessagesLayout from './components/messages/MessagesLayout'
 import NotificationsLayout from './components/notifications/NotificationsLayout'
 import ThreadWindow from './components/messages/ThreadWindow'
+import UserContextProvider from './contexts/UserContext'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -29,20 +30,22 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <WagmiConfig client={wagmiClient}>
       <ChatContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
+        <UserContextProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<Login />} />
 
-            <Route path="/" element={<App />}>
-              <Route path="notifications" element={<NotificationsLayout />} />
-              <Route path="messages" element={<MessagesLayout />}>
-                <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
+              <Route path="/" element={<App />}>
+                <Route path="notifications" element={<NotificationsLayout />} />
+                <Route path="messages" element={<MessagesLayout />}>
+                  <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
+                </Route>
               </Route>
-            </Route>
 
-            <Route index element={<Navigate to="/messages" />} />
-          </Routes>
-        </BrowserRouter>
+              <Route index element={<Navigate to="/messages" />} />
+            </Routes>
+          </BrowserRouter>
+        </UserContextProvider>
       </ChatContextProvider>
     </WagmiConfig>
     <Web3Modal

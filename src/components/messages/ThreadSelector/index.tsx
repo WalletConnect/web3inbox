@@ -3,17 +3,17 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
-import { useAccount } from 'wagmi'
 import { fetchEnsAddress } from '@wagmi/core'
 import Thread from '../Thread'
 import './ThreadSelector.scss'
 import Button from '../../general/Button'
 import Invite from '../Invite'
 import { formatEthChainsAddress, getEthChainAddress } from '../../../utils/address'
+import UserContext from '../../../contexts/UserContext/context'
 
 const ThreadSelector: React.FC = () => {
   const { chatClientProxy } = useContext(ChatContext)
-  const { address } = useAccount()
+  const { userPubkey } = useContext(UserContext)
   const [search, setSearch] = useState<string>('')
   const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
   const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
@@ -26,10 +26,10 @@ const ThreadSelector: React.FC = () => {
     }
 
     chatClientProxy
-      .getInvites({ account: formatEthChainsAddress(address) })
+      .getInvites({ account: formatEthChainsAddress(userPubkey) })
       .then(invite => setInvites(Array.from(invite.values())))
     chatClientProxy
-      .getThreads({ account: formatEthChainsAddress(address) })
+      .getThreads({ account: formatEthChainsAddress(userPubkey) })
       .then(invite => setThreads(Array.from(invite.values())))
   }, [chatClientProxy, setThreads, setInvites])
 
@@ -40,7 +40,7 @@ const ThreadSelector: React.FC = () => {
   useEffect(() => {
     if (!search && chatClientProxy) {
       chatClientProxy
-        .getThreads({ account: formatEthChainsAddress(address) })
+        .getThreads({ account: formatEthChainsAddress(userPubkey) })
         .then(thread => setThreads(Array.from(thread.values())))
     }
     setThreads(oldThreads => {
@@ -75,7 +75,7 @@ const ThreadSelector: React.FC = () => {
 
   const invite = useCallback(
     (inviteeAddress: string) => {
-      if (!address || !chatClientProxy) {
+      if (!userPubkey || !chatClientProxy) {
         return
       }
       resolveAddress(inviteeAddress).then(resolvedAddress => {
@@ -85,14 +85,14 @@ const ThreadSelector: React.FC = () => {
           .invite({
             account: resolvedAddress,
             invite: {
-              account: `eip155:1:${address}`,
+              account: `eip155:1:${userPubkey}`,
               message: 'Inviting'
             }
           })
           .then(refreshThreads)
       })
     },
-    [address, chatClientProxy, refreshThreads]
+    [userPubkey, chatClientProxy, refreshThreads]
   )
 
   return (

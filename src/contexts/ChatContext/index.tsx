@@ -1,4 +1,3 @@
-import { ChatClient } from '@walletconnect/chat-client'
 import React, { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import Web3InboxProxy from '../../w3iProxy'
@@ -24,6 +23,10 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
 
   const { address } = useAccount()
 
+  // eslint-disable-next-line no-warning-comments
+  // TODO: Move this to internal chatprovider
+
+  // Register internal address
   useEffect(() => {
     if (!(chatClient && address)) {
       return

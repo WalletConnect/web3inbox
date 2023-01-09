@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import ByWalletConnect from '../../assets/by_walletconnect.png'
 import Logo from '../../assets/Logo.svg'
 import Messages from '../../assets/MessagesFilled.svg'
@@ -9,8 +9,8 @@ import NotificationDisplay from '../../assets/notifs.png'
 import './Login.scss'
 import Button from '../../components/general/Button'
 import { Web3Button } from '@web3modal/react'
-import { useAccount } from 'wagmi'
 import { useNavigate } from 'react-router-dom'
+import UserContext from '../../contexts/UserContext/context'
 
 const Web3InboxFeatures = [
   {
@@ -28,14 +28,14 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { address } = useAccount()
+  const { userPubkey } = useContext(UserContext)
   const nav = useNavigate()
 
   useEffect(() => {
-    if (address) {
+    if (userPubkey) {
       nav('/')
     }
-  }, [address])
+  }, [userPubkey])
 
   return (
     <div className="Login">

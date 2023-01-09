@@ -26,6 +26,7 @@ class W3iChatFacade implements W3iChat {
   private readonly emitter: EventEmitter
   private readonly observables: ObservableMap
   private readonly provider: ExternalChatProvider | InternalChatProvider
+  private externallySetAccount?: string
 
   public constructor(providerName: W3iChatFacade['providerName']) {
     this.providerName = providerName
@@ -44,9 +45,20 @@ class W3iChatFacade implements W3iChat {
   // Method to be used by external providers. Not internal use.
   public postMessage(messageData: JsonRpcRequest<unknown>) {
     this.emitter.emit(messageData.id.toString(), messageData)
-    if (this.provider.isListeningToMethodFromPost(messageData.method)) {
-      this.provider.handleMessage(messageData)
+    switch (messageData.method) {
+      case 'setAccount':
+        this.emitter.emit('chat_account_change', messageData.params)
+        this.externallySetAccount = (messageData.params as { account: string }).account
+        break
+      default:
+        if (this.provider.isListeningToMethodFromPost(messageData.method)) {
+          this.provider.handleMessage(messageData)
+        }
     }
+  }
+
+  public getAccount() {
+    return this.externallySetAccount
   }
 
   public on(methodName: string, listener: (data: unknown) => void) {
