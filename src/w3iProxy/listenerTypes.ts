@@ -7,5 +7,4 @@ export interface ChatFacadeEvents {
   chat_ping: ChatClientTypes.BaseEventArgs
   chat_left: ChatClientTypes.BaseEventArgs
   chat_account_change: { account: string }
-  chat_sent_message: ChatClientTypes.Message & { topic: string }
 }

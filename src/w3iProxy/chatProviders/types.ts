@@ -24,6 +24,11 @@ type NonFunctionChatClientKeys =
   | 'opts'
   | 'removeListener'
 
+/*
+ * These methods are not currently async in the chat client
+ * forcing their type (and implementing them as so) makes them
+ * more seamless to implement with both internal & external providers
+ */
 interface ModifiedChatClientFunctions {
   getMessages: (
     ...params: Parameters<ChatClient['getMessages']>
