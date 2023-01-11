@@ -41,7 +41,7 @@ export default class ExternalChatProvider implements W3iChatProvider {
     })
   }
 
-  public isListeningToMethodFromPost(method: string) {
+  public isListeningToMethodFromPostMessage(method: string) {
     return this.methodsListenedTo.includes(method)
   }
 

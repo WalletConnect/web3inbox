@@ -38,7 +38,7 @@ export default class InternalChatProvider implements W3iChatProvider {
     return `An initialized chat client is required for method: [${method}].`
   }
 
-  public isListeningToMethodFromPost() {
+  public isListeningToMethodFromPostMessage() {
     return false
   }
 

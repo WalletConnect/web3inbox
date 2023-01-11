@@ -54,6 +54,6 @@ export type W3iChat = ModifiedChatClientFunctions &
   Omit<ChatClientFunctions, keyof ModifiedChatClientFunctions>
 
 export type W3iChatProvider = W3iChat & {
-  isListeningToMethodFromPost: (method: string) => boolean
+  isListeningToMethodFromPostMessage: (method: string) => boolean
   handleMessage: (request: JsonRpcRequest<unknown>) => void
 }

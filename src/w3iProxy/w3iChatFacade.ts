@@ -51,7 +51,7 @@ class W3iChatFacade implements W3iChat {
         this.externallySetAccount = (messageData.params as { account: string }).account
         break
       default:
-        if (this.provider.isListeningToMethodFromPost(messageData.method)) {
+        if (this.provider.isListeningToMethodFromPostMessage(messageData.method)) {
           this.provider.handleMessage(messageData)
         }
     }
