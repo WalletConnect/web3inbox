@@ -23,7 +23,7 @@ const Invite: React.FC<InviteProps> = ({ address, onSuccessfulAccept, id, messag
       onClick={() => chatClientProxy?.accept({ id }).then(onSuccessfulAccept)}
       className="Invite"
     >
-      <div className="Invite__inviter">
+      <div className="Invite__inviter" id={id.toString()}>
         <Avatar src={ensAvatar} width="1.25em" height="1.25em" />
         <span>{address}</span>
       </div>
