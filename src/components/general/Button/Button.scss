@@ -2,19 +2,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
-  padding: 0.5em;
+  border-radius: 28px;
+  padding: 0.4em 0.75em;
   font-weight: 700;
+
+	&__primary {
+		background: var(--accent-1);
+		border: solid 1px var(--accent-1);
+		color: var(--fg-color-1);
+	}
+
+	&__secondary {
+		background: transparent;
+		border: solid 1px var(--accent-1);
+		color: var(--accent-1);
+	}
+
+	&:disabled {
+		background-color: var(--fg-color-2);
+		color: var(--fg-color-5);
+		border-color: var(--fg-color-5);
+	}
 }
 
-.Button__primary {
-  background: var(--accent-1);
-  border: solid 1px var(--accent-1);
-  color: var(--fg-color-1);
-}
-
-.Button__secondary {
-  background: transparent;
-  border: solid 1px var(--accent-1);
-  color: var(--accent-1);
-}

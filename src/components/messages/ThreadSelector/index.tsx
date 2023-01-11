@@ -1,15 +1,14 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
-import { fetchEnsAddress } from '@wagmi/core'
 import Thread from '../Thread'
 import './ThreadSelector.scss'
-import Button from '../../general/Button'
 import Invite from '../Invite'
 import { formatEthChainsAddress, getEthChainAddress } from '../../../utils/address'
 import UserContext from '../../../contexts/UserContext/context'
+import { Link } from 'react-router-dom'
+import type { ChatClientTypes } from '@walletconnect/chat-client'
 
 const ThreadSelector: React.FC = () => {
   const { chatClientProxy } = useContext(ChatContext)
@@ -57,44 +56,6 @@ const ThreadSelector: React.FC = () => {
     chatClientProxy.observe('chat_joined', { next: refreshThreads })
   }, [chatClientProxy])
 
-  const resolveAddress = async (inviteeAddress: string) => {
-    // eslint-disable-next-line prefer-regex-literals
-    const isEnsDomain = new RegExp('.*.eth', 'u').test(inviteeAddress)
-    if (isEnsDomain) {
-      const resolvedAddress = await fetchEnsAddress({
-        name: inviteeAddress
-      })
-
-      if (resolvedAddress) {
-        return `eip155:1:${resolvedAddress}`
-      }
-    }
-
-    return inviteeAddress
-  }
-
-  const invite = useCallback(
-    (inviteeAddress: string) => {
-      if (!userPubkey || !chatClientProxy) {
-        return
-      }
-      resolveAddress(inviteeAddress).then(resolvedAddress => {
-        console.log('inviting', resolvedAddress)
-
-        chatClientProxy
-          .invite({
-            account: resolvedAddress,
-            invite: {
-              account: `eip155:1:${userPubkey}`,
-              message: 'Inviting'
-            }
-          })
-          .then(refreshThreads)
-      })
-    },
-    [userPubkey, chatClientProxy, refreshThreads]
-  )
-
   return (
     <div className="ThreadSelector">
       <Input
@@ -103,6 +64,10 @@ const ThreadSelector: React.FC = () => {
         placeholder="Search"
         icon={Search}
       />
+      <Link to="/messages/new-chat" className="ThreadSelector__new-chat">
+        <div className="ThreadSelector__new-chat-symbol" />
+        <div className="ThreadSelector__new-chat-text">New Chat</div>
+      </Link>
       <div className="ThreadSelector__threads">
         {threads.map(({ peerAccount, topic }) => {
           return <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
@@ -125,19 +90,6 @@ const ThreadSelector: React.FC = () => {
           <span className="ThreadSelector__contact">
             {search} is not in your contacts, send contact request
           </span>
-        )}
-      </div>
-      <div className="ThreadSelector__action">
-        {Object.keys(threads).length === 0 && search && (
-          <Button
-            type="primary"
-            onClick={() => {
-              invite(search)
-              setSearch('')
-            }}
-          >
-            Send Contact Request
-          </Button>
         )}
       </div>
     </div>

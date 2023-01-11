@@ -18,6 +18,8 @@ const Invite: React.FC<InviteProps> = ({ address, onSuccessfulAccept, id, messag
     address: evmAddress
   })
 
+  console.log('Id is: ', id)
+
   return (
     <div
       onClick={() => chatClientProxy?.accept({ id }).then(onSuccessfulAccept)}

@@ -13,6 +13,8 @@ import MessagesLayout from './components/messages/MessagesLayout'
 import NotificationsLayout from './components/notifications/NotificationsLayout'
 import ThreadWindow from './components/messages/ThreadWindow'
 import UserContextProvider from './contexts/UserContext'
+import NewChat from './components/messages/NewChat'
+import Web3InboxPlaceholder from './components/general/Web3InboxPlaceholder'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -38,7 +40,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path="/" element={<App />}>
                 <Route path="notifications" element={<NotificationsLayout />} />
                 <Route path="messages" element={<MessagesLayout />}>
+                  <Route index element={<Web3InboxPlaceholder />} />
                   <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
+                  <Route path="/messages/new-chat" element={<NewChat />} />
                 </Route>
               </Route>
 

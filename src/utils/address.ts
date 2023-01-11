@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 export const getEthChainAddress = (address: string) => {
   return address.split(':')[2] as `0x${string}`
 }
@@ -8,4 +10,12 @@ export const formatEthChainsAddress = (address: string | undefined) => {
   }
 
   return `eip155:1:${address}`
+}
+
+export const isValidEnsDomain = (domain: string) => {
+  return /[A-z][A-z]*.eth$/u.test(domain)
+}
+
+export const isValidAddressOrEnsDomain = (stringToTest: string) => {
+  return isValidEnsDomain(stringToTest) || ethers.utils.isAddress(stringToTest)
 }
