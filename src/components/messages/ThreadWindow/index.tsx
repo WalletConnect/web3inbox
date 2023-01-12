@@ -5,20 +5,21 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import './ThreadWindow.scss'
 import Message from '../Message'
 import MessageBox from '../MessageBox'
-import { useAccount, useEnsAvatar, useEnsName } from 'wagmi'
+import { useEnsAvatar, useEnsName } from 'wagmi'
 import Avatar from '../../account/Avatar'
+import UserContext from '../../../contexts/UserContext/context'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
   const [topic, setTopic] = useState('')
-  const { address } = useAccount()
+  const { userPubkey } = useContext(UserContext)
   const { search } = useLocation()
   const { data: ensAvatar } = useEnsAvatar({
     address: peerAddress
   })
   const { data: ensName } = useEnsName({ address: peerAddress })
-  const { chatClient } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(ChatContext)
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 
@@ -27,40 +28,42 @@ const ThreadWindow: React.FC = () => {
   }, [search])
 
   const refreshMessages = useCallback(() => {
-    if (!chatClient || !topic) {
+    if (!chatClientProxy || !topic) {
       return
     }
 
-    const allChatMessages = chatClient.chatMessages.getAll({
-      topic
-    })
-    const chatMessages = allChatMessages.length > 0 ? allChatMessages[0] : null
-
-    const threadMessages = chatMessages?.messages
-
-    if (threadMessages) {
-      setMessages(threadMessages)
-    } else {
-      setMessages([])
-    }
-  }, [chatClient, search, setMessages, topic])
+    chatClientProxy
+      .getMessages({
+        topic
+      })
+      .then(allChatMessages => {
+        setMessages(allChatMessages)
+      })
+  }, [chatClientProxy, search, setMessages, topic])
 
   useEffect(() => {
-    if (!chatClient) {
+    if (!chatClientProxy) {
       return
     }
-    chatClient.on('chat_message', messageEvent => {
-      if (messageEvent.topic !== topic) {
-        return
-      }
+    chatClientProxy.observe('chat_message', {
+      next: messageEvent => {
+        /*
+         * Ignore message events from other threads
+         * this prevents unnecessary refresh of messages
+         * when a message from a different threads arrives
+         */
+        if (messageEvent.topic !== topic) {
+          return
+        }
 
-      refreshMessages()
+        refreshMessages()
+      }
     })
-  }, [chatClient, refreshMessages, topic])
+  }, [chatClientProxy, refreshMessages, topic])
 
   useEffect(() => {
     refreshMessages()
-  }, [refreshMessages, chatClient])
+  }, [refreshMessages, chatClientProxy])
 
   return (
     <div className="ThreadWindow">
@@ -79,7 +82,7 @@ const ThreadWindow: React.FC = () => {
       </div>
       <MessageBox
         onSuccessfulSend={refreshMessages}
-        authorAccount={`eip155:1:${address ?? ''}`}
+        authorAccount={`eip155:1:${userPubkey ?? ''}`}
         topic={topic}
       />
     </div>

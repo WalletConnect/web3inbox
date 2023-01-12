@@ -9,10 +9,6 @@ import { NavigationRoute, registerRoute } from 'workbox-routing'
 
 declare let self: ServiceWorkerGlobalScope
 
-self.onmessage = event => {
-  console.log('GOT AN EVENT', event)
-}
-
 self.addEventListener('message', event => {
   console.log('HERE', event)
   if (event.data && event.data.type === 'SKIP_WAITING') {

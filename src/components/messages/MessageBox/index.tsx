@@ -12,7 +12,7 @@ interface MessageBoxProps {
 
 const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccessfulSend }) => {
   const [messageText, setMessageText] = useState('')
-  const { chatClient } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(ChatContext)
   const ref = useRef<HTMLInputElement>(null)
 
   /*
@@ -20,10 +20,10 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
    * messageText state changes.
    */
   const onSend = useCallback(async () => {
-    if (!chatClient || !ref.current) {
+    if (!chatClientProxy || !ref.current) {
       return
     }
-    await chatClient.message({
+    await chatClientProxy.message({
       topic,
       payload: {
         authorAccount,

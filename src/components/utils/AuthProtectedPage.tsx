@@ -1,14 +1,14 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { Navigate } from 'react-router-dom'
-import { useAccount } from 'wagmi'
+import UserContext from '../../contexts/UserContext/context'
 
 interface AuthProtectedPageProps {
   children: React.ReactNode
 }
 
 const AuthProtectedPage: React.FC<AuthProtectedPageProps> = ({ children }) => {
-  const { address } = useAccount()
-  if (!address) {
+  const { userPubkey } = useContext(UserContext)
+  if (!userPubkey) {
     return <Navigate to="/login" />
   }
 

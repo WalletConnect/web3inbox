@@ -1,13 +1,13 @@
-import type { ChatClient } from '@walletconnect/chat-client'
 import { createContext } from 'react'
+import type { W3iChatClient } from '../../w3iProxy'
 
 interface ChatContextState {
-  chatClient: ChatClient | null
+  chatClientProxy: W3iChatClient | null
   registeredKey: string | null
 }
 
 const context = createContext<ChatContextState>({
-  chatClient: null,
+  chatClientProxy: null,
   registeredKey: null
 })
 

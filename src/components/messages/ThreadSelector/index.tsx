@@ -3,50 +3,59 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
-import { useAccount } from 'wagmi'
 import { fetchEnsAddress } from '@wagmi/core'
 import Thread from '../Thread'
 import './ThreadSelector.scss'
 import Button from '../../general/Button'
 import Invite from '../Invite'
+import { formatEthChainsAddress, getEthChainAddress } from '../../../utils/address'
+import UserContext from '../../../contexts/UserContext/context'
 
 const ThreadSelector: React.FC = () => {
-  const { chatClient } = useContext(ChatContext)
-  const { address } = useAccount()
+  const { chatClientProxy } = useContext(ChatContext)
+  const { userPubkey } = useContext(UserContext)
   const [search, setSearch] = useState<string>('')
   const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
   const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
 
+  console.log('Chat Client: ', chatClientProxy)
+
   const refreshThreads = useCallback(() => {
-    if (!chatClient) {
+    if (!chatClientProxy) {
       return
     }
 
-    setInvites(chatClient.chatInvites.getAll())
-    setThreads(chatClient.chatThreads.getAll())
-  }, [chatClient, setThreads, setInvites])
+    chatClientProxy
+      .getInvites({ account: formatEthChainsAddress(userPubkey) })
+      .then(invite => setInvites(Array.from(invite.values())))
+    chatClientProxy
+      .getThreads({ account: formatEthChainsAddress(userPubkey) })
+      .then(invite => setThreads(Array.from(invite.values())))
+  }, [chatClientProxy, setThreads, setInvites])
 
   useEffect(() => {
     refreshThreads()
   }, [refreshThreads])
 
   useEffect(() => {
-    if (!search && chatClient) {
-      setThreads(chatClient.chatThreads.getAll())
+    if (!search && chatClientProxy) {
+      chatClientProxy
+        .getThreads({ account: formatEthChainsAddress(userPubkey) })
+        .then(thread => setThreads(Array.from(thread.values())))
     }
     setThreads(oldThreads => {
       return oldThreads.filter(thread => thread.peerAccount.includes(search))
     })
-  }, [setThreads, search, chatClient])
+  }, [setThreads, search, chatClientProxy])
 
   useEffect(() => {
-    if (!chatClient) {
+    if (!chatClientProxy) {
       return
     }
 
-    chatClient.on('chat_invite', refreshThreads)
-    chatClient.on('chat_joined', refreshThreads)
-  }, [chatClient])
+    chatClientProxy.observe('chat_invite', { next: refreshThreads })
+    chatClientProxy.observe('chat_joined', { next: refreshThreads })
+  }, [chatClientProxy])
 
   const resolveAddress = async (inviteeAddress: string) => {
     // eslint-disable-next-line prefer-regex-literals
@@ -66,24 +75,24 @@ const ThreadSelector: React.FC = () => {
 
   const invite = useCallback(
     (inviteeAddress: string) => {
-      if (!address || !chatClient) {
+      if (!userPubkey || !chatClientProxy) {
         return
       }
       resolveAddress(inviteeAddress).then(resolvedAddress => {
         console.log('inviting', resolvedAddress)
 
-        chatClient
+        chatClientProxy
           .invite({
             account: resolvedAddress,
             invite: {
-              account: `eip155:1:${address}`,
+              account: `eip155:1:${userPubkey}`,
               message: 'Inviting'
             }
           })
           .then(refreshThreads)
       })
     },
-    [address, chatClient, refreshThreads]
+    [userPubkey, chatClientProxy, refreshThreads]
   )
 
   return (

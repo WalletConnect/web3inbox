@@ -11,14 +11,15 @@
     "prettier": "prettier --check ."
   },
   "dependencies": {
-    "@walletconnect/chat-client": "^0.1.6",
+    "@walletconnect/chat-client": "^0.2.0",
     "@walletconnect/sign-client": "^2.1.4",
-    "@web3modal/ethereum": "^2.0.0-beta.7",
-    "@web3modal/react": "^2.0.0-beta.7",
+    "@web3modal/ethereum": "^2.0.0-rc.2",
+    "@web3modal/react": "^2.0.0-rc.2",
     "ethers": "^5.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.4",
+    "rxjs": "^7.6.0",
     "wagmi": "^0.8.9"
   },
   "devDependencies": {
@@ -29,6 +30,7 @@
     "@vitejs/plugin-react": "^2.2.0",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
+    "localStorage": "^1.0.4",
     "prettier": "^2.8.0",
     "sass": "^1.56.1",
     "typescript": "^4.6.4",
