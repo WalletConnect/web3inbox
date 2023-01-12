@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { useEnsAvatar, useEnsName } from 'wagmi'
-import UserContext from '../../../contexts/UserContext/context'
+import ChatContext from '../../../contexts/ChatContext/context'
 import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import './Header.scss'
 
 const Header: React.FC = () => {
-  const { userPubkey } = useContext(UserContext)
+  const { userPubkey } = useContext(ChatContext)
   const { data: ensName } = useEnsName({ address: userPubkey as `0x${string}` })
   const { data: ensAvatar } = useEnsAvatar({ address: userPubkey as `0x${string}` })
 

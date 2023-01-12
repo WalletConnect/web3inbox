@@ -1,0 +1,46 @@
+.NavLink {
+		display: flex;
+		width: 100%;
+		gap: 0.5em;
+		padding: 0.5em;
+		border-radius: 10px;
+		align-items: center;
+		justify-content: flex-start;
+		text-decoration: none;
+
+		&:hover, &-active {
+			background: linear-gradient(92.29deg, #19324D 0%, rgba(25, 50, 77, 0.5) 100%)
+		}
+
+		&__text {
+			font-family: ABC Diatype Bold, sans-serif;
+			color: var(--fg-color-1);
+			font-feature-settings: 'case' on, 'ss04' on, 'ss06' on;
+			font-weight: 700;
+		}
+
+		&__icon-svg {
+			width: 2.25em; 
+			aspect-ratio: 1;
+			background: var(--accent-1);
+			display: inline-block;
+			border-radius: 50%;
+			display: grid;
+			place-items: center;
+		}
+
+		&__icon-img {
+			display: grid;
+			place-items: center;
+			width: 2.25em; 
+			height: 2.25em; 
+			img {
+			width: 2.25em; 
+			height: 2.25em; 
+				border-radius: 50%;
+				display: inline-block;
+			}
+			border-radius: 50%;
+		}
+
+}

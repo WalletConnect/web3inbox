@@ -8,7 +8,7 @@ import { useAccount } from 'wagmi'
 import './NewChat.scss'
 
 const NewChat: React.FC = () => {
-  const { chatClient } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(ChatContext)
   const [query, setSearch] = useState('')
   const { address } = useAccount()
 
@@ -24,25 +24,27 @@ const NewChat: React.FC = () => {
       }
     }
 
-    return inviteeAddress
+    return `eip155:1:${inviteeAddress}`
   }
 
   const invite = useCallback(
     (inviteeAddress: string) => {
-      if (!address || !chatClient) {
+      if (!address || !chatClientProxy) {
         return
       }
       resolveAddress(inviteeAddress).then(resolvedAddress => {
-        chatClient.invite({
-          account: resolvedAddress,
-          invite: {
-            account: `eip155:1:${address}`,
-            message: 'Inviting'
-          }
-        })
+        chatClientProxy
+          .invite({
+            account: resolvedAddress,
+            invite: {
+              account: `eip155:1:${address}`,
+              message: 'Inviting'
+            }
+          })
+          .then(() => setSearch(''))
       })
     },
-    [address, chatClient]
+    [address, chatClientProxy]
   )
 
   return (

@@ -92,10 +92,11 @@ export default class InternalChatProvider implements W3iChatProvider {
   }
   public async getInvites(params?: { account: string }) {
     if (!this.chatClient) {
+      console.log({ params })
       throw new Error(this.formatClientRelatedError('getInvites'))
     }
 
-    return Promise.resolve(this.chatClient.getInvites(params))
+    return Promise.resolve(this.chatClient.getInvites())
   }
   public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
     if (!this.chatClient) {

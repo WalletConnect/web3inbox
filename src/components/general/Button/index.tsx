@@ -2,7 +2,7 @@ import React from 'react'
 import './Button.scss'
 
 interface ButtonProps {
-  type?: 'primary' | 'secondary'
+  type?: 'action' | 'primary' | 'secondary'
   disabled?: boolean
   children: React.ReactNode
   onClick?: () => void

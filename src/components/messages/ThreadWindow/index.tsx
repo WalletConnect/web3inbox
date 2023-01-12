@@ -7,19 +7,17 @@ import Message from '../Message'
 import MessageBox from '../MessageBox'
 import { useEnsAvatar, useEnsName } from 'wagmi'
 import Avatar from '../../account/Avatar'
-import UserContext from '../../../contexts/UserContext/context'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
   const [topic, setTopic] = useState('')
-  const { userPubkey } = useContext(UserContext)
   const { search } = useLocation()
   const { data: ensAvatar } = useEnsAvatar({
     address: peerAddress
   })
   const { data: ensName } = useEnsName({ address: peerAddress })
-  const { chatClientProxy } = useContext(ChatContext)
+  const { chatClientProxy, userPubkey } = useContext(ChatContext)
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 

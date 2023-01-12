@@ -10,7 +10,7 @@ import './Login.scss'
 import Button from '../../components/general/Button'
 import { Web3Button } from '@web3modal/react'
 import { useNavigate } from 'react-router-dom'
-import UserContext from '../../contexts/UserContext/context'
+import ChatContext from '../../contexts/ChatContext/context'
 
 const Web3InboxFeatures = [
   {
@@ -28,7 +28,7 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { userPubkey } = useContext(UserContext)
+  const { userPubkey } = useContext(ChatContext)
   const nav = useNavigate()
 
   useEffect(() => {

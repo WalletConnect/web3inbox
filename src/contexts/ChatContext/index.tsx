@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import Web3InboxProxy from '../../w3iProxy'
 import type { W3iChatClient } from '../../w3iProxy'
 import ChatContext from './context'
+import { formatEthChainsAddress } from '../../utils/address'
+import type { ChatClientTypes } from '@walletconnect/chat-client'
+import { asyncScheduler, interval } from 'rxjs'
 
 interface ChatContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -20,13 +23,27 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
 
   const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
+  const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
+  const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
 
   const { address } = useAccount()
 
-  // eslint-disable-next-line no-warning-comments
-  // TODO: Move this to internal chatprovider
+  const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
 
-  // Register internal address
+  useEffect(() => {
+    chatClient?.observe('chat_account_change', {
+      next: ({ account }) => {
+        setUserPubkey(account)
+      }
+    })
+  }, [chatClient])
+
+  useEffect(() => {
+    if (address) {
+      setUserPubkey(address)
+    }
+  }, [address])
+
   useEffect(() => {
     if (!(chatClient && address)) {
       return
@@ -43,8 +60,44 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
     w3iProxy.init().then(() => setChatClient(w3iProxy.chat))
   }, [setChatClient, chatClient])
 
+  const refreshThreads = useCallback(() => {
+    console.log('Call to refreshThreads', Boolean(chatClient))
+    if (!chatClient) {
+      return
+    }
+
+    chatClient
+      .getInvites({ account: formatEthChainsAddress(userPubkey) })
+      .then(invite => setInvites(Array.from(invite.values())))
+    chatClient
+      .getThreads({ account: formatEthChainsAddress(userPubkey) })
+      .then(invite => setThreads(Array.from(invite.values())))
+  }, [chatClient, setThreads, setInvites])
+
+  useEffect(() => {
+    if (!chatClient) {
+      return
+    }
+
+    chatClient.observe('chat_invite', { next: refreshThreads })
+    chatClient.observe('chat_joined', { next: refreshThreads })
+  }, [chatClient])
+
+  useEffect(() => {
+    refreshThreads()
+  }, [refreshThreads])
+
   return (
-    <ChatContext.Provider value={{ chatClientProxy: chatClient, registeredKey }}>
+    <ChatContext.Provider
+      value={{
+        chatClientProxy: chatClient,
+        userPubkey,
+        refreshThreadsAndInvites: refreshThreads,
+        threads,
+        invites,
+        registeredKey
+      }}
+    >
       {children}
     </ChatContext.Provider>
   )

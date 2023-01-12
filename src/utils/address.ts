@@ -9,6 +9,8 @@ export const formatEthChainsAddress = (address: string | undefined) => {
     return ''
   }
 
+  console.log({ formatted: `eip155:1:${address}` })
+
   return `eip155:1:${address}`
 }
 

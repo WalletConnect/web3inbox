@@ -11,42 +11,6 @@
     width: 100%;
   }
 
-	&__new-chat {
-		display: flex;
-		width: 100%;
-		gap: 0.5em;
-		padding: 0.5em;
-		border-radius: 10px;
-		align-items: center;
-		justify-content: flex-start;
-		text-decoration: none;
-
-		&:hover {
-			background: linear-gradient(92.29deg, #19324D 0%, rgba(25, 50, 77, 0.5) 100%)
-		}
-
-		&-text {
-			font-family: ABC Diatype Bold, sans-serif;
-			color: var(--fg-color-1);
-			font-feature-settings: 'case' on, 'ss04' on, 'ss06' on;
-			font-weight: 700;
-		}
-
-		&-symbol {
-			--thickness: 2px; 
-			width: 2.25em; 
-			aspect-ratio: 1;
-			border: 10px solid var(--accent-1); 
-			background:
-				conic-gradient(from 90deg at var(--thickness)
-				var(--thickness),var(--accent-1) 90deg,#fff 0) 
-				calc(100% + var(--thickness)/2) calc(100% + var(--thickness)/2)/
-				calc(50%  + var(--thickness))   calc(50%  + var(--thickness));
-			display: inline-block;
-			border-radius: 50%;
-		}
-	}
-
 
   &__contact {
     color: var(--fg-color-1);

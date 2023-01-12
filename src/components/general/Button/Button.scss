@@ -1,5 +1,6 @@
 .Button {
   display: flex;
+	cursor: pointer;
   align-items: center;
   justify-content: center;
   border-radius: 28px;
@@ -16,6 +17,18 @@
 		background: transparent;
 		border: solid 1px var(--accent-1);
 		color: var(--accent-1);
+	}
+
+	&__action {
+		background-color: var(--fg-color-3);
+		border: solid 1px var(--bg-color-4);
+		border-radius: 50%;
+		width: 2em;
+		height: 2em;
+			img {
+			width: 2em;
+			height: 2em;
+			}
 	}
 
 	&:disabled {
