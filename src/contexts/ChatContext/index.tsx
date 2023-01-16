@@ -58,13 +58,17 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
 
   const refreshThreads = useCallback(() => {
     console.log('Refreshing threads')
-    if (!chatClient) {
+    if (!chatClient || !userPubkey) {
       return
     }
 
-    chatClient.getInvites().then(invite => setInvites(Array.from(invite.values())))
-    chatClient.getThreads().then(invite => setThreads(Array.from(invite.values())))
-  }, [chatClient, setThreads, setInvites])
+    chatClient
+      .getInvites({ account: `eip155:1:${userPubkey}` })
+      .then(invite => setInvites(Array.from(invite.values())))
+    chatClient
+      .getThreads({ account: `eip155:1:${userPubkey}` })
+      .then(invite => setThreads(Array.from(invite.values())))
+  }, [chatClient, userPubkey, setThreads, setInvites])
 
   useEffect(() => {
     if (!chatClient) {
