@@ -2,6 +2,7 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 import type ChatClient from '@walletconnect/chat-client'
 import type { W3iChatProvider } from './types'
+import { watchAccount } from '@wagmi/core'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -24,6 +25,21 @@ export default class InternalChatProvider implements W3iChatProvider {
     this.chatClient.on('chat_joined', args => this.emitter.emit('chat_joined', args))
     this.chatClient.on('chat_invite', args => this.emitter.emit('chat_invite', args))
     this.chatClient.on('chat_left', args => this.emitter.emit('chat_left', args))
+
+    watchAccount(account => {
+      if (!account.address) {
+        return
+      }
+
+      window.web3inbox.chat.postMessage({
+        method: 'setAccount',
+        id: Date.now(),
+        jsonrpc: '2.0',
+        params: {
+          account: `eip155:1:${account.address}`
+        }
+      })
+    })
   }
 
   public get chatMessages() {

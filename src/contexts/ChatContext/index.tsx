@@ -5,7 +5,6 @@ import type { W3iChatClient } from '../../w3iProxy'
 import ChatContext from './context'
 import { formatEthChainsAddress } from '../../utils/address'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import { asyncScheduler, interval } from 'rxjs'
 
 interface ChatContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -18,8 +17,6 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
   const [provider] = useState(
     providerQuery ? (providerQuery as Web3InboxProxy['chatProvider']) : 'internal'
   )
-
-  console.log({ provider })
 
   const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
@@ -45,11 +42,10 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
   }, [address])
 
   useEffect(() => {
-    if (!(chatClient && address)) {
-      return
+    if (chatClient && userPubkey) {
+      chatClient.register({ account: userPubkey }).then(setRegistered)
     }
-    chatClient.register({ account: `eip155:1:${address}` }).then(setRegistered)
-  }, [address, chatClient])
+  }, [chatClient, userPubkey])
 
   useEffect(() => {
     if (chatClient) {
@@ -61,7 +57,6 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
   }, [setChatClient, chatClient])
 
   const refreshThreads = useCallback(() => {
-    console.log('Call to refreshThreads', Boolean(chatClient))
     if (!chatClient) {
       return
     }
