@@ -61,12 +61,8 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
       return
     }
 
-    chatClient
-      .getInvites({ account: formatEthChainsAddress(userPubkey) })
-      .then(invite => setInvites(Array.from(invite.values())))
-    chatClient
-      .getThreads({ account: formatEthChainsAddress(userPubkey) })
-      .then(invite => setThreads(Array.from(invite.values())))
+    chatClient.getInvites().then(invite => setInvites(Array.from(invite.values())))
+    chatClient.getThreads().then(invite => setThreads(Array.from(invite.values())))
   }, [chatClient, setThreads, setInvites])
 
   useEffect(() => {
