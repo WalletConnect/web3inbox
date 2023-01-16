@@ -4,6 +4,7 @@ import { getEthChainAddress } from '../../../../utils/address'
 import PlaceholderIcon from '../../../../assets/PlaceholderAvatar.png'
 import NavLink from '../../../general/NavLink'
 import './Thread.scss'
+import { truncate } from '../../../../utils/string'
 
 interface ThreadProps {
   icon?: string
@@ -16,7 +17,7 @@ const Thread: React.FC<ThreadProps> = ({ icon, topic, threadPeer }) => {
 
   return (
     <NavLink to={`/messages/chat/${threadPeer}?topic=${topic}`} imgSrc={icon ?? PlaceholderIcon}>
-      {ensName ?? threadPeer}
+      {ensName ?? truncate(threadPeer, 12)}
     </NavLink>
   )
 }

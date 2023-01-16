@@ -1,0 +1,12 @@
+.TextWithHighlight {
+	display: flex;
+	align-items: center;
+
+	span {
+		display: inline-block;
+	}
+
+	&__highlighted {
+		background-color: var(--accent-1);
+	}
+}

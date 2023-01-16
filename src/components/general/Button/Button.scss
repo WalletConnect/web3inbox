@@ -1,5 +1,7 @@
 .Button {
   display: flex;
+	justify-content: space-between;
+	gap: 0.3em;
 	cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -19,16 +21,20 @@
 		color: var(--accent-1);
 	}
 
-	&__action {
+	&__action, &__action-icon {
 		background-color: var(--fg-color-3);
 		border: solid 1px var(--bg-color-4);
+	}
+
+	&__action-icon {
 		border-radius: 50%;
 		width: 2em;
 		height: 2em;
-			img {
+		padding: 0.5em 0.5em;
+		img {
 			width: 2em;
 			height: 2em;
-			}
+		}
 	}
 
 	&:disabled {

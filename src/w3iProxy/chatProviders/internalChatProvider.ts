@@ -13,7 +13,6 @@ export default class InternalChatProvider implements W3iChatProvider {
     this.emitter = emitter
 
     watchAccount(account => {
-      console.log('aCCOUNT', account)
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!account.address || !window.web3inbox.chat) {
         return

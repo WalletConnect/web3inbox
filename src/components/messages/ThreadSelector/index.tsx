@@ -9,7 +9,7 @@ import './ThreadSelector.scss'
 import NavLink from '../../general/NavLink'
 
 const ThreadSelector: React.FC = () => {
-  const { threads } = useContext(ChatContext)
+  const { threads, invites } = useContext(ChatContext)
   const [search, setSearch] = useState<string>('')
 
   return (
@@ -24,7 +24,12 @@ const ThreadSelector: React.FC = () => {
         New Chat
       </NavLink>
       <NavLink svgSrc={PersonIcon} to="/messages/chat-invites">
-        Chat Invites
+        <div className="ThreadSelector__invites">
+          <div>Chat Invites</div>
+          <div className="ThreadSelector__invites-badge">
+            <div className="ThreadSelector__invites-badget-num">{invites.length}</div>
+          </div>
+        </div>
       </NavLink>
       <div className="ThreadSelector__threads">
         {threads

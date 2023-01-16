@@ -7,27 +7,56 @@
 	&__invites {
 		width: 100%;
 		display: flex;
+		align-items: center;
 		flex-direction: column;
+
+		.Checkbox {
+			width: 3em;
+			height: 3em;
+		}
 	}
 
 	&__inviter {
 		width: 100%;
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 		&-actions {
 			display: flex;
 			gap: 1em;
 		}
+
+		&-selector {
+			display: flex;
+			align-items: center;
+			gap: 1em;
+		}
+	}
+
+	&__accept {
+		color: var(--fg-color-2);
+	}
+
+	&__decline {
+		color: red;
 	}
 
 	&__header {
 		display: flex;
-		gap: 0.5em;
+		justify-content: space-between;
 		align-items: center;
 		font-weight: 600;
+
 		span {
 			font-size: 1.25em;
 		}
+
+		&-text, &-actions {
+			display: flex;
+			gap: 0.5em;
+			align-items: center;
+		}
+
 		&-icon {
 			display: grid;
 			place-items: center;
