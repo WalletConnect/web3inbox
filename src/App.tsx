@@ -1,5 +1,5 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import { useContext, useEffect } from 'react'
+import { Fragment, useContext, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import './App.scss'
 import Header from './components/layout/Header'
@@ -44,9 +44,13 @@ const App = () => {
   return (
     <AuthProtectedPage>
       <div className="App">
-        <Header />
-        <Sidebar />
-        <Outlet />
+        {chatClientProxy && (
+          <Fragment>
+            <Header />
+            <Sidebar />
+            <Outlet />
+          </Fragment>
+        )}
       </div>
     </AuthProtectedPage>
   )

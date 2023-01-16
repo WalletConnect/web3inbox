@@ -45,10 +45,11 @@ class W3iChatFacade implements W3iChat {
   // Method to be used by external providers. Not internal use.
   public postMessage(messageData: JsonRpcRequest<unknown>) {
     this.emitter.emit(messageData.id.toString(), messageData)
+    console.log({ messageData })
     switch (messageData.method) {
       case 'setAccount':
-        this.emitter.emit('chat_account_change', messageData.params)
         this.externallySetAccount = (messageData.params as { account: string }).account
+        this.emitter.emit('chat_account_change', messageData.params)
         break
       default:
         if (this.provider.isListeningToMethodFromPostMessage(messageData.method)) {

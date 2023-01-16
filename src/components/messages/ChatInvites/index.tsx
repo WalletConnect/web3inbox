@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ChatContext from '../../../contexts/ChatContext/context'
 import WavingHand from '../../../assets/WavingHand.png'
 import CheckIcon from '../../../assets/Check.svg'
@@ -10,6 +10,10 @@ import Button from '../../general/Button'
 const ChatInvites: React.FC = () => {
   const [invitesSelected] = useState<number[]>([])
   const { chatClientProxy, invites, refreshThreadsAndInvites } = useContext(ChatContext)
+
+  useEffect(() => {
+    refreshThreadsAndInvites()
+  }, [refreshThreadsAndInvites])
 
   return (
     <div className="Invites">

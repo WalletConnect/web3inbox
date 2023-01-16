@@ -23,8 +23,6 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
   const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
   const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
 
-  const { address } = useAccount()
-
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
 
   useEffect(() => {
@@ -36,14 +34,11 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
   }, [chatClient])
 
   useEffect(() => {
-    if (address) {
-      setUserPubkey(address)
-    }
-  }, [address])
-
-  useEffect(() => {
     if (chatClient && userPubkey) {
-      chatClient.register({ account: userPubkey }).then(setRegistered)
+      chatClient.register({ account: `eip155:1:${userPubkey}` }).then(registeredKeyRes => {
+        console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
+        setRegistered(registeredKeyRes)
+      })
     }
   }, [chatClient, userPubkey])
 
@@ -53,10 +48,16 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
     }
 
     const w3iProxy = new Web3InboxProxy(provider, projectId, relayUrl)
-    w3iProxy.init().then(() => setChatClient(w3iProxy.chat))
+    w3iProxy
+      .init()
+      .then(() => setChatClient(w3iProxy.chat))
+      .then(() => {
+        setUserPubkey(w3iProxy.chat.getAccount())
+      })
   }, [setChatClient, chatClient])
 
   const refreshThreads = useCallback(() => {
+    console.log('Refreshing threads')
     if (!chatClient) {
       return
     }
@@ -70,9 +71,14 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
       return
     }
 
-    chatClient.observe('chat_invite', { next: refreshThreads })
+    chatClient.observe('chat_invite', {
+      next: inv => {
+        console.log('got invite', inv)
+        refreshThreads()
+      }
+    })
     chatClient.observe('chat_joined', { next: refreshThreads })
-  }, [chatClient])
+  }, [chatClient, refreshThreads])
 
   useEffect(() => {
     refreshThreads()

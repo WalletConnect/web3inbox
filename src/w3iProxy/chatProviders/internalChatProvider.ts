@@ -2,7 +2,7 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 import type ChatClient from '@walletconnect/chat-client'
 import type { W3iChatProvider } from './types'
-import { watchAccount } from '@wagmi/core'
+import { watchAccount, getAccount } from '@wagmi/core'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -11,6 +11,23 @@ export default class InternalChatProvider implements W3iChatProvider {
 
   public constructor(emitter: EventEmitter) {
     this.emitter = emitter
+
+    watchAccount(account => {
+      console.log('aCCOUNT', account)
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (!account.address || !window.web3inbox.chat) {
+        return
+      }
+
+      window.web3inbox.chat.postMessage({
+        id: Date.now(),
+        jsonrpc: '2.0',
+        method: 'setAccount',
+        params: {
+          account: account.address
+        }
+      })
+    })
   }
 
   /*
@@ -20,26 +37,26 @@ export default class InternalChatProvider implements W3iChatProvider {
   public initState(chatClient: ChatClient) {
     this.chatClient = chatClient
 
+    const address: string | undefined = getAccount().address
+    if (address) {
+      window.web3inbox.chat.postMessage({
+        id: Date.now(),
+        jsonrpc: '2.0',
+        method: 'setAccount',
+        params: {
+          account: address
+        }
+      })
+    }
+
     this.chatClient.on('chat_ping', args => this.emitter.emit('chat_ping', args))
     this.chatClient.on('chat_message', args => this.emitter.emit('chat_message', args))
     this.chatClient.on('chat_joined', args => this.emitter.emit('chat_joined', args))
-    this.chatClient.on('chat_invite', args => this.emitter.emit('chat_invite', args))
-    this.chatClient.on('chat_left', args => this.emitter.emit('chat_left', args))
-
-    watchAccount(account => {
-      if (!account.address) {
-        return
-      }
-
-      window.web3inbox.chat.postMessage({
-        method: 'setAccount',
-        id: Date.now(),
-        jsonrpc: '2.0',
-        params: {
-          account: `eip155:1:${account.address}`
-        }
-      })
+    this.chatClient.on('chat_invite', args => {
+      console.log('GOT INVITE', args)
+      this.emitter.emit('chat_invite', args)
     })
+    this.chatClient.on('chat_left', args => this.emitter.emit('chat_left', args))
   }
 
   public get chatMessages() {
@@ -111,6 +128,8 @@ export default class InternalChatProvider implements W3iChatProvider {
       console.log({ params })
       throw new Error(this.formatClientRelatedError('getInvites'))
     }
+
+    console.log('Invites: ', this.chatClient.getInvites())
 
     return Promise.resolve(this.chatClient.getInvites())
   }
