@@ -4,14 +4,12 @@ import Button from '../../general/Button'
 import Input from '../../general/Input'
 import ChatContext from '../../../contexts/ChatContext/context'
 import { fetchEnsAddress } from '@wagmi/core'
-import { useAccount } from 'wagmi'
 import './NewChat.scss'
 
 const NewChat: React.FC = () => {
-  const { chatClientProxy } = useContext(ChatContext)
+  const { chatClientProxy, userPubkey } = useContext(ChatContext)
   const [isInviting, setIsInviting] = useState(false)
   const [query, setQuery] = useState('')
-  const { address } = useAccount()
 
   const resolveAddress = async (inviteeAddress: string) => {
     // eslint-disable-next-line prefer-regex-literals
@@ -30,7 +28,7 @@ const NewChat: React.FC = () => {
 
   const invite = useCallback(
     (inviteeAddress: string) => {
-      if (!address || !chatClientProxy) {
+      if (!userPubkey || !chatClientProxy) {
         return
       }
       setIsInviting(true)
@@ -40,7 +38,7 @@ const NewChat: React.FC = () => {
           .invite({
             account: resolvedAddress,
             invite: {
-              account: `eip155:1:${address}`,
+              account: `eip155:1:${userPubkey}`,
               message: 'Inviting'
             }
           })
@@ -50,7 +48,7 @@ const NewChat: React.FC = () => {
           })
       })
     },
-    [address, chatClientProxy]
+    [userPubkey, chatClientProxy]
   )
 
   return (
@@ -62,7 +60,10 @@ const NewChat: React.FC = () => {
           onChange={e => setQuery(e.target.value)}
         />
         <Button
-          onClick={() => invite(query)}
+          onClick={() => {
+            console.log('Button clicked.')
+            invite(query)
+          }}
           disabled={!isValidAddressOrEnsDomain(query) || isInviting}
         >
           {isInviting ? `Inviting...` : `Send Invite`}
