@@ -20,7 +20,7 @@ const PeerAndMessage: React.FC<PeerAndMessageProps> = ({ peer, message, withAvat
       {withAvatar && <Avatar width={'2.25em'} address={address} height={'2.25em'} src={avatar} />}
       <div className="PeerAndMessage__text">
         <div className="PeerAndMessage__peer">
-          {isValidEnsDomain(peer) ? peer : truncate(peer, 8)}
+          {isValidEnsDomain(peer) ? peer : truncate(getEthChainAddress(peer), 8)}
         </div>
         {message && <div className="PeerAndMessage__message">{message}</div>}
       </div>

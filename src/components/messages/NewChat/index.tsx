@@ -9,7 +9,8 @@ import './NewChat.scss'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy } = useContext(ChatContext)
-  const [query, setSearch] = useState('')
+  const [isInviting, setIsInviting] = useState(false)
+  const [query, setQuery] = useState('')
   const { address } = useAccount()
 
   const resolveAddress = async (inviteeAddress: string) => {
@@ -32,7 +33,9 @@ const NewChat: React.FC = () => {
       if (!address || !chatClientProxy) {
         return
       }
+      setIsInviting(true)
       resolveAddress(inviteeAddress).then(resolvedAddress => {
+        console.log({ resolvedAddress })
         chatClientProxy
           .invite({
             account: resolvedAddress,
@@ -41,7 +44,10 @@ const NewChat: React.FC = () => {
               message: 'Inviting'
             }
           })
-          .then(() => setSearch(''))
+          .then(() => {
+            setIsInviting(false)
+            setQuery('')
+          })
       })
     },
     [address, chatClientProxy]
@@ -53,10 +59,13 @@ const NewChat: React.FC = () => {
         <Input
           value={query}
           placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"
-          onChange={e => setSearch(e.target.value)}
+          onChange={e => setQuery(e.target.value)}
         />
-        <Button onClick={() => invite(query)} disabled={!isValidAddressOrEnsDomain(query)}>
-          Send Invite
+        <Button
+          onClick={() => invite(query)}
+          disabled={!isValidAddressOrEnsDomain(query) || isInviting}
+        >
+          {isInviting ? `Inviting...` : `Send Invite`}
         </Button>
       </div>
     </div>

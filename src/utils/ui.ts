@@ -18,7 +18,6 @@ export const generateAvatarColors = (address: string) => {
       const value = (hash >> (i * 8)) & 255
       rgb[i] = value
     }
-    console.log(`Pushing rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`)
     colors.push(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`)
   })
 

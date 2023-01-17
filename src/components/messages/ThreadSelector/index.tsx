@@ -45,11 +45,7 @@ const ThreadSelector: React.FC = () => {
             return true
           })
           .map(({ peerAccount, topic }) => {
-            return (
-              <div className="ThreadSelector__thread">
-                <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
-              </div>
-            )
+            return <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
           })}
         {threads.length === 0 && search && (
           <span className="ThreadSelector__contact">No {search} found in your contacts</span>
