@@ -1,5 +1,9 @@
 export const truncate = (value: string, strLen = 8) => {
-  if (value.length <= strLen) {
+  if (!value) {
+    return ''
+  }
+
+  if (value && value.length <= strLen) {
     return value
   }
 

@@ -13,6 +13,7 @@ interface PeerAndMessageProps {
 
 const PeerAndMessage: React.FC<PeerAndMessageProps> = ({ peer, message, withAvatar = true }) => {
   const address = getEthChainAddress(peer)
+  console.log({ peer })
   const { data: avatar } = useEnsAvatar({ address })
 
   return (

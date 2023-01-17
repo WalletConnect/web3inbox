@@ -46,6 +46,7 @@ export default class ExternalChatProvider implements W3iChatProvider {
   }
 
   public handleMessage(request: JsonRpcRequest<unknown>) {
+    console.log({ request })
     switch (request.method) {
       case 'chat_message':
       case 'chat_ping':

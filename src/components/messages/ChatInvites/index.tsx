@@ -98,7 +98,7 @@ const ChatInvites: React.FC = () => {
                 />
                 <PeerAndMessage
                   key={invite.publicKey}
-                  peer={invite.publicKey}
+                  peer={invite.account}
                   message={invite.message}
                 />
               </div>
