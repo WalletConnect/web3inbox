@@ -1,8 +1,10 @@
 @import '../../../styles/mixins.scss';
 
 .NavLink {
-		display: flex;
+		display: grid;
+		grid-template-columns: 0.5fr 4fr;
 		width: 100%;
+		color: var(--fg-color-1);
 		gap: 0.5em;
 		padding: 0.5em;
 		border-radius: 10px;

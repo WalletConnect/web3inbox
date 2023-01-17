@@ -81,6 +81,9 @@ class W3iChatFacade implements W3iChat {
   public async getInvites(params?: { account: string }) {
     return this.provider.getInvites(params)
   }
+  public async getPendingThreads(params?: { account: string }) {
+    return this.provider.getPendingThreads(params)
+  }
   public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
     return this.provider.invite(params)
   }

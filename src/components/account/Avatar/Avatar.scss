@@ -1,16 +1,15 @@
 .Avatar {
+	--color-av-1: #fff;
+	--color-av-2: #fff;
+	--color-av-3: #fff;
+	--color-av-4: #fff;
+	--color-av-5: #fff;
   border-radius: 50%;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
-    radial-gradient(
-      70.19% 70.19% at 64.96% 24.36%,
-      #faf8fe 2.08%,
-      #ffdfc8 6.25%,
-      #ffc633 23.44%,
-      #f99c59 42.71%,
-      #acb8ca 68.75%,
-      #958f9d 82.29%,
-      #797176 100%
-    );
+  background-color: var(--color-av-1);
+  background-image: radial-gradient(at 66% 77%, var(--color-av-2) 0px, transparent 50%),
+    radial-gradient(at 29% 97%, var(--color-av-3) 0px, transparent 50%),
+    radial-gradient(at 99% 86%, var(--color-av-4) 0px, transparent 50%),
+    radial-gradient(at 29% 88%, var(--color-av-5) 0px, transparent 50%);
   &__icon {
     border-radius: 50%;
   }

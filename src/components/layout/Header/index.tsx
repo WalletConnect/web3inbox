@@ -13,7 +13,7 @@ const Header: React.FC = () => {
   return (
     <div className="Header">
       <div className="Header__account">
-        <Avatar src={ensAvatar} width="1.5em" height="1.5em" />
+        <Avatar address={userPubkey} src={ensAvatar} width="1.5em" height="1.5em" />
         <span>{ensName ?? truncate(userPubkey ?? '', 5)}</span>
       </div>
     </div>

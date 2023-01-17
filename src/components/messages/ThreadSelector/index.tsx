@@ -20,12 +20,16 @@ const ThreadSelector: React.FC = () => {
         placeholder="Search"
         icon={Search}
       />
-      <NavLink svgSrc={PlusIcon} to="/messages/new-chat">
-        New Chat
+      <NavLink to="/messages/new-chat" className="ThreadSelector__link">
+        <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
+        <span>New Chat</span>
       </NavLink>
-      <NavLink svgSrc={PersonIcon} to="/messages/chat-invites">
+      <NavLink to="/messages/chat-invites" className="ThreadSelector__link">
         <div className="ThreadSelector__invites">
-          <div>Chat Invites</div>
+          <div className="ThreadSelector__invites-link">
+            <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
+            <span>Chat Invites</span>
+          </div>
           <div className="ThreadSelector__invites-badge">
             <div className="ThreadSelector__invites-badget-num">{invites.length}</div>
           </div>
@@ -41,7 +45,11 @@ const ThreadSelector: React.FC = () => {
             return true
           })
           .map(({ peerAccount, topic }) => {
-            return <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
+            return (
+              <div className="ThreadSelector__thread">
+                <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
+              </div>
+            )
           })}
         {threads.length === 0 && search && (
           <span className="ThreadSelector__contact">No {search} found in your contacts</span>

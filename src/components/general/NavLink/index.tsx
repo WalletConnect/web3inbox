@@ -1,36 +1,21 @@
 import React from 'react'
 import { NavLink as RouterNavLink } from 'react-router-dom'
+import cn from 'classnames'
 import './NavLink.scss'
 
-interface BaseNavLinkProps {
+interface NavLinkProps {
   to: string
   children: React.ReactNode | React.ReactNode[]
+  className?: string
 }
 
-type NavLinkWithImgSrcProps =
-  | (BaseNavLinkProps & {
-      imgSrc?: never
-      svgSrc: string
-    })
-  | (BaseNavLinkProps & {
-      svgSrc?: never
-      imgSrc: string
-    })
-
-const NavLink: React.FC<NavLinkWithImgSrcProps> = ({ to, svgSrc, children, imgSrc }) => {
+const NavLink: React.FC<NavLinkProps> = ({ to, children, className }) => {
   return (
     <RouterNavLink
       to={to}
-      className={({ isActive }) => `NavLink ${isActive ? 'NavLink-active' : ''} `}
+      className={({ isActive }) => cn('NavLink', { 'NavLink-active': isActive }, className)}
     >
-      <div
-        className={`NavLink__icon ${svgSrc ? `NavLink__icon-svg` : ''} ${
-          imgSrc ? `NavLink__icon-img` : ''
-        }`}
-      >
-        <img src={imgSrc ?? svgSrc} alt="LinkIcon" />
-      </div>
-      <div className="NavLink__text">{children}</div>
+      {children}
     </RouterNavLink>
   )
 }

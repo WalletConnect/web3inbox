@@ -22,6 +22,7 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
   const [registeredKey, setRegistered] = useState<string | null>(null)
   const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
   const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
+  const [pendingThreads, setPendingThreads] = useState<ChatClientTypes.Thread[]>([])
 
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
 

@@ -1,23 +1,35 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useEnsName } from 'wagmi'
 import { getEthChainAddress } from '../../../../utils/address'
-import PlaceholderIcon from '../../../../assets/PlaceholderAvatar.png'
 import NavLink from '../../../general/NavLink'
 import './Thread.scss'
-import { truncate } from '../../../../utils/string'
+import PeerAndMessage from '../../PeerAndMessage'
+import ChatContext from '../../../../contexts/ChatContext/context'
 
 interface ThreadProps {
-  icon?: string
   threadPeer: string
+  lastMessage?: string
   topic: string
 }
 
-const Thread: React.FC<ThreadProps> = ({ icon, topic, threadPeer }) => {
-  const { data: ensName } = useEnsName({ address: getEthChainAddress(threadPeer) })
+const Thread: React.FC<ThreadProps> = ({ topic, threadPeer }) => {
+  const address = getEthChainAddress(threadPeer)
+  const { data: ensName } = useEnsName({ address })
+
+  const [lastMessage, setLastMessage] = useState<string | undefined>()
+  const { chatClientProxy } = useContext(ChatContext)
+
+  useEffect(() => {
+    chatClientProxy?.getMessages({ topic }).then(messages => {
+      if (messages.length) {
+        setLastMessage(messages[messages.length - 1].message)
+      }
+    })
+  }, [chatClientProxy, setLastMessage])
 
   return (
-    <NavLink to={`/messages/chat/${threadPeer}?topic=${topic}`} imgSrc={icon ?? PlaceholderIcon}>
-      {ensName ?? truncate(threadPeer, 12)}
+    <NavLink to={`/messages/chat/${threadPeer}?topic=${topic}`}>
+      <PeerAndMessage peer={ensName ?? threadPeer} message={lastMessage} />
     </NavLink>
   )
 }

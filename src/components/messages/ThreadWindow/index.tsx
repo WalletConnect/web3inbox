@@ -66,7 +66,7 @@ const ThreadWindow: React.FC = () => {
   return (
     <div className="ThreadWindow">
       <div className="ThreadWindow__peer">
-        <Avatar width="1.25em" height="1.25em" src={ensAvatar} />
+        <Avatar address={peer} width="1.25em" height="1.25em" src={ensAvatar} />
         <span>{ensName ?? peer}</span>
       </div>
       <div className="ThreadWindow__messages">
