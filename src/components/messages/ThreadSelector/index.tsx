@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
@@ -12,7 +12,6 @@ import { concatAll, from, takeLast, takeWhile } from 'rxjs'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
-  const [searching, setSearching] = useState(false)
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<string[]>([])
   const { threads, invites, chatClientProxy } = useContext(ChatContext)
 
@@ -44,14 +43,10 @@ const ThreadSelector: React.FC = () => {
           .subscribe({
             next: ({ message }) => {
               if (message.includes(searchQuery)) {
-                console.log('Pushing', thread.peerAccount)
                 newFilteredThreads.push(thread.topic)
               }
             },
             complete: () => {
-              setSearching(false)
-              console.log('Setting ', newFilteredThreads)
-
               setFilteredThreadTopics(newFilteredThreads)
             }
           })
@@ -60,15 +55,16 @@ const ThreadSelector: React.FC = () => {
     [threads, chatClientProxy]
   )
 
+  useEffect(() => {
+    filterThreads(search)
+  }, [search, filterThreads])
+
   console.log('Actual filtered threads', filteredThreadTopics)
 
   return (
     <div className="ThreadSelector">
       <Input
         onChange={({ target }) => {
-          if (!searching) {
-            filterThreads(target.value)
-          }
           setSearch(target.value)
         }}
         placeholder="Search"
