@@ -8,11 +8,12 @@ import ChatContext from '../../../../contexts/ChatContext/context'
 
 interface ThreadProps {
   threadPeer: string
+  searchQuery?: string
   lastMessage?: string
   topic: string
 }
 
-const Thread: React.FC<ThreadProps> = ({ topic, threadPeer }) => {
+const Thread: React.FC<ThreadProps> = ({ topic, searchQuery, threadPeer }) => {
   const address = getEthChainAddress(threadPeer)
   const { data: ensName } = useEnsName({ address })
 
@@ -29,7 +30,11 @@ const Thread: React.FC<ThreadProps> = ({ topic, threadPeer }) => {
 
   return (
     <NavLink to={`/messages/chat/${threadPeer}?topic=${topic}`}>
-      <PeerAndMessage peer={ensName ?? threadPeer} message={lastMessage} />
+      <PeerAndMessage
+        highlightedText={searchQuery}
+        peer={ensName ?? threadPeer}
+        message={lastMessage}
+      />
     </NavLink>
   )
 }

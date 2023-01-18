@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
@@ -7,16 +7,70 @@ import PersonIcon from '../../../assets/Person.svg'
 import PlusIcon from '../../../assets/Plus.svg'
 import './ThreadSelector.scss'
 import NavLink from '../../general/NavLink'
+import debounce from 'lodash.debounce'
+import { concatAll, from, takeLast, takeWhile } from 'rxjs'
 
 const ThreadSelector: React.FC = () => {
-  const { threads, invites } = useContext(ChatContext)
-  const [search, setSearch] = useState<string>('')
+  const [search, setSearch] = useState('')
+  const [searching, setSearching] = useState(false)
+  const [filteredThreadTopics, setFilteredThreadTopics] = useState<string[]>([])
+  const { threads, invites, chatClientProxy } = useContext(ChatContext)
+
+  const filterThreads = useCallback(
+    debounce((searchQuery: string) => {
+      if (!searchQuery || !chatClientProxy) {
+        setFilteredThreadTopics([])
+
+        return
+      }
+
+      const newFilteredThreads: string[] = []
+
+      from(threads).subscribe(thread => {
+        if (thread.peerAccount.includes(searchQuery)) {
+          newFilteredThreads.push(thread.topic)
+
+          return
+        }
+
+        from(chatClientProxy.getMessages({ topic: thread.topic }))
+          .pipe(concatAll())
+          .pipe(takeLast(100))
+          .pipe(
+            takeWhile(messageToCheck => {
+              return !messageToCheck.message.includes(searchQuery)
+            }, true)
+          )
+          .subscribe({
+            next: ({ message }) => {
+              if (message.includes(searchQuery)) {
+                console.log('Pushing', thread.peerAccount)
+                newFilteredThreads.push(thread.topic)
+              }
+            },
+            complete: () => {
+              setSearching(false)
+              console.log('Setting ', newFilteredThreads)
+
+              setFilteredThreadTopics(newFilteredThreads)
+            }
+          })
+      })
+    }, 100),
+    [threads, chatClientProxy]
+  )
+
+  console.log('Actual filtered threads', filteredThreadTopics)
 
   return (
     <div className="ThreadSelector">
       <Input
-        onChange={({ target }) => setSearch(target.value)}
-        value={search}
+        onChange={({ target }) => {
+          if (!searching) {
+            filterThreads(target.value)
+          }
+          setSearch(target.value)
+        }}
         placeholder="Search"
         icon={Search}
       />
@@ -37,15 +91,19 @@ const ThreadSelector: React.FC = () => {
       </NavLink>
       <div className="ThreadSelector__threads">
         {threads
-          .filter(thread => {
-            if (search) {
-              return thread.peerAccount.includes(search)
-            }
-
-            return true
-          })
+          .filter(
+            thread =>
+              filteredThreadTopics.length === 0 || filteredThreadTopics.includes(thread.topic)
+          )
           .map(({ peerAccount, topic }) => {
-            return <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
+            return (
+              <Thread
+                searchQuery={search}
+                topic={topic}
+                threadPeer={peerAccount}
+                key={peerAccount}
+              />
+            )
           })}
         {threads.length === 0 && search && (
           <span className="ThreadSelector__contact">No {search} found in your contacts</span>

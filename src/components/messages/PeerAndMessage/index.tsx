@@ -4,16 +4,22 @@ import { getEthChainAddress, isValidEnsDomain } from '../../../utils/address'
 import './PeerAndMessage.scss'
 import Avatar from '../../account/Avatar'
 import { useEnsAvatar } from 'wagmi'
+import TextWithHighlight from '../../general/TextWithHighlight'
 
 interface PeerAndMessageProps {
   peer: string
   withAvatar?: boolean
+  highlightedText?: string
   message?: string
 }
 
-const PeerAndMessage: React.FC<PeerAndMessageProps> = ({ peer, message, withAvatar = true }) => {
+const PeerAndMessage: React.FC<PeerAndMessageProps> = ({
+  peer,
+  message,
+  highlightedText,
+  withAvatar = true
+}) => {
   const address = getEthChainAddress(peer)
-  console.log({ peer })
   const { data: avatar } = useEnsAvatar({ address })
 
   return (
@@ -21,9 +27,16 @@ const PeerAndMessage: React.FC<PeerAndMessageProps> = ({ peer, message, withAvat
       {withAvatar && <Avatar width={'2.25em'} address={address} height={'2.25em'} src={avatar} />}
       <div className="PeerAndMessage__text">
         <div className="PeerAndMessage__peer">
-          {isValidEnsDomain(peer) ? peer : truncate(getEthChainAddress(peer), 8)}
+          <TextWithHighlight
+            text={isValidEnsDomain(peer) ? peer : truncate(getEthChainAddress(peer), 8)}
+            highlightedText={highlightedText ?? ''}
+          />
         </div>
-        {message && <div className="PeerAndMessage__message">{message}</div>}
+        {message && (
+          <div className="PeerAndMessage__message">
+            <TextWithHighlight text={message} highlightedText={highlightedText ?? ''} />
+          </div>
+        )}
       </div>
     </div>
   )

@@ -7,6 +7,10 @@ interface TextWithHighlightProps {
 }
 
 const TextWithHighlight: React.FC<TextWithHighlightProps> = ({ text, highlightedText }) => {
+  if (!highlightedText || !text || !text.includes(highlightedText)) {
+    return <span>{text}</span>
+  }
+
   return (
     <div className="TextWithHighlight">
       <span>{text.substring(0, text.indexOf(highlightedText))}</span>
