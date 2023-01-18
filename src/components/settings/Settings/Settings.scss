@@ -1,0 +1,59 @@
+.Settings {
+	display: flex;
+	flex-direction: column;
+	gap: 4em;
+
+	&__section {
+		display: flex;
+		gap: 2em;
+		width: 100%;
+
+		&-title {
+			width: 20%;
+		}
+
+		&-settings {
+			display: flex;
+			gap: 1.5em;
+			width: 100%;
+			flex-direction: column;
+		}
+	}
+
+	&__appearance {
+		.Settings__section-settings {
+			flex-direction: row;
+			justify-content: space-between;
+		}
+	}
+
+	&__toggle-settings {
+		font-weight: 700;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__theme-selector {
+		background: var(--bg-color-2);
+		border-radius: 30px;
+		padding: 1.5em;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		box-shadow: inset 0px 2px 4px rgba(255, 255, 255, 0.5);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5em;
+		min-width: 30%;
+
+		text-align: center;
+
+		img {
+			width: 5em;
+			height: 5em;
+			display: block;
+		}
+	}
+
+
+}

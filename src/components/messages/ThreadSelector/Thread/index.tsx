@@ -13,27 +13,31 @@ interface ThreadProps {
   topic: string
 }
 
-const Thread: React.FC<ThreadProps> = ({ topic, searchQuery, threadPeer }) => {
+const Thread: React.FC<ThreadProps> = ({ topic, lastMessage, searchQuery, threadPeer }) => {
   const address = getEthChainAddress(threadPeer)
   const { data: ensName } = useEnsName({ address })
 
-  const [lastMessage, setLastMessage] = useState<string | undefined>()
+  const [calculatedLastMessage, setCalculatedLastMessage] = useState<string | undefined>()
   const { chatClientProxy } = useContext(ChatContext)
 
   useEffect(() => {
-    chatClientProxy?.getMessages({ topic }).then(messages => {
-      if (messages.length) {
-        setLastMessage(messages[messages.length - 1].message)
-      }
-    })
-  }, [chatClientProxy, setLastMessage])
+    if (lastMessage) {
+      setCalculatedLastMessage(lastMessage)
+    } else if (!calculatedLastMessage) {
+      chatClientProxy?.getMessages({ topic }).then(messages => {
+        if (messages.length) {
+          setCalculatedLastMessage(messages[messages.length - 1].message)
+        }
+      })
+    }
+  }, [chatClientProxy, calculatedLastMessage, setCalculatedLastMessage])
 
   return (
     <NavLink to={`/messages/chat/${threadPeer}?topic=${topic}`}>
       <PeerAndMessage
         highlightedText={searchQuery}
         peer={ensName ?? threadPeer}
-        message={lastMessage}
+        message={calculatedLastMessage}
       />
     </NavLink>
   )

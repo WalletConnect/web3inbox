@@ -12,7 +12,9 @@ import { concatAll, from, takeLast, takeWhile } from 'rxjs'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
-  const [filteredThreadTopics, setFilteredThreadTopics] = useState<string[]>([])
+  const [filteredThreadTopics, setFilteredThreadTopics] = useState<
+    { topic: string; message?: string }[]
+  >([])
   const { threads, invites, chatClientProxy } = useContext(ChatContext)
 
   const filterThreads = useCallback(
@@ -23,33 +25,35 @@ const ThreadSelector: React.FC = () => {
         return
       }
 
-      const newFilteredThreads: string[] = []
+      const newFilteredThreads: { topic: string; message?: string }[] = []
 
-      from(threads).subscribe(thread => {
-        if (thread.peerAccount.includes(searchQuery)) {
-          newFilteredThreads.push(thread.topic)
+      from(threads).subscribe({
+        next: thread => {
+          if (thread.peerAccount.includes(searchQuery)) {
+            newFilteredThreads.push({ topic: thread.topic })
 
-          return
-        }
+            return
+          }
 
-        from(chatClientProxy.getMessages({ topic: thread.topic }))
-          .pipe(concatAll())
-          .pipe(takeLast(100))
-          .pipe(
-            takeWhile(messageToCheck => {
-              return !messageToCheck.message.includes(searchQuery)
-            }, true)
-          )
-          .subscribe({
-            next: ({ message }) => {
-              if (message.includes(searchQuery)) {
-                newFilteredThreads.push(thread.topic)
+          from(chatClientProxy.getMessages({ topic: thread.topic }))
+            .pipe(concatAll())
+            .pipe(takeLast(100))
+            .pipe(
+              takeWhile(messageToCheck => {
+                return !messageToCheck.message.includes(searchQuery)
+              }, true)
+            )
+            .subscribe({
+              next: ({ message }) => {
+                if (message.includes(searchQuery)) {
+                  newFilteredThreads.push({ topic: thread.topic, message })
+                }
               }
-            },
-            complete: () => {
-              setFilteredThreadTopics(newFilteredThreads)
-            }
-          })
+            })
+        },
+        complete: () => {
+          setFilteredThreadTopics(newFilteredThreads)
+        }
       })
     }, 100),
     [threads, chatClientProxy]
@@ -89,13 +93,23 @@ const ThreadSelector: React.FC = () => {
         {threads
           .filter(
             thread =>
-              filteredThreadTopics.length === 0 || filteredThreadTopics.includes(thread.topic)
+              filteredThreadTopics.length === 0 ||
+              filteredThreadTopics
+                .map(filteredThread => filteredThread.topic)
+                .includes(thread.topic)
           )
           .map(({ peerAccount, topic }) => {
+            const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
+            const message =
+              (filterIdx !== -1 && filteredThreadTopics[filterIdx].message) || undefined
+
+            console.log({ message, filterIdx })
+
             return (
               <Thread
                 searchQuery={search}
                 topic={topic}
+                lastMessage={message}
                 threadPeer={peerAccount}
                 key={peerAccount}
               />

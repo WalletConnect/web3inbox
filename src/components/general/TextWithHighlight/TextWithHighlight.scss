@@ -1,10 +1,11 @@
 .TextWithHighlight {
 	display: flex;
 	align-items: center;
-	gap: 0.3em;
+	gap: 0.3;
 
 	span {
 		display: inline-block;
+		white-space:pre;
 	}
 
 	&__highlighted {

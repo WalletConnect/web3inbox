@@ -15,6 +15,8 @@ import ThreadWindow from './components/messages/ThreadWindow'
 import NewChat from './components/messages/NewChat'
 import Web3InboxPlaceholder from './components/general/Web3InboxPlaceholder'
 import ChatInvites from './components/messages/ChatInvites'
+import SettingsLayout from './components/settings/SettingsLayout'
+import Settings from './components/settings/Settings'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -43,6 +45,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
                 <Route path="/messages/new-chat" element={<NewChat />} />
                 <Route path="/messages/chat-invites" element={<ChatInvites />} />
+              </Route>
+              <Route path="settings" element={<SettingsLayout />}>
+                <Route index element={<Settings />} />
               </Route>
             </Route>
 

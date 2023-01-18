@@ -11,6 +11,14 @@ const TextWithHighlight: React.FC<TextWithHighlightProps> = ({ text, highlighted
     return <span>{text}</span>
   }
 
+  const segments = [
+    text.substring(0, text.indexOf(highlightedText)),
+    highlightedText,
+    text.substring(text.indexOf(highlightedText) + highlightedText.length)
+  ]
+
+  console.log({ segments })
+
   return (
     <div className="TextWithHighlight">
       <span>{text.substring(0, text.indexOf(highlightedText))}</span>

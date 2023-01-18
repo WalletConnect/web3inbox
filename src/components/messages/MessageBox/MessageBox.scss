@@ -1,12 +1,13 @@
 .MessageBox {
   display: grid;
   grid-template-areas: 'messagebox send-button';
-  grid-template-columns: auto 2.5em;
+  grid-template-columns: 95% 5%;
   gap: 1em;
 
   .Input {
     grid-area: messagebox;
     padding: 0.5em;
+		max-width: 100%;
     border-radius: 16px 16px 6px 16px;
   }
 
