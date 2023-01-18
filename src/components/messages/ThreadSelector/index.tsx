@@ -25,12 +25,12 @@ const ThreadSelector: React.FC = () => {
         return
       }
 
-      const newFilteredThreads: { topic: string; message?: string }[] = []
+      const newFilteredThreadTopics: { topic: string; message?: string }[] = []
 
       from(threads).subscribe({
         next: thread => {
           if (thread.peerAccount.includes(searchQuery)) {
-            newFilteredThreads.push({ topic: thread.topic })
+            newFilteredThreadTopics.push({ topic: thread.topic })
 
             return
           }
@@ -46,16 +46,16 @@ const ThreadSelector: React.FC = () => {
             .subscribe({
               next: ({ message }) => {
                 if (message.includes(searchQuery)) {
-                  newFilteredThreads.push({ topic: thread.topic, message })
+                  newFilteredThreadTopics.push({ topic: thread.topic, message })
                 }
               }
             })
         },
         complete: () => {
-          setFilteredThreadTopics(newFilteredThreads)
+          setFilteredThreadTopics(newFilteredThreadTopics)
         }
       })
-    }, 100),
+    }, 50),
     [threads, chatClientProxy]
   )
 
