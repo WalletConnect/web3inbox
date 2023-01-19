@@ -7,8 +7,10 @@ import PeerAndMessage from '../PeerAndMessage'
 import './Invites.scss'
 import Button from '../../general/Button'
 import Checkbox from '../../general/Checkbox'
+import ThemeContext from '../../../contexts/ThemeContext/context'
 
 const ChatInvites: React.FC = () => {
+  const { mode } = useContext(ThemeContext)
   const [invitesSelected, setInvitesSelected] = useState<number[]>([])
   const { chatClientProxy, invites, refreshThreadsAndInvites } = useContext(ChatContext)
 
@@ -48,7 +50,11 @@ const ChatInvites: React.FC = () => {
             type="action"
             className="Invites__accept"
           >
-            <img src={CheckIcon} alt="Accept" />
+            <img
+              style={{ filter: mode === 'dark' ? 'invert(100%)' : undefined }}
+              src={CheckIcon}
+              alt="Accept"
+            />
             Accept {invitesSelected.length === 0 ? 'All' : ''}
           </Button>
           <Button
@@ -69,7 +75,7 @@ const ChatInvites: React.FC = () => {
             type="action"
             className="Invites__decline"
           >
-            <img src={CrossIcon} alt="Accept" />
+            <img src={CrossIcon} alt="Decline" />
             Decline {invitesSelected.length === 0 ? 'All' : ''}
           </Button>
         </div>

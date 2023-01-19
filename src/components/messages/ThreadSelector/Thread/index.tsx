@@ -21,9 +21,7 @@ const Thread: React.FC<ThreadProps> = ({ topic, lastMessage, searchQuery, thread
   const { chatClientProxy } = useContext(ChatContext)
 
   useEffect(() => {
-    if (lastMessage) {
-      setCalculatedLastMessage(lastMessage)
-    } else if (!calculatedLastMessage) {
+    if (!calculatedLastMessage && !lastMessage) {
       chatClientProxy?.getMessages({ topic }).then(messages => {
         if (messages.length) {
           setCalculatedLastMessage(messages[messages.length - 1].message)
@@ -37,7 +35,7 @@ const Thread: React.FC<ThreadProps> = ({ topic, lastMessage, searchQuery, thread
       <PeerAndMessage
         highlightedText={searchQuery}
         peer={ensName ?? threadPeer}
-        message={calculatedLastMessage}
+        message={lastMessage ?? calculatedLastMessage}
       />
     </NavLink>
   )
