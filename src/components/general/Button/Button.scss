@@ -10,15 +10,15 @@
   font-weight: 700;
 
 	&__primary {
-		background: var(--accent-1);
-		border: solid 1px var(--accent-1);
+		background: var(--accent-color-1);
+		border: solid 1px var(--accent-color-1);
 		color: var(--fg-color-1);
 	}
 
 	&__secondary {
 		background: transparent;
-		border: solid 1px var(--accent-1);
-		color: var(--accent-1);
+		border: solid 1px var(--accent-color-1);
+		color: var(--accent-color-1);
 	}
 
 	&__action, &__action-icon {

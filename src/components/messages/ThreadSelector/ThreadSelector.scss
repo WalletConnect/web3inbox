@@ -17,7 +17,7 @@
 		display: flex;
 
 		&-icon {
-			background: var(--accent-1);
+			background: var(--accent-color-1);
 			border-radius: 50%;
 			padding: 0.5em;
 			width: 2.25em;
@@ -49,7 +49,7 @@
 			height: 1.5em;
 			line-height: 1.5em;
 			width: 1.5em;
-			background: var(--accent-1);
+			background: var(--accent-color-1);
 			border-radius: 50%;;
 		}
 	}
