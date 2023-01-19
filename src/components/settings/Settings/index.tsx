@@ -7,6 +7,7 @@ import Radio from '../../general/Radio'
 import type { ThemeContextSimpleState } from '../../../contexts/ThemeContext/context'
 import ThemeContext from '../../../contexts/ThemeContext/context'
 import cn from 'classnames'
+import Toggle from '../../general/Toggle'
 
 const Settings: React.FC = () => {
   const { mode, updateTheme } = useContext(ThemeContext)
@@ -48,15 +49,15 @@ const Settings: React.FC = () => {
           <div className="Settings__section-subtitle">Notify me about...</div>
           <div className="Settings__toggle-setting">
             <div className="Settings__toggle-label">Incoming contact requests</div>
-            <div className="Settings__toggle-radio"></div>
+            <Toggle name="incoming" id="incoming" />
           </div>
           <div className="Settings__toggle-setting">
             <div className="Settings__toggle-label">Outgoing contact requests</div>
-            <div className="Settings__toggle-radio"></div>
+            <Toggle name="outgoing" id="outgoing" />
           </div>
           <div className="Settings__toggle-setting">
             <div className="Settings__toggle-label">New Messages</div>
-            <div className="Settings__toggle-radio"></div>
+            <Toggle name="new-messages" id="new-messages" />
           </div>
         </div>
       </div>

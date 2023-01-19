@@ -3,7 +3,12 @@
 	flex-direction: column;
 	gap: 4em;
 
+
 	&__section {
+		&-subtitle {
+			color: var(--fg-color-2);
+		}
+		
 		display: flex;
 		gap: 2em;
 		width: 100%;
@@ -27,7 +32,8 @@
 		}
 	}
 
-	&__toggle-settings {
+	&__toggle-setting {
+		align-items: center;
 		font-weight: 700;
 		width: 100%;
 		display: flex;
@@ -47,6 +53,10 @@
 		min-width: 30%;
 
 		text-align: center;
+
+		span {
+			text-transform: capitalize;
+		}
 
 		img {
 			width: 5em;
