@@ -10,6 +10,8 @@ const themeReducer = (
   state: ThemeContextSimpleState,
   action: ThemeContextUpdate
 ): ThemeContextSimpleState => {
+  console.log('Reducing')
+
   return { ...state, ...action }
 }
 

@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useContext, useMemo } from 'react'
 import DarkCity from '../../../assets/DarkCity.png'
 import LightCity from '../../../assets/LightCity.png'
 import HalfHalfCity from '../../../assets/HalfHalfCity.png'
 import './Settings.scss'
 import Radio from '../../general/Radio'
+import type { ThemeContextSimpleState } from '../../../contexts/ThemeContext/context'
+import ThemeContext from '../../../contexts/ThemeContext/context'
+import cn from 'classnames'
 
 const Settings: React.FC = () => {
+  const { mode, updateTheme } = useContext(ThemeContext)
+
+  const themeMods: { id: ThemeContextSimpleState['mode']; icon: string }[] = useMemo(() => {
+    return [
+      { id: 'light', icon: LightCity },
+      { id: 'dark', icon: DarkCity },
+      { id: 'system', icon: HalfHalfCity }
+    ]
+  }, [])
+
   return (
     <div className="Settings">
       <div className="Settings__section Settings__appearance">
@@ -13,18 +26,18 @@ const Settings: React.FC = () => {
           <span>Appearance</span>
         </div>
         <div className="Settings__section-settings">
-          <div className="Settings__theme-selector">
-            <img src={LightCity} alt="LightMode" />
-            <span>Light</span>
-          </div>
-          <div className="Settings__theme-selector">
-            <img src={DarkCity} alt="DarkMode" />
-            <span>Dark</span>
-          </div>
-          <div className="Settings__theme-selector">
-            <img src={HalfHalfCity} alt="SystemMode" />
-            <span>System</span>
-          </div>
+          {themeMods.map(({ id, icon }) => (
+            <div
+              key={id}
+              onClick={() => updateTheme({ mode: id })}
+              className={cn('Settings__theme-selector', {
+                'Settings__theme-selector-active': mode === id
+              })}
+            >
+              <img src={icon} alt="LightMode" />
+              <span>{id}</span>
+            </div>
+          ))}
         </div>
       </div>
       <div className="Settings__section Settings__notifications">

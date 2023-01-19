@@ -53,6 +53,10 @@
 			height: 5em;
 			display: block;
 		}
+
+		&-active {
+			border: 1px solid var(--accent-1);
+		}
 	}
 
 
