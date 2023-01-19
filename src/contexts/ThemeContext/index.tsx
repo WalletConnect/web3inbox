@@ -26,7 +26,10 @@ const ThemeContextProvider: React.FC<ThemeContextProviderProps> = ({ children })
     <ThemeContext.Provider
       value={{
         ...themeState,
-        updateTheme
+        updateTheme: payload => {
+          console.log({ payload })
+          updateTheme(payload)
+        }
       }}
     >
       {children}

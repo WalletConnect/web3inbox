@@ -34,7 +34,7 @@ const Settings: React.FC = () => {
                 'Settings__theme-selector-active': mode === id
               })}
             >
-              <img src={icon} alt="LightMode" />
+              <img src={icon} alt={id} />
               <span>{id}</span>
             </div>
           ))}
