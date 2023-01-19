@@ -27,6 +27,13 @@ const ThreadSelector: React.FC = () => {
 
       const newFilteredThreadTopics: { topic: string; message?: string }[] = []
 
+      /*
+       * For every thread, check if the thread address matches the searchQuery
+       * If it does, add it to filtered topics
+       * If it doesn't, look through the last 100 messages (or until a match is
+       * found), if one is found add it to filtered topics with the matched
+       * message as the reason (so it can be showcased).
+       */
       from(threads).subscribe({
         next: thread => {
           if (thread.peerAccount.includes(searchQuery)) {
@@ -43,6 +50,7 @@ const ThreadSelector: React.FC = () => {
                 return !messageToCheck.message.includes(searchQuery)
               }, true)
             )
+            .pipe(takeLast(1))
             .subscribe({
               next: ({ message }) => {
                 if (message.includes(searchQuery)) {
