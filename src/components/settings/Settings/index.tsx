@@ -4,21 +4,27 @@ import LightCity from '../../../assets/LightCity.png'
 import HalfHalfCity from '../../../assets/HalfHalfCity.png'
 import './Settings.scss'
 import Radio from '../../general/Radio'
-import type { ThemeContextSimpleState } from '../../../contexts/ThemeContext/context'
-import ThemeContext from '../../../contexts/ThemeContext/context'
 import cn from 'classnames'
 import Toggle from '../../general/Toggle'
+import type { SettingsContextSimpleState } from '../../../contexts/SettingsContext/context'
+import SettingsContext from '../../../contexts/SettingsContext/context'
 
 const Settings: React.FC = () => {
-  const { mode, updateTheme } = useContext(ThemeContext)
+  const { mode, newContacts, updateSettings: updateTheme } = useContext(SettingsContext)
 
-  const themeMods: { id: ThemeContextSimpleState['mode']; icon: string }[] = useMemo(() => {
+  const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = useMemo(() => {
     return [
       { id: 'light', icon: LightCity },
       { id: 'dark', icon: DarkCity },
       { id: 'system', icon: HalfHalfCity }
     ]
   }, [])
+
+  const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: string }[] = [
+    { id: 'require-invite', label: 'Require new contacts to send me a chat invite' },
+    { id: 'reject-new', label: 'Decline all chat invites from new contacts' },
+    { id: 'accept-new', label: 'Accept all chat invites from new contacts' }
+  ]
 
   return (
     <div className="Settings">
@@ -27,7 +33,7 @@ const Settings: React.FC = () => {
           <span>Appearance</span>
         </div>
         <div className="Settings__section-settings">
-          {themeMods.map(({ id, icon }) => (
+          {themeModes.map(({ id, icon }) => (
             <div
               key={id}
               onClick={() => updateTheme({ mode: id })}
@@ -67,21 +73,15 @@ const Settings: React.FC = () => {
         </div>
         <div className="Settings__section-settings">
           <div className="Settings__section-subtitle">New Contacts</div>
-          <Radio
-            name="new-contacts"
-            id="require-invite"
-            label="Require new contacts to send me a chat invite"
-          />
-          <Radio
-            name="new-contacts"
-            id="accept-new"
-            label="Accept all chat invites from new contacts"
-          />
-          <Radio
-            name="new-contacts"
-            id="reject-new"
-            label="Decline all chat invites from new contacts"
-          />
+          {newContactModes.map(({ id, label }) => (
+            <Radio
+              name="new-contacts"
+              id={id}
+              label={label}
+              checked={newContacts === id}
+              onCheck={() => updateTheme({ newContacts: id })}
+            />
+          ))}
         </div>
       </div>
       <div className="Settings__section Settings_crypto">

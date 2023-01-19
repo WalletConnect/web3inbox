@@ -7,10 +7,10 @@ import PeerAndMessage from '../PeerAndMessage'
 import './Invites.scss'
 import Button from '../../general/Button'
 import Checkbox from '../../general/Checkbox'
-import ThemeContext from '../../../contexts/ThemeContext/context'
+import SettingsContext from '../../../contexts/SettingsContext/context'
 
 const ChatInvites: React.FC = () => {
-  const { mode } = useContext(ThemeContext)
+  const { mode } = useContext(SettingsContext)
   const [invitesSelected, setInvitesSelected] = useState<number[]>([])
   const { chatClientProxy, invites, refreshThreadsAndInvites } = useContext(ChatContext)
 

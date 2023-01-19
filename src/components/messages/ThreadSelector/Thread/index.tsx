@@ -28,7 +28,7 @@ const Thread: React.FC<ThreadProps> = ({ topic, lastMessage, searchQuery, thread
         }
       })
     }
-  }, [chatClientProxy, calculatedLastMessage, setCalculatedLastMessage])
+  }, [chatClientProxy, calculatedLastMessage, lastMessage, setCalculatedLastMessage])
 
   return (
     <NavLink to={`/messages/chat/${threadPeer}?topic=${topic}`}>

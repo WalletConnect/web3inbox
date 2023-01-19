@@ -103,8 +103,6 @@ const ThreadSelector: React.FC = () => {
             const message =
               (filterIdx !== -1 && filteredThreadTopics[filterIdx].message) || undefined
 
-            console.log({ message, filterIdx })
-
             return (
               <Thread
                 searchQuery={search}

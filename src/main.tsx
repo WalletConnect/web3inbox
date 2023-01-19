@@ -17,7 +17,7 @@ import Web3InboxPlaceholder from './components/general/Web3InboxPlaceholder'
 import ChatInvites from './components/messages/ChatInvites'
 import SettingsLayout from './components/settings/SettingsLayout'
 import Settings from './components/settings/Settings'
-import ThemeContextProvider from './contexts/ThemeContext'
+import SettingsContextProvider from './contexts/SettingsContext'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -34,7 +34,7 @@ export const ethereumClient = new EthereumClient(wagmiClient, chains)
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <WagmiConfig client={wagmiClient}>
-      <ThemeContextProvider>
+      <SettingsContextProvider>
         <ChatContextProvider>
           <BrowserRouter>
             <Routes>
@@ -57,7 +57,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             </Routes>
           </BrowserRouter>
         </ChatContextProvider>
-      </ThemeContextProvider>
+      </SettingsContextProvider>
     </WagmiConfig>
     <Web3Modal
       ethereumClient={ethereumClient}
