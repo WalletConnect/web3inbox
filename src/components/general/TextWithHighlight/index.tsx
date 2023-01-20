@@ -11,19 +11,14 @@ const TextWithHighlight: React.FC<TextWithHighlightProps> = ({ text, highlighted
     return <span>{text}</span>
   }
 
-  const segments = [
-    text.substring(0, text.indexOf(highlightedText)),
-    highlightedText,
-    text.substring(text.indexOf(highlightedText) + highlightedText.length)
-  ]
-
-  console.log({ segments })
+  const preHighlighted = text.substring(0, text.indexOf(highlightedText))
+  const postHighlighted = text.substring(text.indexOf(highlightedText) + highlightedText.length)
 
   return (
     <div className="TextWithHighlight">
-      <span>{text.substring(0, text.indexOf(highlightedText))}</span>
+      <span>{preHighlighted}</span>
       <span className="TextWithHighlight__highlighted">{highlightedText}</span>
-      <span>{text.substring(text.indexOf(highlightedText) + highlightedText.length)}</span>
+      <span>{postHighlighted}</span>
     </div>
   )
 }

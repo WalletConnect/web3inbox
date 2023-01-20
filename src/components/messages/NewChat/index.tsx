@@ -33,7 +33,6 @@ const NewChat: React.FC = () => {
       }
       setIsInviting(true)
       resolveAddress(inviteeAddress).then(resolvedAddress => {
-        console.log({ resolvedAddress })
         chatClientProxy
           .invite({
             account: resolvedAddress,

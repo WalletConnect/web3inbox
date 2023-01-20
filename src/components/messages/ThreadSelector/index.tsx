@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
@@ -16,6 +16,14 @@ const ThreadSelector: React.FC = () => {
     { topic: string; message?: string }[]
   >([])
   const { threads, invites, chatClientProxy } = useContext(ChatContext)
+
+  const filteredThreads = useMemo(() => {
+    return threads.filter(
+      thread =>
+        filteredThreadTopics.length === 0 ||
+        filteredThreadTopics.map(filteredThread => filteredThread.topic).includes(thread.topic)
+    )
+  }, [threads, filteredThreadTopics])
 
   const filterThreads = useCallback(
     debounce((searchQuery: string) => {
@@ -98,29 +106,20 @@ const ThreadSelector: React.FC = () => {
         </div>
       </NavLink>
       <div className="ThreadSelector__threads">
-        {threads
-          .filter(
-            thread =>
-              filteredThreadTopics.length === 0 ||
-              filteredThreadTopics
-                .map(filteredThread => filteredThread.topic)
-                .includes(thread.topic)
-          )
-          .map(({ peerAccount, topic }) => {
-            const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
-            const message =
-              (filterIdx !== -1 && filteredThreadTopics[filterIdx].message) || undefined
+        {filteredThreads.map(({ peerAccount, topic }) => {
+          const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
+          const message = (filterIdx !== -1 && filteredThreadTopics[filterIdx].message) || undefined
 
-            return (
-              <Thread
-                searchQuery={search}
-                topic={topic}
-                lastMessage={message}
-                threadPeer={peerAccount}
-                key={peerAccount}
-              />
-            )
-          })}
+          return (
+            <Thread
+              searchQuery={search}
+              topic={topic}
+              lastMessage={message}
+              threadPeer={peerAccount}
+              key={peerAccount}
+            />
+          )
+        })}
         {threads.length === 0 && search && (
           <span className="ThreadSelector__contact">No {search} found in your contacts</span>
         )}

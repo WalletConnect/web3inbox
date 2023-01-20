@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { isAddress } from '@ethersproject/address'
 
 export const getEthChainAddress = (address: string) => {
   return address.split(':')[2] as `0x${string}`
@@ -19,5 +19,5 @@ export const isValidEnsDomain = (domain: string) => {
 }
 
 export const isValidAddressOrEnsDomain = (stringToTest: string) => {
-  return isValidEnsDomain(stringToTest) || ethers.utils.isAddress(stringToTest)
+  return isValidEnsDomain(stringToTest) || isAddress(stringToTest)
 }

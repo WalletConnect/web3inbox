@@ -9,22 +9,22 @@ import Toggle from '../../general/Toggle'
 import type { SettingsContextSimpleState } from '../../../contexts/SettingsContext/context'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 
+const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = useMemo(() => {
+  return [
+    { id: 'light', icon: LightCity },
+    { id: 'dark', icon: DarkCity },
+    { id: 'system', icon: HalfHalfCity }
+  ]
+}, [])
+
+const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: string }[] = [
+  { id: 'require-invite', label: 'Require new contacts to send me a chat invite' },
+  { id: 'reject-new', label: 'Decline all chat invites from new contacts' },
+  { id: 'accept-new', label: 'Accept all chat invites from new contacts' }
+]
+
 const Settings: React.FC = () => {
   const { mode, newContacts, updateSettings: updateTheme } = useContext(SettingsContext)
-
-  const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = useMemo(() => {
-    return [
-      { id: 'light', icon: LightCity },
-      { id: 'dark', icon: DarkCity },
-      { id: 'system', icon: HalfHalfCity }
-    ]
-  }, [])
-
-  const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: string }[] = [
-    { id: 'require-invite', label: 'Require new contacts to send me a chat invite' },
-    { id: 'reject-new', label: 'Decline all chat invites from new contacts' },
-    { id: 'accept-new', label: 'Accept all chat invites from new contacts' }
-  ]
 
   return (
     <div className="Settings">
