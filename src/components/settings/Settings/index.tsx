@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext } from 'react'
 import DarkCity from '../../../assets/DarkCity.png'
 import LightCity from '../../../assets/LightCity.png'
 import HalfHalfCity from '../../../assets/HalfHalfCity.png'
@@ -9,13 +9,11 @@ import Toggle from '../../general/Toggle'
 import type { SettingsContextSimpleState } from '../../../contexts/SettingsContext/context'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 
-const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = useMemo(() => {
-  return [
-    { id: 'light', icon: LightCity },
-    { id: 'dark', icon: DarkCity },
-    { id: 'system', icon: HalfHalfCity }
-  ]
-}, [])
+const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
+  { id: 'light', icon: LightCity },
+  { id: 'dark', icon: DarkCity },
+  { id: 'system', icon: HalfHalfCity }
+]
 
 const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: string }[] = [
   { id: 'require-invite', label: 'Require new contacts to send me a chat invite' },
