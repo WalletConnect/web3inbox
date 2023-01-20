@@ -3,10 +3,12 @@ export const getLocalStorageConsumptionInKb = () => {
 
   for (const key in localStorage) {
     if (localStorage.getItem(key)) {
-      const keyConsumption = (key.length + (localStorage.getItem(key)?.length ?? 0)) * 2
+      // Add the length of the key, as well as the length of the value
+      const keyConsumption = key.length + (localStorage.getItem(key)?.length ?? 0)
       lsTotal += keyConsumption
     }
   }
 
-  return lsTotal
+  // Multiply it by 2 since localStorage stores the value in UTF-16
+  return lsTotal * 2
 }

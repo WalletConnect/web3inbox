@@ -14,12 +14,12 @@ const settingsReducer = (
 }
 
 const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
-  const initalState: SettingsContextSimpleState = {
+  const initialState: SettingsContextSimpleState = {
     mode: 'system',
     newContacts: 'require-invite'
   }
 
-  const [settingsState, updateSettings] = useReducer(settingsReducer, initalState)
+  const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
 
   return (
     <SettingsContext.Provider
