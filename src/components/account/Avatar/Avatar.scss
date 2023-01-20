@@ -1,16 +1,91 @@
+@import '../../../styles/mixins.scss';
+
 .Avatar {
-	--color-av-1: #fff;
-	--color-av-2: #fff;
-	--color-av-3: #fff;
-	--color-av-4: #fff;
-	--color-av-5: #fff;
-  border-radius: 50%;
-  background-color: var(--color-av-1);
-  background-image: radial-gradient(at 66% 77%, var(--color-av-2) 0px, transparent 50%),
-    radial-gradient(at 29% 97%, var(--color-av-3) 0px, transparent 50%),
-    radial-gradient(at 99% 86%, var(--color-av-4) 0px, transparent 50%),
-    radial-gradient(at 29% 88%, var(--color-av-5) 0px, transparent 50%);
+  position: relative;
+  &__container {
+    --color-av-1: #fff;
+    --color-av-2: #fff;
+    --color-av-3: #fff;
+    --color-av-4: #fff;
+    --color-av-5: #fff;
+    border-radius: 50%;
+    background-color: var(--color-av-1);
+    background-image: radial-gradient(at 66% 77%, var(--color-av-2) 0px, transparent 50%),
+      radial-gradient(at 29% 97%, var(--color-av-3) 0px, transparent 50%),
+      radial-gradient(at 99% 86%, var(--color-av-4) 0px, transparent 50%),
+      radial-gradient(at 29% 88%, var(--color-av-5) 0px, transparent 50%);
+  }
   &__icon {
     border-radius: 50%;
+  }
+  &__dropdown {
+    margin-top: 0.5em;
+    position: absolute;
+    width: 8.8125em;
+    background-color: white;
+    border: solid 1px rgba(0, 0, 0, 0.1);
+    color: black;
+    border-radius: 15px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+
+    &__block {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: flex-start;
+      padding: 0.5em;
+      font-weight: 700;
+      font-size: 0.875em;
+
+      &__avatar {
+        display: flex;
+
+        img {
+          border-radius: 50%;
+        }
+      }
+
+      &__username {
+        margin-left: 10px;
+        font-size: 1.2em;
+      }
+      &__balance {
+        margin-left: 10px;
+        font-size: 1.2em;
+      }
+
+      &__actions {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        &__disconnect {
+          span {
+            color: red;
+          }
+        }
+        button {
+          height: 42px;
+          display: flex;
+          justify-content: flex-start;
+          padding: 0.625em 0.8125em;
+          gap: 6px;
+          width: 7.9375em;
+          height: 2.3125em;
+          border: none;
+          background: none;
+          color: black;
+          cursor: pointer;
+          img {
+            width: 0.9em;
+            height: 0.9em;
+          }
+          span {
+            line-height: 1.0625em;
+            font-size: 0.875em;
+          }
+        }
+      }
+    }
   }
 }

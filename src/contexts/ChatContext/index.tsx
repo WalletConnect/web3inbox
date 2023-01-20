@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
 import Web3InboxProxy from '../../w3iProxy'
 import type { W3iChatClient } from '../../w3iProxy'
 import ChatContext from './context'
@@ -97,7 +96,8 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
         refreshThreadsAndInvites: refreshThreads,
         threads,
         invites,
-        registeredKey
+        registeredKey,
+        setUserPubkey
       }}
     >
       {children}

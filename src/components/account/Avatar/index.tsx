@@ -1,6 +1,16 @@
-import React from 'react'
+import React, { useCallback, useContext, useRef, useState } from 'react'
+import { useBalance, useDisconnect } from 'wagmi'
+import { useNavigate } from 'react-router-dom'
+
 import { generateAvatarColors } from '../../../utils/ui'
+import Divider from '../../general/Divider'
+import Profile from '../../../assets/Profile.svg'
+import ETH from '../../../assets/ETH.svg'
+import Share from '../../../assets/Share.svg'
+import Disconnect from '../../../assets/Disconnect.svg'
+import useOnClickOutside from '../../../utils/hooks'
 import './Avatar.scss'
+import ChatContext from '../../../contexts/ChatContext/context'
 
 interface AvatarProps {
   src?: string | null
@@ -10,12 +20,77 @@ interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({ src, address, width, height }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const { setUserPubkey } = useContext(ChatContext)
+  const ref = useRef(null)
+  const navigate = useNavigate()
+  const { data } = useBalance({ address: address ? (address as `0x${string}`) : undefined })
+  const { disconnect } = useDisconnect()
+  const handleToggleProfile = useCallback(
+    () => setIsOpen(currentState => !currentState),
+    [setIsOpen]
+  )
+  useOnClickOutside(ref, handleToggleProfile)
+
+  const handleDisconnect = useCallback(() => {
+    disconnect()
+    setUserPubkey(undefined)
+    navigate('/login')
+  }, [disconnect, navigate])
+
   return (
-    <div
-      className="Avatar"
-      style={{ width, height, ...(address ? generateAvatarColors(address) : {}) }}
-    >
-      {src && <img className="Avatar__icon" src={src} alt="Avatar" />}
+    <div className="Avatar">
+      <div
+        className="Avatar__container"
+        style={{ width, height, ...(address ? generateAvatarColors(address) : {}) }}
+        onClick={handleToggleProfile}
+      >
+        {src && <img className="Avatar__icon" src={src} alt="Avatar" />}
+      </div>
+      {isOpen && (
+        <div ref={ref} className="Avatar__dropdown">
+          <div className="Avatar__dropdown__content">
+            <div className="Avatar__dropdown__block">
+              <div
+                className="Avatar__container"
+                style={{ width, height, ...(address ? generateAvatarColors(address) : {}) }}
+              >
+                {src && <img className="Avatar__icon" src={src} alt="Avatar" />}
+              </div>
+              <div className="Avatar__dropdown__block__username">so-so.eth</div>
+            </div>
+            <Divider />
+            <div className="Avatar__dropdown__block">
+              <div style={{ width, height }} className="Avatar__dropdown__block__avatar">
+                <img src={ETH} alt="native token logo" />
+              </div>
+              <div className="Avatar__dropdown__block__balance">
+                {data?.formatted && parseFloat(data.formatted).toFixed(6)}
+              </div>
+            </div>
+            <Divider />
+            <div className="Avatar__dropdown__block">
+              <div className="Avatar__dropdown__block__actions">
+                <button>
+                  <img alt="view-profile-icon" src={Profile} />
+                  <span>View Profile</span>
+                </button>
+                <button>
+                  <img alt="share-icon" src={Share} />
+                  <span>Share</span>
+                </button>
+                <button
+                  className="Avatar__dropdown__block__actions__disconnect"
+                  onClick={handleDisconnect}
+                >
+                  <img alt="share-icon" src={Disconnect} />
+                  <span>Disconnect</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

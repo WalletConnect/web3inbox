@@ -1,8 +1,6 @@
 @import '../../../styles/mixins.scss';
 
 .Sidebar {
-  @include padding-y(2em);
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,4 +14,8 @@
   flex-direction: column;
   align-items: center;
   gap: 1em;
+}
+
+.Sidebar__Item {
+  cursor: pointer;
 }

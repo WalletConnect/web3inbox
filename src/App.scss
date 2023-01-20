@@ -15,8 +15,10 @@
   }
 
   .Sidebar {
+    @include padding-y(0.875em);
+    @include padding-x(0.25em);
+
     grid-area: sidebar;
-		padding: 0.25em;
 		height: 100vh;
   }
 

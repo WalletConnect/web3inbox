@@ -11,6 +11,7 @@ import Button from '../../components/general/Button'
 import { Web3Button } from '@web3modal/react'
 import { useNavigate } from 'react-router-dom'
 import ChatContext from '../../contexts/ChatContext/context'
+import { useAccount } from 'wagmi'
 
 const Web3InboxFeatures = [
   {
@@ -29,13 +30,17 @@ const Web3InboxFeatures = [
 
 const Login: React.FC = () => {
   const { userPubkey } = useContext(ChatContext)
+  const { isDisconnected } = useAccount()
   const nav = useNavigate()
 
   useEffect(() => {
+    if (!userPubkey && isDisconnected) {
+      nav('/login')
+    }
     if (userPubkey) {
       nav('/')
     }
-  }, [userPubkey])
+  }, [userPubkey, isDisconnected])
 
   return (
     <div className="Login">
