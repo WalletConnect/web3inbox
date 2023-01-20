@@ -2,6 +2,7 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 import type ChatClient from '@walletconnect/chat-client'
 import type { W3iChatProvider } from './types'
+import { watchAccount, getAccount } from '@wagmi/core'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -10,6 +11,22 @@ export default class InternalChatProvider implements W3iChatProvider {
 
   public constructor(emitter: EventEmitter) {
     this.emitter = emitter
+
+    watchAccount(account => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (!account.address || !window.web3inbox.chat) {
+        return
+      }
+
+      window.web3inbox.chat.postMessage({
+        id: Date.now(),
+        jsonrpc: '2.0',
+        method: 'setAccount',
+        params: {
+          account: account.address
+        }
+      })
+    })
   }
 
   /*
@@ -19,10 +36,25 @@ export default class InternalChatProvider implements W3iChatProvider {
   public initState(chatClient: ChatClient) {
     this.chatClient = chatClient
 
+    const address: string | undefined = getAccount().address
+    if (address) {
+      window.web3inbox.chat.postMessage({
+        id: Date.now(),
+        jsonrpc: '2.0',
+        method: 'setAccount',
+        params: {
+          account: address
+        }
+      })
+    }
+
     this.chatClient.on('chat_ping', args => this.emitter.emit('chat_ping', args))
     this.chatClient.on('chat_message', args => this.emitter.emit('chat_message', args))
     this.chatClient.on('chat_joined', args => this.emitter.emit('chat_joined', args))
-    this.chatClient.on('chat_invite', args => this.emitter.emit('chat_invite', args))
+    this.chatClient.on('chat_invite', args => {
+      console.log('GOT INVITE', args)
+      this.emitter.emit('chat_invite', args)
+    })
     this.chatClient.on('chat_left', args => this.emitter.emit('chat_left', args))
   }
 
@@ -90,12 +122,24 @@ export default class InternalChatProvider implements W3iChatProvider {
 
     return Promise.resolve(this.chatClient.getThreads(params))
   }
+
+  public async getPendingThreads() {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('getThreads'))
+    }
+
+    return Promise.resolve(this.chatClient.chatThreadsPending.getAll())
+  }
+
   public async getInvites(params?: { account: string }) {
     if (!this.chatClient) {
+      console.log({ params })
       throw new Error(this.formatClientRelatedError('getInvites'))
     }
 
-    return Promise.resolve(this.chatClient.getInvites(params))
+    console.log('Invites: ', this.chatClient.getInvites())
+
+    return Promise.resolve(this.chatClient.getInvites())
   }
   public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
     if (!this.chatClient) {

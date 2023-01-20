@@ -12,7 +12,12 @@ import { EthereumClient, modalConnectors, walletConnectProvider } from '@web3mod
 import MessagesLayout from './components/messages/MessagesLayout'
 import NotificationsLayout from './components/notifications/NotificationsLayout'
 import ThreadWindow from './components/messages/ThreadWindow'
-import UserContextProvider from './contexts/UserContext'
+import NewChat from './components/messages/NewChat'
+import Web3InboxPlaceholder from './components/general/Web3InboxPlaceholder'
+import ChatInvites from './components/messages/ChatInvites'
+import SettingsLayout from './components/settings/SettingsLayout'
+import Settings from './components/settings/Settings'
+import SettingsContextProvider from './contexts/SettingsContext'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -29,8 +34,8 @@ export const ethereumClient = new EthereumClient(wagmiClient, chains)
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <WagmiConfig client={wagmiClient}>
-      <ChatContextProvider>
-        <UserContextProvider>
+      <SettingsContextProvider>
+        <ChatContextProvider>
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
@@ -38,15 +43,21 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path="/" element={<App />}>
                 <Route path="notifications" element={<NotificationsLayout />} />
                 <Route path="messages" element={<MessagesLayout />}>
+                  <Route index element={<Web3InboxPlaceholder />} />
                   <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
+                  <Route path="/messages/new-chat" element={<NewChat />} />
+                  <Route path="/messages/chat-invites" element={<ChatInvites />} />
+                </Route>
+                <Route path="settings" element={<SettingsLayout />}>
+                  <Route index element={<Settings />} />
                 </Route>
               </Route>
 
               <Route index element={<Navigate to="/messages" />} />
             </Routes>
           </BrowserRouter>
-        </UserContextProvider>
-      </ChatContextProvider>
+        </ChatContextProvider>
+      </SettingsContextProvider>
     </WagmiConfig>
     <Web3Modal
       ethereumClient={ethereumClient}

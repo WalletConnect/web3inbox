@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import Web3InboxProxy from '../../w3iProxy'
 import type { W3iChatClient } from '../../w3iProxy'
 import ChatContext from './context'
+import { formatEthChainsAddress } from '../../utils/address'
+import type { ChatClientTypes } from '@walletconnect/chat-client'
 
 interface ChatContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -16,23 +18,30 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
     providerQuery ? (providerQuery as Web3InboxProxy['chatProvider']) : 'internal'
   )
 
-  console.log({ provider })
-
   const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
+  const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
+  const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
+  const [pendingThreads, setPendingThreads] = useState<ChatClientTypes.Thread[]>([])
 
-  const { address } = useAccount()
+  const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
 
-  // eslint-disable-next-line no-warning-comments
-  // TODO: Move this to internal chatprovider
-
-  // Register internal address
   useEffect(() => {
-    if (!(chatClient && address)) {
-      return
+    chatClient?.observe('chat_account_change', {
+      next: ({ account }) => {
+        setUserPubkey(account)
+      }
+    })
+  }, [chatClient])
+
+  useEffect(() => {
+    if (chatClient && userPubkey) {
+      chatClient.register({ account: `eip155:1:${userPubkey}` }).then(registeredKeyRes => {
+        console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
+        setRegistered(registeredKeyRes)
+      })
     }
-    chatClient.register({ account: `eip155:1:${address}` }).then(setRegistered)
-  }, [address, chatClient])
+  }, [chatClient, userPubkey])
 
   useEffect(() => {
     if (chatClient) {
@@ -40,11 +49,57 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
     }
 
     const w3iProxy = new Web3InboxProxy(provider, projectId, relayUrl)
-    w3iProxy.init().then(() => setChatClient(w3iProxy.chat))
+    w3iProxy
+      .init()
+      .then(() => setChatClient(w3iProxy.chat))
+      .then(() => {
+        setUserPubkey(w3iProxy.chat.getAccount())
+      })
   }, [setChatClient, chatClient])
 
+  const refreshThreads = useCallback(() => {
+    console.log('Refreshing threads')
+    if (!chatClient || !userPubkey) {
+      return
+    }
+
+    chatClient
+      .getInvites({ account: `eip155:1:${userPubkey}` })
+      .then(invite => setInvites(Array.from(invite.values())))
+    chatClient
+      .getThreads({ account: `eip155:1:${userPubkey}` })
+      .then(invite => setThreads(Array.from(invite.values())))
+  }, [chatClient, userPubkey, setThreads, setInvites])
+
+  useEffect(() => {
+    if (!chatClient) {
+      return
+    }
+
+    chatClient.observe('chat_invite', {
+      next: inv => {
+        console.log('got invite', inv)
+        refreshThreads()
+      }
+    })
+    chatClient.observe('chat_joined', { next: refreshThreads })
+  }, [chatClient, refreshThreads])
+
+  useEffect(() => {
+    refreshThreads()
+  }, [refreshThreads])
+
   return (
-    <ChatContext.Provider value={{ chatClientProxy: chatClient, registeredKey }}>
+    <ChatContext.Provider
+      value={{
+        chatClientProxy: chatClient,
+        userPubkey,
+        refreshThreadsAndInvites: refreshThreads,
+        threads,
+        invites,
+        registeredKey
+      }}
+    >
       {children}
     </ChatContext.Provider>
   )

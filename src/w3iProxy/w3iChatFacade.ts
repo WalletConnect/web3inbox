@@ -47,8 +47,8 @@ class W3iChatFacade implements W3iChat {
     this.emitter.emit(messageData.id.toString(), messageData)
     switch (messageData.method) {
       case 'setAccount':
-        this.emitter.emit('chat_account_change', messageData.params)
         this.externallySetAccount = (messageData.params as { account: string }).account
+        this.emitter.emit('chat_account_change', messageData.params)
         break
       default:
         if (this.provider.isListeningToMethodFromPostMessage(messageData.method)) {
@@ -80,6 +80,9 @@ class W3iChatFacade implements W3iChat {
   }
   public async getInvites(params?: { account: string }) {
     return this.provider.getInvites(params)
+  }
+  public async getPendingThreads(params?: { account: string }) {
+    return this.provider.getPendingThreads(params)
   }
   public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
     return this.provider.invite(params)

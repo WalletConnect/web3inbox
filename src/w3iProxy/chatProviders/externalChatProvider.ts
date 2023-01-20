@@ -46,6 +46,7 @@ export default class ExternalChatProvider implements W3iChatProvider {
   }
 
   public handleMessage(request: JsonRpcRequest<unknown>) {
+    console.log({ request })
     switch (request.method) {
       case 'chat_message':
       case 'chat_ping':
@@ -78,6 +79,11 @@ export default class ExternalChatProvider implements W3iChatProvider {
   public async getThreads(params?: { account: string }) {
     return this.postToExternalProvider('getThreads', params)
   }
+
+  public async getPendingThreads(params?: { account: string }) {
+    return this.postToExternalProvider('getPendingThreads', params)
+  }
+
   public async getInvites(params?: { account: string }) {
     return this.postToExternalProvider('getInvites', params)
   }

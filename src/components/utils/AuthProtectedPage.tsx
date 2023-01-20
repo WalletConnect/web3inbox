@@ -1,13 +1,13 @@
 import React, { Fragment, useContext } from 'react'
 import { Navigate } from 'react-router-dom'
-import UserContext from '../../contexts/UserContext/context'
+import ChatContext from '../../contexts/ChatContext/context'
 
 interface AuthProtectedPageProps {
   children: React.ReactNode
 }
 
 const AuthProtectedPage: React.FC<AuthProtectedPageProps> = ({ children }) => {
-  const { userPubkey } = useContext(UserContext)
+  const { userPubkey } = useContext(ChatContext)
   if (!userPubkey) {
     return <Navigate to="/login" />
   }

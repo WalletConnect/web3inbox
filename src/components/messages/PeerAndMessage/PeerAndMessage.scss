@@ -1,0 +1,22 @@
+.PeerAndMessage {
+	display: flex;
+	gap: 0.5em;
+	align-items: center;
+
+	&__text, &__peer {
+		display: flex;
+	align-items: center;
+		gap: 0.5em;
+		flex-direction: column;
+	}
+
+	&__peer {
+		font-weight: 700;
+	}
+
+	&__message {
+		font-size: 0.9em;
+		width: 100%;
+		color: var(--fg-color-3);
+	}
+}

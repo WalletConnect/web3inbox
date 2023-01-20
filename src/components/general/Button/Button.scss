@@ -1,20 +1,47 @@
 .Button {
   display: flex;
+	justify-content: space-between;
+	gap: 0.3em;
+	cursor: pointer;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
-  padding: 0.5em;
+  border-radius: 28px;
+  padding: 0.4em 0.75em;
   font-weight: 700;
+
+	&__primary {
+		background: var(--accent-color-1);
+		border: solid 1px var(--accent-color-1);
+		color: var(--fg-color-1);
+	}
+
+	&__secondary {
+		background: transparent;
+		border: solid 1px var(--accent-color-1);
+		color: var(--accent-color-1);
+	}
+
+	&__action, &__action-icon {
+		background-color: var(--bg-color-2);
+		color: var(--fg-color-2);
+		border: solid 1px var(--bg-color-4);
+	}
+
+	&__action-icon {
+		border-radius: 50%;
+		width: 2em;
+		height: 2em;
+		padding: 0.5em 0.5em;
+		img {
+			width: 2em;
+			height: 2em;
+		}
+	}
+
+	&:disabled {
+		background-color: var(--fg-color-2);
+		color: var(--fg-color-5);
+		border-color: var(--fg-color-5);
+	}
 }
 
-.Button__primary {
-  background: var(--accent-1);
-  border: solid 1px var(--accent-1);
-  color: var(--fg-color-1);
-}
-
-.Button__secondary {
-  background: transparent;
-  border: solid 1px var(--accent-1);
-  color: var(--accent-1);
-}

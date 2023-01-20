@@ -1,143 +1,127 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
-import { fetchEnsAddress } from '@wagmi/core'
-import Thread from '../Thread'
+import Thread from './Thread'
+import PersonIcon from '../../../assets/Person.svg'
+import PlusIcon from '../../../assets/Plus.svg'
 import './ThreadSelector.scss'
-import Button from '../../general/Button'
-import Invite from '../Invite'
-import { formatEthChainsAddress, getEthChainAddress } from '../../../utils/address'
-import UserContext from '../../../contexts/UserContext/context'
+import NavLink from '../../general/NavLink'
+import debounce from 'lodash.debounce'
+import { concatAll, from, takeLast, takeWhile } from 'rxjs'
 
 const ThreadSelector: React.FC = () => {
-  const { chatClientProxy } = useContext(ChatContext)
-  const { userPubkey } = useContext(UserContext)
-  const [search, setSearch] = useState<string>('')
-  const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
-  const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
+  const [search, setSearch] = useState('')
+  const [filteredThreadTopics, setFilteredThreadTopics] = useState<
+    { topic: string; message?: string }[]
+  >([])
+  const { threads, invites, chatClientProxy } = useContext(ChatContext)
 
-  console.log('Chat Client: ', chatClientProxy)
+  const filteredThreads = useMemo(() => {
+    return threads.filter(
+      thread =>
+        filteredThreadTopics.length === 0 ||
+        filteredThreadTopics.map(filteredThread => filteredThread.topic).includes(thread.topic)
+    )
+  }, [threads, filteredThreadTopics])
 
-  const refreshThreads = useCallback(() => {
-    if (!chatClientProxy) {
-      return
-    }
+  const filterThreads = useCallback(
+    debounce((searchQuery: string) => {
+      if (!searchQuery || !chatClientProxy) {
+        setFilteredThreadTopics([])
 
-    chatClientProxy
-      .getInvites({ account: formatEthChainsAddress(userPubkey) })
-      .then(invite => setInvites(Array.from(invite.values())))
-    chatClientProxy
-      .getThreads({ account: formatEthChainsAddress(userPubkey) })
-      .then(invite => setThreads(Array.from(invite.values())))
-  }, [chatClientProxy, setThreads, setInvites])
-
-  useEffect(() => {
-    refreshThreads()
-  }, [refreshThreads])
-
-  useEffect(() => {
-    if (!search && chatClientProxy) {
-      chatClientProxy
-        .getThreads({ account: formatEthChainsAddress(userPubkey) })
-        .then(thread => setThreads(Array.from(thread.values())))
-    }
-    setThreads(oldThreads => {
-      return oldThreads.filter(thread => thread.peerAccount.includes(search))
-    })
-  }, [setThreads, search, chatClientProxy])
-
-  useEffect(() => {
-    if (!chatClientProxy) {
-      return
-    }
-
-    chatClientProxy.observe('chat_invite', { next: refreshThreads })
-    chatClientProxy.observe('chat_joined', { next: refreshThreads })
-  }, [chatClientProxy])
-
-  const resolveAddress = async (inviteeAddress: string) => {
-    // eslint-disable-next-line prefer-regex-literals
-    const isEnsDomain = new RegExp('.*.eth', 'u').test(inviteeAddress)
-    if (isEnsDomain) {
-      const resolvedAddress = await fetchEnsAddress({
-        name: inviteeAddress
-      })
-
-      if (resolvedAddress) {
-        return `eip155:1:${resolvedAddress}`
-      }
-    }
-
-    return inviteeAddress
-  }
-
-  const invite = useCallback(
-    (inviteeAddress: string) => {
-      if (!userPubkey || !chatClientProxy) {
         return
       }
-      resolveAddress(inviteeAddress).then(resolvedAddress => {
-        console.log('inviting', resolvedAddress)
 
-        chatClientProxy
-          .invite({
-            account: resolvedAddress,
-            invite: {
-              account: `eip155:1:${userPubkey}`,
-              message: 'Inviting'
-            }
-          })
-          .then(refreshThreads)
+      const newFilteredThreadTopics: { topic: string; message?: string }[] = []
+
+      /*
+       * For every thread, check if the thread address matches the searchQuery
+       * If it does, add it to filtered topics
+       * If it doesn't, look through the last 100 messages (or until a match is
+       * found), if one is found add it to filtered topics with the matched
+       * message as the reason (so it can be showcased).
+       */
+      from(threads).subscribe({
+        next: thread => {
+          if (thread.peerAccount.includes(searchQuery)) {
+            newFilteredThreadTopics.push({ topic: thread.topic })
+
+            return
+          }
+
+          from(chatClientProxy.getMessages({ topic: thread.topic }))
+            .pipe(concatAll())
+            .pipe(takeLast(100))
+            .pipe(
+              takeWhile(messageToCheck => {
+                return !messageToCheck.message.includes(searchQuery)
+              }, true)
+            )
+            .pipe(takeLast(1))
+            .subscribe({
+              next: ({ message }) => {
+                if (message.includes(searchQuery)) {
+                  newFilteredThreadTopics.push({ topic: thread.topic, message })
+                }
+              }
+            })
+        },
+        complete: () => {
+          setFilteredThreadTopics(newFilteredThreadTopics)
+        }
       })
-    },
-    [userPubkey, chatClientProxy, refreshThreads]
+    }, 50),
+    [threads, chatClientProxy]
   )
+
+  useEffect(() => {
+    filterThreads(search)
+  }, [search, filterThreads])
+
+  console.log('Actual filtered threads', filteredThreadTopics)
 
   return (
     <div className="ThreadSelector">
       <Input
-        onChange={({ target }) => setSearch(target.value)}
-        value={search}
+        onChange={({ target }) => {
+          setSearch(target.value)
+        }}
         placeholder="Search"
         icon={Search}
       />
-      <div className="ThreadSelector__threads">
-        {threads.map(({ peerAccount, topic }) => {
-          return <Thread topic={topic} threadPeer={peerAccount} key={peerAccount} />
-        })}
-        {!search && (
-          <div className="Invites">
-            {invites.length > 0 && <span>Invites:</span>}
-            {invites.map(({ account, id, message }) => (
-              <Invite
-                address={account}
-                key={account}
-                message={message}
-                id={id ?? 0}
-                onSuccessfulAccept={refreshThreads}
-              />
-            ))}
+      <NavLink to="/messages/new-chat" className="ThreadSelector__link">
+        <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
+        <span>New Chat</span>
+      </NavLink>
+      <NavLink to="/messages/chat-invites" className="ThreadSelector__link">
+        <div className="ThreadSelector__invites">
+          <div className="ThreadSelector__invites-link">
+            <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
+            <span>Chat Invites</span>
           </div>
-        )}
+          <div className="ThreadSelector__invites-badge">
+            <div className="ThreadSelector__invites-badget-num">{invites.length}</div>
+          </div>
+        </div>
+      </NavLink>
+      <div className="ThreadSelector__threads">
+        {filteredThreads.map(({ peerAccount, topic }) => {
+          const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
+          const message = (filterIdx !== -1 && filteredThreadTopics[filterIdx].message) || undefined
+
+          return (
+            <Thread
+              searchQuery={search}
+              topic={topic}
+              lastMessage={message}
+              threadPeer={peerAccount}
+              key={peerAccount}
+            />
+          )
+        })}
         {threads.length === 0 && search && (
-          <span className="ThreadSelector__contact">
-            {search} is not in your contacts, send contact request
-          </span>
-        )}
-      </div>
-      <div className="ThreadSelector__action">
-        {Object.keys(threads).length === 0 && search && (
-          <Button
-            type="primary"
-            onClick={() => {
-              invite(search)
-              setSearch('')
-            }}
-          >
-            Send Contact Request
-          </Button>
+          <span className="ThreadSelector__contact">No {search} found in your contacts</span>
         )}
       </div>
     </div>

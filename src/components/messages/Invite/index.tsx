@@ -18,13 +18,15 @@ const Invite: React.FC<InviteProps> = ({ address, onSuccessfulAccept, id, messag
     address: evmAddress
   })
 
+  console.log('Id is: ', id)
+
   return (
     <div
       onClick={() => chatClientProxy?.accept({ id }).then(onSuccessfulAccept)}
       className="Invite"
     >
       <div className="Invite__inviter" id={id.toString()}>
-        <Avatar src={ensAvatar} width="1.25em" height="1.25em" />
+        <Avatar address={address} src={ensAvatar} width="1.25em" height="1.25em" />
         <span>{address}</span>
       </div>
       <div className="Invite__message">{message}</div>

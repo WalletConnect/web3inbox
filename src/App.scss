@@ -6,8 +6,8 @@
   width: 100vw;
   display: grid;
   grid-template: 'sidebar target-selector main header';
-  gap: 1em;
-  grid-template-columns: minmax(1.5em, 0.5fr) 5fr 10fr minmax(min-content, 1fr);
+  gap: 5em;
+  grid-template-columns: minmax(4em, 0.5fr) minmax(20%, 2fr) 8fr minmax(min-content, 1fr);
 
   .TargetSelector {
     grid-area: target-selector;
@@ -16,6 +16,7 @@
 
   .Sidebar {
     grid-area: sidebar;
+		padding: 0.25em;
 		height: 100vh;
   }
 
