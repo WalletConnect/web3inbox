@@ -11,7 +11,7 @@
 		background-color: var(--accent-color-1);
 		margin: 0;
 		font: inherit;
-		color: var(--fg-color-1);
+		color: var(--bg-color-1);
 		border: 0.15em solid var(--accent-color-1);
 		width:  inherit;
 		height: inherit;
@@ -22,12 +22,12 @@
 
 		&::before {
 			content: "";
-			background-color: var(--fg-color-1);
+			background-color: var(--bg-color-1);
 			width: 0.75em;
 			height: 0.75em;
 			transform: scale(0);
 			transition: 120ms transform ease-in-out;
-			box-shadow: inset 1em 1em var(--fg-color-1);
+			box-shadow: inset 1em 1em var(--bg-color-1);
 			transform-origin: bottom left;
 			border-radius: 50%;
 		}
