@@ -1,14 +1,11 @@
 import React, { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import MessagesFilled from '../../../assets/MessagesFilled.svg'
-import Messages from '../../../assets/Messages.svg'
-import Notifications from '../../../assets/Notifications.svg'
-import NotificationsFilled from '../../../assets/NotificationsFilled.svg'
-import Settings from '../../../assets/Settings.svg'
-import SettingsFilled from '../../../assets/SettingsFilled.svg'
 import Logo from '../../../assets/Logo.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
 import Avatar from '../../account/Avatar'
+import MessageIcon from '../../general/Icon/MessageIcon'
+import NotificationIcon from '../../general/Icon/NotificationIcon'
+import SettingIcon from '../../general/Icon/SettingIcon'
 import './Sidebar.scss'
 
 const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
@@ -27,15 +24,25 @@ const Sidebar: React.FC = () => {
       <SidebarItem>
         <div className="Sidebar__Navigation">
           {[
-            [pathname.includes('/messages') ? MessagesFilled : Messages, 'messages'],
             [
-              pathname.includes('/notifications') ? NotificationsFilled : Notifications,
+              pathname.includes('/messages') ? <MessageIcon isFilled /> : <MessageIcon />,
+              'messages'
+            ],
+            [
+              pathname.includes('/notifications') ? (
+                <NotificationIcon isFilled />
+              ) : (
+                <NotificationIcon />
+              ),
               'notifications'
             ],
-            [pathname.includes('/settings') ? SettingsFilled : Settings, 'settings']
-          ].map(([itemSrc, itemName]) => (
-            <Link key={itemName} to={`/${itemName}`}>
-              <img alt={itemName} src={itemSrc} />
+            [
+              pathname.includes('/settings') ? <SettingIcon isFilled /> : <SettingIcon />,
+              'settings'
+            ]
+          ].map(([icon, itemName]) => (
+            <Link key={itemName as string} to={`/${itemName as string}`}>
+              {icon}
             </Link>
           ))}
         </div>

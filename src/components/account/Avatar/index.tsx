@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom'
 
 import { generateAvatarColors } from '../../../utils/ui'
 import Divider from '../../general/Divider'
-import Profile from '../../../assets/Profile.svg'
 import ETH from '../../../assets/ETH.svg'
-import Share from '../../../assets/Share.svg'
 import Disconnect from '../../../assets/Disconnect.svg'
-import useOnClickOutside from '../../../utils/hooks'
+import { useOnClickOutside } from '../../../utils/hooks'
 import './Avatar.scss'
 import ChatContext from '../../../contexts/ChatContext/context'
 import { truncate } from '../../../utils/string'
+import ShareIcon from '../../general/Icon/ShareIcon'
+import PersonIcon from '../../general/Icon/PersonIcon'
 
 interface AvatarProps {
   src?: string | null
@@ -98,11 +98,11 @@ const Avatar: React.FC<AvatarProps> = ({
             <div className="Avatar__dropdown__block">
               <div className="Avatar__dropdown__block__actions">
                 <button>
-                  <img alt="view-profile-icon" src={Profile} />
+                  <PersonIcon />
                   <span>View Profile</span>
                 </button>
                 <button>
-                  <img alt="share-icon" src={Share} />
+                  <ShareIcon />
                   <span>Share</span>
                 </button>
                 <button
