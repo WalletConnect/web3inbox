@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Logo from '../../../assets/Logo.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
@@ -15,6 +15,17 @@ const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 const Sidebar: React.FC = () => {
   const { pathname } = useLocation()
   const { userPubkey } = useContext(ChatContext)
+  const navItems = useMemo(
+    () => [
+      [pathname.includes('/messages') ? <MessageIcon isFilled /> : <MessageIcon />, 'messages'],
+      [
+        pathname.includes('/notifications') ? <NotificationIcon isFilled /> : <NotificationIcon />,
+        'notifications'
+      ],
+      [pathname.includes('/settings') ? <SettingIcon isFilled /> : <SettingIcon />, 'settings']
+    ],
+    [pathname]
+  )
 
   return (
     <div className="Sidebar">
@@ -23,25 +34,12 @@ const Sidebar: React.FC = () => {
       </SidebarItem>
       <SidebarItem>
         <div className="Sidebar__Navigation">
-          {[
-            [
-              pathname.includes('/messages') ? <MessageIcon isFilled /> : <MessageIcon />,
-              'messages'
-            ],
-            [
-              pathname.includes('/notifications') ? (
-                <NotificationIcon isFilled />
-              ) : (
-                <NotificationIcon />
-              ),
-              'notifications'
-            ],
-            [
-              pathname.includes('/settings') ? <SettingIcon isFilled /> : <SettingIcon />,
-              'settings'
-            ]
-          ].map(([icon, itemName]) => (
-            <Link key={itemName as string} to={`/${itemName as string}`}>
+          {navItems.map(([icon, itemName]) => (
+            <Link
+              className="Sidebar__Navigation__Link"
+              key={itemName as string}
+              to={`/${itemName as string}`}
+            >
               {icon}
             </Link>
           ))}

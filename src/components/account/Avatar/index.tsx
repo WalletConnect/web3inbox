@@ -12,6 +12,7 @@ import ChatContext from '../../../contexts/ChatContext/context'
 import { truncate } from '../../../utils/string'
 import ShareIcon from '../../general/Icon/ShareIcon'
 import PersonIcon from '../../general/Icon/PersonIcon'
+import { profileModalService, shareModalService } from '../../../utils/store'
 
 interface AvatarProps {
   src?: string | null
@@ -28,7 +29,7 @@ const Avatar: React.FC<AvatarProps> = ({
   height,
   hasProfileDropdown = false
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const { userPubkey, setUserPubkey } = useContext(ChatContext)
   const ref = useRef(null)
   const navigate = useNavigate()
@@ -37,11 +38,11 @@ const Avatar: React.FC<AvatarProps> = ({
     address: address ? (address as `0x${string}`) : undefined
   })
   const { disconnect } = useDisconnect()
-  const handleToggleProfile = useCallback(
-    () => setIsOpen(currentState => !currentState),
-    [setIsOpen]
+  const handleToggleProfileDropdown = useCallback(
+    () => hasProfileDropdown && setIsDropdownOpen(currentState => !currentState),
+    [setIsDropdownOpen, hasProfileDropdown]
   )
-  useOnClickOutside(ref, handleToggleProfile)
+  useOnClickOutside(ref, handleToggleProfileDropdown)
 
   const handleDisconnect = useCallback(() => {
     disconnect()
@@ -49,11 +50,22 @@ const Avatar: React.FC<AvatarProps> = ({
     navigate('/login')
   }, [disconnect, navigate, setUserPubkey])
 
+  const handleViewProfile = useCallback(() => {
+    handleToggleProfileDropdown()
+    profileModalService.toggleModal()
+  }, [handleToggleProfileDropdown])
+
+  const handleShare = useCallback(() => {
+    handleToggleProfileDropdown()
+    shareModalService.toggleModal()
+  }, [handleToggleProfileDropdown])
+
   return (
     <div
       className="Avatar"
       style={{
-        cursor: hasProfileDropdown ? 'pointer' : 'default'
+        cursor: hasProfileDropdown ? 'pointer' : 'default',
+        border: isDropdownOpen ? 'solid 2px #3396FF' : 'solid 2px #E4E7E7'
       }}
     >
       <div
@@ -63,11 +75,11 @@ const Avatar: React.FC<AvatarProps> = ({
           height,
           ...(address ? generateAvatarColors(address) : {})
         }}
-        onClick={handleToggleProfile}
+        onClick={handleToggleProfileDropdown}
       >
         {src && <img className="Avatar__icon" src={src} alt="Avatar" />}
       </div>
-      {hasProfileDropdown && isOpen && (
+      {hasProfileDropdown && isDropdownOpen && (
         <div ref={ref} className="Avatar__dropdown">
           <div className="Avatar__dropdown__content">
             <div className="Avatar__dropdown__block">
@@ -97,11 +109,11 @@ const Avatar: React.FC<AvatarProps> = ({
             <Divider />
             <div className="Avatar__dropdown__block">
               <div className="Avatar__dropdown__block__actions">
-                <button>
+                <button onClick={handleViewProfile}>
                   <PersonIcon />
                   <span>View Profile</span>
                 </button>
-                <button>
+                <button onClick={handleShare}>
                   <ShareIcon />
                   <span>Share</span>
                 </button>

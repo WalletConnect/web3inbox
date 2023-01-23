@@ -75,6 +75,7 @@ const Settings: React.FC = () => {
             <Radio
               name="new-contacts"
               id={id}
+              key={id}
               label={label}
               checked={newContacts === id}
               onCheck={() => updateTheme({ newContacts: id })}

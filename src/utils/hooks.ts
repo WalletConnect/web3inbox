@@ -1,6 +1,8 @@
-import type { RefObject } from 'react';
+import type { RefObject} from 'react';
+import { useState } from 'react';
 import { useEffect } from 'react'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context';
+import { profileModalService, shareModalService } from './store';
 
 export const useOnClickOutside = (ref: RefObject<HTMLElement>, handler: (event: MouseEvent | TouchEvent) => void) => {
   useEffect(
@@ -30,7 +32,7 @@ export const useColorModeValue = (mode: SettingsContextSimpleState["mode"]) => {
     dark: {
       bg1: 'hsla(0, 0%, 8%, 1)',
       bg2: 'hsla(180, 4%, 16%, 1)',
-      bg3: 'hsla(0, 0%, 100%, 0.1)',
+      bg3: 'hsla(0, 0%, 0%, 0.1)',
       bgGradient1: 'linear-gradient(180deg, hsla(180, 4%, 12%, 1) 0%, hsla(0, 0%, 8%, 0.1) 29.96%)',
       fg1: 'hsla(180, 6%, 90%, 1)',
       fg2: 'hsla(0, 0%, 100%, 0.66)',
@@ -73,4 +75,28 @@ export const useColorModeValue = (mode: SettingsContextSimpleState["mode"]) => {
   }
   
   return colorModeVariables;
+}
+
+export const useModals = () => {
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+
+  useEffect(() => {
+    const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
+      setIsProfileModalOpen(isOpen)
+    })
+    const shareSubscription = shareModalService.modalState.subscribe(isOpen => {
+      setIsShareModalOpen(isOpen)
+    })
+
+    return () => {
+      profileSubscription.unsubscribe()
+      shareSubscription.unsubscribe()
+    }
+  }, [])
+
+  return {
+    isProfileModalOpen,
+    isShareModalOpen
+  }
 }
