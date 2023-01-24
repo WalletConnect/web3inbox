@@ -15,8 +15,11 @@ const settingsReducer = (
 }
 
 const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
+  const favoriteTheme = localStorage.getItem('w3i-theme') as
+    | SettingsContextSimpleState['mode']
+    | null
   const initialState: SettingsContextSimpleState = {
-    mode: 'system',
+    mode: favoriteTheme ?? 'system',
     newContacts: 'require-invite'
   }
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
