@@ -34,8 +34,8 @@ const currencyOptions = [
     value: 'USD'
   },
   {
-    label: 'EUR',
-    value: 'EUR'
+    label: 'ETH',
+    value: 'ETH'
   }
 ]
 
@@ -127,14 +127,14 @@ const Settings: React.FC = () => {
           <div className="Settings__setting">
             <div>Muted contacts</div>
             <div className="Settings__toggle-dropdown">
-              <CircleBadge>5</CircleBadge>
+              <CircleBadge>0</CircleBadge>
               <ArrowRightIcon />
             </div>
           </div>
           <div className="Settings__setting">
             <div>Blocked contacts</div>
             <div className="Settings__toggle-dropdown">
-              <CircleBadge>10</CircleBadge>
+              <CircleBadge>0</CircleBadge>
               <ArrowRightIcon />
             </div>
           </div>
