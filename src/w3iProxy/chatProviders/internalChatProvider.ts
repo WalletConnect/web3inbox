@@ -80,7 +80,7 @@ export default class InternalChatProvider implements W3iChatProvider {
 
   public async getMessages(params: { topic: string }) {
     if (!this.chatClient) {
-      throw new Error(this.formatClientRelatedError('reject'))
+      throw new Error(this.formatClientRelatedError('getMessages'))
     }
     const queriedMessages = this.chatClient.chatMessages.getAll(params)
 
