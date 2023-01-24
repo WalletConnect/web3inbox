@@ -1,4 +1,5 @@
-import React, { useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
+import { useColorModeValue } from '../../utils/hooks'
 import type { SettingsContextSimpleState, SettingsContextUpdate } from './context'
 import SettingsContext from './context'
 
@@ -14,12 +15,21 @@ const settingsReducer = (
 }
 
 const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
+  const favoriteTheme = localStorage.getItem('w3i-theme') as
+    | SettingsContextSimpleState['mode']
+    | null
   const initialState: SettingsContextSimpleState = {
-    mode: 'system',
+    mode: favoriteTheme ?? 'system',
     newContacts: 'require-invite'
   }
-
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
+  const themeColors = useColorModeValue(settingsState.mode)
+
+  useEffect(() => {
+    Object.entries(themeColors).forEach(([colorVariable, colorValue]) => {
+      document.documentElement.style.setProperty(colorVariable, colorValue)
+    })
+  }, [themeColors])
 
   return (
     <SettingsContext.Provider

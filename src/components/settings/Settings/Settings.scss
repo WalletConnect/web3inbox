@@ -5,6 +5,7 @@
 
 
 	&__section {
+		color: var(--fg-color-1);
 		:is(&-subtitle, &-helper-text) {
 			color: var(--fg-color-2);
 		}
@@ -53,10 +54,10 @@
 	}
 
 	&__theme-selector {
-		background: var(--bg-color-2);
+		background: var(--bg-gradient-1);
 		border-radius: 30px;
 		padding: 1.5em;
-		border: 1px solid rgba(0, 0, 0, 0.1);
+		border: 1px solid var(--border-color-1);
 		box-shadow: inset 0px 2px 4px rgba(255, 255, 255, 0.5);
 		display: flex;
 		flex-direction: column;

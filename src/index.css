@@ -1,15 +1,3 @@
-#root {
-  --bg-color-1: hsla(0, 0%, 8%, 1);
-  --bg-color-2: hsla(180, 4%, 16%, 1);
-  --bg-color-3: hsla(0, 0%, 100%, 0.1);
-  --fg-color-1: hsla(180, 6%, 90%, 1);
-  --fg-color-2: hsla(0, 0%, 100%, 0.66);
-  --fg-color-3: hsla(180, 6%, 64%, 1);
-  --fg-color-4: hsla(180, 5%, 50%, 1);
-  --accent-color-1: hsla(211, 90%, 50%, 1);
-  --error-color-1: hsla(5, 85%, 60%, 1);
-}
-
 html {
   color-scheme: dark light;
 }

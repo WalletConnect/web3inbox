@@ -1,0 +1,32 @@
+@import '../../../styles/mixins.scss';
+
+.blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--bg-color-3);
+  backdrop-filter: blur(20px);
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+}
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22.5em;
+  height: 51.25em;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  background: var(--bg-color-1);
+  border: 1px solid var(--border-color-1);
+  box-shadow: 0px 8px 22px -6px rgba(0, 0, 0, 0.12), 0px 14px 64px -4px rgba(0, 0, 0, 0.12);
+  &__content {
+    color: var(--fg-color-1);
+    padding: 1em;
+  }
+}

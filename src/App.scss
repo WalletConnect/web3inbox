@@ -1,5 +1,6 @@
 @import './styles/mixins.scss';
 
+
 .App {
   background: var(--bg-color-1);
   min-height: 100vh;
@@ -14,8 +15,10 @@
   }
 
   .Sidebar {
+    @include padding-y(0.875em);
+    @include padding-x(0.25em);
+
     grid-area: sidebar;
-		padding: 0.25em;
 		height: 100vh;
   }
 
