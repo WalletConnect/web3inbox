@@ -3,7 +3,6 @@ import { truncate } from '../../../utils/string'
 import { getEthChainAddress, isValidEnsDomain } from '../../../utils/address'
 import './PeerAndMessage.scss'
 import Avatar from '../../account/Avatar'
-import { useEnsAvatar } from 'wagmi'
 import TextWithHighlight from '../../general/TextWithHighlight'
 
 interface PeerAndMessageProps {
@@ -20,11 +19,10 @@ const PeerAndMessage: React.FC<PeerAndMessageProps> = ({
   withAvatar = true
 }) => {
   const address = getEthChainAddress(peer)
-  const { data: avatar } = useEnsAvatar({ address })
 
   return (
     <div className="PeerAndMessage">
-      {withAvatar && <Avatar width={'2.25em'} address={address} height={'2.25em'} src={avatar} />}
+      {withAvatar && <Avatar width={'2.25em'} address={address} height={'2.25em'} />}
       <div className="PeerAndMessage__text">
         <div className="PeerAndMessage__peer">
           <TextWithHighlight

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import DarkCity from '../../../assets/DarkCity.png'
 import LightCity from '../../../assets/LightCity.png'
 import HalfHalfCity from '../../../assets/HalfHalfCity.png'
@@ -24,6 +24,14 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
 const Settings: React.FC = () => {
   const { mode, newContacts, updateSettings: updateTheme } = useContext(SettingsContext)
 
+  const handleThemeChange = useCallback(
+    (modeId: SettingsContextSimpleState['mode']) => {
+      updateTheme({ mode: modeId })
+      localStorage.setItem('w3i-theme', modeId)
+    },
+    [updateTheme]
+  )
+
   return (
     <div className="Settings">
       <div className="Settings__section Settings__appearance">
@@ -34,7 +42,7 @@ const Settings: React.FC = () => {
           {themeModes.map(({ id, icon }) => (
             <div
               key={id}
-              onClick={() => updateTheme({ mode: id })}
+              onClick={() => handleThemeChange(id)}
               className={cn('Settings__theme-selector', {
                 'Settings__theme-selector-active': mode === id
               })}
@@ -75,6 +83,7 @@ const Settings: React.FC = () => {
             <Radio
               name="new-contacts"
               id={id}
+              key={id}
               label={label}
               checked={newContacts === id}
               onCheck={() => updateTheme({ newContacts: id })}
