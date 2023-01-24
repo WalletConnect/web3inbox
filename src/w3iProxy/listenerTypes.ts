@@ -1,3 +1,4 @@
+import type { PushClientTypes } from '@walletconnect/push-client/dist/types/types'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 
 export interface ChatFacadeEvents {
@@ -7,4 +8,9 @@ export interface ChatFacadeEvents {
   chat_ping: ChatClientTypes.BaseEventArgs
   chat_left: ChatClientTypes.BaseEventArgs
   chat_account_change: { account: string }
+}
+
+export interface PushFacadeEvents {
+  push_request: PushClientTypes.EventArguments['push_request']
+  push_message: PushClientTypes.EventArguments['push_message']
 }

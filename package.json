@@ -11,7 +11,9 @@
     "prettier": "prettier --check ."
   },
   "dependencies": {
-    "@walletconnect/chat-client": "^0.2.0",
+    "@walletconnect/chat-client": "0.2.1",
+    "@walletconnect/core": "2.2.1",
+    "@walletconnect/push-client": "0.5.0",
     "@web3modal/ethereum": "^2.0.0-rc.2",
     "@web3modal/react": "^2.0.0-rc.2",
     "classnames": "^2.3.2",

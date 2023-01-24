@@ -4,8 +4,13 @@ import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NextObserver, Observable } from 'rxjs'
 import type { ChatFacadeEvents } from '../listenerTypes'
 
-// Omitting chat client management keys
+/*
+ * Omitting chat client management keys
+ * FIXME: ignoring `addContact` here for now bc out of branch scope, but needs to be hooked up.
+ */
 type NonFunctionChatClientKeys =
+  | 'addContact'
+  | 'chatContacts'
   | 'chatInvites'
   | 'chatKeys'
   | 'chatMessages'
