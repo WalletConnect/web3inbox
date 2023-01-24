@@ -1,17 +1,14 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ChatContext from '../../../contexts/ChatContext/context'
 import WavingHand from '../../../assets/WavingHand.png'
-import CheckIcon from '../../../assets/Check.svg'
 import CrossIcon from '../../../assets/Cross.svg'
 import PeerAndMessage from '../PeerAndMessage'
 import './Invites.scss'
 import Button from '../../general/Button'
 import Checkbox from '../../general/Checkbox'
-import SettingsContext from '../../../contexts/SettingsContext/context'
-import { ChatClientTypes } from '@walletconnect/chat-client'
+import CheckIcon from '../../general/Icon/CheckIcon'
 
 const ChatInvites: React.FC = () => {
-  const { mode } = useContext(SettingsContext)
   const [invitesSelected, setInvitesSelected] = useState<number[]>([])
   const { chatClientProxy, invites, refreshThreadsAndInvites } = useContext(ChatContext)
 
@@ -98,11 +95,7 @@ const ChatInvites: React.FC = () => {
         </div>
         <div className="Invites__header-actions">
           <Button onClick={handleAcceptInvite} type="action" className="Invites__accept">
-            <img
-              style={{ filter: mode === 'dark' ? 'invert(100%)' : undefined }}
-              src={CheckIcon}
-              alt="Accept"
-            />
+            <CheckIcon />
             Accept {invitesSelected.length === 0 ? 'All' : ''}
           </Button>
           <Button onClick={handleDeclineInvite} type="action" className="Invites__decline">
@@ -131,7 +124,7 @@ const ChatInvites: React.FC = () => {
               </div>
               <div className="Invites__inviter-actions">
                 <Button type="action-icon" onClick={() => onAccept(invite.id)}>
-                  <img src={CheckIcon} alt="Accept" />
+                  <CheckIcon />
                 </Button>
                 <Button type="action-icon" onClick={() => onReject(invite.id)}>
                   <img src={CrossIcon} alt="Accept" />

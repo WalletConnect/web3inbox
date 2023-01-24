@@ -1,5 +1,6 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useAccount } from 'wagmi'
 import Logo from '../../../assets/Logo.svg'
 import ChatContext from '../../../contexts/ChatContext/context'
 import Avatar from '../../account/Avatar'
@@ -14,15 +15,12 @@ const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 
 const Sidebar: React.FC = () => {
   const { pathname } = useLocation()
-  const { userPubkey } = useContext(ChatContext)
+  const { address } = useAccount()
   const navItems = useMemo(
     () => [
-      [pathname.includes('/messages') ? <MessageIcon isFilled /> : <MessageIcon />, 'messages'],
-      [
-        pathname.includes('/notifications') ? <NotificationIcon isFilled /> : <NotificationIcon />,
-        'notifications'
-      ],
-      [pathname.includes('/settings') ? <SettingIcon isFilled /> : <SettingIcon />, 'settings']
+      [<MessageIcon isFilled={pathname.includes('/messages')} />, 'messages'],
+      [<NotificationIcon isFilled={pathname.includes('/notifications')} />, 'notifications'],
+      [<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings']
     ],
     [pathname]
   )
@@ -30,7 +28,7 @@ const Sidebar: React.FC = () => {
   return (
     <div className="Sidebar">
       <SidebarItem>
-        <Avatar address={userPubkey} width="2em" height="2em" hasProfileDropdown />
+        <Avatar address={address} width="2em" height="2em" hasProfileDropdown />
       </SidebarItem>
       <SidebarItem>
         <div className="Sidebar__Navigation">

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { useEnsAvatar } from 'wagmi'
 import Avatar from '../../account/Avatar'
 import ChatContext from '../../../contexts/ChatContext/context'
 import './Invite.scss'
@@ -14,9 +13,6 @@ interface InviteProps {
 const Invite: React.FC<InviteProps> = ({ address, onSuccessfulAccept, id, message }) => {
   const { chatClientProxy } = useContext(ChatContext)
   const evmAddress = address.split(':')[2] as `0x${string}`
-  const { data: ensAvatar } = useEnsAvatar({
-    address: evmAddress
-  })
 
   console.log('Id is: ', id)
 
@@ -26,7 +22,7 @@ const Invite: React.FC<InviteProps> = ({ address, onSuccessfulAccept, id, messag
       className="Invite"
     >
       <div className="Invite__inviter" id={id.toString()}>
-        <Avatar address={address} src={ensAvatar} width="1.25em" height="1.25em" />
+        <Avatar address={evmAddress} width="1.25em" height="1.25em" />
         <span>{address}</span>
       </div>
       <div className="Invite__message">{message}</div>

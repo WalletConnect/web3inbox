@@ -5,7 +5,7 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import './ThreadWindow.scss'
 import Message from '../Message'
 import MessageBox from '../MessageBox'
-import { useEnsAvatar, useEnsName } from 'wagmi'
+import { useEnsName } from 'wagmi'
 import Avatar from '../../account/Avatar'
 
 const ThreadWindow: React.FC = () => {
@@ -13,9 +13,6 @@ const ThreadWindow: React.FC = () => {
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
   const [topic, setTopic] = useState('')
   const { search } = useLocation()
-  const { data: ensAvatar } = useEnsAvatar({
-    address: peerAddress
-  })
   const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey } = useContext(ChatContext)
 
@@ -66,7 +63,7 @@ const ThreadWindow: React.FC = () => {
   return (
     <div className="ThreadWindow">
       <div className="ThreadWindow__peer">
-        <Avatar address={peer} width="1.25em" height="1.25em" src={ensAvatar} />
+        <Avatar address={peerAddress} width="1.25em" height="1.25em" />
         <span>{ensName ?? peer}</span>
       </div>
       <div className="ThreadWindow__messages">

@@ -23,8 +23,8 @@ const NotificationIcon: React.FC<TNotificationIconProps> = ({ isFilled = false }
   ) : (
     <svg width="18" height="23" viewBox="0 0 18 23" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M2.8549 4.86708C3.52589 2.0154 6.07054 0 9.0001 0C11.9297 0 14.4743 2.0154 15.1453 4.86709L17.4217 14.5419C17.7171 15.7973 16.7646 17 15.4749 17H2.52531C1.23561 17 0.283081 15.7973 0.578472 14.5419L2.8549 4.86708ZM13.6852 5.21064L15.9616 14.8855C16.0355 15.1993 15.7973 15.5 15.4749 15.5H2.52531C2.20288 15.5 1.96475 15.1993 2.0386 14.8855L4.31503 5.21064C4.82659 3.03653 6.76661 1.5 9.0001 1.5C11.2336 1.5 13.1736 3.03653 13.6852 5.21064Z"
         fill={themeColors['--icon-color-1']}
       />

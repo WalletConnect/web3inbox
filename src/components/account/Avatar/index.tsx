@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useRef, useState } from 'react'
-import { useBalance, useDisconnect, useEnsName } from 'wagmi'
+import { useBalance, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
 import { useNavigate } from 'react-router-dom'
 
 import { generateAvatarColors } from '../../../utils/ui'
@@ -15,27 +15,21 @@ import PersonIcon from '../../general/Icon/PersonIcon'
 import { profileModalService, shareModalService } from '../../../utils/store'
 
 interface AvatarProps {
-  src?: string | null
-  address?: string
+  address?: `0x${string}`
   width: number | string
   height: number | string
   hasProfileDropdown?: boolean
 }
 
-const Avatar: React.FC<AvatarProps> = ({
-  src,
-  address,
-  width,
-  height,
-  hasProfileDropdown = false
-}) => {
+const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropdown = false }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const { userPubkey, setUserPubkey } = useContext(ChatContext)
+  const { setUserPubkey } = useContext(ChatContext)
   const ref = useRef(null)
   const navigate = useNavigate()
-  const { data: ensName } = useEnsName({ address: userPubkey as `0x${string}` })
+  const { data: ensName } = useEnsName({ address })
+  const { data: ensAvatar } = useEnsAvatar({ address })
   const { data: balance } = useBalance({
-    address: address ? (address as `0x${string}`) : undefined
+    address: address ? address : undefined
   })
   const { disconnect } = useDisconnect()
   const handleToggleProfileDropdown = useCallback(
@@ -77,7 +71,7 @@ const Avatar: React.FC<AvatarProps> = ({
         }}
         onClick={handleToggleProfileDropdown}
       >
-        {src && <img className="Avatar__icon" src={src} alt="Avatar" />}
+        {ensAvatar && <img className="Avatar__icon" src={ensAvatar} alt="Avatar" />}
       </div>
       {hasProfileDropdown && isDropdownOpen && (
         <div ref={ref} className="Avatar__dropdown">
@@ -91,10 +85,10 @@ const Avatar: React.FC<AvatarProps> = ({
                   ...(address ? generateAvatarColors(address) : {})
                 }}
               >
-                {src && <img className="Avatar__icon" src={src} alt="Avatar" />}
+                {ensAvatar && <img className="Avatar__icon" src={ensAvatar} alt="Avatar" />}
               </div>
               <div className="Avatar__dropdown__block__username">
-                {ensName ?? truncate(userPubkey ?? '', 4)}
+                {ensName ?? truncate(address ?? '', 4)}
               </div>
             </div>
             <Divider />
