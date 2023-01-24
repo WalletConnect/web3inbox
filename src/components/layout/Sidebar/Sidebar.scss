@@ -1,6 +1,10 @@
 @import '../../../styles/mixins.scss';
 
 .Sidebar {
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 4em;
   @include padding-y(2em);
 
   display: flex;

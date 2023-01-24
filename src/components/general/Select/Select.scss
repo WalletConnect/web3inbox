@@ -1,0 +1,14 @@
+select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.375em 0.75em;
+  color: var(--bg-color-1);
+
+  background: #f1f3f3;
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 1.75em;
+}
+
+
