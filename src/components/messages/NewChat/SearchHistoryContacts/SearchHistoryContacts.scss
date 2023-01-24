@@ -1,0 +1,42 @@
+.SearchHistoryContacts {
+  display: grid;
+  place-items: center;
+  height: 88%;
+  color: var(--fg-color-1);
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  &__results {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    gap: 10px;
+    &__contact-btn {
+      background-color: var(--bg-color-2);
+      border: solid 1px rgba(255, 255, 255, 0.1);
+    }
+  }
+  &__header {
+    &__result {
+      color: var(--fg-color-3);
+    }
+    &__title {
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 22px;
+      padding-bottom: 4px;
+    }
+    &__subtitle {
+      color: var(--fg-color-3);
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+    }
+  }
+}
