@@ -2,10 +2,6 @@ import { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import { fromEvent } from 'rxjs'
 import type { WalletClient as PushWalletClient } from '@walletconnect/push-client'
-/*
- * Import type { ChatFacadeEvents } from './listenerTypes'
- * Import type { ChatEventObservable, ChatEventObserver, ObservableMap } from './chatProviders/types'
- */
 import type {
   PushEventObservable,
   PushEventObserver,
@@ -48,16 +44,8 @@ class W3iPushFacade implements W3iPush {
   // Method to be used by external providers. Not internal use.
   public postMessage(messageData: JsonRpcRequest<unknown>) {
     this.emitter.emit(messageData.id.toString(), messageData)
-    switch (messageData.method) {
-      // eslint-disable-next-line
-      // case 'setAccount':
-      //   This.emitter.emit('chat_account_change', messageData.params)
-      //   This.externallySetAccount = (messageData.params as { account: string }).account
-      //   Break
-      default:
-        if (this.provider.isListeningToMethodFromPostMessage(messageData.method)) {
-          this.provider.handleMessage(messageData)
-        }
+    if (this.provider.isListeningToMethodFromPostMessage(messageData.method)) {
+      this.provider.handleMessage(messageData)
     }
   }
 
