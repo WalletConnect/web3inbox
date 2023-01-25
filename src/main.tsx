@@ -5,7 +5,7 @@ import App from './App'
 import Login from './pages/Login'
 import './index.css'
 import './styles/fonts.css'
-import ChatContextProvider from './contexts/ChatContext'
+import W3iContextProvider from './contexts/W3iContext'
 import { Web3Modal } from '@web3modal/react'
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
 import { EthereumClient, modalConnectors, walletConnectProvider } from '@web3modal/ethereum'
@@ -35,7 +35,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <WagmiConfig client={wagmiClient}>
       <SettingsContextProvider>
-        <ChatContextProvider>
+        <W3iContextProvider>
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
@@ -56,7 +56,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route index element={<Navigate to="/messages" />} />
             </Routes>
           </BrowserRouter>
-        </ChatContextProvider>
+        </W3iContextProvider>
       </SettingsContextProvider>
     </WagmiConfig>
     <Web3Modal

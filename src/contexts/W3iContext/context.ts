@@ -1,9 +1,9 @@
-import type { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react'
 import { createContext } from 'react'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { W3iChatClient } from '../../w3iProxy'
 
-interface ChatContextState {
+interface W3iContextState {
   chatClientProxy: W3iChatClient | null
   registeredKey: string | null
   refreshThreadsAndInvites: () => void
@@ -13,7 +13,7 @@ interface ChatContextState {
   userPubkey?: string
 }
 
-const ChatContext = createContext<ChatContextState>({
+const W3iContext = createContext<W3iContextState>({
   chatClientProxy: null,
   registeredKey: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -21,7 +21,7 @@ const ChatContext = createContext<ChatContextState>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setUserPubkey: () => {},
   threads: [],
-  invites: [],
+  invites: []
 })
 
-export default ChatContext
+export default W3iContext

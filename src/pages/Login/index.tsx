@@ -8,7 +8,7 @@ import './Login.scss'
 import Button from '../../components/general/Button'
 import { Web3Button } from '@web3modal/react'
 import { useNavigate } from 'react-router-dom'
-import ChatContext from '../../contexts/ChatContext/context'
+import W3iContext from '../../contexts/W3iContext/context'
 import { useAccount } from 'wagmi'
 import NotificationIcon from '../../components/general/Icon/NotificationIcon'
 import MessageIcon from '../../components/general/Icon/MessageIcon'
@@ -29,7 +29,7 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { userPubkey } = useContext(ChatContext)
+  const { userPubkey } = useContext(W3iContext)
   const { isDisconnected } = useAccount()
   const nav = useNavigate()
 

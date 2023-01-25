@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import ChatContext from '../../../contexts/ChatContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
 import { useLocation, useParams } from 'react-router-dom'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import './ThreadWindow.scss'
@@ -14,7 +14,7 @@ const ThreadWindow: React.FC = () => {
   const [topic, setTopic] = useState('')
   const { search } = useLocation()
   const { data: ensName } = useEnsName({ address: peerAddress })
-  const { chatClientProxy, userPubkey } = useContext(ChatContext)
+  const { chatClientProxy, userPubkey } = useContext(W3iContext)
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 

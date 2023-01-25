@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import ChatContext from '../../../contexts/ChatContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
 import WavingHand from '../../../assets/WavingHand.png'
 import CrossIcon from '../../../assets/Cross.svg'
 import PeerAndMessage from '../PeerAndMessage'
@@ -10,7 +10,7 @@ import CheckIcon from '../../general/Icon/CheckIcon'
 
 const ChatInvites: React.FC = () => {
   const [invitesSelected, setInvitesSelected] = useState<number[]>([])
-  const { chatClientProxy, invites, refreshThreadsAndInvites } = useContext(ChatContext)
+  const { chatClientProxy, invites, refreshThreadsAndInvites } = useContext(W3iContext)
 
   useEffect(() => {
     refreshThreadsAndInvites()

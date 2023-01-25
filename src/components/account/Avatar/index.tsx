@@ -8,7 +8,7 @@ import ETH from '../../../assets/ETH.svg'
 import Disconnect from '../../../assets/Disconnect.svg'
 import { useOnClickOutside } from '../../../utils/hooks'
 import './Avatar.scss'
-import ChatContext from '../../../contexts/ChatContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
 import ShareIcon from '../../general/Icon/ShareIcon'
 import PersonIcon from '../../general/Icon/PersonIcon'
@@ -23,7 +23,7 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropdown = false }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const { setUserPubkey } = useContext(ChatContext)
+  const { setUserPubkey } = useContext(W3iContext)
   const ref = useRef(null)
   const navigate = useNavigate()
   const { data: ensName } = useEnsName({ address })

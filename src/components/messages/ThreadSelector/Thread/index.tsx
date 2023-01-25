@@ -4,7 +4,7 @@ import { getEthChainAddress } from '../../../../utils/address'
 import NavLink from '../../../general/NavLink'
 import './Thread.scss'
 import PeerAndMessage from '../../PeerAndMessage'
-import ChatContext from '../../../../contexts/ChatContext/context'
+import W3iContext from '../../../../contexts/W3iContext/context'
 
 interface ThreadProps {
   threadPeer: string
@@ -18,7 +18,7 @@ const Thread: React.FC<ThreadProps> = ({ topic, lastMessage, searchQuery, thread
   const { data: ensName } = useEnsName({ address })
 
   const [calculatedLastMessage, setCalculatedLastMessage] = useState<string | undefined>()
-  const { chatClientProxy } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(W3iContext)
 
   useEffect(() => {
     if (!calculatedLastMessage && !lastMessage) {
