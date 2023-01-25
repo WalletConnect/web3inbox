@@ -9,6 +9,7 @@ import './ThreadSelector.scss'
 import NavLink from '../../general/NavLink'
 import debounce from 'lodash.debounce'
 import { concatAll, from, takeLast, takeWhile } from 'rxjs'
+import CircleBadge from '../../general/Badge/CircleBadge'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
@@ -100,9 +101,7 @@ const ThreadSelector: React.FC = () => {
             <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
             <span>Chat Invites</span>
           </div>
-          <div className="ThreadSelector__invites-badge">
-            <div className="ThreadSelector__invites-badget-num">{invites.length}</div>
-          </div>
+          <CircleBadge>{invites.length}</CircleBadge>
         </div>
       </NavLink>
       <div className="ThreadSelector__threads">
