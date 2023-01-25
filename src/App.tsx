@@ -2,14 +2,17 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import { Fragment, useContext, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import './App.scss'
-import Header from './components/layout/Header'
+import { Profile } from './components/account/Profile'
+import { Share } from './components/account/Share/Share'
 import Sidebar from './components/layout/Sidebar'
 import AuthProtectedPage from './components/utils/AuthProtectedPage'
 import ChatContext from './contexts/ChatContext/context'
+import { useModals } from './utils/hooks'
 import { truncate } from './utils/string'
 
 const App = () => {
   const { chatClientProxy } = useContext(ChatContext)
+  const { isProfileModalOpen, isShareModalOpen } = useModals()
 
   useEffect(() => {
     const messageEventListener = (
@@ -46,9 +49,10 @@ const App = () => {
       <div className="App">
         {chatClientProxy && (
           <Fragment>
-            <Header />
             <Sidebar />
             <Outlet />
+            {isProfileModalOpen && <Profile />}
+            {isShareModalOpen && <Share />}
           </Fragment>
         )}
       </div>

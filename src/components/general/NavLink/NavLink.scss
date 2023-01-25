@@ -13,7 +13,7 @@
 		text-decoration: none;
 
 		&:hover, &-active {
-			background: linear-gradient(92.29deg, #19324D 0%, rgba(25, 50, 77, 0.5) 100%)
+			background: var(--active-link-gradient)
 		}
 
 		&__text {

@@ -29,10 +29,12 @@ const NewChat: React.FC = () => {
 
   const invite = useCallback(
     (inviteeAddress: string) => {
+      setIsInviting(true)
       if (!userPubkey || !chatClientProxy) {
+        setIsInviting(false)
+
         return
       }
-      setIsInviting(true)
       resolveAddress(inviteeAddress).then(resolvedAddress => {
         chatClientProxy
           .invite({
@@ -46,6 +48,7 @@ const NewChat: React.FC = () => {
             setIsInviting(false)
             setQuery('')
           })
+          .catch(() => setIsInviting(false))
       })
     },
     [userPubkey, chatClientProxy]

@@ -1,13 +1,13 @@
-import React from 'react'
-import MessagesFilled from '../../../assets/MessagesFilled.svg'
-import Messages from '../../../assets/Messages.svg'
-import Notifications from '../../../assets/Notifications.svg'
-import NotificationsFilled from '../../../assets/NotificationsFilled.svg'
-import Settings from '../../../assets/Settings.svg'
-import SettingsFilled from '../../../assets/SettingsFilled.svg'
-import Logo from '../../../assets/Logo.svg'
-import './Sidebar.scss'
+import React, { useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useAccount } from 'wagmi'
+import Logo from '../../../assets/Logo.svg'
+import ChatContext from '../../../contexts/ChatContext/context'
+import Avatar from '../../account/Avatar'
+import MessageIcon from '../../general/Icon/MessageIcon'
+import NotificationIcon from '../../general/Icon/NotificationIcon'
+import SettingIcon from '../../general/Icon/SettingIcon'
+import './Sidebar.scss'
 
 const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <div className="Sidebar__Item">{children}</div>
@@ -15,22 +15,30 @@ const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 
 const Sidebar: React.FC = () => {
   const { pathname } = useLocation()
+  const { address } = useAccount()
+  const navItems = useMemo(
+    () => [
+      [<MessageIcon isFilled={pathname.includes('/messages')} />, 'messages'],
+      [<NotificationIcon isFilled={pathname.includes('/notifications')} />, 'notifications'],
+      [<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings']
+    ],
+    [pathname]
+  )
 
   return (
     <div className="Sidebar">
-      <SidebarItem></SidebarItem>
+      <SidebarItem>
+        <Avatar address={address} width="2em" height="2em" hasProfileDropdown />
+      </SidebarItem>
       <SidebarItem>
         <div className="Sidebar__Navigation">
-          {[
-            [pathname.includes('/messages') ? MessagesFilled : Messages, 'messages'],
-            [
-              pathname.includes('/notifications') ? NotificationsFilled : Notifications,
-              'notifications'
-            ],
-            [pathname.includes('/settings') ? SettingsFilled : Settings, 'settings']
-          ].map(([itemSrc, itemName]) => (
-            <Link key={itemName} to={`/${itemName}`}>
-              <img alt={itemName} src={itemSrc} />
+          {navItems.map(([icon, itemName]) => (
+            <Link
+              className="Sidebar__Navigation__Link"
+              key={itemName as string}
+              to={`/${itemName as string}`}
+            >
+              {icon}
             </Link>
           ))}
         </div>

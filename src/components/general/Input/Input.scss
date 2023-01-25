@@ -7,10 +7,14 @@
   padding: 0.5em;
 
   &__input {
+    color: inherit;
     border: none;
     padding: 0.25em;
     width: 100%;
     background: transparent;
     outline: none;
+    &::placeholder {
+      color: var(--fg-color-2)
+    }
   }
 }
