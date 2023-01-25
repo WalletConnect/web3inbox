@@ -1,9 +1,8 @@
-.empty-threads {
+.FeatureInfoBox {
   position: relative;
   color: var(--fg-color-1);
   width: 100%;
-  // light background: linear-gradient(180deg, #f7f7f7 0%, rgba(255, 255, 255, 0) 29.96%);
-  background: linear-gradient(180deg, #1b1d1d 0%, #141414 29.96%);
+  background: var(--bg-gradient-1);
   border-radius: 1.875em;
   
   &__container {
@@ -40,8 +39,8 @@
     right: 0.75em;
     height: 1.75em;
     padding: 0.5625em 0.535em;
-    background: #272A2A;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-color-2);
+    border: 1px solid var(--border-color1);
     box-shadow: 0px 2px 4px -2px rgba(0, 0, 0, 0.12), 0px 4px 4px -2px rgba(0, 0, 0, 0.08);
   }
 }

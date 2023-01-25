@@ -21,7 +21,7 @@ const SearchHistoryContacts: React.FC = () => {
       {historyContacts?.length ? (
         <div className="SearchHistoryContacts__container">
           <div className="SearchHistoryContacts__header__title SearchHistoryContacts__header__result">
-            Contacts found
+            Recent contacts
           </div>
           <div className="SearchHistoryContacts__results">
             {historyContacts.map(contact => (

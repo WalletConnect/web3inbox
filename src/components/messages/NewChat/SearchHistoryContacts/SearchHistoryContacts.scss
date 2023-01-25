@@ -9,17 +9,18 @@
     align-items: center;
     text-align: center;
     justify-content: center;
-    gap: 16px;
+    gap: 1em;
   }
   &__results {
     display: flex;
     align-items: center;
     text-align: center;
     justify-content: center;
-    gap: 10px;
+    gap: 0.625em;
     &__contact-btn {
       background-color: var(--bg-color-2);
-      border: solid 1px rgba(255, 255, 255, 0.1);
+      color: var(--fg-color-1);
+      border: solid 1px var(--border-color-1);
     }
   }
   &__header {
@@ -28,15 +29,15 @@
     }
     &__title {
       font-weight: 700;
-      font-size: 18px;
-      line-height: 22px;
-      padding-bottom: 4px;
+      font-size: 1.125em;
+      line-height: 1.375em;
+      padding-bottom: 0.25em;
     }
     &__subtitle {
       color: var(--fg-color-3);
       font-weight: 500;
-      font-size: 14px;
-      line-height: 17px;
+      font-size: 0.875em;
+      line-height: 1.0625em;
     }
   }
 }
