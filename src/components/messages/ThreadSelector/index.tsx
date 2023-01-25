@@ -9,10 +9,12 @@ import './ThreadSelector.scss'
 import NavLink from '../../general/NavLink'
 import debounce from 'lodash.debounce'
 import { concatAll, from, takeLast, takeWhile } from 'rxjs'
+import EmptyThreads from './EmptyThreads'
 import CircleBadge from '../../general/Badge/CircleBadge'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
+
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<
     { topic: string; message?: string }[]
   >([])
@@ -104,6 +106,7 @@ const ThreadSelector: React.FC = () => {
           <CircleBadge>{invites.length}</CircleBadge>
         </div>
       </NavLink>
+      {filteredThreads.length === 0 && <EmptyThreads />}
       <div className="ThreadSelector__threads">
         {filteredThreads.map(({ peerAccount, topic }) => {
           const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)

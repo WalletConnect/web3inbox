@@ -1,11 +1,11 @@
 .NewChat {
-	&__search-box {
-		width: 100%;
-		display: flex;
-		gap: 1em;
+  &__search-box {
+    width: 100%;
+    display: flex;
+    gap: 1em;
 
-		.Input {
-			width: 80%;
-		}
-	}
+    .Input {
+      width: 80%;
+    }
+  }
 }

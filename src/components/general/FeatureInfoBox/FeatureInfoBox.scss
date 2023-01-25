@@ -1,0 +1,46 @@
+.FeatureInfoBox {
+  position: relative;
+  color: var(--fg-color-1);
+  width: 100%;
+  background: var(--bg-gradient-1);
+  border-radius: 1.875em;
+  
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.875em;
+    text-align: center;
+    gap: 0.625em;
+    &__functionalities {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 1.125em;
+      line-height: 1.375em;
+    }
+    &__functionality {
+      font-weight: 500;
+      font-size: 0.875em;
+      line-height: 1.0625em;
+      color: var(--fg-color-3);
+      &__icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 1.125em;
+        padding-bottom: 0.5em;
+        gap: 0.45625em;
+      }
+    }
+  }
+  &__close {
+    position: absolute;
+    top: 0.75em;
+    right: 0.75em;
+    height: 1.75em;
+    padding: 0.5625em 0.535em;
+    background: var(--bg-color-2);
+    border: 1px solid var(--border-color1);
+    box-shadow: 0px 2px 4px -2px rgba(0, 0, 0, 0.12), 0px 4px 4px -2px rgba(0, 0, 0, 0.08);
+  }
+}

@@ -1,10 +1,11 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { Fragment, useCallback, useContext, useState } from 'react'
 import { isValidAddressOrEnsDomain, isValidEnsDomain } from '../../../utils/address'
 import Button from '../../general/Button'
 import Input from '../../general/Input'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { fetchEnsAddress } from '@wagmi/core'
 import './NewChat.scss'
+import SearchHistoryContacts from './SearchHistoryContacts'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
@@ -54,24 +55,27 @@ const NewChat: React.FC = () => {
   )
 
   return (
-    <div className="NewChat">
-      <div className="NewChat__search-box">
-        <Input
-          value={query}
-          placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"
-          onChange={e => setQuery(e.target.value)}
-        />
-        <Button
-          onClick={() => {
-            console.log('Button clicked.')
-            invite(query)
-          }}
-          disabled={!isValidAddressOrEnsDomain(query) || isInviting}
-        >
-          {isInviting ? `Inviting...` : `Send Invite`}
-        </Button>
+    <Fragment>
+      <div className="NewChat">
+        <div className="NewChat__search-box">
+          <Input
+            value={query}
+            placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"
+            onChange={e => setQuery(e.target.value)}
+          />
+          <Button
+            onClick={() => {
+              console.log('Button clicked.')
+              invite(query)
+            }}
+            disabled={!isValidAddressOrEnsDomain(query) || isInviting}
+          >
+            {isInviting ? `Inviting...` : `Send Invite`}
+          </Button>
+        </div>
       </div>
-    </div>
+      <SearchHistoryContacts />
+    </Fragment>
   )
 }
 
