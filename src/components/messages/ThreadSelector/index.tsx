@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Input from '../../general/Input'
 import Search from '../../../assets/Search.svg'
-import ChatContext from '../../../contexts/ChatContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
 import Thread from './Thread'
 import PersonIcon from '../../../assets/Person.svg'
 import PlusIcon from '../../../assets/Plus.svg'
@@ -15,7 +15,7 @@ const ThreadSelector: React.FC = () => {
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<
     { topic: string; message?: string }[]
   >([])
-  const { threads, invites, chatClientProxy } = useContext(ChatContext)
+  const { threads, invites, chatClientProxy } = useContext(W3iContext)
 
   const filteredThreads = useMemo(() => {
     return threads.filter(
