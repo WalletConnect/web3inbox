@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Web3InboxProxy from '../../w3iProxy'
 import type { W3iChatClient } from '../../w3iProxy'
-import ChatContext from './context'
+import W3iContext from './context'
 import { formatEthChainsAddress } from '../../utils/address'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 
-interface ChatContextProviderProps {
+interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
 }
 
-const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) => {
+const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
   const relayUrl = import.meta.env.VITE_RELAY_URL
   const projectId = import.meta.env.VITE_PROJECT_ID
-  const providerQuery = new URLSearchParams(window.location.search).get('chatProvider')
-  const [provider] = useState(
-    providerQuery ? (providerQuery as Web3InboxProxy['chatProvider']) : 'internal'
+  const chatProviderQuery = new URLSearchParams(window.location.search).get('chatProvider')
+  const [chatProvider] = useState(
+    chatProviderQuery ? (chatProviderQuery as Web3InboxProxy['chatProvider']) : 'internal'
   )
 
   const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
@@ -47,7 +47,7 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
       return
     }
 
-    const w3iProxy = new Web3InboxProxy(provider, projectId, relayUrl)
+    const w3iProxy = new Web3InboxProxy(chatProvider, projectId, relayUrl)
     w3iProxy
       .init()
       .then(() => setChatClient(w3iProxy.chat))
@@ -89,7 +89,7 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
   }, [refreshThreads])
 
   return (
-    <ChatContext.Provider
+    <W3iContext.Provider
       value={{
         chatClientProxy: chatClient,
         userPubkey,
@@ -101,8 +101,8 @@ const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ children }) =
       }}
     >
       {children}
-    </ChatContext.Provider>
+    </W3iContext.Provider>
   )
 }
 
-export default ChatContextProvider
+export default W3iContextProvider

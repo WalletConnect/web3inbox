@@ -2,13 +2,13 @@ import React, { Fragment, useCallback, useContext, useState } from 'react'
 import { isValidAddressOrEnsDomain, isValidEnsDomain } from '../../../utils/address'
 import Button from '../../general/Button'
 import Input from '../../general/Input'
-import ChatContext from '../../../contexts/ChatContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
 import { fetchEnsAddress } from '@wagmi/core'
 import './NewChat.scss'
 import SearchHistoryContacts from './SearchHistoryContacts'
 
 const NewChat: React.FC = () => {
-  const { chatClientProxy, userPubkey } = useContext(ChatContext)
+  const { chatClientProxy, userPubkey } = useContext(W3iContext)
   const [isInviting, setIsInviting] = useState(false)
   const [query, setQuery] = useState('')
 

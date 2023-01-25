@@ -8,6 +8,7 @@ import debounce from 'lodash.debounce'
 import { from } from 'rxjs'
 import EmptyApps from './EmptyApps'
 import './AppSelector.scss'
+import CircleBadge from '../../general/Badge/CircleBadge'
 
 interface PushApp {
   id: string
@@ -113,13 +114,7 @@ const AppSelector: React.FC = () => {
               <img className="AppSelector__link-logo" src={app.logo ?? Logo} alt="Invites" />
               <span>{app.name}</span>
             </div>
-            {app.notifications && (
-              <div className="AppSelector__notifications-badge">
-                <div className="AppSelector__notifications-badget-num">
-                  {app.notifications.length}
-                </div>
-              </div>
-            )}
+            {app.notifications && <CircleBadge>{app.notifications.length}</CircleBadge>}
           </div>
         </NavLink>
       ))}

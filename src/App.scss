@@ -4,7 +4,6 @@
 .App {
   background: var(--bg-color-1);
   min-height: 100vh;
-  width: 100vw;
   display: grid;
   grid-template: 'sidebar target-selector main header';
   gap: 5em;

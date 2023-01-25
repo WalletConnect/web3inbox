@@ -6,12 +6,12 @@ import { Profile } from './components/account/Profile'
 import { Share } from './components/account/Share/Share'
 import Sidebar from './components/layout/Sidebar'
 import AuthProtectedPage from './components/utils/AuthProtectedPage'
-import ChatContext from './contexts/ChatContext/context'
+import W3iContext from './contexts/W3iContext/context'
 import { useModals } from './utils/hooks'
 import { truncate } from './utils/string'
 
 const App = () => {
-  const { chatClientProxy } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(W3iContext)
   const { isProfileModalOpen, isShareModalOpen } = useModals()
 
   useEffect(() => {

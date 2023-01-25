@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import ChatContext from '../../../contexts/ChatContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
 import Input from '../../general/Input'
 import SendIcon from '../../../assets/SendFilled.svg'
 import './MessageBox.scss'
@@ -12,7 +12,7 @@ interface MessageBoxProps {
 
 const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccessfulSend }) => {
   const [messageText, setMessageText] = useState('')
-  const { chatClientProxy } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(W3iContext)
   const ref = useRef<HTMLInputElement>(null)
 
   /*

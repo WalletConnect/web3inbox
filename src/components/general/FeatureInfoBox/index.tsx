@@ -47,10 +47,10 @@ const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
         <img src={mainIcon.icon} alt={mainIcon.alt} />
         <div className="FeatureInfoBox__container__functionalities">{header}</div>
         {sections.map(section => (
-          <div className="FeatureInfoBox__container__functionality">
+          <div key={section.title} className="FeatureInfoBox__container__functionality">
             <div className="FeatureInfoBox__container__functionality__icons">
               {section.icons.map(({ icon, alt }) => (
-                <img src={icon} alt={alt} />
+                <img key={alt} src={icon} alt={alt} />
               ))}
             </div>
             {section.title}

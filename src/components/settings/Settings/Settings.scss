@@ -6,7 +6,7 @@
 
 	&__section {
 		color: var(--fg-color-1);
-		&-subtitle {
+		:is(&-subtitle, &-helper-text) {
 			color: var(--fg-color-2);
 		}
 		
@@ -16,6 +16,11 @@
 
 		&-title {
 			width: 20%;
+			height: 1.75em;
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			gap: 0.375em;
 		}
 
 		&-settings {
@@ -33,12 +38,19 @@
 		}
 	}
 
-	&__toggle-setting {
+	&__setting {
 		align-items: center;
 		font-weight: 700;
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
+	}
+
+	&__toggle-dropdown {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.3125em;
 	}
 
 	&__theme-selector {

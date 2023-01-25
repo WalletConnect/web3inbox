@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import Avatar from '../../account/Avatar'
-import ChatContext from '../../../contexts/ChatContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
 import './Invite.scss'
 
 interface InviteProps {
@@ -11,7 +11,7 @@ interface InviteProps {
 }
 
 const Invite: React.FC<InviteProps> = ({ address, onSuccessfulAccept, id, message }) => {
-  const { chatClientProxy } = useContext(ChatContext)
+  const { chatClientProxy } = useContext(W3iContext)
   const evmAddress = address.split(':')[2] as `0x${string}`
 
   console.log('Id is: ', id)
