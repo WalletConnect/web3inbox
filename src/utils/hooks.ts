@@ -8,7 +8,6 @@ import { profileModalService, shareModalService } from './store'
 import { isMobile } from './ui'
 
 const displays = {
-  '--sidebar-display': 'flex',
   '--targetselector-display': 'unset',
   '--main-display': 'unset',
   '--header-display': 'unset'
