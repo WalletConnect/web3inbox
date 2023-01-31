@@ -5,14 +5,18 @@
   top:0;
   left: 0;
   width: 4em;
-  @include padding-y(2em);
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--bg-color-1);
-  border-right: solid 2px var(--bg-color-2);
+	&__container {
+		height: 100%;
+		@include padding-y(2em);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		background-color: var(--bg-color-1);
+		border-right: solid 2px var(--bg-color-2);
+	}
+
 }
 
 .Sidebar__Navigation {

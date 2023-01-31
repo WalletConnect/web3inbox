@@ -6,6 +6,7 @@ import W3iContext from '../../../contexts/W3iContext/context'
 import { fetchEnsAddress } from '@wagmi/core'
 import './NewChat.scss'
 import SearchHistoryContacts from './SearchHistoryContacts'
+import BackButton from '../../general/BackButton'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
@@ -58,6 +59,7 @@ const NewChat: React.FC = () => {
     <Fragment>
       <div className="NewChat">
         <div className="NewChat__search-box">
+          <BackButton backTo="/messages" />
           <Input
             value={query}
             placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"

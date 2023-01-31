@@ -1,33 +1,43 @@
-import type { RefObject} from 'react';
-import { useState } from 'react';
+import type { RefObject } from 'react'
+import { useRef } from 'react'
+import { useState } from 'react'
 import { useEffect } from 'react'
-import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context';
-import { profileModalService, shareModalService } from './store';
+import { useLocation } from 'react-router-dom'
+import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
+import { profileModalService, shareModalService } from './store'
+import { isMobile } from './ui'
 
-export const useOnClickOutside = (ref: RefObject<HTMLElement>, handler: (event: MouseEvent | TouchEvent) => void) => {
-  useEffect(
-    () => {
-      const listener = (event: MouseEvent | TouchEvent) => {
-        if (!ref.current || ref.current.contains(event.target as Node)) {
-          return
-        }
-        handler(event)
-      }
-      document.addEventListener('mousedown', listener)
-      document.addEventListener('touchstart', listener)
-
-      return () => {
-        document.removeEventListener('mousedown', listener)
-        document.removeEventListener('touchstart', listener)
-      }
-    },
-    [ref, handler]
-  )
+const displays = {
+  '--sidebar-display': 'flex',
+  '--targetselector-display': 'unset',
+  '--main-display': 'unset',
+  '--header-display': 'unset'
 }
 
-export const useColorModeValue = (mode: SettingsContextSimpleState["mode"]) => {
-  const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : "light"
-  const specifiedMode = mode === "system" ? systemTheme : mode  
+export const useOnClickOutside = (
+  ref: RefObject<HTMLElement>,
+  handler: (event: MouseEvent | TouchEvent) => void
+) => {
+  useEffect(() => {
+    const listener = (event: MouseEvent | TouchEvent) => {
+      if (!ref.current || ref.current.contains(event.target as Node)) {
+        return
+      }
+      handler(event)
+    }
+    document.addEventListener('mousedown', listener)
+    document.addEventListener('touchstart', listener)
+
+    return () => {
+      document.removeEventListener('mousedown', listener)
+      document.removeEventListener('touchstart', listener)
+    }
+  }, [ref, handler])
+}
+
+export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
+  const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  const specifiedMode = mode === 'system' ? systemTheme : mode
   const colors = {
     dark: {
       bg1: 'hsla(0, 0%, 8%, 1)',
@@ -77,10 +87,10 @@ export const useColorModeValue = (mode: SettingsContextSimpleState["mode"]) => {
     '--border-color-1': colors[specifiedMode].border1,
     '--accent-color-1': colors[specifiedMode].accent1,
     '--error-color-1': colors[specifiedMode].error1,
-    '--icon-color-1': colors[specifiedMode].icon1,
+    '--icon-color-1': colors[specifiedMode].icon1
   }
-  
-  return colorModeVariables;
+
+  return colorModeVariables
 }
 
 export const useModals = () => {
@@ -105,4 +115,57 @@ export const useModals = () => {
     isProfileModalOpen,
     isShareModalOpen
   }
+}
+
+export const useIsMobile = () => {
+  const [isMobileLayout, setIsMobileLayout] = useState(isMobile())
+
+  useEffect(() => {
+    const listener = () => {
+      setIsMobileLayout(isMobile())
+    }
+    window.addEventListener('resize', listener)
+
+    return () => window.removeEventListener('resize', listener)
+  }, [setIsMobileLayout])
+
+  return isMobileLayout
+}
+
+export const useMobileResponsiveGrid = () => {
+  const { pathname } = useLocation()
+  const ref = useRef<HTMLDivElement>(null)
+
+  const isMobileLayout = useIsMobile()
+
+  useEffect(() => {
+    if (!isMobileLayout) {
+      Object.entries(displays).forEach(([cssKey, originalValue]) => {
+        ref.current?.style.setProperty(cssKey, originalValue)
+      })
+
+      return
+    }
+
+    if (!ref.current) {
+      return
+    }
+
+    console.log('Setting entries to none')
+    Object.entries(displays).forEach(([cssKey]) => {
+      ref.current?.style.setProperty(cssKey, 'none')
+    })
+
+    const segmentsLength = pathname.split('/').length
+
+    if (segmentsLength === 2) {
+      ref.current.style.setProperty('--grid-template', '"target-selector"')
+      ref.current.style.setProperty('--targetselector-display', 'unset')
+    } else if (segmentsLength > 2) {
+      ref.current.style.setProperty('--grid-template', '"main"')
+      ref.current.style.setProperty('--main-display', 'unset')
+    }
+  }, [pathname, isMobileLayout])
+
+  return ref
 }
