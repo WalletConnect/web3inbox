@@ -155,12 +155,14 @@ export const useMobileResponsiveGrid = () => {
       ref.current?.style.setProperty(cssKey, 'none')
     })
 
-    const segmentsLength = pathname.split('/').length
+    const navigationDepth = pathname.split('/').length
 
-    if (segmentsLength === 2) {
+    // If the pathName matches .*/.*
+    if (navigationDepth === 2) {
       ref.current.style.setProperty('--grid-template', '"target-selector"')
       ref.current.style.setProperty('--targetselector-display', 'unset')
-    } else if (segmentsLength > 2) {
+      // If the pathName matches .*/.*/.*
+    } else if (navigationDepth > 2) {
       ref.current.style.setProperty('--grid-template', '"main"')
       ref.current.style.setProperty('--main-display', 'unset')
     }
