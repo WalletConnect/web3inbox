@@ -31,3 +31,7 @@ export const generateAvatarColors = (address: string) => {
 
   return variables
 }
+
+export const isMobile = () => {
+  return window.innerWidth < 700
+}

@@ -7,6 +7,8 @@ import Message from '../Message'
 import MessageBox from '../MessageBox'
 import { useEnsName } from 'wagmi'
 import Avatar from '../../account/Avatar'
+import BackButton from '../../general/BackButton'
+import { truncate } from '../../../utils/string'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -63,8 +65,9 @@ const ThreadWindow: React.FC = () => {
   return (
     <div className="ThreadWindow">
       <div className="ThreadWindow__peer">
+        <BackButton backTo="/messages" />
         <Avatar address={peerAddress} width="1.25em" height="1.25em" />
-        <span>{ensName ?? peer}</span>
+        <span>{ensName ?? truncate(peer ?? '', 10)}</span>
       </div>
       <div className="ThreadWindow__messages">
         {messages.map(message => (
