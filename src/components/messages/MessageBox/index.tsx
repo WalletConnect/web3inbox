@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import SendIcon from '../../../assets/SendFilled.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import Input from '../../general/Input'
-import SendIcon from '../../../assets/SendFilled.svg'
 import './MessageBox.scss'
 
 interface MessageBoxProps {
