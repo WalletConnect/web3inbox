@@ -1,14 +1,14 @@
 .TextWithHighlight {
-	display: flex;
-	align-items: center;
-	gap: 0.3;
+  display: flex;
+  align-items: center;
+  gap: 0.3;
 
-	span {
-		display: inline-block;
-		white-space:pre;
-	}
+  span {
+    display: inline-block;
+    white-space: pre;
+  }
 
-	&__highlighted {
-		background-color: var(--accent-color-1);
-	}
+  &__highlighted {
+    background-color: var(--accent-color-1);
+  }
 }

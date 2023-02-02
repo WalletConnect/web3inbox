@@ -3,7 +3,7 @@
   width: 3em;
   display: inline-block;
   vertical-align: middle;
-	user-select: none;
+  user-select: none;
   text-align: left;
 
   &__checkbox {
@@ -39,7 +39,7 @@
     }
 
     &:before {
-      content: "";
+      content: '';
       text-transform: uppercase;
       padding-left: 10px;
       background-color: var(--accent-color-1);
@@ -57,7 +57,7 @@
   }
 
   &__inner:after {
-    content: "";
+    content: '';
     text-transform: uppercase;
     background-color: #bbb;
     color: #fff;
@@ -90,4 +90,3 @@
     }
   }
 }
-
