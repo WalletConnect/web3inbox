@@ -3,7 +3,9 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { useLocation, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
+import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
+import BackButton from '../../general/BackButton'
 import ConversationBeginning from '../ConversationBeginning'
 import Message from '../Message'
 import MessageBox from '../MessageBox'
@@ -71,8 +73,9 @@ const ThreadWindow: React.FC = () => {
   return (
     <div className="ThreadWindow">
       <div className="ThreadWindow__peer">
+        <BackButton backTo="/messages" />
         <Avatar address={peerAddress} width="1.25em" height="1.25em" />
-        <span>{ensName ?? peer}</span>
+        <span>{ensName ?? truncate(peer ?? '', 10)}</span>
       </div>
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} />
