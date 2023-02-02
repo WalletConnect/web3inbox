@@ -8,6 +8,7 @@ import Avatar from '../../account/Avatar'
 import BackButton from '../../general/BackButton'
 import ConversationBeginning from '../ConversationBeginning'
 import Message from '../Message'
+import MessageDateTag from '../Message/MessageDateTag'
 import MessageBox from '../MessageBox'
 import './ThreadWindow.scss'
 
@@ -82,14 +83,14 @@ const ThreadWindow: React.FC = () => {
         {messages.map((message, i) => {
           const isFirstMessage = i === 0
           const prevMessage = !isFirstMessage && messages[i - 1]
-          const currentDate = new Date(message.timestamp)
+          const currentDateDay = new Date(message.timestamp).getDate()
           const isDifferentDay =
-            prevMessage && new Date(prevMessage.timestamp).getDate() !== currentDate.getDate()
+            prevMessage && new Date(prevMessage.timestamp).getDate() !== currentDateDay
           const showDateTag = isFirstMessage || isDifferentDay
 
           return messages.length === i + 1 ? (
             <div ref={messagesEndRef}>
-              {showDateTag && <span>{currentDate.toDateString()}</span>}
+              {showDateTag && <MessageDateTag timestamp={message.timestamp} />}
               <Message
                 key={message.timestamp}
                 text={message.message}
@@ -98,7 +99,7 @@ const ThreadWindow: React.FC = () => {
             </div>
           ) : (
             <div>
-              {showDateTag && <span>{currentDate.toDateString()}</span>}
+              {showDateTag && <MessageDateTag timestamp={message.timestamp} />}
               <Message
                 key={message.timestamp}
                 text={message.message}
