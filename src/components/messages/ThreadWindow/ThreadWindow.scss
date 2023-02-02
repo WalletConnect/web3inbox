@@ -3,6 +3,7 @@
   height: 100%;
   flex-direction: column;
   justify-content: space-between;
+  flex-flow: column wrap;
 
   &__peer {
     padding: 0.5em;
@@ -14,10 +15,11 @@
   }
 
   &__messages {
+    overflow-y: auto;
     display: flex;
-    height: 100%;
-    justify-content: flex-start;
+    max-height: 80vh;
     flex-direction: column;
     gap: 0.4em;
+    padding-right: 0.4em;
   }
 }

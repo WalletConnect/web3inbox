@@ -1,12 +1,13 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { useLocation, useParams } from 'react-router-dom'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import './ThreadWindow.scss'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
+import { useEnsName } from 'wagmi'
+import W3iContext from '../../../contexts/W3iContext/context'
+import Avatar from '../../account/Avatar'
+import ConversationBeginning from '../ConversationBeginning'
 import Message from '../Message'
 import MessageBox from '../MessageBox'
-import { useEnsName } from 'wagmi'
-import Avatar from '../../account/Avatar'
+import './ThreadWindow.scss'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -15,6 +16,7 @@ const ThreadWindow: React.FC = () => {
   const { search } = useLocation()
   const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 
@@ -35,6 +37,12 @@ const ThreadWindow: React.FC = () => {
         setMessages(allChatMessages)
       })
   }, [chatClientProxy, search, setMessages, topic])
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [messagesEndRef, messages])
 
   useEffect(() => {
     if (!chatClientProxy) {
@@ -67,13 +75,35 @@ const ThreadWindow: React.FC = () => {
         <span>{ensName ?? peer}</span>
       </div>
       <div className="ThreadWindow__messages">
-        {messages.map(message => (
-          <Message
-            key={message.timestamp}
-            text={message.message}
-            from={message.authorAccount === peer ? 'peer' : 'sender'}
-          />
-        ))}
+        <ConversationBeginning peerAddress={peerAddress} />
+        {messages.map((message, i) => {
+          const isFirstMessage = i === 0
+          const prevMessage = !isFirstMessage && messages[i - 1]
+          const currentDate = new Date(message.timestamp)
+          const isDifferentDay =
+            prevMessage && new Date(prevMessage.timestamp).getDate() !== currentDate.getDate()
+          const showDateTag = isFirstMessage || isDifferentDay
+
+          return messages.length === i + 1 ? (
+            <div ref={messagesEndRef}>
+              {showDateTag && <span>{currentDate.toDateString()}</span>}
+              <Message
+                key={message.timestamp}
+                text={message.message}
+                from={message.authorAccount === peer ? 'peer' : 'sender'}
+              />
+            </div>
+          ) : (
+            <div>
+              {showDateTag && <span>{currentDate.toDateString()}</span>}
+              <Message
+                key={message.timestamp}
+                text={message.message}
+                from={message.authorAccount === peer ? 'peer' : 'sender'}
+              />
+            </div>
+          )
+        })}
       </div>
       <MessageBox
         onSuccessfulSend={refreshMessages}

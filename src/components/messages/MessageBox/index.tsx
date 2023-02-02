@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import SendIcon from '../../../assets/SendFilled.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import Input from '../../general/Input'
-import SendIcon from '../../../assets/SendFilled.svg'
 import './MessageBox.scss'
 
 interface MessageBoxProps {
@@ -20,7 +20,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
    * messageText state changes.
    */
   const onSend = useCallback(async () => {
-    if (!chatClientProxy || !ref.current) {
+    if (!chatClientProxy || !ref.current?.value) {
       return
     }
     await chatClientProxy.message({

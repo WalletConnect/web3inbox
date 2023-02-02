@@ -1,0 +1,23 @@
+.ConversationBeginning {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625em;
+  height: 100%;
+  font-style: normal;
+
+  &__peer {
+    color: var(--fg-color-1);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  &__beginning {
+    color: var(--fg-color-3);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
