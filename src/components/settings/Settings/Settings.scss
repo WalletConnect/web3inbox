@@ -1,86 +1,83 @@
 .Settings {
-	display: flex;
-	flex-direction: column;
-	gap: 4em;
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
 
+  &__section {
+    color: var(--fg-color-1);
+    :is(&-subtitle, &-helper-text) {
+      color: var(--fg-color-2);
+    }
 
-	&__section {
-		color: var(--fg-color-1);
-		:is(&-subtitle, &-helper-text) {
-			color: var(--fg-color-2);
-		}
-		
-		display: flex;
-		gap: 2em;
-		width: 100%;
+    display: flex;
+    gap: 2em;
+    width: 100%;
 
-		&-title {
-			width: 20%;
-			height: 1.75em;
-			display: flex;
-			align-items: center;
-			justify-content: flex-start;
-			gap: 0.375em;
-		}
+    &-title {
+      width: 20%;
+      height: 1.75em;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.375em;
+    }
 
-		&-settings {
-			display: flex;
-			gap: 1.5em;
-			width: 100%;
-			flex-direction: column;
-		}
-	}
+    &-settings {
+      display: flex;
+      gap: 1.5em;
+      width: 100%;
+      flex-direction: column;
+    }
+  }
 
-	&__appearance {
-		.Settings__section-settings {
-			flex-direction: row;
-			justify-content: space-between;
-		}
-	}
+  &__appearance {
+    .Settings__section-settings {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
 
-	&__setting {
-		align-items: center;
-		font-weight: 700;
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-	}
+  &__setting {
+    align-items: center;
+    font-weight: 700;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
 
-	&__toggle-dropdown {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1.3125em;
-	}
+  &__toggle-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.3125em;
+  }
 
-	&__theme-selector {
-		background: var(--bg-gradient-1);
-		border-radius: 30px;
-		padding: 1.5em;
-		border: 1px solid var(--border-color-1);
-		box-shadow: inset 0px 2px 4px rgba(255, 255, 255, 0.5);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.5em;
-		min-width: 30%;
+  &__theme-selector {
+    background: var(--bg-gradient-1);
+    border-radius: 30px;
+    padding: 1.5em;
+    border: 1px solid var(--border-color-1);
+    box-shadow: inset 0px 2px 4px rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    min-width: 30%;
 
-		text-align: center;
+    text-align: center;
 
-		span {
-			text-transform: capitalize;
-		}
+    span {
+      text-transform: capitalize;
+    }
 
-		img {
-			width: 5em;
-			height: 5em;
-			display: block;
-		}
+    img {
+      width: 5em;
+      height: 5em;
+      display: block;
+    }
 
-		&-active {
-			border: 1px solid var(--accent-color-1);
-		}
-	}
-
-
+    &-active {
+      border: 1px solid var(--accent-color-1);
+    }
+  }
 }

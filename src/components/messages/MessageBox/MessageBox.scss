@@ -3,9 +3,8 @@
   grid-template-areas: 'messagebox send-button';
   grid-template-columns: 95% 5%;
   gap: 1em;
-	width: 90%;
-	margin: 0 auto;
-	
+  width: 90%;
+  margin: 0 auto;
 
   .Input {
     grid-area: messagebox;

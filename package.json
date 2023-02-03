@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "prettier": "prettier --check ."
+    "prepare": "husky install",
+    "prettier": "prettier --check '**/*.{js,ts,jsx,tsx,scss}'",
+    "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'"
   },
   "dependencies": {
     "@walletconnect/chat-client": "^0.2.0",
@@ -33,6 +35,8 @@
     "@vitejs/plugin-react": "^2.2.0",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
     "localStorage": "^1.0.4",
     "prettier": "^2.8.0",
     "sass": "^1.56.1",
