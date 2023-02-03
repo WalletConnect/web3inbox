@@ -89,16 +89,15 @@ const ThreadWindow: React.FC = () => {
           const showDateTag = isFirstMessage || isDifferentDay
 
           return messages.length === i + 1 ? (
-            <div ref={messagesEndRef}>
+            <div key={message.timestamp} ref={messagesEndRef}>
               {showDateTag && <MessageDateTag timestamp={message.timestamp} />}
               <Message
-                key={message.timestamp}
                 text={message.message}
                 from={message.authorAccount === peer ? 'peer' : 'sender'}
               />
             </div>
           ) : (
-            <div>
+            <div key={message.timestamp}>
               {showDateTag && <MessageDateTag timestamp={message.timestamp} />}
               <Message
                 key={message.timestamp}
