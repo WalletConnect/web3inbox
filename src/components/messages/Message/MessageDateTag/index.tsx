@@ -1,4 +1,4 @@
-import { format, isToday, isYesterday } from 'date-fns'
+import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import { useMemo } from 'react'
 import './MessageDateTag.scss'
 
@@ -7,10 +7,23 @@ interface IMessageDateTagProps {
 }
 const MessageDateTag: React.FC<IMessageDateTagProps> = ({ timestamp }: IMessageDateTagProps) => {
   const dateToDisplay = useMemo(() => {
-    const date = new Date(timestamp)
+    if (!timestamp) {
+      return null
+    }
+    const today = new Date()
+    const messageDate = new Date(timestamp)
 
-    // eslint-disable-next-line no-nested-ternary
-    return isToday(date) ? 'Today' : isYesterday(date) ? 'Yesterday' : format(date, 'MMMM dd')
+    if (isToday(messageDate)) {
+      return `Today ${format(messageDate, 'HH:mm')}`
+    }
+    if (isYesterday(messageDate)) {
+      return `Yesterday ${format(messageDate, 'HH:mm')}`
+    }
+    if (isSameWeek(today, messageDate)) {
+      return `${format(messageDate, 'iiii HH:mm')}`
+    }
+
+    return format(messageDate, 'MMMM dd HH:mm')
   }, [timestamp])
 
   return <div className="MessageDateTag">{dateToDisplay}</div>

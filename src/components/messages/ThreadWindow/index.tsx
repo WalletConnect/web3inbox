@@ -1,5 +1,5 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
@@ -7,8 +7,7 @@ import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import BackButton from '../../general/BackButton'
 import ConversationBeginning from '../ConversationBeginning'
-import Message from '../Message'
-import MessageDateTag from '../Message/MessageDateTag'
+import { MessageItem } from '../Message/MessageItem'
 import MessageBox from '../MessageBox'
 import './ThreadWindow.scss'
 
@@ -19,7 +18,6 @@ const ThreadWindow: React.FC = () => {
   const { search } = useLocation()
   const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 
@@ -40,12 +38,6 @@ const ThreadWindow: React.FC = () => {
         setMessages(allChatMessages)
       })
   }, [chatClientProxy, search, setMessages, topic])
-
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [messagesEndRef, messages])
 
   useEffect(() => {
     if (!chatClientProxy) {
@@ -80,33 +72,9 @@ const ThreadWindow: React.FC = () => {
       </div>
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} />
-        {messages.map((message, i) => {
-          const isFirstMessage = i === 0
-          const prevMessage = !isFirstMessage && messages[i - 1]
-          const currentDateDay = new Date(message.timestamp).getDate()
-          const isDifferentDay =
-            prevMessage && new Date(prevMessage.timestamp).getDate() !== currentDateDay
-          const showDateTag = isFirstMessage || isDifferentDay
-
-          return messages.length === i + 1 ? (
-            <div key={message.timestamp} ref={messagesEndRef}>
-              {showDateTag && <MessageDateTag timestamp={message.timestamp} />}
-              <Message
-                text={message.message}
-                from={message.authorAccount === peer ? 'peer' : 'sender'}
-              />
-            </div>
-          ) : (
-            <div key={message.timestamp}>
-              {showDateTag && <MessageDateTag timestamp={message.timestamp} />}
-              <Message
-                key={message.timestamp}
-                text={message.message}
-                from={message.authorAccount === peer ? 'peer' : 'sender'}
-              />
-            </div>
-          )
-        })}
+        {messages.map((message, i) => (
+          <MessageItem message={message} index={i} peer={peer} messages={messages} />
+        ))}
       </div>
       <MessageBox
         onSuccessfulSend={refreshMessages}

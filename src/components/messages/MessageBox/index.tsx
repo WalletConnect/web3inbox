@@ -32,9 +32,10 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
 
   useEffect(() => {
     const onKeydown = (keydownEvent: KeyboardEvent) => {
-      if (keydownEvent.key !== 'Enter') {
+      if ((keydownEvent.shiftKey && keydownEvent.key === 'Enter') || keydownEvent.key !== 'Enter') {
         return
       }
+
       onSend()
     }
 
