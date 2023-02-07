@@ -1,24 +1,46 @@
-import React from 'react'
-import { truncate } from '../../../utils/string'
+import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
+import React, { useMemo } from 'react'
 import { getEthChainAddress, isValidEnsDomain } from '../../../utils/address'
-import './PeerAndMessage.scss'
+import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import TextWithHighlight from '../../general/TextWithHighlight'
+import './PeerAndMessage.scss'
 
 interface PeerAndMessageProps {
   peer: string
   withAvatar?: boolean
   highlightedText?: string
   message?: string
+  timestamp?: number
 }
 
 const PeerAndMessage: React.FC<PeerAndMessageProps> = ({
   peer,
   message,
   highlightedText,
+  timestamp,
   withAvatar = true
 }) => {
   const address = getEthChainAddress(peer)
+  const messageSentAt = useMemo(() => {
+    if (!timestamp) {
+      return null
+    }
+    const today = new Date()
+    const messageDate = new Date(timestamp)
+
+    if (isToday(messageDate)) {
+      return format(messageDate, 'HH:mm')
+    }
+    if (isYesterday(messageDate)) {
+      return `Yesterday ${format(messageDate, 'HH:mm')}`
+    }
+    if (isSameWeek(today, messageDate)) {
+      return format(messageDate, 'iiii')
+    }
+
+    return format(messageDate, 'MMMM dd')
+  }, [timestamp])
 
   return (
     <div className="PeerAndMessage">
@@ -31,8 +53,11 @@ const PeerAndMessage: React.FC<PeerAndMessageProps> = ({
           />
         </div>
         {message && (
-          <div className="PeerAndMessage__message">
-            <TextWithHighlight text={message} highlightedText={highlightedText ?? ''} />
+          <div className={'PeerAndMessage__message__details'}>
+            <div className={'PeerAndMessage__message'}>
+              <TextWithHighlight text={message} highlightedText={highlightedText ?? ''} />
+            </div>
+            <span className="PeerAndMessage__message__timestamp">{messageSentAt}</span>
           </div>
         )}
       </div>

@@ -2,13 +2,15 @@
   display: flex;
   gap: 0.5em;
   align-items: center;
+  width: 15em;
 
   &__text,
   &__peer {
     display: flex;
-    align-items: center;
-    gap: 0.5em;
+    align-items: flex-start;
+    justify-content: center;
     flex-direction: column;
+    width: 100%;
   }
 
   &__peer {
@@ -16,9 +18,25 @@
     font-weight: 700;
   }
 
+  &__message__details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
   &__message {
     font-size: 0.9em;
-    width: 100%;
-    color: var(--fg-color-3);
+    color: var(--fg-color-2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &__timestamp {
+      padding-top: 2px;
+      color: var(--fg-color-3);
+      font-weight: 500;
+      font-size: 0.75em;
+      line-height: 0.875em;
+    }
   }
 }
