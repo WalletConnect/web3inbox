@@ -71,7 +71,7 @@ const ThreadWindow: React.FC = () => {
         <span>{ensName ?? truncate(peer ?? '', 10)}</span>
       </div>
       <div className="ThreadWindow__messages">
-        <ConversationBeginning peerAddress={peerAddress} />
+        <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />
         {messages.map((message, i) => (
           <MessageItem message={message} index={i} peer={peer} messages={messages} />
         ))}
