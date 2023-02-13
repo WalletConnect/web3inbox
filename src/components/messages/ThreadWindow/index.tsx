@@ -73,7 +73,13 @@ const ThreadWindow: React.FC = () => {
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />
         {messages.map((message, i) => (
-          <MessageItem message={message} index={i} peer={peer} messages={messages} />
+          <MessageItem
+            key={message.timestamp}
+            message={message}
+            index={i}
+            peer={peer}
+            messages={messages}
+          />
         ))}
       </div>
       <MessageBox

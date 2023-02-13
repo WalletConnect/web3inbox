@@ -37,12 +37,12 @@ export const MessageItem: React.FC<IMessageItemProps> = ({ messages, message, in
   }, [index, messages, message.timestamp, isFirstMessage])
 
   return isLastMessage ? (
-    <div key={message.timestamp} ref={messagesEndRef}>
+    <div ref={messagesEndRef}>
       {isDateTagDisplayed && <MessageDateTag timestamp={message.timestamp} />}
       <Message text={message.message} from={message.authorAccount === peer ? 'peer' : 'sender'} />
     </div>
   ) : (
-    <div key={message.timestamp}>
+    <div>
       {isDateTagDisplayed && <MessageDateTag timestamp={message.timestamp} />}
       <Message
         key={message.timestamp}

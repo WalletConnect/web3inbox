@@ -5,7 +5,7 @@
   border-radius: 28px;
   border: 1px solid var(--fg-color-2);
   padding: 0.5em;
-  height: 3em;
+  min-height: 3em;
 
   &__textarea {
     font-weight: 500;

@@ -1,6 +1,7 @@
 import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import React, { useMemo } from 'react'
 import { getEthChainAddress, isValidEnsDomain } from '../../../utils/address'
+import { useIsMobile } from '../../../utils/hooks'
 import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import TextWithHighlight from '../../general/TextWithHighlight'
@@ -21,6 +22,7 @@ const PeerAndMessage: React.FC<PeerAndMessageProps> = ({
   timestamp,
   withAvatar = true
 }) => {
+  const isMobile = useIsMobile()
   const address = getEthChainAddress(peer)
   const messageSentAt = useMemo(() => {
     if (!timestamp) {
@@ -46,18 +48,21 @@ const PeerAndMessage: React.FC<PeerAndMessageProps> = ({
     <div className="PeerAndMessage">
       {withAvatar && <Avatar width={'2.25em'} address={address} height={'2.25em'} />}
       <div className="PeerAndMessage__text">
-        <div className="PeerAndMessage__peer">
+        <div className={`PeerAndMessage__peer${isMobile ? '__mobile' : ''}`}>
           <TextWithHighlight
             text={isValidEnsDomain(peer) ? peer : truncate(getEthChainAddress(peer), 8)}
             highlightedText={highlightedText ?? ''}
           />
+          {isMobile && <span className="PeerAndMessage__message__timestamp">{messageSentAt}</span>}
         </div>
         {message && (
           <div className={'PeerAndMessage__message__details'}>
             <div className={'PeerAndMessage__message'}>
               <TextWithHighlight text={message} highlightedText={highlightedText ?? ''} />
             </div>
-            <span className="PeerAndMessage__message__timestamp">{messageSentAt}</span>
+            {!isMobile && (
+              <span className="PeerAndMessage__message__timestamp">{messageSentAt}</span>
+            )}
           </div>
         )}
       </div>

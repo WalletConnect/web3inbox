@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { isMobile } from '../../../utils/ui'
@@ -10,9 +11,10 @@ import './BackButton.scss'
  */
 interface BackButtonProps {
   backTo: string
+  children?: ReactNode
 }
 
-const BackButton: React.FC<BackButtonProps> = ({ backTo }) => {
+const BackButton: React.FC<BackButtonProps> = ({ backTo, children }) => {
   if (!isMobile()) {
     return null
   }
@@ -40,6 +42,7 @@ const BackButton: React.FC<BackButtonProps> = ({ backTo }) => {
           fill="#3396FF"
         />
       </svg>
+      {children}
     </div>
   )
 }

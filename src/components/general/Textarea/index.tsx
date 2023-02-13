@@ -9,7 +9,7 @@ interface ITextareaProps {
 }
 
 const Textarea: React.FC<ITextareaProps> = ({ onChange, value, icon, placeholder }) => {
-  const [inputHeight, setInputHeight] = useState(36)
+  const [inputHeight, setInputHeight] = useState(30)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const Textarea: React.FC<ITextareaProps> = ({ onChange, value, icon, placeholder
       setInputHeight(textareaRef.current.scrollHeight)
     }
     if (!value?.length) {
-      setInputHeight(36)
+      setInputHeight(30)
     }
   }, [value])
 
