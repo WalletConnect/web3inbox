@@ -1,13 +1,11 @@
 .MessageBox {
-  display: grid;
-  grid-template-areas: 'messagebox send-button';
-  grid-template-columns: 95% 5%;
+  display: flex;
   gap: 1em;
-  width: 90%;
-  margin: 0 auto;
+  justify-content: flex-start;
+  align-items: center;
 
-  .Input {
-    grid-area: messagebox;
+  .Textarea {
+    flex-grow: 1;
     border-radius: 16px 16px 6px 16px;
   }
 
@@ -19,6 +17,7 @@
     place-items: center;
     border-radius: 50%;
 
-    height: 100%;
+    height: 3em;
+    width: 3em;
   }
 }
