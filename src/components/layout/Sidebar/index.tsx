@@ -15,7 +15,7 @@ const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 
 const Sidebar: React.FC = () => {
   const { pathname } = useLocation()
-  const navigationDepth = pathname.split('/').length
+  const navigationPaths = useMemo(() => pathname.split('/'), [pathname])
   const { address } = useAccount()
   const isMobile = useIsMobile()
   const navItems = useMemo(
@@ -28,9 +28,9 @@ const Sidebar: React.FC = () => {
   )
 
   // If pathname matches .*/.*/.*
-  // As per design, sidebar in mobile is hidden when on "Main" is viewed
+  // As per design, sidebar in mobile is hidden when on "Main" is viewed on messages
   // And hidden when "TargetSelector" is viewed
-  if (isMobile && navigationDepth > 2) {
+  if (isMobile && navigationPaths.includes('messages') && navigationPaths.length > 2) {
     return null
   }
 

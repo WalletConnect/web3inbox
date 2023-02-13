@@ -1,6 +1,7 @@
 @import '../../../styles/mixins.scss';
 
 .Sidebar {
+  z-index: 1;
   position: fixed;
   bottom: 5%;
   left: 50%;

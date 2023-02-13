@@ -7,7 +7,7 @@ import AppExplorerHeader from './AppExplorerHeader'
 const AppExplorer = () => {
   return (
     <div className="AppExplorer">
-      <BackButton backTo="/notifications" />
+      <BackButton backTo="/notifications">Notifications</BackButton>
       <AppExplorerHeader />
       <div className="AppExplorer__apps">
         <div className="AppExplorer__apps__column">
