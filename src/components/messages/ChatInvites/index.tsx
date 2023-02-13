@@ -1,16 +1,19 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import W3iContext from '../../../contexts/W3iContext/context'
-import WavingHand from '../../../assets/WavingHand.png'
 import CrossIcon from '../../../assets/Cross.svg'
-import PeerAndMessage from '../PeerAndMessage'
-import './Invites.scss'
+import W3iContext from '../../../contexts/W3iContext/context'
+import { useIsMobile } from '../../../utils/hooks'
+import BackButton from '../../general/BackButton'
 import Button from '../../general/Button'
 import Checkbox from '../../general/Checkbox'
 import CheckIcon from '../../general/Icon/CheckIcon'
+import PeerAndMessage from '../PeerAndMessage'
+import ChatInvitesHeader from './ChatInvitesHeader'
+import './Invites.scss'
 
 const ChatInvites: React.FC = () => {
   const [invitesSelected, setInvitesSelected] = useState<number[]>([])
   const { chatClientProxy, invites, refreshThreadsAndInvites } = useContext(W3iContext)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     refreshThreadsAndInvites()
@@ -82,17 +85,15 @@ const ChatInvites: React.FC = () => {
 
   return (
     <div className="Invites">
-      <div className="Invites__header">
-        <div className="Invites__header-text">
-          <div className="Invites__header-icon">
-            <img src={WavingHand} alt="Hand" />
-          </div>
-          <span>
-            {invitesSelected.length > 0
-              ? `${invitesSelected.length} Invites Selected`
-              : `${invites.length} New Chat Invites`}
-          </span>
-        </div>
+      <BackButton backTo="/messages">
+        <div className="Invites__navigation">Chat</div>
+      </BackButton>
+      <div className={`Invites__header${isMobile ? '__mobile' : ''}`}>
+        <ChatInvitesHeader
+          invitesCount={invites.length}
+          invitesSelectedCount={invitesSelected.length}
+        />
+
         <div className="Invites__header-actions">
           <Button onClick={handleAcceptInvite} type="action" className="Invites__accept">
             <CheckIcon />

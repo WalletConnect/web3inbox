@@ -16,7 +16,7 @@ const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
 
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<
-    { topic: string; message?: string }[]
+    { topic: string; message?: string; timestamp?: number }[]
   >([])
   const { threads, invites, chatClientProxy } = useContext(W3iContext)
 
@@ -36,7 +36,7 @@ const ThreadSelector: React.FC = () => {
         return
       }
 
-      const newFilteredThreadTopics: { topic: string; message?: string }[] = []
+      const newFilteredThreadTopics: { topic: string; message?: string; timestamp?: number }[] = []
 
       /*
        * For every thread, check if the thread address matches the searchQuery
@@ -109,13 +109,16 @@ const ThreadSelector: React.FC = () => {
       <div className="ThreadSelector__threads">
         {filteredThreads.map(({ peerAccount, topic }) => {
           const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
-          const message = (filterIdx !== -1 && filteredThreadTopics[filterIdx].message) || undefined
+          const lastItem = (filterIdx !== -1 && filteredThreadTopics[filterIdx]) || undefined
+          const message = lastItem?.message
+          const timestamp = lastItem?.timestamp
 
           return (
             <Thread
               searchQuery={search}
               topic={topic}
               lastMessage={message}
+              lastMessageTimestamp={timestamp}
               threadPeer={peerAccount}
               key={peerAccount}
             />

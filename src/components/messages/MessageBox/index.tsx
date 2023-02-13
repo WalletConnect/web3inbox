@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import SendIcon from '../../../assets/SendFilled.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
-import Input from '../../general/Input'
+import Textarea from '../../general/Textarea'
 import './MessageBox.scss'
 
 interface MessageBoxProps {
@@ -13,33 +13,29 @@ interface MessageBoxProps {
 const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccessfulSend }) => {
   const [messageText, setMessageText] = useState('')
   const { chatClientProxy } = useContext(W3iContext)
-  const ref = useRef<HTMLInputElement>(null)
 
-  /*
-   * Using a ref to avoid to regenerating this function every time
-   * messageText state changes.
-   */
   const onSend = useCallback(async () => {
-    if (!chatClientProxy || !ref.current) {
+    if (!chatClientProxy || !messageText) {
       return
     }
     await chatClientProxy.message({
       topic,
       payload: {
         authorAccount,
-        message: ref.current.value,
+        message: messageText,
         timestamp: new Date().getTime()
       }
     })
     onSuccessfulSend()
     setMessageText('')
-  }, [ref, authorAccount, topic, onSuccessfulSend])
+  }, [messageText, authorAccount, topic, onSuccessfulSend])
 
   useEffect(() => {
     const onKeydown = (keydownEvent: KeyboardEvent) => {
-      if (keydownEvent.key !== 'Enter') {
+      if ((keydownEvent.shiftKey && keydownEvent.key === 'Enter') || keydownEvent.key !== 'Enter') {
         return
       }
+
       onSend()
     }
 
@@ -52,9 +48,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
 
   return (
     <div className="MessageBox">
-      <Input
-        ref={ref}
-        type="text"
+      <Textarea
         placeholder="Message..."
         value={messageText}
         onChange={({ target }) => setMessageText(target.value)}
