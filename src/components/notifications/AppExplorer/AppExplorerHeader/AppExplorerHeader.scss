@@ -1,0 +1,14 @@
+.AppExplorerHeader {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1.5em;
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.4375em;
+    color: var(--fg-color-1);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+  }
+}

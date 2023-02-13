@@ -1,16 +1,16 @@
+import debounce from 'lodash.debounce'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import Input from '../../general/Input'
-import Search from '../../../assets/Search.svg'
-import W3iContext from '../../../contexts/W3iContext/context'
-import Thread from './Thread'
+import { concatAll, from, takeLast, takeWhile } from 'rxjs'
 import PersonIcon from '../../../assets/Person.svg'
 import PlusIcon from '../../../assets/Plus.svg'
-import './ThreadSelector.scss'
-import NavLink from '../../general/NavLink'
-import debounce from 'lodash.debounce'
-import { concatAll, from, takeLast, takeWhile } from 'rxjs'
-import EmptyThreads from './EmptyThreads'
+import Search from '../../../assets/Search.svg'
+import W3iContext from '../../../contexts/W3iContext/context'
 import CircleBadge from '../../general/Badge/CircleBadge'
+import Input from '../../general/Input'
+import NavLink from '../../general/NavLink'
+import EmptyThreads from './EmptyThreads'
+import Thread from './Thread'
+import './ThreadSelector.scss'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
@@ -106,7 +106,6 @@ const ThreadSelector: React.FC = () => {
           <CircleBadge>{invites.length}</CircleBadge>
         </div>
       </NavLink>
-      {filteredThreads.length === 0 && <EmptyThreads />}
       <div className="ThreadSelector__threads">
         {filteredThreads.map(({ peerAccount, topic }) => {
           const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
@@ -126,6 +125,7 @@ const ThreadSelector: React.FC = () => {
           <span className="ThreadSelector__contact">No {search} found in your contacts</span>
         )}
       </div>
+      <EmptyThreads />
     </div>
   )
 }

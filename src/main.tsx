@@ -1,23 +1,24 @@
+import { EthereumClient, modalConnectors, walletConnectProvider } from '@web3modal/ethereum'
+import { Web3Modal } from '@web3modal/react'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import App from './App'
-import Login from './pages/Login'
-import './index.css'
-import './styles/fonts.css'
-import W3iContextProvider from './contexts/W3iContext'
-import { Web3Modal } from '@web3modal/react'
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
-import { EthereumClient, modalConnectors, walletConnectProvider } from '@web3modal/ethereum'
-import MessagesLayout from './components/messages/MessagesLayout'
-import NotificationsLayout from './components/notifications/NotificationsLayout'
-import ThreadWindow from './components/messages/ThreadWindow'
-import NewChat from './components/messages/NewChat'
+import App from './App'
 import Web3InboxPlaceholder from './components/general/Web3InboxPlaceholder'
 import ChatInvites from './components/messages/ChatInvites'
-import SettingsLayout from './components/settings/SettingsLayout'
+import MessagesLayout from './components/messages/MessagesLayout'
+import NewChat from './components/messages/NewChat'
+import ThreadWindow from './components/messages/ThreadWindow'
+import AppExplorer from './components/notifications/AppExplorer'
+import NotificationsLayout from './components/notifications/NotificationsLayout'
 import Settings from './components/settings/Settings'
+import SettingsLayout from './components/settings/SettingsLayout'
 import SettingsContextProvider from './contexts/SettingsContext'
+import W3iContextProvider from './contexts/W3iContext'
+import './index.css'
+import Login from './pages/Login'
+import './styles/fonts.css'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -41,7 +42,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path="/login" element={<Login />} />
 
               <Route path="/" element={<App />}>
-                <Route path="notifications" element={<NotificationsLayout />} />
+                <Route path="notifications" element={<NotificationsLayout />}>
+                  <Route index element={<Web3InboxPlaceholder />} />
+                  <Route path="/notifications/new-app" index element={<AppExplorer />} />
+                </Route>
                 <Route path="messages" element={<MessagesLayout />}>
                   <Route index element={<Web3InboxPlaceholder />} />
                   <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
