@@ -2,7 +2,7 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 import type ChatClient from '@walletconnect/chat-client'
 import type { W3iChatProvider } from './types'
-import { watchAccount, getAccount } from '@wagmi/core'
+import { watchAccount, getAccount, signMessage } from '@wagmi/core'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -52,10 +52,18 @@ export default class InternalChatProvider implements W3iChatProvider {
     this.chatClient.on('chat_message', args => this.emitter.emit('chat_message', args))
     this.chatClient.on('chat_joined', args => this.emitter.emit('chat_joined', args))
     this.chatClient.on('chat_invite', args => {
-      console.log('GOT INVITE', args)
       this.emitter.emit('chat_invite', args)
     })
     this.chatClient.on('chat_left', args => this.emitter.emit('chat_left', args))
+  }
+
+  private getRequiredInternalAddress(): string {
+    const address = getAccount().address
+    if (!address) {
+      throw new Error('No address registered')
+    }
+
+    return address
   }
 
   public get chatMessages() {
@@ -64,6 +72,14 @@ export default class InternalChatProvider implements W3iChatProvider {
     }
 
     return this.chatClient.chatMessages
+  }
+
+  public addContact(params: { account: string; publicKey: string }) {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('chatMessages'))
+    }
+
+    this.chatClient.addContact(params)
   }
 
   private formatClientRelatedError(method: string) {
@@ -125,23 +141,33 @@ export default class InternalChatProvider implements W3iChatProvider {
 
   public async getPendingThreads() {
     if (!this.chatClient) {
-      throw new Error(this.formatClientRelatedError('getThreads'))
+      throw new Error(this.formatClientRelatedError('getPendingThreads'))
     }
 
     return Promise.resolve(this.chatClient.chatThreadsPending.getAll())
   }
 
-  public async getInvites(params?: { account: string }) {
+  public async getSentInvites(params?: { account: string }) {
     if (!this.chatClient) {
-      console.log({ params })
-      throw new Error(this.formatClientRelatedError('getInvites'))
+      throw new Error(this.formatClientRelatedError('getSentInvites'))
     }
 
-    console.log('Invites: ', this.chatClient.getInvites())
-
-    return Promise.resolve(this.chatClient.getInvites())
+    return Promise.resolve(
+      this.chatClient.getSentInvites(params ?? { account: this.getRequiredInternalAddress() })
+    )
   }
-  public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
+
+  public async getReceivedInvites(params?: { account: string }) {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('getReceivedInvites'))
+    }
+
+    return Promise.resolve(
+      this.chatClient.getReceivedInvites(params ?? { account: this.getRequiredInternalAddress() })
+    )
+  }
+
+  public async invite(params: ChatClientTypes.Invite) {
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('invite'))
     }
@@ -155,7 +181,7 @@ export default class InternalChatProvider implements W3iChatProvider {
 
     return this.chatClient.ping(params)
   }
-  public async message(params: { topic: string; payload: ChatClientTypes.Message }) {
+  public async message(params: ChatClientTypes.Message) {
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('message'))
     }
@@ -170,7 +196,10 @@ export default class InternalChatProvider implements W3iChatProvider {
       throw new Error(this.formatClientRelatedError('register'))
     }
 
-    return this.chatClient.register(params)
+    return this.chatClient.register({
+      ...params,
+      onSign: async message => signMessage({ message })
+    })
   }
 
   public async resolve(params: { account: string }) {
