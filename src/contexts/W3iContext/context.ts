@@ -9,7 +9,7 @@ interface W3iContextState {
   refreshThreadsAndInvites: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
   threads: ChatClientTypes.Thread[]
-  invites: ChatClientTypes.Invite[]
+  invites: ChatClientTypes.ReceivedInvite[]
   userPubkey?: string
 }
 

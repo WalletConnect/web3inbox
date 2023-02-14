@@ -108,18 +108,18 @@ const ChatInvites: React.FC = () => {
       <div className="Invites__inviters">
         {invites.map(invite => {
           return (
-            <div key={invite.account} className="Invites__inviter">
+            <div key={invite.inviterAccount} className="Invites__inviter">
               <div className="Invites__inviter-selector">
                 <Checkbox
                   checked={(invite.id && invitesSelected.includes(invite.id)) || false}
                   onCheck={() => onCheck(invite.id)}
                   onUncheck={() => onUncheck(invite.id)}
-                  id={invite.id ?? 0}
+                  id={invite.id}
                   name="inviter"
                 />
                 <PeerAndMessage
-                  key={invite.publicKey}
-                  peer={invite.account}
+                  key={invite.inviterPublicKey}
+                  peer={invite.inviterAccount}
                   message={invite.message}
                 />
               </div>
