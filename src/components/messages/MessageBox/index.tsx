@@ -32,9 +32,12 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
 
   useEffect(() => {
     const onKeydown = (keydownEvent: KeyboardEvent) => {
+      // Shift + Enter will result in new line and other keys are ignored
       if ((keydownEvent.shiftKey && keydownEvent.key === 'Enter') || keydownEvent.key !== 'Enter') {
         return
       }
+      // Prevent new line when pressing Enter
+      keydownEvent.preventDefault()
 
       onSend()
     }

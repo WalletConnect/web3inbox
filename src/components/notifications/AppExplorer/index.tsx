@@ -15,6 +15,7 @@ const AppExplorer = () => {
             .filter((_, i) => i % 2 === 0)
             .map(app => (
               <AppCard
+                key={app.id}
                 name={app.name}
                 description={app.description}
                 bgColor={app.color}
@@ -28,6 +29,7 @@ const AppExplorer = () => {
             .filter((_, i) => i % 2 !== 0)
             .map(app => (
               <AppCard
+                key={app.id}
                 name={app.name}
                 description={app.description}
                 bgColor={app.color}

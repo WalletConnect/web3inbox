@@ -11,6 +11,7 @@ import MessagesLayout from './components/messages/MessagesLayout'
 import NewChat from './components/messages/NewChat'
 import ThreadWindow from './components/messages/ThreadWindow'
 import AppExplorer from './components/notifications/AppExplorer'
+import AppNotifications from './components/notifications/AppNotifications'
 import NotificationsLayout from './components/notifications/NotificationsLayout'
 import Settings from './components/settings/Settings'
 import SettingsLayout from './components/settings/SettingsLayout'
@@ -45,6 +46,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <Route path="notifications" element={<NotificationsLayout />}>
                   <Route index element={<Web3InboxPlaceholder />} />
                   <Route path="/notifications/new-app" element={<AppExplorer />} />
+                  <Route path="/notifications/:appId" element={<AppNotifications />} />
                 </Route>
                 <Route path="messages" element={<MessagesLayout />}>
                   <Route index element={<Web3InboxPlaceholder />} />

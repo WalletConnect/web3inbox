@@ -1,17 +1,17 @@
-import React, { useContext, useEffect } from 'react'
-import ByWalletConnect from '../../assets/by_walletconnect.png'
-import Logo from '../../assets/Logo.svg'
-import Web3InboxDisplay from '../../assets/web3inbox.png'
-import ChatDisplay from '../../assets/chat.png'
-import NotificationDisplay from '../../assets/notifs.png'
-import './Login.scss'
-import Button from '../../components/general/Button'
 import { Web3Button } from '@web3modal/react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import W3iContext from '../../contexts/W3iContext/context'
 import { useAccount } from 'wagmi'
-import NotificationIcon from '../../components/general/Icon/NotificationIcon'
+import ByWalletConnect from '../../assets/by_walletconnect.png'
+import ChatDisplay from '../../assets/chat.png'
+import Logo from '../../assets/Logo.svg'
+import NotificationDisplay from '../../assets/notifs.png'
+import Web3InboxDisplay from '../../assets/web3inbox.png'
+import Button from '../../components/general/Button'
 import MessageIcon from '../../components/general/Icon/MessageIcon'
+import NotificationIcon from '../../components/general/Icon/NotificationIcon'
+import W3iContext from '../../contexts/W3iContext/context'
+import './Login.scss'
 
 const Web3InboxFeatures = [
   {
@@ -72,7 +72,7 @@ const Login: React.FC = () => {
         <div className="Login__actions">
           <div className="Login__actions-container">
             <Web3Button />
-            <Button type="secondary">Learn More</Button>
+            <Button customType="secondary">Learn More</Button>
           </div>
         </div>
       </div>

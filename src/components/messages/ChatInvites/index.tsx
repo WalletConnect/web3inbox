@@ -95,11 +95,11 @@ const ChatInvites: React.FC = () => {
         />
 
         <div className="Invites__header-actions">
-          <Button onClick={handleAcceptInvite} type="action" className="Invites__accept">
+          <Button onClick={handleAcceptInvite} customType="action" className="Invites__accept">
             <CheckIcon />
             Accept {invitesSelected.length === 0 ? 'All' : ''}
           </Button>
-          <Button onClick={handleDeclineInvite} type="action" className="Invites__decline">
+          <Button onClick={handleDeclineInvite} customType="action" className="Invites__decline">
             <img src={CrossIcon} alt="Decline" />
             Decline {invitesSelected.length === 0 ? 'All' : ''}
           </Button>
@@ -124,10 +124,10 @@ const ChatInvites: React.FC = () => {
                 />
               </div>
               <div className="Invites__inviter-actions">
-                <Button type="action-icon" onClick={() => onAccept(invite.id)}>
+                <Button customType="action-icon" onClick={() => onAccept(invite.id)}>
                   <CheckIcon />
                 </Button>
-                <Button type="action-icon" onClick={() => onReject(invite.id)}>
+                <Button customType="action-icon" onClick={() => onReject(invite.id)}>
                   <img src={CrossIcon} alt="Accept" />
                 </Button>
               </div>

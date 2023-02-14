@@ -9,6 +9,7 @@ import zoraLogo from '../../../assets/zora.svg'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
+import NotificationActionsDropdown from '../NotificationActionsDropdown'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
 
@@ -82,6 +83,7 @@ export const myAppsMock = [
 const AppSelector: React.FC = () => {
   const [search, setSearch] = useState('')
   const [showMockApps] = useState(true)
+  const [isDropdownShown, setIsDropdownShown] = useState<string | undefined>()
 
   const [filteredApps, setFilteredApps] = useState<PushApp[]>([])
 
@@ -127,13 +129,24 @@ const AppSelector: React.FC = () => {
         <span>New App</span>
       </NavLink>
       {filteredApps.map(app => (
-        <NavLink to={`/notifications/${app.id}`} className="AppSelector__link">
+        <NavLink
+          key={app.id}
+          to={`/notifications/${app.id}`}
+          className="AppSelector__link"
+          onMouseEnter={() => setIsDropdownShown(app.id)}
+          onMouseLeave={() => setIsDropdownShown(undefined)}
+        >
           <div className="AppSelector__notifications">
             <div className="AppSelector__notifications-link">
               <img className="AppSelector__link-logo" src={app.logo ?? Logo} alt="Invites" />
               <span>{app.name}</span>
             </div>
-            {app.notifications && <CircleBadge>{app.notifications.length}</CircleBadge>}
+            {isDropdownShown !== app.id && app.notifications?.length && (
+              <CircleBadge>{app.notifications.length}</CircleBadge>
+            )}
+            {isDropdownShown === app.id && (
+              <NotificationActionsDropdown appId={app.id} btnShape="square" w="28px" h="28px" />
+            )}
           </div>
         </NavLink>
       ))}

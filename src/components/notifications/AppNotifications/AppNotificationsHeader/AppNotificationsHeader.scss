@@ -1,0 +1,27 @@
+.AppNotificationsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  &__app {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    &__logo {
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+    }
+    &__name {
+      color: var(--fg-color-1);
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+    }
+  }
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}
