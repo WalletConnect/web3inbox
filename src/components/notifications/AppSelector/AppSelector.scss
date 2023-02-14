@@ -16,7 +16,7 @@
     display: flex;
     // on hover when link is not active
     &:not(.NavLink-active):hover {
-      background: var(--bg-gradient-1);
+      background: var(--bg-color-2);
     }
 
     &-icon {

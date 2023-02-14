@@ -9,7 +9,7 @@ import zoraLogo from '../../../assets/zora.svg'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
-import NotificationActionsDropdown from '../NotificationActionsDropdown'
+import NotificationActionsDropdown from '../NotificationsActionsDropdown'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
 
@@ -36,13 +36,22 @@ export const myAppsMock = [
     notifications: [
       {
         id: 'fake-uuid',
+        image:
+          'https://f8n-production.imgix.net/collections/f26vgep49.gif?q=45&w=128&h=128&fit=crop&dpr=2',
         title: 'You won an auction',
-        message: `You successfully bought ‘x l o 35’ for 1 ETH from @emrecolako`
+        message: `You successfully bought ‘x l o 35’ for 1 ETH from @emrecolako`,
+        isRead: true,
+        timestamp: new Date().getTime()
       },
       {
         id: 'a-fake-uuid',
+        image:
+          'https://f8n-production.imgix.net/collections/a39acu5u8.jpg?q=45&w=128&h=128&fit=crop&dpr=2',
+
         title: 'You have a new follower',
-        message: '@enmity followed you'
+        message: '@enmity followed you',
+        isRead: false,
+        timestamp: new Date().getTime()
       }
     ]
   },
@@ -56,8 +65,11 @@ export const myAppsMock = [
     notifications: [
       {
         id: 'an-other-fake-uuid',
+        image: undefined,
         title: 'ETH Price Alert',
-        message: 'ETH passed the treshold of $2000'
+        message: 'ETH passed the treshold of $2000',
+        isRead: false,
+        timestamp: new Date().getTime()
       }
     ]
   },
@@ -83,7 +95,7 @@ export const myAppsMock = [
 const AppSelector: React.FC = () => {
   const [search, setSearch] = useState('')
   const [showMockApps] = useState(true)
-  const [isDropdownShown, setIsDropdownShown] = useState<string | undefined>()
+  const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
 
   const [filteredApps, setFilteredApps] = useState<PushApp[]>([])
 
@@ -99,7 +111,11 @@ const AppSelector: React.FC = () => {
 
       from(myAppsMock).subscribe({
         next: app => {
-          if (app.name.toLowerCase().includes(searchQuery)) {
+          const isAppNameMatch = app.name.toLowerCase().includes(searchQuery)
+          const isNotificationMatch = app.notifications?.some(
+            ({ title, message }) => title.includes(searchQuery) || message.includes(searchQuery)
+          )
+          if (isAppNameMatch || isNotificationMatch) {
             newFilteredApps.push(app)
           }
         },
@@ -133,19 +149,25 @@ const AppSelector: React.FC = () => {
           key={app.id}
           to={`/notifications/${app.id}`}
           className="AppSelector__link"
-          onMouseEnter={() => setIsDropdownShown(app.id)}
-          onMouseLeave={() => setIsDropdownShown(undefined)}
+          onMouseEnter={() => setDropdownToShow(app.id)}
+          onMouseLeave={() => setDropdownToShow(undefined)}
         >
           <div className="AppSelector__notifications">
             <div className="AppSelector__notifications-link">
               <img className="AppSelector__link-logo" src={app.logo ?? Logo} alt="Invites" />
               <span>{app.name}</span>
             </div>
-            {isDropdownShown !== app.id && app.notifications?.length && (
+            {dropdownToShow !== app.id && app.notifications?.length && (
               <CircleBadge>{app.notifications.length}</CircleBadge>
             )}
-            {isDropdownShown === app.id && (
-              <NotificationActionsDropdown appId={app.id} btnShape="square" w="28px" h="28px" />
+            {dropdownToShow === app.id && (
+              <NotificationActionsDropdown
+                appId={app.id}
+                btnShape="square"
+                w="28px"
+                h="28px"
+                closeDropdown={() => setDropdownToShow(undefined)}
+              />
             )}
           </div>
         </NavLink>

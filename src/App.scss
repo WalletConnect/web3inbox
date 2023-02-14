@@ -16,6 +16,7 @@
     grid-area: target-selector;
     @include padding-y(2em);
     display: var(--targetselector-display);
+    min-width: 215px;
   }
   .Sidebar {
     @include padding-y(0.875em);

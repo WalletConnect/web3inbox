@@ -1,7 +1,6 @@
-import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { getEthChainAddress, isValidEnsDomain } from '../../../utils/address'
-import { useIsMobile } from '../../../utils/hooks'
+import { useFormattedTime, useIsMobile } from '../../../utils/hooks'
 import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import TextWithHighlight from '../../general/TextWithHighlight'
@@ -24,25 +23,7 @@ const PeerAndMessage: React.FC<PeerAndMessageProps> = ({
 }) => {
   const isMobile = useIsMobile()
   const address = getEthChainAddress(peer)
-  const messageSentAt = useMemo(() => {
-    if (!timestamp) {
-      return null
-    }
-    const today = new Date()
-    const messageDate = new Date(timestamp)
-
-    if (isToday(messageDate)) {
-      return format(messageDate, 'HH:mm')
-    }
-    if (isYesterday(messageDate)) {
-      return `Yesterday ${format(messageDate, 'HH:mm')}`
-    }
-    if (isSameWeek(today, messageDate)) {
-      return format(messageDate, 'iiii')
-    }
-
-    return format(messageDate, 'MMMM dd')
-  }, [timestamp])
+  const messageSentAt = useFormattedTime(timestamp)
 
   return (
     <div className="PeerAndMessage">

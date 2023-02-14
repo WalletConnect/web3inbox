@@ -1,12 +1,30 @@
 .AppNotificationsHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 11px;
+  @media only screen and (max-width: 700px) {
+    flex-direction: column;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  &__secondary__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 10px;
+  }
   &__app {
     display: flex;
     align-items: center;
     gap: 0.5em;
     &__logo {
+      padding-left: 8px;
       border-radius: 50%;
       width: 36px;
       height: 36px;
@@ -23,5 +41,8 @@
     align-items: center;
     justify-content: flex-end;
     gap: 10px;
+    &__mobile {
+      flex-direction: column;
+    }
   }
 }
