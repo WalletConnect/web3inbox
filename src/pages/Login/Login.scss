@@ -1,26 +1,55 @@
 @import '../../styles/mixins.scss';
 
 .Landing {
-	@include padding-x(2.5%);
-	display: flex;
-	flex-direction: column;
-	gap: 3em;
-	align-items: center;
-	
-	&__features {
-	align-items: center;
-		display: flex;
-		flex-direction: column;
-		gap: 1em;
-	}
+  @include padding-x(2.5%);
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+  align-items: center;
+  position: relative;
 
-	&__row {
-		display: flex;
-		gap: 1em;
+  &__feature-sets {
+  }
 
-		img {
-			display: block;
-		}
-	}
+  &__features {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
 
+  &__header {
+    backdrop-filter: blur(40px);
+    padding: 2em;
+    position: sticky;
+    top: -1px;
+    &-title {
+      font-size: 50px;
+      font-weight: 500;
+      line-height: 50px;
+      font-feature-settings: 'case' on, 'ss04' on, 'ss06' on;
+    }
+    &-subtext {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 18px;
+      font-feature-settings: 'case' on, 'ss04' on, 'ss06' on;
+      text-align: center;
+      width: 55%;
+      color: var(--fg-color-2);
+    }
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+  }
+
+  &__row {
+    display: flex;
+    gap: 1em;
+
+    img {
+      display: block;
+    }
+  }
 }
