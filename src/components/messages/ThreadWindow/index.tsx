@@ -6,6 +6,7 @@ import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import BackButton from '../../general/BackButton'
+import InviteMessage from '../../InviteMessage'
 import ConversationBeginning from '../ConversationBeginning'
 import { MessageItem } from '../Message/MessageItem'
 import MessageBox from '../MessageBox'
@@ -20,6 +21,8 @@ const ThreadWindow: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
+
+  const isInvite = topic.includes('invite:')
 
   useEffect(() => {
     setTopic(new URLSearchParams(search).get('topic') ?? '')
@@ -72,6 +75,7 @@ const ThreadWindow: React.FC = () => {
       </div>
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />
+        {isInvite && <InviteMessage peer={peerAddress} status="pending" />}
         {messages.map((message, i) => (
           <MessageItem
             key={message.timestamp}

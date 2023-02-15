@@ -1,0 +1,25 @@
+.InviteMessage {
+  display: flex;
+  justify-content: flex-end;
+
+  &__bubble {
+    padding: 0.4em 0.8em;
+    box-shadow: inset 1px 1px 4px #99cbff, inset -1px -1px 4px #1464b8;
+    background: #3396ff;
+    border-radius: 16px 16px 6px 16px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.2em;
+  }
+
+  &__subtext {
+    color: var(--fg-color-2);
+  }
+
+  &__pending {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+  }
+}

@@ -109,7 +109,13 @@ class W3iChatFacade implements W3iChat {
     return this.provider.getPendingThreads(params)
   }
   public async invite(params: ChatClientTypes.Invite) {
-    return this.provider.invite(params)
+    return this.provider.invite(params).then(inviteId => {
+      this.emitter.emit('chat_invite_sent', {
+        ...params
+      })
+
+      return inviteId
+    })
   }
   public async ping(params: { topic: string }) {
     return this.provider.ping(params)
