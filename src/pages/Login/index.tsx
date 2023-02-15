@@ -1,7 +1,6 @@
 import { Web3Button } from '@web3modal/react'
 import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAccount } from 'wagmi'
 import ByWalletConnect from '../../assets/by_walletconnect.png'
 import ChatDisplay from '../../assets/chat.png'
 import Logo from '../../assets/Logo.svg'
@@ -30,17 +29,16 @@ const Web3InboxFeatures = [
 
 const Login: React.FC = () => {
   const { userPubkey } = useContext(W3iContext)
-  const { isDisconnected, address } = useAccount()
   const nav = useNavigate()
 
   useEffect(() => {
-    if (!userPubkey && isDisconnected) {
+    if (!userPubkey) {
       nav('/login')
     }
-    if (userPubkey && address) {
+    if (userPubkey) {
       nav('/')
     }
-  }, [userPubkey, address, isDisconnected])
+  }, [userPubkey])
 
   return (
     <div className="Login">
