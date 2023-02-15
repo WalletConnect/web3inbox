@@ -6,7 +6,7 @@ type THTMLButtonProps = React.DetailedHTMLProps<
   HTMLButtonElement
 >
 type TButtonProps = THTMLButtonProps & {
-  customType?: 'action-icon' | 'action' | 'primary' | 'secondary'
+  customType?: 'action-icon' | 'action' | 'danger' | 'primary' | 'secondary'
 }
 
 const Button: React.FC<TButtonProps> = ({

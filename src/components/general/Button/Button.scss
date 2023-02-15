@@ -21,6 +21,11 @@
     color: var(--accent-color-1);
   }
 
+  &__danger {
+    background: var(--error-color-1);
+    border: 1px solid var(--border-color-1);
+  }
+
   &__action,
   &__action-icon {
     background-color: var(--bg-color-2);

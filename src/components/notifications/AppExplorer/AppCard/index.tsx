@@ -1,20 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import externalLinkIcon from '../../../../assets/ExternalLink.svg'
+import SettingsContext from '../../../../contexts/SettingsContext/context'
 import './AppCard.scss'
 
 interface AppCardProps {
   name: string
   description: string
   logo: string
-  bgColor: string
+  bgColor: {
+    dark: string
+    light: string
+  }
   url: string
 }
 
 const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
+  const { mode } = useContext(SettingsContext)
+
   return (
     <a
       className="AppCard"
-      style={{ backgroundColor: bgColor }}
+      style={{ backgroundColor: mode === 'dark' ? bgColor.dark : bgColor.light }}
       href={url}
       target="_blank"
       rel="noopener noreferrer"

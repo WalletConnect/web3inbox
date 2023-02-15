@@ -16,7 +16,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 22.5em;
-  height: 51.25em;
+  height: fit-content;
   z-index: 999;
   display: flex;
   justify-content: center;
@@ -26,7 +26,7 @@
   border: 1px solid var(--border-color-1);
   box-shadow: 0px 8px 22px -6px rgba(0, 0, 0, 0.12), 0px 14px 64px -4px rgba(0, 0, 0, 0.12);
   &__content {
+    width: 100%;
     color: var(--fg-color-1);
-    padding: 1em;
   }
 }

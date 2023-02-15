@@ -3,7 +3,12 @@ import type { RefObject } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
-import { profileModalService, shareModalService } from './store'
+import {
+  preferencesModalService,
+  profileModalService,
+  shareModalService,
+  unsubscribeModalService
+} from './store'
 import { isMobile } from './ui'
 
 const displays = {
@@ -97,6 +102,10 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
 export const useModals = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
+  const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
+  const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
+  const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
     const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
@@ -105,16 +114,30 @@ export const useModals = () => {
     const shareSubscription = shareModalService.modalState.subscribe(isOpen => {
       setIsShareModalOpen(isOpen)
     })
+    const preferencesSubscription = preferencesModalService.modalState.subscribe(state => {
+      setPreferencesModalAppId(state.preferencesModalAppId)
+      setIsPreferencesModalOpen(state.isOpen)
+    })
+    const unsubscribeSubscription = unsubscribeModalService.modalState.subscribe(state => {
+      setUnsubscribeModalAppId(state.unsubscribeModalAppId)
+      setIsUnsubscribeModalOpen(state.isOpen)
+    })
 
     return () => {
       profileSubscription.unsubscribe()
       shareSubscription.unsubscribe()
+      preferencesSubscription.unsubscribe()
+      unsubscribeSubscription.unsubscribe()
     }
   }, [])
 
   return {
     isProfileModalOpen,
-    isShareModalOpen
+    isShareModalOpen,
+    isPreferencesModalOpen,
+    isUnsubscribeModalOpen,
+    preferencesModalAppId,
+    unsubscribeModalAppId
   }
 }
 
