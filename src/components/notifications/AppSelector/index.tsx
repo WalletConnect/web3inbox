@@ -178,7 +178,12 @@ const AppSelector: React.FC = () => {
           >
             <div className="AppSelector__notifications">
               <div className="AppSelector__notifications-link">
-                <img className="AppSelector__link-logo" src={app.logo} alt="Invites" />
+                <img
+                  className="AppSelector__link-logo"
+                  src={app.logo}
+                  alt={`${app.name} logo`}
+                  loading="lazy"
+                />
                 <span>{app.name}</span>
               </div>
               {dropdownToShow !== app.id &&
@@ -200,28 +205,35 @@ const AppSelector: React.FC = () => {
             </div>
           </NavLink>
         ))}
-      <div className="AppSelector__muted">
-        <span className="AppSelector__muted__label">MUTED</span>
-        {filteredApps
-          .filter(app => app.isMuted)
-          .map(app => (
-            <NavLink
-              key={app.id}
-              to={`/notifications/${app.id}`}
-              className="AppSelector__link"
-              onMouseEnter={() => setDropdownToShow(app.id)}
-              onMouseLeave={() => setDropdownToShow(undefined)}
-            >
-              <div className="AppSelector__notifications">
-                <div className="AppSelector__notifications-link__muted">
-                  <img className="AppSelector__link-logo" src={app.logo} alt="Invites" />
-                  <span>{app.name}</span>
+      {filteredApps.filter(app => app.isMuted).length > 0 && (
+        <div className="AppSelector__muted">
+          <div className="AppSelector__muted__label">MUTED</div>
+          {filteredApps
+            .filter(app => app.isMuted)
+            .map(app => (
+              <NavLink
+                key={app.id}
+                to={`/notifications/${app.id}`}
+                className="AppSelector__link"
+                onMouseEnter={() => setDropdownToShow(app.id)}
+                onMouseLeave={() => setDropdownToShow(undefined)}
+              >
+                <div className="AppSelector__notifications">
+                  <div className="AppSelector__notifications-link__muted">
+                    <img
+                      className="AppSelector__link-logo"
+                      src={app.logo}
+                      alt={`${app.name} logo`}
+                      loading="lazy"
+                    />
+                    <span>{app.name}</span>
+                  </div>
+                  <NotificationMuteIcon fillColor={themeColors['--fg-color-3']} />
                 </div>
-                <NotificationMuteIcon fillColor={themeColors['--fg-color-3']} />
-              </div>
-            </NavLink>
-          ))}
-      </div>
+              </NavLink>
+            ))}
+        </div>
+      )}
       <EmptyApps />
     </div>
   )

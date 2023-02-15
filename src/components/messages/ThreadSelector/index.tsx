@@ -106,28 +106,30 @@ const ThreadSelector: React.FC = () => {
           <CircleBadge>{invites.length}</CircleBadge>
         </div>
       </NavLink>
-      <div className="ThreadSelector__threads">
-        {filteredThreads.map(({ peerAccount, topic }) => {
-          const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
-          const lastItem = (filterIdx !== -1 && filteredThreadTopics[filterIdx]) || undefined
-          const message = lastItem?.message
-          const timestamp = lastItem?.timestamp
+      {filteredThreads.length > 0 && (
+        <div className="ThreadSelector__threads">
+          {filteredThreads.map(({ peerAccount, topic }) => {
+            const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
+            const lastItem = (filterIdx !== -1 && filteredThreadTopics[filterIdx]) || undefined
+            const message = lastItem?.message
+            const timestamp = lastItem?.timestamp
 
-          return (
-            <Thread
-              searchQuery={search}
-              topic={topic}
-              lastMessage={message}
-              lastMessageTimestamp={timestamp}
-              threadPeer={peerAccount}
-              key={peerAccount}
-            />
-          )
-        })}
-        {threads.length === 0 && search && (
-          <span className="ThreadSelector__contact">No {search} found in your contacts</span>
-        )}
-      </div>
+            return (
+              <Thread
+                searchQuery={search}
+                topic={topic}
+                lastMessage={message}
+                lastMessageTimestamp={timestamp}
+                threadPeer={peerAccount}
+                key={peerAccount}
+              />
+            )
+          })}
+          {threads.length === 0 && search && (
+            <span className="ThreadSelector__contact">No {search} found in your contacts</span>
+          )}
+        </div>
+      )}
       <EmptyThreads />
     </div>
   )

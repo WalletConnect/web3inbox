@@ -16,7 +16,7 @@
     grid-area: target-selector;
     @include padding-y(2em);
     display: var(--targetselector-display);
-    min-width: 215px;
+    min-width: 13.4375em;
   }
   .Sidebar {
     @include padding-y(0.875em);
@@ -47,4 +47,4 @@
     grid-template: 'sidebar target-selector main header';
     grid-template-columns: minmax(4em, 0.5fr) minmax(20%, 2fr) 8fr minmax(min-content, 1fr);
   }
-} ;
+}

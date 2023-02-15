@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { preferencesModalService, unsubscribeModalService } from '../../../utils/store'
 import Dropdown from '../../general/Dropdown/Dropdown'
 import CheckIcon from '../../general/Icon/CheckIcon'
@@ -6,6 +6,7 @@ import CrossIcon from '../../general/Icon/CrossIcon'
 import NotificationMuteIcon from '../../general/Icon/NotificationMuteIcon'
 import PreferencesIcon from '../../general/Icon/PreferencesIcon'
 import TrashIcon from '../../general/Icon/TrashIcon'
+import { myAppsMock } from '../AppSelector'
 import './NotificationsActionsDropdown.scss'
 
 interface INotificationsActionsDropdownProps {
@@ -25,6 +26,8 @@ const NotificationsActionsDropdown: React.FC<INotificationsActionsDropdownProps>
   h,
   closeDropdown
 }) => {
+  const app = useMemo(() => myAppsMock.find(mockApp => mockApp.id === appId), [appId])
+
   const handleMarkAsRead = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     console.log({ appId })
@@ -33,8 +36,10 @@ const NotificationsActionsDropdown: React.FC<INotificationsActionsDropdownProps>
     }
   }, [])
 
-  const handleMute = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMuteOrUnmute = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    const currentMuteState = app?.isMuted
+    console.log({ currentMuteState })
     if (closeDropdown) {
       closeDropdown()
     }
@@ -76,9 +81,9 @@ const NotificationsActionsDropdown: React.FC<INotificationsActionsDropdownProps>
           <CheckIcon />
           <span>Mark as read</span>
         </button>
-        <button onClick={handleMute}>
+        <button onClick={handleMuteOrUnmute}>
           <NotificationMuteIcon />
-          <span>Mute</span>
+          <span>{app?.isMuted ? 'Unmute' : 'Mute'}</span>
         </button>
         <button onClick={handleClearAll}>
           <TrashIcon />

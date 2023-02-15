@@ -27,7 +27,11 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
     >
       <div className="AppCard__header">
         <img className="AppCard__header__logo" src={logo} alt={`${name} logo`} />
-        <img className="AppCard__header__link" src={externalLinkIcon} alt={`navigate to ${url}`} />
+        <img
+          className="AppCard__header__link-icon"
+          src={externalLinkIcon}
+          alt={`navigate to ${url}`}
+        />
       </div>
 
       <div className="AppCard__body">

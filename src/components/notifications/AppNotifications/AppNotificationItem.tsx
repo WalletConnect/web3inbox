@@ -30,7 +30,11 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
     >
       <div className="AppNotifications__item__status">{!notification.isRead && <CircleIcon />}</div>
 
-      <img src={notification.image ?? appLogo} />
+      <img
+        src={notification.image ?? appLogo}
+        loading="lazy"
+        alt="image corresponding to the notification"
+      />
 
       <div key={notification.id} className="AppNotifications__item__content">
         <div className="AppNotifications__item__header">

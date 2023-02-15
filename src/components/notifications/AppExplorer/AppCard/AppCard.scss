@@ -10,13 +10,13 @@
     align-items: flex-start;
     &__logo {
       border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      margin-bottom: 12px;
+      width: 3.75em;
+      height: 3.75em;
+      margin-bottom: 0.75em;
     }
-    &__link {
-      width: 10.72px;
-      height: 10.72px;
+    &__link-icon {
+      width: 0.67em;
+      height: 0.67em;
     }
   }
 
@@ -24,22 +24,22 @@
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.25em;
     color: var(--fg-color-1);
     &__name {
       font-weight: 700;
-      font-size: 20px;
-      line-height: 24px;
+      font-size: 1.25em;
+      line-height: 1.5em;
     }
     &__description {
       font-weight: 500;
-      font-size: 13px;
-      line-height: 16px;
+      font-size: 0.8125em;
+      line-height: 1em;
     }
     &__url {
       font-weight: 500;
-      font-size: 12px;
-      line-height: 14px;
+      font-size: 0.75em;
+      line-height: 0.875em;
       color: var(--fg-color-2);
     }
   }

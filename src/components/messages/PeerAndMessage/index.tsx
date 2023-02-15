@@ -31,7 +31,7 @@ const PeerAndMessage: React.FC<PeerAndMessageProps> = ({
       <div className="PeerAndMessage__text">
         <div className={`PeerAndMessage__peer${isMobile ? '__mobile' : ''}`}>
           <TextWithHighlight
-            text={isValidEnsDomain(peer) ? peer : truncate(getEthChainAddress(peer), 8)}
+            text={isValidEnsDomain(peer) ? peer : truncate(getEthChainAddress(peer), 7)}
             highlightedText={highlightedText ?? ''}
           />
           {isMobile && <span className="PeerAndMessage__message__timestamp">{messageSentAt}</span>}
