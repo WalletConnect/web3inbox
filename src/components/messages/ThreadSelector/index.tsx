@@ -5,15 +5,20 @@ import PersonIcon from '../../../assets/Person.svg'
 import PlusIcon from '../../../assets/Plus.svg'
 import Search from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
+import { useIsMobile } from '../../../utils/hooks'
 import CircleBadge from '../../general/Badge/CircleBadge'
+import Button from '../../general/Button'
+import SearchIcon from '../../general/Icon/SearchIcon'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
+import MobileHeader from '../../layout/MobileHeader'
 import EmptyThreads from './EmptyThreads'
 import Thread from './Thread'
 import './ThreadSelector.scss'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
+  const isMobile = useIsMobile()
 
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<
     { topic: string; message?: string; timestamp?: number }[]
@@ -86,27 +91,42 @@ const ThreadSelector: React.FC = () => {
 
   return (
     <div className="ThreadSelector">
-      <Input
-        onChange={({ target }) => {
-          setSearch(target.value)
-        }}
-        placeholder="Search"
-        icon={Search}
-      />
-      <NavLink to="/messages/new-chat" className="ThreadSelector__link">
-        <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
-        <span>New Chat</span>
-      </NavLink>
-      <NavLink to="/messages/chat-invites" className="ThreadSelector__link">
-        <div className="ThreadSelector__invites">
-          <div className="ThreadSelector__invites-link">
-            <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
-            <span>Chat Invites</span>
+      {isMobile ? (
+        <div className="ThreadSelector__mobile-header">
+          <MobileHeader>Chat</MobileHeader>
+          <div className="ThreadSelector__mobile-actions">
+            <Button type="action-icon" className="ThreadSelector__mobile-search">
+              <SearchIcon />
+            </Button>
+            <NavLink to="/messages/new-chat" className="ThreadSelector__link">
+              <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
+            </NavLink>
           </div>
-          <CircleBadge>{invites.length}</CircleBadge>
         </div>
-      </NavLink>
-      {filteredThreads.length === 0 && <EmptyThreads />}
+      ) : (
+        <>
+          <Input
+            onChange={({ target }) => {
+              setSearch(target.value)
+            }}
+            placeholder="Search"
+            icon={Search}
+          />
+          <NavLink to="/messages/new-chat" className="ThreadSelector__link">
+            <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
+            <span>New Chat</span>
+          </NavLink>
+          <NavLink to="/messages/chat-invites" className="ThreadSelector__link">
+            <div className="ThreadSelector__invites">
+              <div className="ThreadSelector__invites-link">
+                <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
+                <span>Chat Invites</span>
+              </div>
+              <CircleBadge>{invites.length}</CircleBadge>
+            </div>
+          </NavLink>
+        </>
+      )}
       <div className="ThreadSelector__threads">
         {filteredThreads.map(({ peerAccount, topic }) => {
           const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
@@ -129,6 +149,7 @@ const ThreadSelector: React.FC = () => {
           <span className="ThreadSelector__contact">No {search} found in your contacts</span>
         )}
       </div>
+      {filteredThreads.length === 0 && <EmptyThreads />}
     </div>
   )
 }

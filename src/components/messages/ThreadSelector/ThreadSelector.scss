@@ -7,7 +7,26 @@
   justify-content: space-between;
   align-items: center;
   gap: 1em;
-
+  &__mobile-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    @include padding-x(20px);
+  }
+  &__mobile-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  &__mobile-search {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    background: var(--accent-color-1);
+    border: solid 1px var(--accent-color-1);
+  }
   .Thread,
   .Input {
     width: 100%;
