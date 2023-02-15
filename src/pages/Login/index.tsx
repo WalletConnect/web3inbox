@@ -30,17 +30,17 @@ const Web3InboxFeatures = [
 
 const Login: React.FC = () => {
   const { userPubkey } = useContext(W3iContext)
-  const { isDisconnected } = useAccount()
+  const { isDisconnected, address } = useAccount()
   const nav = useNavigate()
 
   useEffect(() => {
     if (!userPubkey && isDisconnected) {
       nav('/login')
     }
-    if (userPubkey) {
+    if (userPubkey && address) {
       nav('/')
     }
-  }, [userPubkey, isDisconnected])
+  }, [userPubkey, address, isDisconnected])
 
   return (
     <div className="Login">
