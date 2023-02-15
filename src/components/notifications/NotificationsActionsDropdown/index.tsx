@@ -13,7 +13,7 @@ interface INotificationsActionsDropdownProps {
   dropdownPlacement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight'
   w: string
   h: string
-  closeDropdown: () => void
+  closeDropdown?: () => void
 }
 
 const NotificationsActionsDropdown: React.FC<INotificationsActionsDropdownProps> = ({
@@ -27,27 +27,37 @@ const NotificationsActionsDropdown: React.FC<INotificationsActionsDropdownProps>
   const handleMarkAsRead = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     console.log({ appId })
-    closeDropdown()
+    if (closeDropdown) {
+      closeDropdown()
+    }
   }, [])
 
   const handleMute = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    closeDropdown()
+    if (closeDropdown) {
+      closeDropdown()
+    }
   }, [])
 
   const handleUnsubscribe = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    closeDropdown()
+    if (closeDropdown) {
+      closeDropdown()
+    }
   }, [])
 
   const handleClearAll = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    closeDropdown()
+    if (closeDropdown) {
+      closeDropdown()
+    }
   }, [])
 
   const handlePreferences = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    closeDropdown()
+    if (closeDropdown) {
+      closeDropdown()
+    }
   }, [])
 
   return (

@@ -9,6 +9,7 @@ import zoraLogo from '../../../assets/zora.svg'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
+import type { IAppNotification } from '../AppNotifications/AppNotificationItem'
 import NotificationActionsDropdown from '../NotificationsActionsDropdown'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
@@ -18,11 +19,7 @@ interface PushApp {
   name: string
   color: string
   logo?: string
-  notifications?: {
-    id: string
-    title: string
-    message: string
-  }[]
+  notifications?: IAppNotification[]
 }
 
 export const myAppsMock = [
@@ -157,9 +154,11 @@ const AppSelector: React.FC = () => {
               <img className="AppSelector__link-logo" src={app.logo ?? Logo} alt="Invites" />
               <span>{app.name}</span>
             </div>
-            {dropdownToShow !== app.id && app.notifications?.length && (
-              <CircleBadge>{app.notifications.length}</CircleBadge>
-            )}
+            {dropdownToShow !== app.id &&
+              app.notifications?.length &&
+              app.notifications.filter(notif => notif.isRead).length !== 0 && (
+                <CircleBadge>{app.notifications.filter(notif => notif.isRead).length}</CircleBadge>
+              )}
             {dropdownToShow === app.id && (
               <NotificationActionsDropdown
                 appId={app.id}

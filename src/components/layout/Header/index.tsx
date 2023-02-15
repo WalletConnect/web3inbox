@@ -1,6 +1,5 @@
 import React from 'react'
 import { useAccount, useEnsName } from 'wagmi'
-import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import './Header.scss'
