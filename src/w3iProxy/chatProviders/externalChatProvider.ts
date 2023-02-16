@@ -84,21 +84,34 @@ export default class ExternalChatProvider implements W3iChatProvider {
     return this.postToExternalProvider('getPendingThreads', params)
   }
 
-  public async getInvites(params?: { account: string }) {
-    return this.postToExternalProvider('getInvites', params)
+  public async getSentInvites(params: { account: string }) {
+    return this.postToExternalProvider('getSentInvites', params)
   }
-  public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
+
+  public async getReceivedInvites(params: { account: string }) {
+    return this.postToExternalProvider('getReceivedInvites', params)
+  }
+
+  public async addContact(params: { account: string; publicKey: string }) {
+    return this.postToExternalProvider('addContact', params)
+  }
+
+  public async invite(params: ChatClientTypes.Invite) {
     return this.postToExternalProvider('invite', params)
   }
   public async ping(params: { topic: string }) {
     return this.postToExternalProvider('ping', params)
   }
-  public async message(params: { topic: string; payload: ChatClientTypes.Message }) {
+  public async message(params: ChatClientTypes.Message) {
     return this.postToExternalProvider('message', params)
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {
-    return this.postToExternalProvider('register', params)
+    return this.postToExternalProvider('register', {
+      ...params,
+      // Signing will be handled wallet-side.
+      onSign: async () => Promise.resolve('')
+    })
   }
 
   public async resolve(params: { account: string }) {

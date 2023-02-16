@@ -9,11 +9,11 @@ import type { ChatFacadeEvents } from '../listenerTypes'
  * FIXME: ignoring `addContact` here for now bc out of branch scope, but needs to be hooked up.
  */
 type NonFunctionChatClientKeys =
-  | 'addContact'
   | 'chatContacts'
-  | 'chatInvites'
   | 'chatKeys'
   | 'chatMessages'
+  | 'chatReceivedInvites'
+  | 'chatSentInvites'
   | 'chatThreads'
   | 'chatThreadsPending'
   | 'core'
@@ -39,9 +39,12 @@ interface ModifiedChatClientFunctions {
   getMessages: (
     ...params: Parameters<ChatClient['getMessages']>
   ) => Promise<ReturnType<ChatClient['getMessages']>>
-  getInvites: (
-    ...params: Parameters<ChatClient['getInvites']>
-  ) => Promise<ReturnType<ChatClient['getInvites']>>
+  getSentInvites: (
+    ...params: Parameters<ChatClient['getSentInvites']>
+  ) => Promise<ReturnType<ChatClient['getSentInvites']>>
+  getReceivedInvites: (
+    ...params: Parameters<ChatClient['getReceivedInvites']>
+  ) => Promise<ReturnType<ChatClient['getReceivedInvites']>>
   getThreads: (
     ...params: Parameters<ChatClient['getThreads']>
   ) => Promise<ReturnType<ChatClient['getThreads']>>

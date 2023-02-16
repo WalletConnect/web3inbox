@@ -1,12 +1,15 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { useLocation, useParams } from 'react-router-dom'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import './ThreadWindow.scss'
-import Message from '../Message'
-import MessageBox from '../MessageBox'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'
+import W3iContext from '../../../contexts/W3iContext/context'
+import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
+import BackButton from '../../general/BackButton'
+import ConversationBeginning from '../ConversationBeginning'
+import { MessageItem } from '../Message/MessageItem'
+import MessageBox from '../MessageBox'
+import './ThreadWindow.scss'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -63,15 +66,19 @@ const ThreadWindow: React.FC = () => {
   return (
     <div className="ThreadWindow">
       <div className="ThreadWindow__peer">
+        <BackButton backTo="/messages" />
         <Avatar address={peerAddress} width="1.25em" height="1.25em" />
-        <span>{ensName ?? peer}</span>
+        <span>{ensName ?? truncate(peer ?? '', 10)}</span>
       </div>
       <div className="ThreadWindow__messages">
-        {messages.map(message => (
-          <Message
+        <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />
+        {messages.map((message, i) => (
+          <MessageItem
             key={message.timestamp}
-            text={message.message}
-            from={message.authorAccount === peer ? 'peer' : 'sender'}
+            message={message}
+            index={i}
+            peer={peer}
+            messages={messages}
           />
         ))}
       </div>

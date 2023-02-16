@@ -1,18 +1,18 @@
 import React, { useCallback, useContext, useRef, useState } from 'react'
-import { useBalance, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
 import { useNavigate } from 'react-router-dom'
+import { useBalance, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
 
+import Disconnect from '../../../assets/Disconnect.svg'
+import ETH from '../../../assets/ETH.svg'
+import W3iContext from '../../../contexts/W3iContext/context'
+import { useOnClickOutside } from '../../../utils/hooks'
+import { profileModalService, shareModalService } from '../../../utils/store'
+import { truncate } from '../../../utils/string'
 import { generateAvatarColors } from '../../../utils/ui'
 import Divider from '../../general/Divider'
-import ETH from '../../../assets/ETH.svg'
-import Disconnect from '../../../assets/Disconnect.svg'
-import { useOnClickOutside } from '../../../utils/hooks'
-import './Avatar.scss'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { truncate } from '../../../utils/string'
-import ShareIcon from '../../general/Icon/ShareIcon'
 import PersonIcon from '../../general/Icon/PersonIcon'
-import { profileModalService, shareModalService } from '../../../utils/store'
+import ShareIcon from '../../general/Icon/ShareIcon'
+import './Avatar.scss'
 
 interface AvatarProps {
   address?: `0x${string}`
@@ -58,6 +58,8 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
     <div
       className="Avatar"
       style={{
+        width,
+        height,
         cursor: hasProfileDropdown ? 'pointer' : 'default',
         border: isDropdownOpen ? 'solid 2px #3396FF' : 'solid 2px #E4E7E7'
       }}

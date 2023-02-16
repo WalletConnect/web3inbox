@@ -22,7 +22,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   )
   const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
-  const [invites, setInvites] = useState<ChatClientTypes.Invite[]>([])
+  const [invites, setInvites] = useState<ChatClientTypes.ReceivedInvite[]>([])
   const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
   const [pendingThreads, setPendingThreads] = useState<ChatClientTypes.Thread[]>([])
 
@@ -73,7 +73,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     }
 
     chatClient
-      .getInvites({ account: `eip155:1:${userPubkey}` })
+      .getReceivedInvites({ account: `eip155:1:${userPubkey}` })
       .then(invite => setInvites(Array.from(invite.values())))
     chatClient
       .getThreads({ account: `eip155:1:${userPubkey}` })

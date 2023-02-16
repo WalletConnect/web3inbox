@@ -6,6 +6,7 @@ import W3iContext from '../../../contexts/W3iContext/context'
 import { fetchEnsAddress } from '@wagmi/core'
 import './NewChat.scss'
 import SearchHistoryContacts from './SearchHistoryContacts'
+import BackButton from '../../general/BackButton'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
@@ -28,28 +29,27 @@ const NewChat: React.FC = () => {
   }
 
   const invite = useCallback(
-    (inviteeAddress: string) => {
+    async (inviteeAddress: string) => {
       setIsInviting(true)
       if (!userPubkey || !chatClientProxy) {
         setIsInviting(false)
 
         return
       }
-      resolveAddress(inviteeAddress).then(resolvedAddress => {
-        chatClientProxy
-          .invite({
-            account: resolvedAddress,
-            invite: {
-              account: `eip155:1:${userPubkey}`,
-              message: 'Inviting'
-            }
-          })
-          .then(() => {
-            setIsInviting(false)
-            setQuery('')
-          })
-          .catch(() => setIsInviting(false))
-      })
+      const resolvedAddress = await resolveAddress(inviteeAddress)
+
+      chatClientProxy
+        .invite({
+          inviteeAccount: resolvedAddress,
+          inviterAccount: `eip155:1:${userPubkey}`,
+          inviteePublicKey: await chatClientProxy.resolve({ account: resolvedAddress }),
+          message: 'Inviting'
+        })
+        .then(() => {
+          setIsInviting(false)
+          setQuery('')
+        })
+        .catch(() => setIsInviting(false))
     },
     [userPubkey, chatClientProxy]
   )
@@ -58,6 +58,7 @@ const NewChat: React.FC = () => {
     <Fragment>
       <div className="NewChat">
         <div className="NewChat__search-box">
+          <BackButton backTo="/messages" />
           <Input
             value={query}
             placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"

@@ -1,33 +1,49 @@
 @import './styles/mixins.scss';
 
-
 .App {
+  --targetselector-display: unset;
+  --header-display: unset;
+  --main-display: unset;
   background: var(--bg-color-1);
   min-height: 100vh;
   display: grid;
-  grid-template: 'sidebar target-selector main header';
   gap: 5em;
-  grid-template-columns: minmax(4em, 0.5fr) minmax(20%, 2fr) 8fr minmax(min-content, 1fr);
+  grid-template: var(--grid-template);
+  grid-template-columns: 1fr;
+  max-width: 100vw;
 
   .TargetSelector {
     grid-area: target-selector;
     @include padding-y(2em);
+    display: var(--targetselector-display);
   }
-
   .Sidebar {
     @include padding-y(0.875em);
     @include padding-x(0.25em);
-
     grid-area: sidebar;
-		height: 100vh;
   }
 
   .Header {
     grid-area: header;
+
+    display: var(--header-display);
   }
 
   .Main {
-    @include padding-y(2em);
+    padding: 1em;
     grid-area: main;
+
+    display: var(--main-display);
   }
 }
+
+@media only screen and (min-width: 700px) {
+  .App {
+    --targetselector-display: unset;
+    --sidebar-display: unset;
+    --header-display: unset;
+    --main-display: unset;
+    grid-template: 'sidebar target-selector main header';
+    grid-template-columns: minmax(4em, 0.5fr) minmax(20%, 2fr) 8fr minmax(min-content, 1fr);
+  }
+} ;

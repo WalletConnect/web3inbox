@@ -2,31 +2,59 @@
 
 .Sidebar {
   position: fixed;
-  top:0;
-  left: 0;
-  width: 4em;
-  @include padding-y(2em);
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 1em;
+  height: 3em;
 
+  @include padding-y(2em);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--bg-color-1);
-  border-right: solid 2px var(--bg-color-2);
-}
 
-.Sidebar__Navigation {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1em;
-  &__Link {
-    width: 4em;
+  transition: all 0.15s linear;
+
+  &__Item {
+    cursor: pointer;
+  }
+
+  &__Navigation {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--bg-color-1);
+    outline: solid 1px var(--bg-color-2);
+    padding: 0.5em;
+    border-radius: 44px;
+    gap: 1em;
+    &__Link {
+      width: 4em;
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 
-.Sidebar__Item {
-  cursor: pointer;
+@media only screen and (min-width: 700px) {
+  .Sidebar {
+    background-color: var(--bg-color-1);
+    transform: unset;
+    border-right: solid 2px var(--bg-color-2);
+    top: 0;
+    left: 0;
+    width: 4em;
+    height: 100vh;
+    flex-direction: column;
+
+    &__Navigation {
+      border-radius: unset;
+      flex-direction: column;
+      background-color: unset;
+      outline: unset;
+      padding: unset;
+      outline: unset;
+    }
+  }
 }
