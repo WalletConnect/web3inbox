@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import externalLinkIcon from '../../../../assets/ExternalLink.svg'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import './AppCard.scss'
@@ -16,11 +16,17 @@ interface AppCardProps {
 
 const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
   const { mode } = useContext(SettingsContext)
+  const cardBgColor = useMemo(() => {
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    const specifiedMode = mode === 'system' ? systemTheme : mode
+
+    return specifiedMode === 'dark' ? bgColor.dark : bgColor.light
+  }, [mode, bgColor])
 
   return (
     <a
       className="AppCard"
-      style={{ backgroundColor: mode === 'dark' ? bgColor.dark : bgColor.light }}
+      style={{ backgroundColor: cardBgColor }}
       href={url}
       target="_blank"
       rel="noopener noreferrer"

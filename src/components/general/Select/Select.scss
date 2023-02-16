@@ -1,10 +1,28 @@
-select {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.375em 0.75em;
-  color: var(--fg-color-1);
-  background: var(--bg-color-2);
-  border: 1px solid var(--border-color-1);
-  border-radius: 1.75em;
+.Select {
+  &__control {
+    padding: 0 0.375em !important;
+    color: var(--fg-color-1) !important;
+    background: var(--bg-color-2) !important;
+    border: 1px solid var(--border-color-1) !important;
+    border-radius: 1.75em !important;
+  }
+
+  &__menu {
+    background-color: var(--bg-color-2) !important;
+    border: 1px solid var(--border-color-1);
+    color: var(--fg-color-1) !important;
+    border-radius: 0.75em !important;
+    padding: 0.375em !important;
+  }
+
+  &__option {
+    border-radius: 0.5em !important;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  &__placeholder,
+  &__single-value {
+    color: var(--fg-color-1) !important;
+  }
 }
