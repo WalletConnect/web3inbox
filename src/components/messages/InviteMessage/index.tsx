@@ -7,9 +7,10 @@ import './InviteMessage.scss'
 import { useColorModeValue } from '../../../utils/hooks'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import CheckIcon from '../../general/Icon/CheckIcon'
+import type { ChatClientTypes } from '@walletconnect/chat-client'
 
 interface InviteMessageProps {
-  status: 'accepted' | 'pending' | 'rejected'
+  status: ChatClientTypes.SentInvite['status']
   peer: string
 }
 

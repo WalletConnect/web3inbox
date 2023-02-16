@@ -26,7 +26,7 @@ const ThreadWindow: React.FC = () => {
   const isInvite =
     topic.includes('invite:') || Boolean(sentInvites.find(invite => invite.inviteeAccount === peer))
   const inviteStatus = topic.includes('invite:')
-    ? (topic.split(':')[1] as 'pending' | 'rejected')
+    ? (topic.split(':')[1] as Omit<ChatClientTypes.SentInvite['status'], 'accepted'>)
     : 'accepted'
 
   useEffect(() => {
