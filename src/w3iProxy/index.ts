@@ -32,13 +32,13 @@ class Web3InboxProxy {
     projectId: string,
     relayUrl: string
   ) {
-    // Bind Chat args
+    // Bind Chat properties
     this.chatProvider = chatProvider
     this.chatFacade = new W3iChatFacade(this.chatProvider)
-    // Bind Push args
+    // Bind Push properties
     this.pushProvider = pushProvider
     this.pushFacade = new W3iPushFacade(this.pushProvider)
-    // Bind other configuration args
+    // Bind other configuration properties
     this.relayUrl = relayUrl
     this.projectId = projectId
     window.web3inbox = this
