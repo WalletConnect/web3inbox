@@ -6,9 +6,10 @@ import CrossIcon from '../general/Icon/CrossIcon'
 import './InviteMessage.scss'
 import { useColorModeValue } from '../../utils/hooks'
 import SettingsContext from '../../contexts/SettingsContext/context'
+import CheckIcon from '../general/Icon/CheckIcon'
 
 interface InviteMessageProps {
-  status: 'pending' | 'rejected'
+  status: 'accepted' | 'pending' | 'rejected'
   peer: string
 }
 
@@ -34,10 +35,20 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
     )
   }, [themeColors])
 
+  const AcceptedStatus = useCallback(() => {
+    return (
+      <div className="InviteMessage__pending">
+        <CheckIcon />
+        <span>Accepted</span>
+      </div>
+    )
+  }, [themeColors])
+
   const StatusComponents = useMemo(
     () => ({
       pending: <PendingStatus />,
-      rejected: <RejectedStatus />
+      rejected: <RejectedStatus />,
+      accepted: <AcceptedStatus />
     }),
     [PendingStatus, RejectedStatus]
   )
@@ -45,7 +56,8 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
   const StatusEmojis = useMemo(
     () => ({
       pending: ChatInviteHandEmoji,
-      rejected: HandStopEmoji
+      rejected: HandStopEmoji,
+      accepted: ChatInviteHandEmoji
     }),
     []
   )

@@ -123,16 +123,18 @@ const ThreadSelector: React.FC = () => {
             />
           )
         })}
-        {sentInvites.map(({ inviteeAccount, status }) => (
-          <Thread
-            searchQuery={search}
-            topic={`invite:${status}:${inviteeAccount}`}
-            lastMessage={`Invite Pending`}
-            lastMessageTimestamp={Date.now()}
-            threadPeer={inviteeAccount}
-            key={inviteeAccount}
-          />
-        ))}
+        {sentInvites
+          .filter(invite => invite.status !== 'accepted')
+          .map(({ inviteeAccount, status }) => (
+            <Thread
+              searchQuery={search}
+              topic={`invite:${status}:${inviteeAccount}`}
+              lastMessage={`Invite Pending`}
+              lastMessageTimestamp={Date.now()}
+              threadPeer={inviteeAccount}
+              key={inviteeAccount}
+            />
+          ))}
         {threads.length === 0 && search && (
           <span className="ThreadSelector__contact">No {search} found in your contacts</span>
         )}

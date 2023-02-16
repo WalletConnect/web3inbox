@@ -18,11 +18,16 @@ const ThreadWindow: React.FC = () => {
   const [topic, setTopic] = useState('')
   const { search } = useLocation()
   const { data: ensName } = useEnsName({ address: peerAddress })
-  const { chatClientProxy, userPubkey } = useContext(W3iContext)
+  const { chatClientProxy, userPubkey, sentInvites } = useContext(W3iContext)
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 
-  const isInvite = topic.includes('invite:')
+  const isInvite =
+    topic.includes('invite:') || Boolean(sentInvites.find(invite => invite.inviteeAccount === peer))
+  const inviteStatus = topic.includes('invite:')
+    ? (topic.split(':')[1] as 'pending' | 'rejected')
+    : 'accepted'
+  console.log({ inviteStatus })
 
   useEffect(() => {
     setTopic(new URLSearchParams(search).get('topic') ?? '')
@@ -75,7 +80,7 @@ const ThreadWindow: React.FC = () => {
       </div>
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />
-        {isInvite && <InviteMessage peer={peerAddress} status="pending" />}
+        {isInvite && <InviteMessage peer={peerAddress} status={inviteStatus} />}
         {messages.map((message, i) => (
           <MessageItem
             key={message.timestamp}
