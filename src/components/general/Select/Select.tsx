@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import type { ActionMeta, MultiValue, SingleValue } from 'react-select'
 import ReactSelect from 'react-select'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import { useColorModeValue } from '../../../utils/hooks'
@@ -12,7 +13,23 @@ interface ISelectProps {
     label: string
     value: string
   }[]
-  onChange: () => void
+  onChange:
+    | ((
+        newValue:
+          | MultiValue<{
+              label: string
+              value: string
+            }>
+          | SingleValue<{
+              label: string
+              value: string
+            }>,
+        actionMeta: ActionMeta<{
+          label: string
+          value: string
+        }>
+      ) => void)
+    | undefined
 }
 
 const Select: React.FC<ISelectProps> = ({ name, id, options, onChange }) => {

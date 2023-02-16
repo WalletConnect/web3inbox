@@ -1,19 +1,19 @@
-import React, { useCallback, useContext } from 'react'
 import cn from 'classnames'
-import DarkCity from '../../../assets/DarkCity.png'
-import LightCity from '../../../assets/LightCity.png'
-import HalfHalfCity from '../../../assets/HalfHalfCity.png'
+import React, { useCallback, useContext } from 'react'
 import Appearance from '../../../assets/Appearance.svg'
 import ColoredNotification from '../../../assets/ColoredNotification.svg'
 import Contacts from '../../../assets/Contacts.svg'
 import Crypto from '../../../assets/Crypto.svg'
-import Radio from '../../general/Radio'
-import Toggle from '../../general/Toggle'
+import DarkCity from '../../../assets/DarkCity.png'
+import HalfHalfCity from '../../../assets/HalfHalfCity.png'
+import LightCity from '../../../assets/LightCity.png'
 import type { SettingsContextSimpleState } from '../../../contexts/SettingsContext/context'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import ArrowRightIcon from '../../general/Icon/ArrowRightIcon'
+import Radio from '../../general/Radio'
 import Select from '../../general/Select/Select'
+import Toggle from '../../general/Toggle'
 import './Settings.scss'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
@@ -152,7 +152,7 @@ const Settings: React.FC = () => {
               name="currency"
               id="currency"
               options={currencyOptions}
-              onChange={e => console.log(e.target.value)}
+              onChange={console.log}
             />
           </div>
         </div>
