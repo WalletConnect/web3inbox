@@ -87,11 +87,13 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     })
 
     const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshThreads })
+    const chatMessageSentSub = chatClient.observe('chat_message_sent', { next: refreshThreads })
     const chatJoinedSub = chatClient.observe('chat_joined', { next: refreshThreads })
 
     return () => {
       inviteSub.unsubscribe()
       inviteSentSub.unsubscribe()
+      chatMessageSentSub.unsubscribe()
       chatJoinedSub.unsubscribe()
     }
   }, [chatClient, refreshThreads])
