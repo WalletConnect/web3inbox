@@ -1,5 +1,5 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
@@ -23,8 +23,10 @@ const ThreadWindow: React.FC = () => {
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 
-  const isInvite =
-    topic.includes('invite:') || Boolean(sentInvites.find(invite => invite.inviteeAccount === peer))
+  const isInvite = useMemo(
+    () => topic.includes('invite:') || sentInvites.some(invite => invite.inviteeAccount === peer),
+    [topic, sentInvites, peer]
+  )
   const inviteStatus: ChatClientTypes.SentInvite['status'] = topic.includes('invite:')
     ? (topic.split(':')[1] as ChatClientTypes.SentInvite['status'])
     : 'accepted'

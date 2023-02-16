@@ -51,7 +51,7 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
       rejected: <RejectedStatus />,
       accepted: <AcceptedStatus />
     }),
-    [PendingStatus, RejectedStatus]
+    [PendingStatus, RejectedStatus, AcceptedStatus]
   )
 
   const StatusEmojis = useMemo(
