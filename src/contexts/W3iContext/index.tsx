@@ -37,16 +37,12 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [chatClient])
 
   useEffect(() => {
-    const timeoutToClear = setTimeout(() => {
-      if (chatClient && userPubkey) {
-        chatClient.register({ account: `eip155:1:${userPubkey}` }).then(registeredKeyRes => {
-          console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
-          setRegistered(registeredKeyRes)
-        })
-      }
-    }, 500)
-
-    return () => clearTimeout(timeoutToClear)
+    if (chatClient && userPubkey) {
+      chatClient.register({ account: `eip155:1:${userPubkey}` }).then(registeredKeyRes => {
+        console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
+        setRegistered(registeredKeyRes)
+      })
+    }
   }, [chatClient, userPubkey])
 
   useEffect(() => {
