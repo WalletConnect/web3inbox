@@ -37,7 +37,7 @@ export const UnsubscribeModal: React.FC = () => {
           </Button>
         </div>
         <div className="UnsubscribeModal__hero">
-          <img src={app?.logo} />
+          <img src={app?.logo} alt="logo" />
         </div>
         <div className="UnsubscribeModal__content">
           <div className="UnsubscribeModal__content__title">Unsubscribe from {app?.name}</div>

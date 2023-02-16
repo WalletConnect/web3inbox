@@ -23,7 +23,11 @@
     justify-content: center;
     padding-top: 1.25em;
     padding-bottom: 0.75em;
-    height: 5em;
+    img {
+      height: 5em;
+      width: 5em;
+      border-radius: 50%;
+    }
   }
   &__content {
     display: flex;

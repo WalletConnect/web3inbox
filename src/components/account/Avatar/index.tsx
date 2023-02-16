@@ -5,7 +5,7 @@ import { useBalance, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
 import Disconnect from '../../../assets/Disconnect.svg'
 import ETH from '../../../assets/ETH.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
-import { useIsMobile, useOnClickOutside } from '../../../utils/hooks'
+import { useOnClickOutside } from '../../../utils/hooks'
 import { profileModalService, shareModalService } from '../../../utils/store'
 import { truncate } from '../../../utils/string'
 import { generateAvatarColors } from '../../../utils/ui'
@@ -37,7 +37,6 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
     [setIsDropdownOpen, hasProfileDropdown]
   )
   useOnClickOutside(ref, handleToggleProfileDropdown)
-  const isMobile = useIsMobile()
 
   const handleDisconnect = useCallback(() => {
     disconnect()
@@ -77,7 +76,7 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
         {ensAvatar && <img className="Avatar__icon" src={ensAvatar} alt="Avatar" />}
       </div>
       {hasProfileDropdown && isDropdownOpen && (
-        <div ref={ref} className="Avatar__dropdown" style={isMobile ? { bottom: 0 } : { top: 0 }}>
+        <div ref={ref} className="Avatar__dropdown">
           <div className="Avatar__dropdown__content">
             <div className="Avatar__dropdown__block">
               <div
