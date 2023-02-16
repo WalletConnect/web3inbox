@@ -39,10 +39,10 @@ const App = () => {
       return () => {}
     }
 
-    chatClientProxy.observe('chat_message', { next: messageEventListener })
+    const sub = chatClientProxy.observe('chat_message', { next: messageEventListener })
 
     return () => {
-      chatClientProxy.observe('chat_message', { next: messageEventListener })
+      sub.unsubscribe()
     }
   }, [chatClientProxy])
 

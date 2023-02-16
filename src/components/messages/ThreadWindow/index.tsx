@@ -11,6 +11,7 @@ import ConversationBeginning from '../ConversationBeginning'
 import { MessageItem } from '../Message/MessageItem'
 import MessageBox from '../MessageBox'
 import './ThreadWindow.scss'
+import { noop } from 'rxjs'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -27,7 +28,6 @@ const ThreadWindow: React.FC = () => {
   const inviteStatus = topic.includes('invite:')
     ? (topic.split(':')[1] as 'pending' | 'rejected')
     : 'accepted'
-  console.log({ inviteStatus })
 
   useEffect(() => {
     setTopic(new URLSearchParams(search).get('topic') ?? '')
@@ -49,9 +49,9 @@ const ThreadWindow: React.FC = () => {
 
   useEffect(() => {
     if (!chatClientProxy) {
-      return
+      return noop
     }
-    chatClientProxy.observe('chat_message', {
+    const sub = chatClientProxy.observe('chat_message', {
       next: messageEvent => {
         /*
          * Ignore message events from other threads
@@ -65,6 +65,8 @@ const ThreadWindow: React.FC = () => {
         refreshMessages()
       }
     })
+
+    return () => sub.unsubscribe()
   }, [chatClientProxy, refreshMessages, topic])
 
   useEffect(() => {
