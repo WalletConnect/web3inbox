@@ -4,6 +4,7 @@ import Web3InboxProxy from '../../w3iProxy'
 import W3iContext from './context'
 import { formatEthChainsAddress } from '../../utils/address'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
+import { noop } from 'rxjs'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -26,11 +27,13 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
 
   useEffect(() => {
-    chatClient?.observe('chat_account_change', {
+    const sub = chatClient?.observe('chat_account_change', {
       next: ({ account }) => {
         setUserPubkey(account)
       }
     })
+
+    return () => sub?.unsubscribe()
   }, [chatClient])
 
   useEffect(() => {
@@ -78,16 +81,23 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
   useEffect(() => {
     if (!chatClient) {
-      return
+      return noop
     }
 
-    chatClient.observe('chat_invite', {
+    const inviteSub = chatClient.observe('chat_invite', {
       next: () => {
         refreshThreads()
       }
     })
-    chatClient.observe('chat_invite_sent', { next: refreshThreads })
-    chatClient.observe('chat_joined', { next: refreshThreads })
+
+    const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshThreads })
+    const chatJoinedSub = chatClient.observe('chat_joined', { next: refreshThreads })
+
+    return () => {
+      inviteSub.unsubscribe()
+      inviteSentSub.unsubscribe()
+      chatJoinedSub.unsubscribe()
+    }
   }, [chatClient, refreshThreads])
 
   useEffect(() => {
