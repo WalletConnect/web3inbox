@@ -105,9 +105,6 @@ class W3iChatFacade implements W3iChat {
     return this.provider.addContact(params)
   }
 
-  public async getPendingThreads(params?: { account: string }) {
-    return this.provider.getPendingThreads(params)
-  }
   public async invite(params: ChatClientTypes.Invite) {
     return this.provider.invite(params).then(inviteId => {
       this.emitter.emit('chat_invite_sent', {
