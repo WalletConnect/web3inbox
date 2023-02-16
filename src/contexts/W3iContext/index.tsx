@@ -14,7 +14,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   const projectId = import.meta.env.VITE_PROJECT_ID
   const query = new URLSearchParams(window.location.search)
   const chatProviderQuery = query.get('chatProvider')
-  const pushProviderQuery = query.get('pushProviderQuery')
+  const pushProviderQuery = query.get('pushProvider')
 
   // CHAT STATE
   const [chatProvider] = useState(
