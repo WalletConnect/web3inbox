@@ -4,6 +4,8 @@
     justify-content: center;
     flex-direction: column;
     font-size: 1em;
+    width: fit-content;
+    white-space: nowrap;
     button {
       display: grid;
       grid-template-columns: 10% 90%;

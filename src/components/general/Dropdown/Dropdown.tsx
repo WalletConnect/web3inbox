@@ -38,19 +38,23 @@ const Dropdown: React.FC<IDropdown> = ({
     const placements = {
       topRight: {
         bottom: 0,
-        left: 0
+        left: 0,
+        marginBottom: `calc(${h} + 2em)`
       },
       topLeft: {
         bottom: 0,
-        right: 0
+        right: 0,
+        marginBottom: `calc(${h} + 2em)`
       },
       bottomRight: {
         top: 0,
-        left: 0
+        left: 0,
+        marginTop: `calc(${h} + 4px)`
       },
       bottomLeft: {
         top: 0,
-        right: 0
+        right: 0,
+        marginTop: `calc(${h} + 2em)`
       }
     }
 
