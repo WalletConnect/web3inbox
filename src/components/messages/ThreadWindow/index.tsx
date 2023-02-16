@@ -27,9 +27,13 @@ const ThreadWindow: React.FC = () => {
     () => topic.includes('invite:') || sentInvites.some(invite => invite.inviteeAccount === peer),
     [topic, sentInvites, peer]
   )
-  const inviteStatus: ChatClientTypes.SentInvite['status'] = topic.includes('invite:')
-    ? (topic.split(':')[1] as ChatClientTypes.SentInvite['status'])
-    : 'accepted'
+  const inviteStatus: ChatClientTypes.SentInvite['status'] = useMemo(
+    () =>
+      topic.includes('invite:')
+        ? (topic.split(':')[1] as ChatClientTypes.SentInvite['status'])
+        : 'accepted',
+    [topic]
+  )
 
   useEffect(() => {
     setTopic(new URLSearchParams(search).get('topic') ?? '')
