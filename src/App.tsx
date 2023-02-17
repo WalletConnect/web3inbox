@@ -5,6 +5,8 @@ import './App.scss'
 import { Profile } from './components/account/Profile'
 import { Share } from './components/account/Share/Share'
 import Sidebar from './components/layout/Sidebar'
+import { PreferencesModal } from './components/notifications/NotificationsLayout/PreferencesModal'
+import { UnsubscribeModal } from './components/notifications/NotificationsLayout/UnsubscribeModal'
 import AuthProtectedPage from './components/utils/AuthProtectedPage'
 import W3iContext from './contexts/W3iContext/context'
 import { useMobileResponsiveGrid, useModals } from './utils/hooks'
@@ -12,7 +14,8 @@ import { truncate } from './utils/string'
 
 const App = () => {
   const { chatClientProxy } = useContext(W3iContext)
-  const { isProfileModalOpen, isShareModalOpen } = useModals()
+  const { isProfileModalOpen, isShareModalOpen, isPreferencesModalOpen, isUnsubscribeModalOpen } =
+    useModals()
 
   const ref = useMobileResponsiveGrid()
 
@@ -55,6 +58,8 @@ const App = () => {
             <Outlet />
             {isProfileModalOpen && <Profile />}
             {isShareModalOpen && <Share />}
+            {isPreferencesModalOpen && <PreferencesModal />}
+            {isUnsubscribeModalOpen && <UnsubscribeModal />}
           </Fragment>
         )}
       </div>

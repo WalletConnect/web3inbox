@@ -1,0 +1,46 @@
+.AppCard {
+  padding: 1.5em 1.75em;
+  border-radius: 1.875em;
+  text-decoration: none;
+  height: fit-content;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    &__logo {
+      border-radius: 50%;
+      width: 3.75em;
+      height: 3.75em;
+      margin-bottom: 0.75em;
+    }
+    &__link-icon {
+      width: 0.67em;
+      height: 0.67em;
+    }
+  }
+
+  &__body {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 0.25em;
+    color: var(--fg-color-1);
+    &__name {
+      font-weight: 700;
+      font-size: 1.25em;
+      line-height: 1.5em;
+    }
+    &__description {
+      font-weight: 500;
+      font-size: 0.8125em;
+      line-height: 1em;
+    }
+    &__url {
+      font-weight: 500;
+      font-size: 0.75em;
+      line-height: 0.875em;
+      color: var(--fg-color-2);
+    }
+  }
+}

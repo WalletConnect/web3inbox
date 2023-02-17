@@ -21,8 +21,10 @@
     border-radius: 50%;
   }
   &__dropdown {
-    margin-top: 0.5em;
     position: absolute;
+    top: 0;
+    bottom: inherit;
+    margin-top: 0.5em;
     width: 9em;
     color: var(--fg-color-1);
     background-color: var(--bg-color-1);
@@ -31,6 +33,11 @@
     box-shadow: 0px 6px 14px -6px rgba(0, 0, 0, 0.12), 0px 10px 32px -4px rgba(0, 0, 0, 0.1);
     z-index: 1;
     cursor: default;
+
+    @media only screen and (max-width: 700px) {
+      top: inherit;
+      bottom: 0;
+    }
 
     &__block {
       display: flex;

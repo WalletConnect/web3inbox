@@ -1,10 +1,14 @@
+import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import type { RefObject } from 'react'
-import { useRef } from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
-import { profileModalService, shareModalService } from './store'
+import {
+  preferencesModalService,
+  profileModalService,
+  shareModalService,
+  unsubscribeModalService
+} from './store'
 import { isMobile } from './ui'
 
 const displays = {
@@ -42,6 +46,7 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       bg1: 'hsla(0, 0%, 8%, 1)',
       bg2: 'hsla(180, 4%, 16%, 1)',
       bg3: 'hsla(0, 0%, 0%, 0.1)',
+      bg4: 'hsla(0, 0%, 100%, 0.1)',
       bgGradient1: 'linear-gradient(180deg, #1b1d1d 0%, #141414 29.96%)',
       activeLinkGradient: 'linear-gradient(92.29deg, #19324D 0%, rgba(25, 50, 77, 0.5) 100%)',
       fg1: 'hsla(180, 6%, 90%, 1)',
@@ -58,6 +63,7 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       bg1: 'hsla(0, 0%, 100%, 1)',
       bg2: 'hsla(0, 0%, 96%, 1)',
       bg3: 'hsla(0, 0%, 100%, 0.1)',
+      bg4: 'hsla(0, 0%, 0%, 0.1)',
       bgGradient1: 'linear-gradient(180deg, #f7f7f7 0%, rgba(255, 255, 255, 0) 29.96%)',
       activeLinkGradient: ' linear-gradient(92.43deg, #CDE5FE 0%, #E8F2FC 101.3%)',
       fg1: 'hsla(0, 0%, 8%, 1)',
@@ -76,6 +82,7 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--bg-color-1': colors[specifiedMode].bg1,
     '--bg-color-2': colors[specifiedMode].bg2,
     '--bg-color-3': colors[specifiedMode].bg3,
+    '--bg-color-4': colors[specifiedMode].bg4,
     '--bg-gradient-1': colors[specifiedMode].bgGradient1,
     '--active-link-gradient': colors[specifiedMode].activeLinkGradient,
     '--fg-color-1': colors[specifiedMode].fg1,
@@ -95,6 +102,10 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
 export const useModals = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
+  const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
+  const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
+  const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
     const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
@@ -103,16 +114,30 @@ export const useModals = () => {
     const shareSubscription = shareModalService.modalState.subscribe(isOpen => {
       setIsShareModalOpen(isOpen)
     })
+    const preferencesSubscription = preferencesModalService.modalState.subscribe(state => {
+      setPreferencesModalAppId(state.preferencesModalAppId)
+      setIsPreferencesModalOpen(state.isOpen)
+    })
+    const unsubscribeSubscription = unsubscribeModalService.modalState.subscribe(state => {
+      setUnsubscribeModalAppId(state.unsubscribeModalAppId)
+      setIsUnsubscribeModalOpen(state.isOpen)
+    })
 
     return () => {
       profileSubscription.unsubscribe()
       shareSubscription.unsubscribe()
+      preferencesSubscription.unsubscribe()
+      unsubscribeSubscription.unsubscribe()
     }
   }, [])
 
   return {
     isProfileModalOpen,
-    isShareModalOpen
+    isShareModalOpen,
+    isPreferencesModalOpen,
+    isUnsubscribeModalOpen,
+    preferencesModalAppId,
+    unsubscribeModalAppId
   }
 }
 
@@ -169,4 +194,28 @@ export const useMobileResponsiveGrid = () => {
   }, [pathname, isMobileLayout])
 
   return ref
+}
+
+export const useFormattedTime = (timestamp?: number) => {
+  const formattedTime = useMemo(() => {
+    if (!timestamp) {
+      return null
+    }
+    const today = new Date()
+    const messageDate = new Date(timestamp)
+
+    if (isToday(messageDate)) {
+      return format(messageDate, 'HH:mm')
+    }
+    if (isYesterday(messageDate)) {
+      return `Yesterday ${format(messageDate, 'HH:mm')}`
+    }
+    if (isSameWeek(today, messageDate)) {
+      return format(messageDate, 'iiii')
+    }
+
+    return format(messageDate, 'MMMM dd')
+  }, [timestamp])
+
+  return formattedTime
 }
