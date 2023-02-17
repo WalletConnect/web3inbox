@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import SearchSvg from '../../../assets/Search.svg'
 import { useSearch } from '../../../utils/hooks'
 import { searchService } from '../../../utils/store'
@@ -7,10 +8,15 @@ import Input from '../Input'
 import './Search.scss'
 
 interface ISearchProps {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  setSearch: React.Dispatch<React.SetStateAction<string>>
 }
-const Search: React.FC<ISearchProps> = ({ onChange }) => {
+const Search: React.FC<ISearchProps> = ({ setSearch }) => {
   const isSearchOpen = useSearch()
+
+  const handleCloseSearch = useCallback(() => {
+    setSearch('')
+    searchService.closeSearch()
+  }, [setSearch])
 
   return (
     <div className="Search">
@@ -25,11 +31,13 @@ const Search: React.FC<ISearchProps> = ({ onChange }) => {
         <div className="Search__open">
           <Input
             className="Search__open__input"
-            onChange={onChange}
+            onChange={({ target }) => setSearch(target.value)}
             placeholder="Search"
             icon={SearchSvg}
           />
-          <Button type="action">Cancel</Button>
+          <Button type="action" onClick={handleCloseSearch}>
+            Cancel
+          </Button>
         </div>
       )}
     </div>

@@ -95,11 +95,7 @@ const ThreadSelector: React.FC = () => {
         <div className="ThreadSelector__mobile-header">
           {!isSearchOpen && <MobileHeader>Chat</MobileHeader>}
           <div className="ThreadSelector__mobile-actions">
-            <Search
-              onChange={({ target }) => {
-                setSearch(target.value)
-              }}
-            />
+            <Search setSearch={setSearch} />
             <NavLink to="/messages/new-chat" className="ThreadSelector__link">
               <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
             </NavLink>
