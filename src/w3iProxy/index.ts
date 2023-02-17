@@ -46,8 +46,6 @@ class Web3InboxProxy {
       projectId: this.projectId
     })
 
-    console.log('Chat client', this.chatClient)
-
     this.chatFacade.initInternalProvider(this.chatClient)
   }
 }
