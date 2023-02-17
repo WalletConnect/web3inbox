@@ -1,15 +1,17 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import BackButton from '../../general/BackButton'
+import InviteMessage from '../InviteMessage'
 import ConversationBeginning from '../ConversationBeginning'
 import { MessageItem } from '../Message/MessageItem'
 import MessageBox from '../MessageBox'
 import './ThreadWindow.scss'
+import { noop } from 'rxjs'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -17,9 +19,21 @@ const ThreadWindow: React.FC = () => {
   const [topic, setTopic] = useState('')
   const { search } = useLocation()
   const { data: ensName } = useEnsName({ address: peerAddress })
-  const { chatClientProxy, userPubkey } = useContext(W3iContext)
+  const { chatClientProxy, userPubkey, sentInvites } = useContext(W3iContext)
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
+
+  const isInvite = useMemo(
+    () => topic.includes('invite:') || sentInvites.some(invite => invite.inviteeAccount === peer),
+    [topic, sentInvites, peer]
+  )
+  const inviteStatus: ChatClientTypes.SentInvite['status'] = useMemo(
+    () =>
+      topic.includes('invite:')
+        ? (topic.split(':')[1] as ChatClientTypes.SentInvite['status'])
+        : 'accepted',
+    [topic]
+  )
 
   useEffect(() => {
     setTopic(new URLSearchParams(search).get('topic') ?? '')
@@ -41,9 +55,9 @@ const ThreadWindow: React.FC = () => {
 
   useEffect(() => {
     if (!chatClientProxy) {
-      return
+      return noop
     }
-    chatClientProxy.observe('chat_message', {
+    const sub = chatClientProxy.observe('chat_message', {
       next: messageEvent => {
         /*
          * Ignore message events from other threads
@@ -57,6 +71,8 @@ const ThreadWindow: React.FC = () => {
         refreshMessages()
       }
     })
+
+    return () => sub.unsubscribe()
   }, [chatClientProxy, refreshMessages, topic])
 
   useEffect(() => {
@@ -72,6 +88,7 @@ const ThreadWindow: React.FC = () => {
       </div>
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />
+        {isInvite && <InviteMessage peer={peerAddress} status={inviteStatus} />}
         {messages.map((message, i) => (
           <MessageItem
             key={message.timestamp}

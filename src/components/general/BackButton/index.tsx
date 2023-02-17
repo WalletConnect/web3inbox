@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { isMobile } from '../../../utils/ui'
+import { useIsMobile } from '../../../utils/hooks'
 import './BackButton.scss'
 
 /*
@@ -15,13 +15,11 @@ interface BackButtonProps {
 }
 
 const BackButton: React.FC<BackButtonProps> = ({ backTo, children }) => {
-  if (!isMobile()) {
-    return null
-  }
+  const isMobile = useIsMobile()
 
   const nav = useNavigate()
 
-  return (
+  return isMobile ? (
     <div
       onClick={() => {
         nav(backTo)
@@ -44,7 +42,7 @@ const BackButton: React.FC<BackButtonProps> = ({ backTo, children }) => {
       </svg>
       {children}
     </div>
-  )
+  ) : null
 }
 
 export default BackButton

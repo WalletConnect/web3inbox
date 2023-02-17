@@ -1,0 +1,37 @@
+.IconWrapper {
+  &__square {
+    min-width: 1.75em;
+    min-height: 1.75em;
+    border-radius: 0.625em;
+  }
+  &__circle {
+    min-width: 1.8375em;
+    min-height: 1.8375em;
+    border-radius: 50%;
+  }
+
+  &__overlay {
+    img {
+      max-width: 1.25em;
+      max-height: 1.25em;
+    }
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    &__square {
+      border-radius: 0.625em;
+      padding: 0.2625em;
+    }
+    &__circle {
+      border-radius: 50%;
+      padding: 0.30625em;
+    }
+    &__standalone {
+      img {
+        max-width: 1.75em;
+        max-height: 1.75em;
+      }
+      background: none;
+    }
+  }
+}

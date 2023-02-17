@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import Web3InboxProxy from '../../w3iProxy'
 import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
+import Web3InboxProxy from '../../w3iProxy'
 import W3iContext from './context'
 import { formatEthChainsAddress } from '../../utils/address'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
+import { noop } from 'rxjs'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -24,7 +25,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   const [registeredKey, setRegistered] = useState<string | null>(null)
   const [invites, setInvites] = useState<ChatClientTypes.ReceivedInvite[]>([])
   const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
-  const [pendingThreads, setPendingThreads] = useState<ChatClientTypes.Thread[]>([])
+  const [sentInvites, setSentInvites] = useState<ChatClientTypes.SentInvite[]>([])
 
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
 
@@ -35,11 +36,13 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   )
 
   useEffect(() => {
-    chatClient?.observe('chat_account_change', {
+    const sub = chatClient?.observe('chat_account_change', {
       next: ({ account }) => {
         setUserPubkey(account)
       }
     })
+
+    return () => sub?.unsubscribe()
   }, [chatClient])
 
   useEffect(() => {
@@ -67,7 +70,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [setChatClient, chatClient, setUserPubkey, setPushClient, pushClient])
 
   const refreshThreads = useCallback(() => {
-    console.log('Refreshing threads')
     if (!chatClient || !userPubkey) {
       return
     }
@@ -76,22 +78,34 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       .getReceivedInvites({ account: `eip155:1:${userPubkey}` })
       .then(invite => setInvites(Array.from(invite.values())))
     chatClient
+      .getSentInvites({ account: `eip155:1:${userPubkey}` })
+      .then(invite => setSentInvites(Array.from(invite.values())))
+    chatClient
       .getThreads({ account: `eip155:1:${userPubkey}` })
       .then(invite => setThreads(Array.from(invite.values())))
   }, [chatClient, userPubkey, setThreads, setInvites])
 
   useEffect(() => {
     if (!chatClient) {
-      return
+      return noop
     }
 
-    chatClient.observe('chat_invite', {
-      next: inv => {
-        console.log('got invite', inv)
+    const inviteSub = chatClient.observe('chat_invite', {
+      next: () => {
         refreshThreads()
       }
     })
-    chatClient.observe('chat_joined', { next: refreshThreads })
+
+    const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshThreads })
+    const chatMessageSentSub = chatClient.observe('chat_message_sent', { next: refreshThreads })
+    const chatJoinedSub = chatClient.observe('chat_joined', { next: refreshThreads })
+
+    return () => {
+      inviteSub.unsubscribe()
+      inviteSentSub.unsubscribe()
+      chatMessageSentSub.unsubscribe()
+      chatJoinedSub.unsubscribe()
+    }
   }, [chatClient, refreshThreads])
 
   useEffect(() => {
@@ -104,6 +118,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         chatClientProxy: chatClient,
         userPubkey,
         refreshThreadsAndInvites: refreshThreads,
+        sentInvites,
         threads,
         invites,
         registeredKey,

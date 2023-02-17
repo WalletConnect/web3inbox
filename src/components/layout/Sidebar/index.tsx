@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useAccount } from 'wagmi'
 import Logo from '../../../assets/Logo.svg'
+import W3iContext from '../../../contexts/W3iContext/context'
 import { useIsMobile } from '../../../utils/hooks'
 import Avatar from '../../account/Avatar'
 import MessageIcon from '../../general/Icon/MessageIcon'
@@ -15,8 +15,8 @@ const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 
 const Sidebar: React.FC = () => {
   const { pathname } = useLocation()
-  const navigationDepth = pathname.split('/').length
-  const { address } = useAccount()
+  const navigationPaths = useMemo(() => pathname.split('/'), [pathname])
+  const { userPubkey } = useContext(W3iContext)
   const isMobile = useIsMobile()
   const navItems = useMemo(
     () => [
@@ -28,16 +28,16 @@ const Sidebar: React.FC = () => {
   )
 
   // If pathname matches .*/.*/.*
-  // As per design, sidebar in mobile is hidden when on "Main" is viewed
+  // As per design, sidebar in mobile is hidden when on "Main" is viewed on messages
   // And hidden when "TargetSelector" is viewed
-  if (isMobile && navigationDepth > 2) {
+  if (isMobile && navigationPaths.includes('messages') && navigationPaths.length > 2) {
     return null
   }
 
   return (
     <div className="Sidebar">
       <SidebarItem>
-        <Avatar address={address} width="2em" height="2em" hasProfileDropdown />
+        <Avatar address={userPubkey as `0x${string}`} width="2em" height="2em" hasProfileDropdown />
       </SidebarItem>
       <SidebarItem>
         <div className="Sidebar__Navigation">

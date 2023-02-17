@@ -19,6 +19,7 @@ type NonFunctionChatClientKeys =
   | 'events'
   | 'history'
   | 'init'
+  | 'keyserverUrl'
   | 'logger'
   | 'name'
   | 'off'
@@ -45,9 +46,6 @@ interface ModifiedChatClientFunctions {
   getThreads: (
     ...params: Parameters<ChatClient['getThreads']>
   ) => Promise<ReturnType<ChatClient['getThreads']>>
-  getPendingThreads: (
-    ...params: Parameters<ChatClient['getThreads']>
-  ) => Promise<ChatClientTypes.PendingThread[]>
 }
 
 export type ObservableMap = Map<

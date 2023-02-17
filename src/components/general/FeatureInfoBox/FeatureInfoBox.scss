@@ -12,6 +12,10 @@
     padding: 1.875em;
     text-align: center;
     gap: 0.625em;
+    &__main-icon {
+      width: 3.5em;
+      height: 3.5em;
+    }
     &__functionalities {
       font-style: normal;
       font-weight: 700;

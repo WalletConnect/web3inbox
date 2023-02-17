@@ -8,6 +8,7 @@ interface W3iContextState {
   registeredKey: string | null
   refreshThreadsAndInvites: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
+  sentInvites: ChatClientTypes.SentInvite[]
   threads: ChatClientTypes.Thread[]
   invites: ChatClientTypes.ReceivedInvite[]
   userPubkey?: string
@@ -21,6 +22,7 @@ const W3iContext = createContext<W3iContextState>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setUserPubkey: () => {},
   threads: [],
+  sentInvites: [],
   invites: []
 })
 
