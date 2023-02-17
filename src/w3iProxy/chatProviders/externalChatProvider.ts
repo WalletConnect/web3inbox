@@ -80,10 +80,6 @@ export default class ExternalChatProvider implements W3iChatProvider {
     return this.postToExternalProvider('getThreads', params)
   }
 
-  public async getPendingThreads(params?: { account: string }) {
-    return this.postToExternalProvider('getPendingThreads', params)
-  }
-
   public async getSentInvites(params: { account: string }) {
     return this.postToExternalProvider('getSentInvites', params)
   }

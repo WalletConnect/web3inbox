@@ -1,26 +1,28 @@
 import React from 'react'
 import './Button.scss'
 
-interface ButtonProps {
-  type?: 'action-icon' | 'action' | 'primary' | 'secondary'
-  className?: string
-  disabled?: boolean
-  children: React.ReactNode
-  onClick?: () => void
+type THTMLButtonProps = React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>
+type TButtonProps = THTMLButtonProps & {
+  customType?: 'action-icon' | 'action' | 'danger' | 'primary' | 'secondary'
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<TButtonProps> = ({
   children,
   disabled,
   onClick,
   className,
-  type = 'primary'
+  customType = 'primary',
+  ...props
 }) => {
   return (
     <button
+      {...props}
       onClick={onClick}
       disabled={disabled}
-      className={`Button Button__${type} ${className ?? ''}`}
+      className={`Button Button__${customType} ${className ?? ''}`}
     >
       {children}
     </button>

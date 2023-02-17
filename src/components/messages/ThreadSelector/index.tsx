@@ -23,7 +23,7 @@ const ThreadSelector: React.FC = () => {
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<
     { topic: string; message?: string; timestamp?: number }[]
   >([])
-  const { threads, invites, chatClientProxy } = useContext(W3iContext)
+  const { threads, invites, chatClientProxy, sentInvites } = useContext(W3iContext)
 
   const filteredThreads = useMemo(() => {
     return threads.filter(
@@ -87,8 +87,6 @@ const ThreadSelector: React.FC = () => {
     filterThreads(search)
   }, [search, filterThreads])
 
-  console.log('Actual filtered threads', filteredThreadTopics)
-
   return (
     <div className="ThreadSelector">
       {isMobile ? (
@@ -143,11 +141,23 @@ const ThreadSelector: React.FC = () => {
             />
           )
         })}
+        {sentInvites
+          .filter(invite => invite.status !== 'accepted')
+          .map(({ inviteeAccount, status }) => (
+            <Thread
+              searchQuery={search}
+              topic={`invite:${status}:${inviteeAccount}`}
+              lastMessage={`Invite Pending`}
+              lastMessageTimestamp={Date.now()}
+              threadPeer={inviteeAccount}
+              key={inviteeAccount}
+            />
+          ))}
         {threads.length === 0 && search && (
           <span className="ThreadSelector__contact">No {search} found in your contacts</span>
         )}
       </div>
-      {filteredThreads.length === 0 && <EmptyThreads />}
+      <EmptyThreads />
     </div>
   )
 }

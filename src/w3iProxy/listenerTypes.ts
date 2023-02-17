@@ -6,5 +6,7 @@ export interface ChatFacadeEvents {
   chat_joined: ChatClientTypes.BaseEventArgs
   chat_ping: ChatClientTypes.BaseEventArgs
   chat_left: ChatClientTypes.BaseEventArgs
+  chat_invite_sent: never
+  chat_message_sent: never
   chat_account_change: { account: string }
 }

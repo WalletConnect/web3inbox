@@ -1,17 +1,19 @@
-import React from 'react'
-import { NavLink as RouterNavLink } from 'react-router-dom'
 import cn from 'classnames'
+import React from 'react'
+import type { NavLinkProps } from 'react-router-dom'
+import { NavLink as RouterNavLink } from 'react-router-dom'
 import './NavLink.scss'
 
-interface NavLinkProps {
+interface INavLinkProps extends NavLinkProps {
   to: string
   children: React.ReactNode | React.ReactNode[]
   className?: string
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ to, children, className }) => {
+const NavLink: React.FC<INavLinkProps> = ({ to, children, className, ...props }) => {
   return (
     <RouterNavLink
+      {...props}
       to={to}
       className={({ isActive }) => cn('NavLink', { 'NavLink-active': isActive }, className)}
     >

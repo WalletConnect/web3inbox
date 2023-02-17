@@ -1,19 +1,20 @@
-import React, { useCallback, useContext } from 'react'
 import cn from 'classnames'
+import React, { useCallback, useContext } from 'react'
+import ArtistPalette from '../../../assets/ArtistPalette.png'
+import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
 import DarkCity from '../../../assets/DarkCity.png'
-import LightCity from '../../../assets/LightCity.png'
 import HalfHalfCity from '../../../assets/HalfHalfCity.png'
-import Appearance from '../../../assets/Appearance.svg'
-import ColoredNotification from '../../../assets/ColoredNotification.svg'
-import Contacts from '../../../assets/Contacts.svg'
-import Crypto from '../../../assets/Crypto.svg'
-import Radio from '../../general/Radio'
-import Toggle from '../../general/Toggle'
+import Handshake from '../../../assets/Handshake.png'
+import LightCity from '../../../assets/LightCity.png'
+import MoneyWithWings from '../../../assets/MoneyWithWings.png'
 import type { SettingsContextSimpleState } from '../../../contexts/SettingsContext/context'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import ArrowRightIcon from '../../general/Icon/ArrowRightIcon'
+import IconWrapper from '../../general/Icon/IconWrapper/IconWrapper'
+import Radio from '../../general/Radio'
 import Select from '../../general/Select/Select'
+import Toggle from '../../general/Toggle'
 import './Settings.scss'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
@@ -54,7 +55,10 @@ const Settings: React.FC = () => {
     <div className="Settings">
       <div className="Settings__section Settings__appearance">
         <div className="Settings__section-title">
-          <img src={Appearance} alt="appearance-icon" />
+          <IconWrapper shape="square" bgColor="turquoise">
+            <img src={ArtistPalette} alt="appearance-icon" />
+          </IconWrapper>
+
           <span>Appearance</span>
         </div>
         <div className="Settings__section-settings">
@@ -74,7 +78,9 @@ const Settings: React.FC = () => {
       </div>
       <div className="Settings__section Settings__notifications">
         <div className="Settings__section-title">
-          <img src={ColoredNotification} alt="coloredNotification-icon" />
+          <IconWrapper shape="square" bgColor="blue">
+            <img src={ColoredNotificationBell} alt="coloredNotification-icon" />
+          </IconWrapper>
           <span>Notifications</span>
         </div>
         <div className="Settings__section-settings">
@@ -95,7 +101,9 @@ const Settings: React.FC = () => {
       </div>
       <div className="Settings__section Settings__contacts">
         <div className="Settings__section-title">
-          <img src={Contacts} alt="contacts-icon" />
+          <IconWrapper shape="square" bgColor="purple">
+            <img src={Handshake} alt="contacts-icon" />
+          </IconWrapper>
           <span>Contacts</span>
         </div>
         <div className="Settings__section-settings">
@@ -142,7 +150,9 @@ const Settings: React.FC = () => {
       </div>
       <div className="Settings__section Settings_crypto">
         <div className="Settings__section-title">
-          <img src={Crypto} alt="crypto-icon" />
+          <IconWrapper shape="square" bgColor="green">
+            <img src={MoneyWithWings} alt="money-with-wings-icon" />
+          </IconWrapper>
           <span>Crypto</span>
         </div>
         <div className="Settings__section-settings">
@@ -152,7 +162,7 @@ const Settings: React.FC = () => {
               name="currency"
               id="currency"
               options={currencyOptions}
-              onChange={e => console.log(e.target.value)}
+              onChange={console.log}
             />
           </div>
         </div>

@@ -139,14 +139,6 @@ export default class InternalChatProvider implements W3iChatProvider {
     return Promise.resolve(this.chatClient.getThreads(params))
   }
 
-  public async getPendingThreads() {
-    if (!this.chatClient) {
-      throw new Error(this.formatClientRelatedError('getPendingThreads'))
-    }
-
-    return Promise.resolve(this.chatClient.chatThreadsPending.getAll())
-  }
-
   public async getSentInvites(params?: { account: string }) {
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('getSentInvites'))

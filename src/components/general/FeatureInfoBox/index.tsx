@@ -1,23 +1,17 @@
 import React, { Fragment, useCallback, useContext, useState } from 'react'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import { useColorModeValue } from '../../../utils/hooks'
+import type { IIcon, ISection } from '../../../utils/types'
 import Button from '../Button'
 import CrossIcon from '../Icon/CrossIcon'
+import IconWrapper from '../Icon/IconWrapper/IconWrapper'
 import './FeatureInfoBox.scss'
-
-interface IIcon {
-  icon: string
-  alt: string
-}
 
 interface IFeatureInfoBoxProps {
   localStorageKey: string
   header: string
   mainIcon: IIcon
-  sections: {
-    title: string
-    icons: IIcon[]
-  }[]
+  sections: ISection[]
 }
 
 const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
@@ -44,13 +38,20 @@ const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
         <CrossIcon fillColor={themeColors['--fg-color-1']} />
       </Button>
       <div className="FeatureInfoBox__container">
-        <img src={mainIcon.icon} alt={mainIcon.alt} />
+        <img
+          className="FeatureInfoBox__container__main-icon"
+          src={mainIcon.icon}
+          alt={mainIcon.alt}
+          loading="lazy"
+        />
         <div className="FeatureInfoBox__container__functionalities">{header}</div>
         {sections.map(section => (
           <div key={section.title} className="FeatureInfoBox__container__functionality">
             <div className="FeatureInfoBox__container__functionality__icons">
-              {section.icons.map(({ icon, alt }) => (
-                <img key={alt} src={icon} alt={alt} />
+              {section.icons.map(({ icon, alt, shape, bgColor }) => (
+                <IconWrapper key={alt} shape={shape} bgColor={bgColor}>
+                  <img src={icon} alt={alt} loading="lazy" />
+                </IconWrapper>
               ))}
             </div>
             {section.title}
