@@ -1,6 +1,4 @@
-// eslint-disable-next-line
-// TODO: (Ben) expose the types here properly at top level.
-import type { PushClientTypes } from '@walletconnect/push-client/dist/types/types'
+import type { PushClientTypes } from '@walletconnect/push-client'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 
 export interface ChatFacadeEvents {
