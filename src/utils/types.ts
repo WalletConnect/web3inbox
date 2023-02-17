@@ -1,14 +1,14 @@
 export interface IIconWrapper {
-  shape: 'circle' | 'square' | 'stand-alone'
+  shape: 'circle' | 'square' | 'standalone'
   bgColor?: 'blue' | 'green' | 'nightBlue' | 'orange' | 'pink' | 'purple' | 'turquoise'
 }
 
-export interface IICon {
+export interface IIcon {
   icon: string
   alt: string
 }
 
-interface IIconWithBg extends IICon {
+interface IIconWithBg extends IIcon {
   shape: IIconWrapper['shape']
   bgColor?: IIconWrapper['bgColor']
 }

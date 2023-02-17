@@ -24,7 +24,7 @@ const EmptyApps: React.FC = () => {
           {
             icon: Toggle,
             alt: 'toggle-icon',
-            shape: 'stand-alone'
+            shape: 'standalone'
           }
         ]
       },
