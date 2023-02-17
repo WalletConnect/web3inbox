@@ -1,23 +1,17 @@
 import React, { Fragment, useCallback, useContext, useState } from 'react'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import { useColorModeValue } from '../../../utils/hooks'
+import type { IICon, ISection } from '../../../utils/types'
 import Button from '../Button'
 import CrossIcon from '../Icon/CrossIcon'
+import IconWrapper from '../Icon/IconWrapper/IconWrapper'
 import './FeatureInfoBox.scss'
-
-interface IIcon {
-  icon: string
-  alt: string
-}
 
 interface IFeatureInfoBoxProps {
   localStorageKey: string
   header: string
-  mainIcon: IIcon
-  sections: {
-    title: string
-    icons: IIcon[]
-  }[]
+  mainIcon: IICon
+  sections: ISection[]
 }
 
 const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
@@ -49,8 +43,10 @@ const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
         {sections.map(section => (
           <div key={section.title} className="FeatureInfoBox__container__functionality">
             <div className="FeatureInfoBox__container__functionality__icons">
-              {section.icons.map(({ icon, alt }) => (
-                <img key={alt} src={icon} alt={alt} />
+              {section.icons.map(({ icon, alt, shape, bgColor }) => (
+                <IconWrapper key={alt} shape={shape} bgColor={bgColor}>
+                  <img src={icon} alt={alt} />
+                </IconWrapper>
               ))}
             </div>
             {section.title}

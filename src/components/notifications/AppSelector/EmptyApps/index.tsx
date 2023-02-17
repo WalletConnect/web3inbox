@@ -1,26 +1,30 @@
 import React, { useMemo } from 'react'
-import Alarm from '../../../../assets/Alarm.svg'
-import ColoredNotificationBell from '../../../../assets/ColoredNotificationBell.svg'
-import Toggle from '../../../../assets/Toggle.svg'
-import Chart from '../../../../assets/Chart.svg'
-import Landscape from '../../../../assets/Landscape.svg'
-import Inbox from '../../../../assets/Inbox.svg'
-import MobilePhone from '../../../../assets/MobilePhone.svg'
+import Alarm from '../../../../assets/Alarm.png'
+import Chart from '../../../../assets/Chart.png'
+import ColoredNotificationBell from '../../../../assets/ColoredNotificationBell.png'
+import FramedPicture from '../../../../assets/FramedPicture.png'
+import Inbox from '../../../../assets/Inbox.png'
+import MobilePhone from '../../../../assets/MobilePhone.png'
+import Toggle from '../../../../assets/Toggle.png'
+import type { ISection } from '../../../../utils/types'
 import FeatureInfoBox from '../../../general/FeatureInfoBox'
 
 const EmptyApps: React.FC = () => {
-  const sections = useMemo(
+  const sections = useMemo<ISection[]>(
     () => [
       {
         title: 'Enable notifications on any of the apps you use',
         icons: [
           {
             icon: ColoredNotificationBell,
-            alt: 'notifications-icon'
+            alt: 'notifications-icon',
+            bgColor: 'nightBlue',
+            shape: 'circle'
           },
           {
             icon: Toggle,
-            alt: 'toggle-icon'
+            alt: 'toggle-icon',
+            shape: 'stand-alone'
           }
         ]
       },
@@ -29,11 +33,15 @@ const EmptyApps: React.FC = () => {
         icons: [
           {
             icon: Chart,
-            alt: 'chart-icon'
+            alt: 'chart-icon',
+            bgColor: 'orange',
+            shape: 'square'
           },
           {
-            icon: Landscape,
-            alt: 'landscape-icon'
+            icon: FramedPicture,
+            alt: 'landscape-icon',
+            bgColor: 'blue',
+            shape: 'square'
           }
         ]
       },
@@ -42,11 +50,15 @@ const EmptyApps: React.FC = () => {
         icons: [
           {
             icon: Inbox,
-            alt: 'inbox-icon'
+            alt: 'inbox-icon',
+            bgColor: 'purple',
+            shape: 'circle'
           },
           {
             icon: MobilePhone,
-            alt: 'mobile-phone-icon'
+            alt: 'mobile-phone-icon',
+            bgColor: 'green',
+            shape: 'square'
           }
         ]
       }

@@ -106,7 +106,6 @@ const ThreadSelector: React.FC = () => {
           <CircleBadge>{invites.length}</CircleBadge>
         </div>
       </NavLink>
-      {filteredThreads.length === 0 && <EmptyThreads />}
       <div className="ThreadSelector__threads">
         {filteredThreads.map(({ peerAccount, topic }) => {
           const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
@@ -129,6 +128,7 @@ const ThreadSelector: React.FC = () => {
           <span className="ThreadSelector__contact">No {search} found in your contacts</span>
         )}
       </div>
+      <EmptyThreads />
     </div>
   )
 }
