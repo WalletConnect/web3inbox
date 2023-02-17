@@ -20,11 +20,9 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
     }
     await chatClientProxy.message({
       topic,
-      payload: {
-        authorAccount,
-        message: messageText,
-        timestamp: new Date().getTime()
-      }
+      authorAccount,
+      message: messageText,
+      timestamp: new Date().getTime()
     })
     onSuccessfulSend()
     setMessageText('')

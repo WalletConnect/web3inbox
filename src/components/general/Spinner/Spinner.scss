@@ -1,0 +1,17 @@
+$primaryColor: #fff;
+$secondaryColor: #eee;
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.Spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__inner {
+    animation: 1.5s linear spin infinite;
+  }
+}

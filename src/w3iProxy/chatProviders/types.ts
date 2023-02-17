@@ -6,9 +6,11 @@ import type { ChatFacadeEvents } from '../listenerTypes'
 
 // Omitting chat client management keys
 type NonFunctionChatClientKeys =
-  | 'chatInvites'
+  | 'chatContacts'
   | 'chatKeys'
   | 'chatMessages'
+  | 'chatReceivedInvites'
+  | 'chatSentInvites'
   | 'chatThreads'
   | 'chatThreadsPending'
   | 'core'
@@ -17,6 +19,7 @@ type NonFunctionChatClientKeys =
   | 'events'
   | 'history'
   | 'init'
+  | 'keyserverUrl'
   | 'logger'
   | 'name'
   | 'off'
@@ -34,15 +37,15 @@ interface ModifiedChatClientFunctions {
   getMessages: (
     ...params: Parameters<ChatClient['getMessages']>
   ) => Promise<ReturnType<ChatClient['getMessages']>>
-  getInvites: (
-    ...params: Parameters<ChatClient['getInvites']>
-  ) => Promise<ReturnType<ChatClient['getInvites']>>
+  getSentInvites: (
+    ...params: Parameters<ChatClient['getSentInvites']>
+  ) => Promise<ReturnType<ChatClient['getSentInvites']>>
+  getReceivedInvites: (
+    ...params: Parameters<ChatClient['getReceivedInvites']>
+  ) => Promise<ReturnType<ChatClient['getReceivedInvites']>>
   getThreads: (
     ...params: Parameters<ChatClient['getThreads']>
   ) => Promise<ReturnType<ChatClient['getThreads']>>
-  getPendingThreads: (
-    ...params: Parameters<ChatClient['getThreads']>
-  ) => Promise<ChatClientTypes.PendingThread[]>
 }
 
 export type ObservableMap = Map<

@@ -26,7 +26,7 @@ class W3iChatFacade implements W3iChat {
   private readonly emitter: EventEmitter
   private readonly observables: ObservableMap
   private readonly provider: ExternalChatProvider | InternalChatProvider
-  private externallySetAccount?: string
+  private account?: string
 
   public constructor(providerName: W3iChatFacade['providerName']) {
     this.providerName = providerName
@@ -47,7 +47,7 @@ class W3iChatFacade implements W3iChat {
     this.emitter.emit(messageData.id.toString(), messageData)
     switch (messageData.method) {
       case 'setAccount':
-        this.externallySetAccount = (messageData.params as { account: string }).account
+        this.account = (messageData.params as { account: string }).account
         this.emitter.emit('chat_account_change', messageData.params)
         break
       default:
@@ -58,7 +58,7 @@ class W3iChatFacade implements W3iChat {
   }
 
   public getAccount() {
-    return this.externallySetAccount
+    return this.account
   }
 
   public on(methodName: string, listener: (data: unknown) => void) {
@@ -78,23 +78,49 @@ class W3iChatFacade implements W3iChat {
   public async getThreads(params?: { account: string }) {
     return this.provider.getThreads(params)
   }
-  public async getInvites(params?: { account: string }) {
-    return this.provider.getInvites(params)
+
+  public async getSentInvites(params?: { account: string }) {
+    const account = params?.account ?? this.account
+    if (!account) {
+      throw new Error(
+        "An account param must be provided, or an account must've been set for getSentInvites"
+      )
+    }
+
+    return this.provider.getSentInvites({ account })
   }
-  public async getPendingThreads(params?: { account: string }) {
-    return this.provider.getPendingThreads(params)
+
+  public async getReceivedInvites(params?: { account: string }) {
+    const account = params?.account ?? this.account
+    if (!account) {
+      throw new Error(
+        "An account param must be provided, or an account must've been set for getReceivedInvites"
+      )
+    }
+
+    return this.provider.getReceivedInvites({ account })
   }
-  public async invite(params: { account: string; invite: ChatClientTypes.PartialInvite }) {
-    return this.provider.invite(params)
+
+  public addContact(params: { account: string; publicKey: string }) {
+    return this.provider.addContact(params)
+  }
+
+  public async invite(params: ChatClientTypes.Invite) {
+    return this.provider.invite(params).then(inviteId => {
+      this.emitter.emit('chat_invite_sent', {
+        ...params
+      })
+
+      return inviteId
+    })
   }
   public async ping(params: { topic: string }) {
     return this.provider.ping(params)
   }
-  public async message(params: { topic: string; payload: ChatClientTypes.Message }) {
+  public async message(params: ChatClientTypes.Message) {
     return this.provider.message(params).then(() => {
       this.emitter.emit('chat_message_sent', {
-        ...params.payload,
-        topic: params.topic
+        ...params
       })
     })
   }
@@ -120,7 +146,7 @@ class W3iChatFacade implements W3iChat {
 
     const subscription = eventObservable.subscribe(observer)
 
-    return subscription.unsubscribe
+    return subscription
   }
 }
 
