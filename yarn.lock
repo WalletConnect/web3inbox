@@ -2533,7 +2533,6 @@
   dependencies:
     tslib "1.14.1"
 
-<<<<<<< HEAD
 "@walletconnect/types@2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-2.2.1.tgz#94e45a48e4d6d96d49b94f822182091df055b870"
@@ -2546,16 +2545,10 @@
     "@walletconnect/logger" "^2.0.1"
     events "^3.3.0"
 
-"@walletconnect/types@2.4.2":
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-2.4.2.tgz#1317060c5e8ff3feb48e31d1c07c8eb9fe3bcd3e"
-  integrity sha512-1snUCDVWzg8kk9VAVgtvENDb7nUdqPOE8RC3U2/xgLB77eHSrTmbYYD8suh+rxw8LRyogN/mg/wFrMBE/SRDJg==
-=======
 "@walletconnect/types@2.4.4":
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-2.4.4.tgz#f2edb02f70e7dfb0f4265d78b0b745a776eb0dae"
   integrity sha512-4XndBOlB0qbhaJvzcBZCfR69rfU5rV0U5b3YbJ1AmtxcJSJAIg68WDP7o4BE4w1LHzdsEWvbXHRYL+KsA+uG3w==
->>>>>>> main
   dependencies:
     "@walletconnect/events" "^1.0.1"
     "@walletconnect/heartbeat" "1.2.0"
@@ -2568,6 +2561,27 @@
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-1.8.0.tgz#3f5e85b2d6b149337f727ab8a71b8471d8d9a195"
   integrity sha512-Cn+3I0V0vT9ghMuzh1KzZvCkiAxTq+1TR2eSqw5E5AVWfmCtECFkVZBP6uUJZ8YjwLqXheI+rnjqPy7sVM4Fyg==
+
+"@walletconnect/utils@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@walletconnect/utils/-/utils-2.2.1.tgz#c8e991c5a58902fac900d0628b2aa59e28aef6a3"
+  integrity sha512-DkjYcWMMBGznlyuenJkt1Z+IcPchhVbnYwMeQIZCu7gSbL9nUBsyzixfcWat5lapsBeGJDquhV63dU8pbkdhfg==
+  dependencies:
+    "@stablelib/chacha20poly1305" "1.0.1"
+    "@stablelib/hkdf" "1.0.1"
+    "@stablelib/random" "^1.0.2"
+    "@stablelib/sha256" "1.0.1"
+    "@stablelib/x25519" "^1.0.3"
+    "@walletconnect/jsonrpc-utils" "^1.0.4"
+    "@walletconnect/relay-api" "^1.0.7"
+    "@walletconnect/safe-json" "^1.0.1"
+    "@walletconnect/time" "^1.0.2"
+    "@walletconnect/types" "2.2.1"
+    "@walletconnect/window-getters" "^1.0.1"
+    "@walletconnect/window-metadata" "^1.0.1"
+    detect-browser "5.3.0"
+    query-string "7.1.1"
+    uint8arrays "3.1.0"
 
 "@walletconnect/utils@2.4.4", "@walletconnect/utils@^2.3.3":
   version "2.4.4"
