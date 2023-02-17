@@ -162,7 +162,7 @@ const Settings: React.FC = () => {
               name="currency"
               id="currency"
               options={currencyOptions}
-              onChange={e => console.log(e.target.value)}
+              onChange={console.log}
             />
           </div>
         </div>

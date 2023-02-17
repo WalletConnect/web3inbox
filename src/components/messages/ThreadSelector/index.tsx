@@ -18,7 +18,7 @@ const ThreadSelector: React.FC = () => {
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<
     { topic: string; message?: string; timestamp?: number }[]
   >([])
-  const { threads, invites, chatClientProxy } = useContext(W3iContext)
+  const { threads, invites, chatClientProxy, sentInvites } = useContext(W3iContext)
 
   const filteredThreads = useMemo(() => {
     return threads.filter(
@@ -82,8 +82,6 @@ const ThreadSelector: React.FC = () => {
     filterThreads(search)
   }, [search, filterThreads])
 
-  console.log('Actual filtered threads', filteredThreadTopics)
-
   return (
     <div className="ThreadSelector">
       <Input
@@ -106,28 +104,42 @@ const ThreadSelector: React.FC = () => {
           <CircleBadge>{invites.length}</CircleBadge>
         </div>
       </NavLink>
-      <div className="ThreadSelector__threads">
-        {filteredThreads.map(({ peerAccount, topic }) => {
-          const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
-          const lastItem = (filterIdx !== -1 && filteredThreadTopics[filterIdx]) || undefined
-          const message = lastItem?.message
-          const timestamp = lastItem?.timestamp
+      {filteredThreads.length > 0 && (
+        <div className="ThreadSelector__threads">
+          {filteredThreads.map(({ peerAccount, topic }) => {
+            const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
+            const lastItem = (filterIdx !== -1 && filteredThreadTopics[filterIdx]) || undefined
+            const message = lastItem?.message
+            const timestamp = lastItem?.timestamp
 
-          return (
-            <Thread
-              searchQuery={search}
-              topic={topic}
-              lastMessage={message}
-              lastMessageTimestamp={timestamp}
-              threadPeer={peerAccount}
-              key={peerAccount}
-            />
-          )
-        })}
-        {threads.length === 0 && search && (
-          <span className="ThreadSelector__contact">No {search} found in your contacts</span>
-        )}
-      </div>
+            return (
+              <Thread
+                searchQuery={search}
+                topic={topic}
+                lastMessage={message}
+                lastMessageTimestamp={timestamp}
+                threadPeer={peerAccount}
+                key={peerAccount}
+              />
+            )
+          })}
+          {sentInvites
+            .filter(invite => invite.status !== 'accepted')
+            .map(({ inviteeAccount, status }) => (
+              <Thread
+                searchQuery={search}
+                topic={`invite:${status}:${inviteeAccount}`}
+                lastMessage={`Invite Pending`}
+                lastMessageTimestamp={Date.now()}
+                threadPeer={inviteeAccount}
+                key={inviteeAccount}
+              />
+            ))}
+          {threads.length === 0 && search && (
+            <span className="ThreadSelector__contact">No {search} found in your contacts</span>
+          )}
+        </div>
+      )}
       <EmptyThreads />
     </div>
   )

@@ -105,11 +105,14 @@ class W3iChatFacade implements W3iChat {
     return this.provider.addContact(params)
   }
 
-  public async getPendingThreads(params?: { account: string }) {
-    return this.provider.getPendingThreads(params)
-  }
   public async invite(params: ChatClientTypes.Invite) {
-    return this.provider.invite(params)
+    return this.provider.invite(params).then(inviteId => {
+      this.emitter.emit('chat_invite_sent', {
+        ...params
+      })
+
+      return inviteId
+    })
   }
   public async ping(params: { topic: string }) {
     return this.provider.ping(params)
@@ -143,7 +146,7 @@ class W3iChatFacade implements W3iChat {
 
     const subscription = eventObservable.subscribe(observer)
 
-    return subscription.unsubscribe
+    return subscription
   }
 }
 

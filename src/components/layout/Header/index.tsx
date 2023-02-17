@@ -1,19 +1,19 @@
-import React from 'react'
-import { useAccount, useEnsName } from 'wagmi'
+import React, { useContext } from 'react'
+import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import './Header.scss'
 
 const Header: React.FC = () => {
-  const { address } = useAccount()
-  const { data: ensName } = useEnsName({ address })
+  const { userPubkey } = useContext(W3iContext)
+  const { data: ensName } = useEnsName({ address: userPubkey as `0x${string}` })
 
   return (
     <div className="Header">
       <div className="Header__account">
-        <Avatar address={address} width="1.5em" height="1.5em" />
-        <span>{ensName ?? truncate(address ?? '', 5)}</span>
+        <Avatar address={userPubkey as `0x${string}`} width="1.5em" height="1.5em" />
+        <span>{ensName ?? truncate(userPubkey ?? '', 5)}</span>
       </div>
     </div>
   )
