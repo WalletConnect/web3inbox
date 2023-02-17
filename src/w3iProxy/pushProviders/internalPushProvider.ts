@@ -56,12 +56,12 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.reject(params)
   }
 
-  public async delete(params: { topic: string }) {
+  public async deleteSubscription(params: { topic: string }) {
     if (!this.pushClient) {
-      throw new Error(this.formatClientRelatedError('delete'))
+      throw new Error(this.formatClientRelatedError('deleteSubscription'))
     }
 
-    return this.pushClient.delete(params)
+    return this.pushClient.deleteSubscription(params)
   }
 
   public async getActiveSubscriptions() {
@@ -78,5 +78,13 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
 
     return Promise.resolve(this.pushClient.getMessageHistory(params))
+  }
+
+  public async deletePushMessage(params: { id: number }) {
+    if (!this.pushClient) {
+      throw new Error(this.formatClientRelatedError('deletePushMessage'))
+    }
+
+    return Promise.resolve(this.pushClient.deletePushMessage(params))
   }
 }

@@ -61,8 +61,8 @@ class W3iPushFacade implements W3iPush {
     return this.provider.reject(params)
   }
 
-  public async delete(params: { topic: string }) {
-    return this.provider.delete(params)
+  public async deleteSubscription(params: { topic: string }) {
+    return this.provider.deleteSubscription(params)
   }
 
   public async getActiveSubscriptions() {
@@ -71,6 +71,10 @@ class W3iPushFacade implements W3iPush {
 
   public async getMessageHistory(params: { topic: string }) {
     return this.provider.getMessageHistory(params)
+  }
+
+  public async deletePushMessage(params: { id: number }) {
+    return this.provider.deletePushMessage(params)
   }
 
   public observe<K extends keyof PushFacadeEvents>(eventName: K, observer: PushEventObserver<K>) {

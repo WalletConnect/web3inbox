@@ -57,8 +57,8 @@ export default class ExternalPushProvider implements W3iPushProvider {
     return this.postToExternalProvider('reject', params)
   }
 
-  public async delete(params: { topic: string }) {
-    return this.postToExternalProvider('delete', params)
+  public async deleteSubscription(params: { topic: string }) {
+    return this.postToExternalProvider('deleteSubscription', params)
   }
 
   public async getActiveSubscriptions() {
@@ -67,5 +67,9 @@ export default class ExternalPushProvider implements W3iPushProvider {
 
   public async getMessageHistory(params: { topic: string }) {
     return this.postToExternalProvider('getMessageHistory', params)
+  }
+
+  public async deletePushMessage(params: { id: number }) {
+    return this.postToExternalProvider('deletePushMessage', params)
   }
 }
