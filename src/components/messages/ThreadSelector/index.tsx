@@ -3,14 +3,13 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { concatAll, from, takeLast, takeWhile } from 'rxjs'
 import PersonIcon from '../../../assets/Person.svg'
 import PlusIcon from '../../../assets/Plus.svg'
-import Search from '../../../assets/Search.svg'
+import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
-import { useIsMobile } from '../../../utils/hooks'
+import { useIsMobile, useSearch } from '../../../utils/hooks'
 import CircleBadge from '../../general/Badge/CircleBadge'
-import Button from '../../general/Button'
-import SearchIcon from '../../general/Icon/SearchIcon'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
+import Search from '../../general/Search'
 import MobileHeader from '../../layout/MobileHeader'
 import EmptyThreads from './EmptyThreads'
 import Thread from './Thread'
@@ -19,6 +18,7 @@ import './ThreadSelector.scss'
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
+  const isSearchOpen = useSearch()
 
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<
     { topic: string; message?: string; timestamp?: number }[]
@@ -93,11 +93,13 @@ const ThreadSelector: React.FC = () => {
     <div className="ThreadSelector">
       {isMobile ? (
         <div className="ThreadSelector__mobile-header">
-          <MobileHeader>Chat</MobileHeader>
+          {!isSearchOpen && <MobileHeader>Chat</MobileHeader>}
           <div className="ThreadSelector__mobile-actions">
-            <Button type="action-icon" className="ThreadSelector__mobile-search">
-              <SearchIcon />
-            </Button>
+            <Search
+              onChange={({ target }) => {
+                setSearch(target.value)
+              }}
+            />
             <NavLink to="/messages/new-chat" className="ThreadSelector__link">
               <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
             </NavLink>
@@ -110,7 +112,7 @@ const ThreadSelector: React.FC = () => {
               setSearch(target.value)
             }}
             placeholder="Search"
-            icon={Search}
+            icon={SearchIcon}
           />
           <NavLink to="/messages/new-chat" className="ThreadSelector__link">
             <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
