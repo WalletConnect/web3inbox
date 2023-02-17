@@ -21,7 +21,7 @@ const Search: React.FC<ISearchProps> = ({ setSearch }) => {
   return (
     <div className="Search">
       {!isSearchOpen && (
-        <Button type="action-icon" className="Search__btn" onClick={searchService.openSearch}>
+        <Button customType="action-icon" className="Search__btn" onClick={searchService.openSearch}>
           <div style={{ width: '1em', height: '1em' }}>
             <SearchIcon />
           </div>
@@ -35,7 +35,7 @@ const Search: React.FC<ISearchProps> = ({ setSearch }) => {
             placeholder="Search"
             icon={SearchSvg}
           />
-          <Button type="action" onClick={handleCloseSearch}>
+          <Button customType="action" onClick={handleCloseSearch}>
             Cancel
           </Button>
         </div>
