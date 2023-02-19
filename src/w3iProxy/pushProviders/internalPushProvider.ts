@@ -1,6 +1,4 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
-import type ChatClient from '@walletconnect/chat-client'
 import type { W3iPushProvider } from './types'
 import type { WalletClient as PushWalletClient } from '@walletconnect/push-client'
 
