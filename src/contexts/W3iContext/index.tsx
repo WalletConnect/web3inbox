@@ -122,7 +122,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         threads,
         invites,
         registeredKey,
-        setUserPubkey
+        setUserPubkey,
+        pushClientProxy: pushClient
       }}
     >
       {children}
