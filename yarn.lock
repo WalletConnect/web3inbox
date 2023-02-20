@@ -2240,16 +2240,7 @@
     "@walletconnect/types" "^1.8.0"
     "@walletconnect/utils" "^1.8.0"
 
-"@walletconnect/core@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-1.8.0.tgz#6b2748b90c999d9d6a70e52e26a8d5e8bfeaa81e"
-  integrity sha512-aFTHvEEbXcZ8XdWBw6rpQDte41Rxwnuk3SgTD8/iKGSRTni50gI9S3YEzMj05jozSiOBxQci4pJDMVhIUMtarw==
-  dependencies:
-    "@walletconnect/socket-transport" "^1.8.0"
-    "@walletconnect/types" "^1.8.0"
-    "@walletconnect/utils" "^1.8.0"
-
-"@walletconnect/core@^2.3.3":
+"@walletconnect/core@2.4.4", "@walletconnect/core@^2.3.3":
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-2.4.4.tgz#5f22fd2e9a13c3995c164530f5e77b671bb40850"
   integrity sha512-tdMmPNGgpTrk95hG8H5V6Du59HA4e3tVdvGngZjcja6VnmkfZdW4fGCWaJWyKYkrQQknDug4dH47/HZ6cAxj/g==
@@ -2270,6 +2261,15 @@
     lodash.isequal "4.5.0"
     pino "7.11.0"
     uint8arrays "3.1.0"
+
+"@walletconnect/core@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-1.8.0.tgz#6b2748b90c999d9d6a70e52e26a8d5e8bfeaa81e"
+  integrity sha512-aFTHvEEbXcZ8XdWBw6rpQDte41Rxwnuk3SgTD8/iKGSRTni50gI9S3YEzMj05jozSiOBxQci4pJDMVhIUMtarw==
+  dependencies:
+    "@walletconnect/socket-transport" "^1.8.0"
+    "@walletconnect/types" "^1.8.0"
+    "@walletconnect/utils" "^1.8.0"
 
 "@walletconnect/crypto@^1.0.2":
   version "1.0.3"
@@ -2407,6 +2407,16 @@
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/mobile-registry/-/mobile-registry-1.4.0.tgz#502cf8ab87330841d794819081e748ebdef7aee5"
   integrity sha512-ZtKRio4uCZ1JUF7LIdecmZt7FOLnX72RPSY7aUVu7mj7CSfxDwUn6gBuK6WGtH+NZCldBqDl5DenI5fFSvkKYw==
+
+"@walletconnect/push-client@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@walletconnect/push-client/-/push-client-0.6.0.tgz#cdf3d5a8024924b8449019a90c7ccb92fa21bbc0"
+  integrity sha512-Iasa6LVkPLwntRIhvpvvC6gT9LBHVYk1AyUaSCrX7E2OUWCwdr+e4ljh8H6haVhVC9mpI0vSLBBvc/JVB7Bx+g==
+  dependencies:
+    "@walletconnect/core" "2.4.4"
+    "@walletconnect/jsonrpc-utils" "^1.0.4"
+    "@walletconnect/types" "2.4.4"
+    "@walletconnect/utils" "2.4.4"
 
 "@walletconnect/qrcode-modal@^1.8.0":
   version "1.8.0"

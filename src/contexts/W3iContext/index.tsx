@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import type { W3iChatClient } from '../../w3iProxy'
+import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
 import Web3InboxProxy from '../../w3iProxy'
 import W3iContext from './context'
 import { formatEthChainsAddress } from '../../utils/address'
@@ -13,11 +13,14 @@ interface W3iContextProviderProps {
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
   const relayUrl = import.meta.env.VITE_RELAY_URL
   const projectId = import.meta.env.VITE_PROJECT_ID
-  const chatProviderQuery = new URLSearchParams(window.location.search).get('chatProvider')
+  const query = new URLSearchParams(window.location.search)
+  const chatProviderQuery = query.get('chatProvider')
+  const pushProviderQuery = query.get('pushProvider')
+
+  // CHAT STATE
   const [chatProvider] = useState(
     chatProviderQuery ? (chatProviderQuery as Web3InboxProxy['chatProvider']) : 'internal'
   )
-
   const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
   const [invites, setInvites] = useState<ChatClientTypes.ReceivedInvite[]>([])
@@ -25,6 +28,12 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   const [sentInvites, setSentInvites] = useState<ChatClientTypes.SentInvite[]>([])
 
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
+
+  // PUSH STATE
+  const [pushClient, setPushClient] = useState<W3iPushClient | null>(null)
+  const [pushProvider] = useState(
+    pushProviderQuery ? (pushProviderQuery as Web3InboxProxy['pushProvider']) : 'internal'
+  )
 
   useEffect(() => {
     const sub = chatClient?.observe('chat_account_change', {
@@ -46,18 +55,19 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [chatClient, userPubkey])
 
   useEffect(() => {
-    if (chatClient) {
+    if (chatClient && pushClient) {
       return
     }
 
-    const w3iProxy = new Web3InboxProxy(chatProvider, projectId, relayUrl)
+    const w3iProxy = new Web3InboxProxy(chatProvider, pushProvider, projectId, relayUrl)
     w3iProxy
       .init()
       .then(() => setChatClient(w3iProxy.chat))
       .then(() => {
         setUserPubkey(w3iProxy.chat.getAccount())
       })
-  }, [setChatClient, chatClient])
+      .then(() => setPushClient(w3iProxy.push))
+  }, [setChatClient, chatClient, setUserPubkey, setPushClient, pushClient])
 
   const refreshThreads = useCallback(() => {
     if (!chatClient || !userPubkey) {
@@ -112,7 +122,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         threads,
         invites,
         registeredKey,
-        setUserPubkey
+        setUserPubkey,
+        pushClientProxy: pushClient
       }}
     >
       {children}
