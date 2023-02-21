@@ -73,14 +73,15 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [setChatClient, chatClient, setUserPubkey, setPushClient, pushClient])
 
   const refreshPushState = useCallback(() => {
-    if (!pushClient) {
+    if (!pushClient || !userPubkey) {
       return
     }
 
-    pushClient
-      .getActiveSubscriptions()
-      .then(subscriptions => setActiveSubscriptions(Object.values(subscriptions)))
-  }, [])
+    pushClient.getActiveSubscriptions().then(subscriptions => {
+      console.log('refreshPushState > activeSubscriptions', subscriptions)
+      setActiveSubscriptions(Object.values(subscriptions))
+    })
+  }, [pushClient, userPubkey])
 
   const refreshChatState = useCallback(() => {
     if (!chatClient || !userPubkey) {
@@ -124,6 +125,10 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   useEffect(() => {
     refreshChatState()
   }, [refreshChatState])
+
+  useEffect(() => {
+    refreshPushState()
+  }, [refreshPushState])
 
   return (
     <W3iContext.Provider
