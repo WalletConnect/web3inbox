@@ -23,7 +23,8 @@ const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
   const [isFeatureInfoBoxClosed, setIsFeatureInfoBoxClosed] = useState(() => {
-    if (typeof localStorage === 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (typeof localStorage === 'undefined' || !localStorage) {
       return true
     }
 

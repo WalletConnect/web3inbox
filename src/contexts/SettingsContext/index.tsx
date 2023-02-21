@@ -16,7 +16,8 @@ const settingsReducer = (
 
 const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
   const favoriteTheme =
-    typeof localStorage === 'undefined'
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    typeof localStorage === 'undefined' || !localStorage
       ? null
       : (localStorage.getItem('w3i-theme') as SettingsContextSimpleState['mode'] | null)
 
