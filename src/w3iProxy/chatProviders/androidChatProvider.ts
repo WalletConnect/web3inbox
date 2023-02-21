@@ -18,7 +18,7 @@ export default class AndroidChatProvider extends ExternalChatProvider {
     ...params: Parameters<ChatClientFunctions[MName]>
   ) {
     return new Promise<ReturnType<ChatClientFunctions[MName]>>(resolve => {
-      const message = formatJsonRpcRequest(methodName, params)
+      const message = formatJsonRpcRequest(methodName, params[0])
 
       const messageListener = (
         messageResponse: JsonRpcResult<ReturnType<ChatClientFunctions[MName]>>
