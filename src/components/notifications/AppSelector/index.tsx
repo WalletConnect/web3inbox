@@ -13,7 +13,7 @@ import NotificationMuteIcon from '../../general/Icon/NotificationMuteIcon'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
 import Search from '../../general/Search'
-import MobileHeader from '../../layout/MobileHeader'
+import MobileHeading from '../../layout/MobileHeading'
 import type { IAppNotification } from '../AppNotifications/AppNotificationItem'
 import NotificationActionsDropdown from '../NotificationsActionsDropdown'
 import './AppSelector.scss'
@@ -162,7 +162,7 @@ const AppSelector: React.FC = () => {
     <div className="AppSelector">
       {isMobile ? (
         <div className="AppSelector__mobile-header">
-          {!isPushSearchOpen && <MobileHeader>Notifications</MobileHeader>}
+          {!isPushSearchOpen && <MobileHeading>Notifications</MobileHeading>}
           <div className="AppSelector__mobile-actions">
             <Search
               setSearch={setSearch}

@@ -3,7 +3,7 @@ import { useIsMobile, useSearch } from '../../../../utils/hooks'
 import { appSearchService } from '../../../../utils/store'
 import Search from '../../../general/Search'
 import Select from '../../../general/Select/Select'
-import MobileHeader from '../../../layout/MobileHeader'
+import MobileHeading from '../../../layout/MobileHeading'
 import './AppExplorerHeader.scss'
 
 const AppExplorerHeader = () => {
@@ -12,7 +12,7 @@ const AppExplorerHeader = () => {
 
   return isMobile ? (
     <div className="AppExplorerHeader">
-      {!isAppSearchOpen && <MobileHeader>Explore Apps</MobileHeader>}
+      {!isAppSearchOpen && <MobileHeading>Explore Apps</MobileHeading>}
       <Search
         isSearchOpen={isAppSearchOpen}
         closeSearch={appSearchService.closeSearch}

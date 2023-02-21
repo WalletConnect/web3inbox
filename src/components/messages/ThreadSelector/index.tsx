@@ -11,7 +11,7 @@ import CircleBadge from '../../general/Badge/CircleBadge'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
 import Search from '../../general/Search'
-import MobileHeader from '../../layout/MobileHeader'
+import MobileHeading from '../../layout/MobileHeading'
 import EmptyThreads from './EmptyThreads'
 import Thread from './Thread'
 import './ThreadSelector.scss'
@@ -92,7 +92,7 @@ const ThreadSelector: React.FC = () => {
     <div className="ThreadSelector">
       {isMobile ? (
         <div className="ThreadSelector__mobile-header">
-          {!isChatSearchOpen && <MobileHeader>Chat</MobileHeader>}
+          {!isChatSearchOpen && <MobileHeading>Chat</MobileHeading>}
           <div className="ThreadSelector__mobile-actions">
             <Search
               setSearch={setSearch}

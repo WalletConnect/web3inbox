@@ -1,7 +1,7 @@
 import React from 'react'
 import WavingHand from '../../../assets/WavingHand.png'
 import { useIsMobile } from '../../../utils/hooks'
-import MobileHeader from '../../layout/MobileHeader'
+import MobileHeading from '../../layout/MobileHeading'
 import './Invites.scss'
 
 interface IChatInvitesHeader {
@@ -15,7 +15,7 @@ const ChatInvitesHeader: React.FC<IChatInvitesHeader> = ({
   const isMobile = useIsMobile()
 
   return isMobile ? (
-    <MobileHeader>Chat Invites</MobileHeader>
+    <MobileHeading>Chat Invites</MobileHeading>
   ) : (
     <div className="Invites__header-text">
       <div className="Invites__header-icon">
