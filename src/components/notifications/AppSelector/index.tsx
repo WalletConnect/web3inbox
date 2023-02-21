@@ -6,6 +6,7 @@ import PlusIcon from '../../../assets/Plus.svg'
 import SearchIcon from '../../../assets/Search.svg'
 import zoraLogo from '../../../assets/zora.svg'
 import SettingsContext from '../../../contexts/SettingsContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
 import { useColorModeValue, useIsMobile, useSearch } from '../../../utils/hooks'
 import { pushSearchService } from '../../../utils/store'
 import CircleBadge from '../../general/Badge/CircleBadge'
@@ -121,6 +122,7 @@ const AppSelector: React.FC = () => {
   const [showMockApps] = useState(true)
   const isMobile = useIsMobile()
   const { isPushSearchOpen } = useSearch()
+  const { activeSubscriptions } = useContext(W3iContext)
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<PushApp[]>([])
   const { mode } = useContext(SettingsContext)
