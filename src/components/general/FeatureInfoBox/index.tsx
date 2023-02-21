@@ -22,9 +22,13 @@ const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
 }) => {
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
-  const [isFeatureInfoBoxClosed, setIsFeatureInfoBoxClosed] = useState(
-    () => localStorage.getItem(localStorageKey) === 'keep-closed'
-  )
+  const [isFeatureInfoBoxClosed, setIsFeatureInfoBoxClosed] = useState(() => {
+    if (typeof localStorage === 'undefined') {
+      return true
+    }
+
+    return localStorage.getItem(localStorageKey) === 'keep-closed'
+  })
   const handleCloseInfoBox = useCallback(() => {
     localStorage.setItem(localStorageKey, 'keep-closed')
     setIsFeatureInfoBoxClosed(true)
