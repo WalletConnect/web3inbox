@@ -47,6 +47,7 @@ this.web3inbox.push.on('getMessageHistory', ev => {
       1676830250101782: {
         id: 1676830250101782,
         topic: ev.topic,
+        publishedAt: 1676969627782,
         message: {
           title: 'Test Push 1',
           body: 'This is a test push notification',
@@ -57,6 +58,7 @@ this.web3inbox.push.on('getMessageHistory', ev => {
       1676830250192957: {
         id: 1676830250192957,
         topic: ev.topic,
+        publishedAt: 1676969637782,
         message: {
           title: 'Test Push 2',
           body: 'This is another test push notification',
