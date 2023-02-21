@@ -27,7 +27,7 @@ export default class AndroidChatProvider extends ExternalChatProvider {
       }
       this.emitter.once(message.id.toString(), messageListener)
       if (window.android) {
-        window.android.postMessage(message)
+        window.android.postMessage(JSON.stringify(message))
       }
     })
   }
