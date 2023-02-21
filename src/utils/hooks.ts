@@ -4,9 +4,11 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
 import {
+  appSearchService,
+  chatSearchService,
   preferencesModalService,
   profileModalService,
-  searchService,
+  pushSearchService,
   shareModalService,
   unsubscribeModalService
 } from './store'
@@ -104,18 +106,30 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
 }
 
 export const useSearch = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isChatSearchOpen, setIsChatSearchOpen] = useState(false)
+  const [isPushSearchOpen, setIsPushSearchOpen] = useState(false)
+  const [isAppSearchOpen, setIsAppSearchOpen] = useState(false)
+  const [appSearchTerm, setAppSearchTerm] = useState<string>()
   useEffect(() => {
-    const searchSubscription = searchService.searchState.subscribe(isOpen => {
-      setIsSearchOpen(isOpen)
+    const chatSearchSubscription = chatSearchService.searchState.subscribe(isOpen => {
+      setIsChatSearchOpen(isOpen)
+    })
+    const pushSearchSubscription = pushSearchService.searchState.subscribe(isOpen => {
+      setIsPushSearchOpen(isOpen)
+    })
+    const appSearchSubscription = appSearchService.searchState.subscribe(state => {
+      setIsAppSearchOpen(state.isOpen)
+      setAppSearchTerm(state.searchTerm)
     })
 
     return () => {
-      searchSubscription.unsubscribe()
+      chatSearchSubscription.unsubscribe()
+      pushSearchSubscription.unsubscribe()
+      appSearchSubscription.unsubscribe()
     }
   }, [])
 
-  return isSearchOpen
+  return { isChatSearchOpen, isPushSearchOpen, isAppSearchOpen, appSearchTerm }
 }
 
 export const useModals = () => {

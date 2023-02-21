@@ -6,6 +6,7 @@ import PlusIcon from '../../../assets/Plus.svg'
 import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { useIsMobile, useSearch } from '../../../utils/hooks'
+import { chatSearchService } from '../../../utils/store'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
@@ -18,7 +19,7 @@ import './ThreadSelector.scss'
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
-  const isSearchOpen = useSearch()
+  const { isChatSearchOpen } = useSearch()
 
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<
     { topic: string; message?: string; timestamp?: number }[]
@@ -91,9 +92,14 @@ const ThreadSelector: React.FC = () => {
     <div className="ThreadSelector">
       {isMobile ? (
         <div className="ThreadSelector__mobile-header">
-          {!isSearchOpen && <MobileHeader>Chat</MobileHeader>}
+          {!isChatSearchOpen && <MobileHeader>Chat</MobileHeader>}
           <div className="ThreadSelector__mobile-actions">
-            <Search setSearch={setSearch} />
+            <Search
+              setSearch={setSearch}
+              isSearchOpen={isChatSearchOpen}
+              openSearch={chatSearchService.openSearch}
+              closeSearch={chatSearchService.closeSearch}
+            />
             <NavLink to="/messages/new-chat" className="ThreadSelector__link">
               <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
             </NavLink>

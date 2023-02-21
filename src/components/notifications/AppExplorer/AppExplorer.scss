@@ -10,6 +10,7 @@
     grid-template-columns: repeat(2, 1fr);
     height: 100%;
     gap: 0.625em;
+    padding-top: 1em;
     @media only screen and (max-width: 700px) {
       grid-template-columns: repeat(1, 1fr);
     }

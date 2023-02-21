@@ -1,27 +1,32 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import SearchSvg from '../../../assets/Search.svg'
-import { useSearch } from '../../../utils/hooks'
-import { searchService } from '../../../utils/store'
 import Button from '../Button'
 import SearchIcon from '../Icon/SearchIcon'
 import Input from '../Input'
 import './Search.scss'
 
 interface ISearchProps {
-  setSearch: React.Dispatch<React.SetStateAction<string>>
+  setSearch: (term: string) => void
+  isSearchOpen: boolean
+  closeSearch: () => void
+  openSearch: () => void
 }
-const Search: React.FC<ISearchProps> = ({ setSearch }) => {
-  const isSearchOpen = useSearch()
-
+const Search: React.FC<ISearchProps> = ({ setSearch, isSearchOpen, closeSearch, openSearch }) => {
   const handleCloseSearch = useCallback(() => {
     setSearch('')
-    searchService.closeSearch()
+    closeSearch()
   }, [setSearch])
+
+  useEffect(() => {
+    return () => {
+      closeSearch()
+    }
+  }, [])
 
   return (
     <div className="Search">
       {!isSearchOpen && (
-        <Button customType="action-icon" className="Search__btn" onClick={searchService.openSearch}>
+        <Button customType="action-icon" className="Search__btn" onClick={openSearch}>
           <div style={{ width: '1em', height: '1em' }}>
             <SearchIcon />
           </div>
