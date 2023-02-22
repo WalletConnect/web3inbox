@@ -38,6 +38,10 @@
     width: 100%;
   }
 
+  &__invites {
+    display: flex;
+  }
+
   &__link {
     display: flex;
 
@@ -62,6 +66,12 @@
         height: 2.25em;
       }
     }
+  }
+
+  &__mobile-invites {
+    width: 100%;
+    background-color: transparent;
+    border-radius: 0;
   }
 
   &__thread {

@@ -91,20 +91,34 @@ const ThreadSelector: React.FC = () => {
   return (
     <div className="ThreadSelector">
       {isMobile ? (
-        <div className="ThreadSelector__mobile-header">
-          {!isChatSearchOpen && <MobileHeading>Chat</MobileHeading>}
-          <div className="ThreadSelector__mobile-actions">
-            <Search
-              setSearch={setSearch}
-              isSearchOpen={isChatSearchOpen}
-              openSearch={chatSearchService.openSearch}
-              closeSearch={chatSearchService.closeSearch}
-            />
-            <NavLink to="/messages/new-chat" className="ThreadSelector__link">
-              <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
-            </NavLink>
+        <>
+          <div className="ThreadSelector__mobile-header">
+            {!isChatSearchOpen && <MobileHeading>Chat</MobileHeading>}
+            <div className="ThreadSelector__mobile-actions">
+              <Search
+                setSearch={setSearch}
+                isSearchOpen={isChatSearchOpen}
+                openSearch={chatSearchService.openSearch}
+                closeSearch={chatSearchService.closeSearch}
+              />
+              <NavLink to="/messages/new-chat" className="ThreadSelector__link">
+                <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
+              </NavLink>
+            </div>
           </div>
-        </div>
+          <NavLink
+            to="/messages/chat-invites"
+            className="ThreadSelector__link ThreadSelector__mobile-invites"
+          >
+            <div className="ThreadSelector__invites">
+              <div className="ThreadSelector__invites-link">
+                <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
+                <span>Chat Invites</span>
+              </div>
+              <CircleBadge>{invites.length}</CircleBadge>
+            </div>
+          </NavLink>
+        </>
       ) : (
         <>
           <Input
