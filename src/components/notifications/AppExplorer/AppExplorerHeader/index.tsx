@@ -1,14 +1,25 @@
 import ExplorerIcon from '../../../../assets/Explorer.svg'
-import { useIsMobile } from '../../../../utils/hooks'
+import { useIsMobile, useSearch } from '../../../../utils/hooks'
+import { appSearchService } from '../../../../utils/store'
+import Search from '../../../general/Search'
 import Select from '../../../general/Select/Select'
-import MobileHeader from '../../../layout/MobileHeader'
+import MobileHeading from '../../../layout/MobileHeading'
 import './AppExplorerHeader.scss'
 
 const AppExplorerHeader = () => {
   const isMobile = useIsMobile()
+  const { isAppSearchOpen } = useSearch()
 
   return isMobile ? (
-    <MobileHeader>Explore Apps</MobileHeader>
+    <div className="AppExplorerHeader">
+      {!isAppSearchOpen && <MobileHeading>Explore Apps</MobileHeading>}
+      <Search
+        isSearchOpen={isAppSearchOpen}
+        closeSearch={appSearchService.closeSearch}
+        openSearch={appSearchService.openSearch}
+        setSearch={appSearchService.setSearch}
+      />
+    </div>
   ) : (
     <div className="AppExplorerHeader">
       <div className="AppExplorerHeader__title">

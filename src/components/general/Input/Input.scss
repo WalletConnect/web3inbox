@@ -1,16 +1,22 @@
 .Input {
   display: flex;
+  align-items: center;
   gap: 0.5em;
   color: var(--fg-color-1);
   border-radius: 28px;
-  border: 1px solid var(--fg-color-2);
   padding: 0.5em;
+  height: 2.1875em;
+  outline: 1px solid var(--border-color-2);
+  &:focus-within {
+    outline: 1px solid var(--accent-color-1);
+  }
 
   &__input {
     color: inherit;
     border: none;
     padding: 0.25em;
     width: 100%;
+    height: 2.1875em;
     background: transparent;
     outline: none;
     &::placeholder {

@@ -1,0 +1,19 @@
+.Search {
+  &__btn {
+    width: 2em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    background: var(--accent-color-1);
+    border: solid 1px var(--accent-color-1);
+    padding: 0.5em 0.5em;
+  }
+  &__open {
+    display: flex;
+    align-items: center;
+    gap: 0.625em;
+    &__input {
+      height: 2.25em;
+    }
+  }
+}

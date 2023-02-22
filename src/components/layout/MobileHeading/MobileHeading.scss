@@ -1,8 +1,13 @@
-.MobileHeader {
+.MobileHeading {
   font-style: normal;
   font-weight: 700;
   font-size: 2em;
   line-height: 2.25em;
   letter-spacing: -0.01em;
   color: var(--fg-color-1);
+  &__small {
+    font-weight: 700;
+    font-size: 1.125em;
+    line-height: 1.375em;
+  }
 }

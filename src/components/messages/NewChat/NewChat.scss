@@ -1,9 +1,30 @@
 .NewChat {
+  &__mobile-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.125em;
+  }
   &__search-box {
     width: 100%;
     display: flex;
     align-items: center;
     gap: 1em;
+    @media screen and (max-width: 700px) {
+      justify-content: space-between;
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25em;
+      &__invite {
+        background-color: var(--accent-color-1);
+        &:disabled {
+          background-color: var(--bg-color-2);
+          border-color: var(--border-color-2);
+        }
+      }
+    }
 
     .Input {
       width: 80%;

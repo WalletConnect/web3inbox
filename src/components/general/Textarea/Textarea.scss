@@ -3,14 +3,14 @@
   gap: 0.5em;
   color: var(--fg-color-1);
   border-radius: 28px;
-  border: 1px solid var(--fg-color-2);
+  border: 1px solid var(--border-color-2);
   padding: 0.5em;
   min-height: 3em;
 
   &__textarea {
     font-weight: 500;
     font-size: 16px;
-    line-height: 20px;
+    line-height: 1.25em;
     resize: none;
     color: inherit;
     border: none;

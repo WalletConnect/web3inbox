@@ -30,7 +30,7 @@
   &__action-icon {
     background-color: var(--bg-color-2);
     color: var(--fg-color-1);
-    border: solid 1px var(--border-color-1);
+    border: solid 1px var(--border-color-2);
   }
 
   &__action-icon {
@@ -45,6 +45,7 @@
   }
 
   &:disabled {
+    cursor: not-allowed;
     background-color: var(--fg-color-2);
     color: var(--fg-color-5);
     border-color: var(--fg-color-5);

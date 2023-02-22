@@ -3,14 +3,17 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { from } from 'rxjs'
 import foundationLogo from '../../../assets/foundation.svg'
 import PlusIcon from '../../../assets/Plus.svg'
-import Search from '../../../assets/Search.svg'
+import SearchIcon from '../../../assets/Search.svg'
 import zoraLogo from '../../../assets/zora.svg'
 import SettingsContext from '../../../contexts/SettingsContext/context'
-import { useColorModeValue } from '../../../utils/hooks'
+import { useColorModeValue, useIsMobile, useSearch } from '../../../utils/hooks'
+import { pushSearchService } from '../../../utils/store'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import NotificationMuteIcon from '../../general/Icon/NotificationMuteIcon'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
+import Search from '../../general/Search'
+import MobileHeading from '../../layout/MobileHeading'
 import type { IAppNotification } from '../AppNotifications/AppNotificationItem'
 import NotificationActionsDropdown from '../NotificationsActionsDropdown'
 import './AppSelector.scss'
@@ -116,6 +119,8 @@ export const myAppsMock = [
 const AppSelector: React.FC = () => {
   const [search, setSearch] = useState('')
   const [showMockApps] = useState(true)
+  const isMobile = useIsMobile()
+  const { isPushSearchOpen } = useSearch()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<PushApp[]>([])
   const { mode } = useContext(SettingsContext)
@@ -155,24 +160,43 @@ const AppSelector: React.FC = () => {
 
   return (
     <div className="AppSelector">
-      <Input
-        onChange={({ target }) => {
-          setSearch(target.value)
-        }}
-        placeholder="Search"
-        icon={Search}
-      />
-      <NavLink to="/notifications/new-app" className="AppSelector__link">
-        <img className="AppSelector__link-icon" src={PlusIcon} alt="NewApp" />
-        <span>New App</span>
-      </NavLink>
+      {isMobile ? (
+        <div className="AppSelector__mobile-header">
+          {!isPushSearchOpen && <MobileHeading>Notifications</MobileHeading>}
+          <div className="AppSelector__mobile-actions">
+            <Search
+              setSearch={setSearch}
+              isSearchOpen={isPushSearchOpen}
+              openSearch={pushSearchService.openSearch}
+              closeSearch={pushSearchService.closeSearch}
+            />
+            <NavLink to="/notifications/new-app" className="AppSelector__link">
+              <img className="AppSelector__link-icon" src={PlusIcon} alt="NewApp" />
+            </NavLink>
+          </div>
+        </div>
+      ) : (
+        <>
+          <Input
+            onChange={({ target }) => {
+              setSearch(target.value)
+            }}
+            placeholder="Search"
+            icon={SearchIcon}
+          />
+          <NavLink to="/notifications/new-app" className="AppSelector__link">
+            <img className="AppSelector__link-icon" src={PlusIcon} alt="NewApp" />
+            <span>New App</span>
+          </NavLink>
+        </>
+      )}
       {filteredApps
         .filter(app => !app.isMuted)
         .map(app => (
           <NavLink
             key={app.id}
             to={`/notifications/${app.id}`}
-            className="AppSelector__link"
+            className="AppSelector__link-item"
             onMouseEnter={() => setDropdownToShow(app.id)}
             onMouseLeave={() => setDropdownToShow(undefined)}
           >
@@ -214,7 +238,7 @@ const AppSelector: React.FC = () => {
               <NavLink
                 key={app.id}
                 to={`/notifications/${app.id}`}
-                className="AppSelector__link"
+                className="AppSelector__link-item"
                 onMouseEnter={() => setDropdownToShow(app.id)}
                 onMouseLeave={() => setDropdownToShow(undefined)}
               >

@@ -4,8 +4,11 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
 import {
+  appSearchService,
+  chatSearchService,
   preferencesModalService,
   profileModalService,
+  pushSearchService,
   shareModalService,
   unsubscribeModalService
 } from './store'
@@ -55,6 +58,7 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       fg4: 'hsla(180, 5%, 50%, 1)',
       fg5: 'hsla(0, 0%, 100%, 1)',
       border1: 'hsla(0, 0%, 0%, 0.5)',
+      border2: 'hsla(0, 0%, 100%, 0.1)',
       accent1: 'hsla(211, 90%, 50%, 1)',
       error1: 'hsla(5, 85%, 60%, 1)',
       icon1: 'hsla(180, 6%, 80%, 1)'
@@ -71,7 +75,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       fg3: 'hsla(180, 6%, 64%, 1)',
       fg4: 'hsla(180, 4%, 16%, 1)',
       fg5: 'hsla(0, 0%, 100%, 1)',
-      border1: 'hsla(0, 0%, 0%, 0.1)',
+      border1: 'hsla(0, 0%, 0%, 0.5)',
+      border2: 'hsla(0, 0%, 0%, 0.1)',
       accent1: 'hsla(211, 100%, 60%, 1)',
       error1: 'hsla(5, 85%, 60%, 1)',
       icon1: 'hsla(180, 4%, 16%, 1)'
@@ -91,12 +96,40 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--fg-color-4': colors[specifiedMode].fg4,
     '--fg-color-5': colors[specifiedMode].fg5,
     '--border-color-1': colors[specifiedMode].border1,
+    '--border-color-2': colors[specifiedMode].border2,
     '--accent-color-1': colors[specifiedMode].accent1,
     '--error-color-1': colors[specifiedMode].error1,
     '--icon-color-1': colors[specifiedMode].icon1
   }
 
   return colorModeVariables
+}
+
+export const useSearch = () => {
+  const [isChatSearchOpen, setIsChatSearchOpen] = useState(false)
+  const [isPushSearchOpen, setIsPushSearchOpen] = useState(false)
+  const [isAppSearchOpen, setIsAppSearchOpen] = useState(false)
+  const [appSearchTerm, setAppSearchTerm] = useState<string>()
+  useEffect(() => {
+    const chatSearchSubscription = chatSearchService.searchState.subscribe(isOpen => {
+      setIsChatSearchOpen(isOpen)
+    })
+    const pushSearchSubscription = pushSearchService.searchState.subscribe(isOpen => {
+      setIsPushSearchOpen(isOpen)
+    })
+    const appSearchSubscription = appSearchService.searchState.subscribe(state => {
+      setIsAppSearchOpen(state.isOpen)
+      setAppSearchTerm(state.searchTerm)
+    })
+
+    return () => {
+      chatSearchSubscription.unsubscribe()
+      pushSearchSubscription.unsubscribe()
+      appSearchSubscription.unsubscribe()
+    }
+  }, [])
+
+  return { isChatSearchOpen, isPushSearchOpen, isAppSearchOpen, appSearchTerm }
 }
 
 export const useModals = () => {

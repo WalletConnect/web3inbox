@@ -3,17 +3,23 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { concatAll, from, takeLast, takeWhile } from 'rxjs'
 import PersonIcon from '../../../assets/Person.svg'
 import PlusIcon from '../../../assets/Plus.svg'
-import Search from '../../../assets/Search.svg'
+import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
+import { useIsMobile, useSearch } from '../../../utils/hooks'
+import { chatSearchService } from '../../../utils/store'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
+import Search from '../../general/Search'
+import MobileHeading from '../../layout/MobileHeading'
 import EmptyThreads from './EmptyThreads'
 import Thread from './Thread'
 import './ThreadSelector.scss'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
+  const isMobile = useIsMobile()
+  const { isChatSearchOpen } = useSearch()
 
   const [filteredThreadTopics, setFilteredThreadTopics] = useState<
     { topic: string; message?: string; timestamp?: number }[]
@@ -84,62 +90,79 @@ const ThreadSelector: React.FC = () => {
 
   return (
     <div className="ThreadSelector">
-      <Input
-        onChange={({ target }) => {
-          setSearch(target.value)
-        }}
-        placeholder="Search"
-        icon={Search}
-      />
-      <NavLink to="/messages/new-chat" className="ThreadSelector__link">
-        <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
-        <span>New Chat</span>
-      </NavLink>
-      <NavLink to="/messages/chat-invites" className="ThreadSelector__link">
-        <div className="ThreadSelector__invites">
-          <div className="ThreadSelector__invites-link">
-            <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
-            <span>Chat Invites</span>
+      {isMobile ? (
+        <div className="ThreadSelector__mobile-header">
+          {!isChatSearchOpen && <MobileHeading>Chat</MobileHeading>}
+          <div className="ThreadSelector__mobile-actions">
+            <Search
+              setSearch={setSearch}
+              isSearchOpen={isChatSearchOpen}
+              openSearch={chatSearchService.openSearch}
+              closeSearch={chatSearchService.closeSearch}
+            />
+            <NavLink to="/messages/new-chat" className="ThreadSelector__link">
+              <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
+            </NavLink>
           </div>
-          <CircleBadge>{invites.length}</CircleBadge>
         </div>
-      </NavLink>
-      {filteredThreads.length > 0 && (
-        <div className="ThreadSelector__threads">
-          {filteredThreads.map(({ peerAccount, topic }) => {
-            const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
-            const lastItem = (filterIdx !== -1 && filteredThreadTopics[filterIdx]) || undefined
-            const message = lastItem?.message
-            const timestamp = lastItem?.timestamp
-
-            return (
-              <Thread
-                searchQuery={search}
-                topic={topic}
-                lastMessage={message}
-                lastMessageTimestamp={timestamp}
-                threadPeer={peerAccount}
-                key={peerAccount}
-              />
-            )
-          })}
-          {sentInvites
-            .filter(invite => invite.status !== 'accepted')
-            .map(({ inviteeAccount, status }) => (
-              <Thread
-                searchQuery={search}
-                topic={`invite:${status}:${inviteeAccount}`}
-                lastMessage={`Invite Pending`}
-                lastMessageTimestamp={Date.now()}
-                threadPeer={inviteeAccount}
-                key={inviteeAccount}
-              />
-            ))}
-          {threads.length === 0 && search && (
-            <span className="ThreadSelector__contact">No {search} found in your contacts</span>
-          )}
-        </div>
+      ) : (
+        <>
+          <Input
+            onChange={({ target }) => {
+              setSearch(target.value)
+            }}
+            placeholder="Search"
+            icon={SearchIcon}
+          />
+          <NavLink to="/messages/new-chat" className="ThreadSelector__link">
+            <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
+            <span>New Chat</span>
+          </NavLink>
+          <NavLink to="/messages/chat-invites" className="ThreadSelector__link">
+            <div className="ThreadSelector__invites">
+              <div className="ThreadSelector__invites-link">
+                <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
+                <span>Chat Invites</span>
+              </div>
+              <CircleBadge>{invites.length}</CircleBadge>
+            </div>
+          </NavLink>
+        </>
       )}
+      <div className="ThreadSelector__threads">
+        {filteredThreads.map(({ peerAccount, topic }) => {
+          const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
+          const lastItem = (filterIdx !== -1 && filteredThreadTopics[filterIdx]) || undefined
+          const message = lastItem?.message
+          const timestamp = lastItem?.timestamp
+
+          return (
+            <Thread
+              searchQuery={search}
+              topic={topic}
+              lastMessage={message}
+              lastMessageTimestamp={timestamp}
+              threadPeer={peerAccount}
+              key={peerAccount}
+            />
+          )
+        })}
+        {sentInvites
+          .filter(invite => invite.status !== 'accepted')
+          .map(({ inviteeAccount, status }) => (
+            <Thread
+              searchQuery={search}
+              topic={`invite:${status}:${inviteeAccount}`}
+              lastMessage={`Invite Pending`}
+              lastMessageTimestamp={Date.now()}
+              threadPeer={inviteeAccount}
+              key={inviteeAccount}
+            />
+          ))}
+        {threads.length === 0 && search && (
+          <span className="ThreadSelector__contact">No {search} found in your contacts</span>
+        )}
+      </div>
       <EmptyThreads />
     </div>
   )

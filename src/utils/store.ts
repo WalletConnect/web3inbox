@@ -8,6 +8,17 @@ interface IUnsubscribeModalState {
   unsubscribeModalAppId?: string
   isOpen: boolean
 }
+interface IAppSearchState {
+  searchTerm?: string
+  isOpen: boolean
+}
+
+const chatSearchSubject = new BehaviorSubject(false)
+const pushSearchSubject = new BehaviorSubject(false)
+const appSearchSubject = new BehaviorSubject<IAppSearchState>({
+  isOpen: false,
+  searchTerm: undefined
+})
 
 const profileModalSubject = new BehaviorSubject(false)
 const shareModalSubject = new BehaviorSubject(false)
@@ -19,6 +30,42 @@ const unsubscribeModalSubject = new BehaviorSubject<IUnsubscribeModalState>({
   unsubscribeModalAppId: undefined,
   isOpen: false
 })
+
+export const chatSearchService = {
+  toggleSearch: () => chatSearchSubject.next(!chatSearchSubject.value),
+  openSearch: () => chatSearchSubject.next(true),
+  closeSearch: () => chatSearchSubject.next(false),
+  searchState: chatSearchSubject.asObservable()
+}
+export const pushSearchService = {
+  toggleSearch: () => pushSearchSubject.next(!pushSearchSubject.value),
+  openSearch: () => pushSearchSubject.next(true),
+  closeSearch: () => pushSearchSubject.next(false),
+  searchState: pushSearchSubject.asObservable()
+}
+
+export const appSearchService = {
+  toggleSearch: () =>
+    appSearchSubject.next({
+      searchTerm: undefined,
+      isOpen: !appSearchSubject.value.isOpen
+    }),
+  openSearch: () =>
+    appSearchSubject.next({
+      isOpen: true
+    }),
+  closeSearch: () =>
+    appSearchSubject.next({
+      isOpen: false,
+      searchTerm: undefined
+    }),
+  setSearch: (term: string) =>
+    appSearchSubject.next({
+      ...appSearchSubject.value,
+      searchTerm: term
+    }),
+  searchState: appSearchSubject.asObservable()
+}
 
 export const profileModalService = {
   toggleModal: () => profileModalSubject.next(!profileModalSubject.value),

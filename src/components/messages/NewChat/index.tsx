@@ -1,17 +1,24 @@
-import React, { Fragment, useCallback, useContext, useState } from 'react'
-import { isValidAddressOrEnsDomain, isValidEnsDomain } from '../../../utils/address'
-import Button from '../../general/Button'
-import Input from '../../general/Input'
-import W3iContext from '../../../contexts/W3iContext/context'
 import { fetchEnsAddress } from '@wagmi/core'
+import React, { Fragment, useCallback, useContext, useMemo, useState } from 'react'
+import SettingsContext from '../../../contexts/SettingsContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
+import { isValidAddressOrEnsDomain, isValidEnsDomain } from '../../../utils/address'
+import { useColorModeValue, useIsMobile } from '../../../utils/hooks'
+import BackButton from '../../general/BackButton'
+import Button from '../../general/Button'
+import SendIcon from '../../general/Icon/SendIcon'
+import Input from '../../general/Input'
+import MobileHeading from '../../layout/MobileHeading'
 import './NewChat.scss'
 import SearchHistoryContacts from './SearchHistoryContacts'
-import BackButton from '../../general/BackButton'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
+  const { mode } = useContext(SettingsContext)
   const [isInviting, setIsInviting] = useState(false)
   const [query, setQuery] = useState('')
+  const isMobile = useIsMobile()
+  const themeColors = useColorModeValue(mode)
 
   const resolveAddress = async (inviteeAddress: string) => {
     // eslint-disable-next-line prefer-regex-literals
@@ -36,44 +43,80 @@ const NewChat: React.FC = () => {
 
         return
       }
-      const resolvedAddress = await resolveAddress(inviteeAddress)
 
-      chatClientProxy
-        .invite({
-          inviteeAccount: resolvedAddress,
-          inviterAccount: `eip155:1:${userPubkey}`,
-          inviteePublicKey: await chatClientProxy.resolve({ account: resolvedAddress }),
-          message: 'Inviting'
-        })
-        .then(() => {
-          setIsInviting(false)
-          setQuery('')
-        })
-        .catch(() => setIsInviting(false))
+      try {
+        const resolvedAddress = await resolveAddress(inviteeAddress)
+
+        chatClientProxy
+          .invite({
+            inviteeAccount: resolvedAddress,
+            inviterAccount: `eip155:1:${userPubkey}`,
+            inviteePublicKey: await chatClientProxy.resolve({ account: resolvedAddress }),
+            message: 'Inviting'
+          })
+          .finally(() => {
+            setQuery('')
+            setIsInviting(false)
+          })
+      } catch (error) {
+        setQuery('')
+        setIsInviting(false)
+      }
     },
     [userPubkey, chatClientProxy]
+  )
+
+  const isDisabled = useMemo(
+    () => !isValidAddressOrEnsDomain(query) || isInviting,
+    [query, isInviting]
   )
 
   return (
     <Fragment>
       <div className="NewChat">
-        <div className="NewChat__search-box">
-          <BackButton backTo="/messages" />
-          <Input
-            value={query}
-            placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"
-            onChange={e => setQuery(e.target.value)}
-          />
-          <Button
-            onClick={() => {
-              console.log('Button clicked.')
-              invite(query)
-            }}
-            disabled={!isValidAddressOrEnsDomain(query) || isInviting}
-          >
-            {isInviting ? `Inviting...` : `Send Invite`}
-          </Button>
-        </div>
+        {isMobile ? (
+          <div className="NewChat__mobile-header">
+            <div className="NewChat__search-box">
+              <BackButton backTo="/messages">Chat</BackButton>
+              <MobileHeading size="small">New Chat</MobileHeading>
+              <div className="NewChat__search-box__actions">
+                <Button
+                  customType="action-icon"
+                  className="NewChat__search-box__actions__invite"
+                  onClick={() => {
+                    console.log('Button clicked.')
+                    invite(query)
+                  }}
+                  disabled={isDisabled}
+                >
+                  <SendIcon fillColor={isDisabled ? themeColors['--fg-color-3'] : 'white'} />
+                </Button>
+              </div>
+            </div>
+            <Input
+              value={query}
+              placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"
+              onChange={e => setQuery(e.target.value)}
+            />
+          </div>
+        ) : (
+          <div className="NewChat__search-box">
+            <Input
+              value={query}
+              placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"
+              onChange={e => setQuery(e.target.value)}
+            />
+            <Button
+              onClick={() => {
+                console.log('Button clicked.')
+                invite(query)
+              }}
+              disabled={isDisabled}
+            >
+              {isInviting ? `Inviting...` : `Send Invite`}
+            </Button>
+          </div>
+        )}
       </div>
       <SearchHistoryContacts />
     </Fragment>
