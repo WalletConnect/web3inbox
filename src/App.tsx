@@ -28,6 +28,7 @@ const App = () => {
        * constantly reregistering the listener.
        */
       const peer = new URLSearchParams(window.location.search).get('peer')
+      console.log('App.tsx, notification effect > messageEvent', messageEvent)
       if (!peer || peer !== messageEvent.params.authorAccount) {
         navigator.serviceWorker.getRegistration().then(swRegistration => {
           swRegistration?.showNotification(truncate(messageEvent.params.authorAccount, 6), {
