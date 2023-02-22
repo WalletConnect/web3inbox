@@ -23,6 +23,10 @@ export const UnsubscribeModal: React.FC = () => {
     unsubscribeModalService.closeModal()
   }, [])
 
+  if (!app) {
+    return null
+  }
+
   return (
     <Modal onToggleModal={unsubscribeModalService.toggleModal}>
       <div className="UnsubscribeModal">
@@ -37,15 +41,15 @@ export const UnsubscribeModal: React.FC = () => {
           </Button>
         </div>
         <div className="UnsubscribeModal__hero">
-          <img src={app?.metadata?.icons[0] ?? ''} alt="logo" />
+          <img src={app.metadata.icons[0]} alt="logo" />
         </div>
         <div className="UnsubscribeModal__content">
           <div className="UnsubscribeModal__content__title">
-            Unsubscribe from {app?.metadata?.name ?? ''}
+            Unsubscribe from {app.metadata.name}
           </div>
           <div className="UnsubscribeModal__content__helper-text">
-            You will stop receiving all notifications from {app?.metadata?.name} on the web inbox
-            and in your wallet.
+            You will stop receiving all notifications from {app.metadata.name} on the web inbox and
+            in your wallet.
             <br />
             You can re-subscribe later
           </div>
