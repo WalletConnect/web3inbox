@@ -14,7 +14,6 @@ import NavLink from '../../general/NavLink'
 import Search from '../../general/Search'
 import MobileHeading from '../../layout/MobileHeading'
 import type { IAppNotification } from '../AppNotifications/AppNotificationItem'
-import NotificationActionsDropdown from '../NotificationsActionsDropdown'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
 
@@ -128,19 +127,10 @@ const AppSelector: React.FC = () => {
                     {app.notifications.filter(notif => notif.isRead).length}
                   </CircleBadge>
                 )*/}
-            {dropdownToShow === app.topic && (
-              <NotificationActionsDropdown
-                appId={app.topic}
-                btnShape="square"
-                w="28px"
-                h="28px"
-                closeDropdown={() => setDropdownToShow(undefined)}
-              />
-            )}
           </div>
         </NavLink>
       ))}
-      {filteredApps.length > 0 && (
+      {/* FilteredApps.length > 0 && (
         <div className="AppSelector__muted">
           <div className="AppSelector__muted__label">MUTED</div>
           {filteredApps.map(app => (
@@ -166,7 +156,7 @@ const AppSelector: React.FC = () => {
             </NavLink>
           ))}
         </div>
-      )}
+      )*/}
       <EmptyApps />
     </div>
   )

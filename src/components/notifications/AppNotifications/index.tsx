@@ -40,7 +40,7 @@ const AppNotifications = () => {
             title: notification.message.title,
             image: notification.message.icon
           }}
-          appLogo={app.metadata?.icons[0] ?? ''}
+          appLogo={app.metadata.icons[0]}
         />
       ))}
     </div>
