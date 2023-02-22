@@ -18,7 +18,7 @@ export default class AndroidPushProvider extends ExternalPushProvider {
     ...params: Parameters<PushClientFunctions[MName]>
   ) {
     return new Promise<ReturnType<PushClientFunctions[MName]>>(resolve => {
-      const message = formatJsonRpcRequest(methodName, params)
+      const message = formatJsonRpcRequest(methodName, params[0])
 
       const messageListener = (messageResponse: JsonRpcResult) => {
         resolve(messageResponse.result)
