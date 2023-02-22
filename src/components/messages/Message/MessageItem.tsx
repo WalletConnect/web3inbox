@@ -36,6 +36,8 @@ export const MessageItem: React.FC<IMessageItemProps> = ({ messages, message, in
     return isDifferentDay || hasTwoHoursGap
   }, [index, messages, message.timestamp, isFirstMessage])
 
+  console.log('MessageItem > message', JSON.stringify(message))
+
   return isLastMessage ? (
     <div ref={messagesEndRef}>
       {isDateTagDisplayed && <MessageDateTag timestamp={message.timestamp} />}
