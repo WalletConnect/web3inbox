@@ -1,16 +1,13 @@
-import { PushClientTypes } from '@walletconnect/push-client'
+import type { PushClientTypes } from '@walletconnect/push-client'
 import debounce from 'lodash.debounce'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { from } from 'rxjs'
-import foundationLogo from '../../../assets/foundation.svg'
 import PlusIcon from '../../../assets/Plus.svg'
 import SearchIcon from '../../../assets/Search.svg'
-import zoraLogo from '../../../assets/zora.svg'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { useColorModeValue, useIsMobile, useSearch } from '../../../utils/hooks'
 import { pushSearchService } from '../../../utils/store'
-import CircleBadge from '../../general/Badge/CircleBadge'
 import NotificationMuteIcon from '../../general/Icon/NotificationMuteIcon'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
@@ -151,7 +148,7 @@ const AppSelector: React.FC = () => {
               key={app.topic}
               to={`/notifications/${app.topic}`}
               className="AppSelector__link-item"
-              onMouseEnter={() => setDropdownToShow(app.id)}
+              onMouseEnter={() => setDropdownToShow(app.topic)}
               onMouseLeave={() => setDropdownToShow(undefined)}
             >
               <div className="AppSelector__notifications">

@@ -33,11 +33,11 @@ const AppExplorer = () => {
             .map(app => (
               <AppCard
                 key={app.topic}
-                name={app.metadata?.name ?? ''}
-                description={app.metadata?.description ?? ''}
+                name={app.metadata.name}
+                description={app.metadata.description}
                 bgColor={{ dark: '#000', light: '#fff' }}
-                logo={app.metadata?.icons[0] ?? ''}
-                url={app.metadata?.url ?? ''}
+                logo={app.metadata.icons[0]}
+                url={app.metadata.url}
               />
             ))}
         </div>
@@ -47,11 +47,11 @@ const AppExplorer = () => {
             .map(app => (
               <AppCard
                 key={app.topic}
-                name={app.metadata?.name ?? ''}
-                description={app.metadata?.description ?? ''}
+                name={app.metadata.name}
+                description={app.metadata.description}
                 bgColor={{ dark: '#000', light: '#fff' }}
-                logo={app.metadata?.icons[0] ?? ''}
-                url={app.metadata?.url ?? ''}
+                logo={app.metadata.icons[0]}
+                url={app.metadata.url}
               />
             ))}
         </div>
