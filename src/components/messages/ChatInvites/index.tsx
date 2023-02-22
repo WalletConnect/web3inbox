@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import CrossIcon from '../../../assets/Cross.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
-import { useIsMobile } from '../../../utils/hooks'
 import BackButton from '../../general/BackButton'
 import Button from '../../general/Button'
 import Checkbox from '../../general/Checkbox'
@@ -13,7 +12,6 @@ import './Invites.scss'
 const ChatInvites: React.FC = () => {
   const [invitesSelected, setInvitesSelected] = useState<number[]>([])
   const { chatClientProxy, invites, refreshThreadsAndInvites } = useContext(W3iContext)
-  const isMobile = useIsMobile()
 
   useEffect(() => {
     refreshThreadsAndInvites()
@@ -88,7 +86,7 @@ const ChatInvites: React.FC = () => {
       <BackButton backTo="/messages">
         <div className="Invites__navigation">Chat</div>
       </BackButton>
-      <div className={`Invites__header${isMobile ? '__mobile' : ''}`}>
+      <div className="Invites__header">
         <ChatInvitesHeader
           invitesCount={invites.length}
           invitesSelectedCount={invitesSelected.length}
