@@ -74,15 +74,18 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       return
     }
 
-    chatClient
-      .getReceivedInvites({ account: `eip155:1:${userPubkey}` })
-      .then(invite => setInvites(Array.from(invite.values())))
-    chatClient
-      .getSentInvites({ account: `eip155:1:${userPubkey}` })
-      .then(invite => setSentInvites(Array.from(invite.values())))
-    chatClient
-      .getThreads({ account: `eip155:1:${userPubkey}` })
-      .then(invite => setThreads(Array.from(invite.values())))
+    chatClient.getReceivedInvites({ account: `eip155:1:${userPubkey}` }).then(invite => {
+      console.log('getReceivedInvites > received data:', JSON.stringify(invite))
+      setInvites(Array.from(invite.values()))
+    })
+    chatClient.getSentInvites({ account: `eip155:1:${userPubkey}` }).then(invite => {
+      console.log('getSentInvites > received data:', JSON.stringify(invite))
+      setSentInvites(Array.from(invite.values()))
+    })
+    chatClient.getThreads({ account: `eip155:1:${userPubkey}` }).then(invite => {
+      console.log('getThreads > received data:', JSON.stringify(invite))
+      setThreads(Array.from(invite.values()))
+    })
   }, [chatClient, userPubkey, setThreads, setInvites])
 
   useEffect(() => {
