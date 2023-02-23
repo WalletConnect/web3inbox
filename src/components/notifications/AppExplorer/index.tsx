@@ -1,21 +1,22 @@
-import { useMemo } from 'react'
+import { useMemo, useContext } from 'react'
 import { useSearch } from '../../../utils/hooks'
+import W3iContext from '../../../contexts/W3iContext/context'
 import BackButton from '../../general/BackButton'
-import { myAppsMock } from '../AppSelector'
 import AppCard from './AppCard'
 import './AppExplorer.scss'
 import AppExplorerHeader from './AppExplorerHeader'
 
 const AppExplorer = () => {
   const { appSearchTerm } = useSearch()
+  const { activeSubscriptions } = useContext(W3iContext)
   const filteredApps = useMemo(
     () =>
-      myAppsMock.filter(app =>
+      activeSubscriptions.filter(app =>
         appSearchTerm
-          ? app.name.includes(appSearchTerm) ||
-            app.description.includes(appSearchTerm) ||
-            app.url.includes(appSearchTerm)
-          : myAppsMock
+          ? app.metadata.name.includes(appSearchTerm) ||
+            app.metadata.description.includes(appSearchTerm) ||
+            app.metadata.url.includes(appSearchTerm)
+          : activeSubscriptions
       ),
     [appSearchTerm]
   )
@@ -28,14 +29,15 @@ const AppExplorer = () => {
         <div className="AppExplorer__apps__column">
           {filteredApps
             .filter((_, i) => i % 2 === 0)
+            .filter(app => Boolean(app.metadata))
             .map(app => (
               <AppCard
-                key={app.id}
-                name={app.name}
-                description={app.description}
-                bgColor={app.color}
-                logo={app.logo}
-                url={app.url}
+                key={app.topic}
+                name={app.metadata.name}
+                description={app.metadata.description}
+                bgColor={{ dark: '#000', light: '#fff' }}
+                logo={app.metadata.icons[0]}
+                url={app.metadata.url}
               />
             ))}
         </div>
@@ -44,12 +46,12 @@ const AppExplorer = () => {
             .filter((_, i) => i % 2 !== 0)
             .map(app => (
               <AppCard
-                key={app.id}
-                name={app.name}
-                description={app.description}
-                bgColor={app.color}
-                logo={app.logo}
-                url={app.url}
+                key={app.topic}
+                name={app.metadata.name}
+                description={app.metadata.description}
+                bgColor={{ dark: '#000', light: '#fff' }}
+                logo={app.metadata.icons[0]}
+                url={app.metadata.url}
               />
             ))}
         </div>

@@ -46,7 +46,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <Route path="notifications" element={<NotificationsLayout />}>
                   <Route index element={<Web3InboxPlaceholder />} />
                   <Route path="/notifications/new-app" element={<AppExplorer />} />
-                  <Route path="/notifications/:appId" element={<AppNotifications />} />
+                  <Route path="/notifications/:topic" element={<AppNotifications />} />
                 </Route>
                 <Route path="messages" element={<MessagesLayout />}>
                   <Route index element={<Web3InboxPlaceholder />} />

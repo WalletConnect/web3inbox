@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useFormattedTime, useIsMobile } from '../../../utils/hooks'
 import CircleIcon from '../../general/Icon/CircleIcon'
-import AppNotificationDropdown from './AppNotificationDropdown'
 import './AppNotifications.scss'
 
 export interface IAppNotification {
@@ -20,7 +19,6 @@ interface IAppNotificationProps {
 const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, appLogo }) => {
   const formattedTime = useFormattedTime(notification.timestamp)
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
-  const isMobile = useIsMobile()
 
   return (
     <div
@@ -41,15 +39,7 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
           <h4 className="AppNotifications__item__title">{notification.title}</h4>
           {formattedTime && dropdownToShow !== notification.id ? (
             <span className="AppNotifications__item__time">{formattedTime}</span>
-          ) : (
-            <AppNotificationDropdown
-              closeDropdown={() => setDropdownToShow(undefined)}
-              notificationId={notification.id}
-              dropdownPlacement={isMobile ? 'bottomLeft' : 'bottomRight'}
-              w="28px"
-              h="28px"
-            />
-          )}
+          ) : null}
         </div>
         <span className="AppNotifications__item__message">{notification.message}</span>
       </div>

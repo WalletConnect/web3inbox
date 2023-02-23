@@ -1,6 +1,7 @@
 import type { EventEmitter } from 'events'
 import type { W3iPushProvider } from './types'
 import type { WalletClient as PushWalletClient } from '@walletconnect/push-client'
+import { appNotificationsMock, myAppsMock } from '../../utils/mocks'
 
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: PushWalletClient | undefined
@@ -67,7 +68,12 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
 
-    return Promise.resolve(this.pushClient.getActiveSubscriptions())
+    return Promise.resolve(myAppsMock)
+
+    /*
+     * TODO: Hookup actual push client
+     * return Promise.resolve(this.pushClient.getActiveSubscriptions())
+     */
   }
 
   public async getMessageHistory(params: { topic: string }) {
@@ -75,7 +81,12 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('getMessageHistory'))
     }
 
-    return Promise.resolve(this.pushClient.getMessageHistory(params))
+    return Promise.resolve(appNotificationsMock(params))
+
+    /*
+     * TODO: Hookup actual push client
+     * return Promise.resolve(this.pushClient.getMessageHistory(params))
+     */
   }
 
   public async deletePushMessage(params: { id: number }) {
@@ -83,6 +94,8 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('deletePushMessage'))
     }
 
-    return Promise.resolve(this.pushClient.deletePushMessage(params))
+    this.pushClient.deletePushMessage(params)
+
+    return Promise.resolve()
   }
 }
