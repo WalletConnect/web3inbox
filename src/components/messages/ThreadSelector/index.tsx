@@ -161,7 +161,7 @@ const ThreadSelector: React.FC = () => {
           </NavLink>
         </>
       )}
-      {filteredThreads.length > 0 && (
+      {(filteredThreads.length > 0 || sentInvites.length > 0) && (
         <div className="ThreadSelector__threads">
           {filteredThreads.map(({ peerAccount, topic }) => {
             const filterIdx = filteredThreadTopics.findIndex(thread => thread.topic === topic)
