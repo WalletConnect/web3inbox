@@ -1,6 +1,6 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
@@ -20,6 +20,7 @@ const ThreadWindow: React.FC = () => {
   const { search } = useLocation()
   const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey, sentInvites } = useContext(W3iContext)
+  const nav = useNavigate()
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 
@@ -31,7 +32,7 @@ const ThreadWindow: React.FC = () => {
     () =>
       topic.includes('invite:')
         ? (topic.split(':')[1] as ChatClientTypes.SentInvite['status'])
-        : 'accepted',
+        : 'approved',
     [topic]
   )
 
@@ -72,8 +73,30 @@ const ThreadWindow: React.FC = () => {
       }
     })
 
-    return () => sub.unsubscribe()
-  }, [chatClientProxy, refreshMessages, topic])
+    const inviteAcceptedSub = chatClientProxy.observe('chat_invite_accepted', {
+      next: inviteAcceptedEvent => {
+        const { inviteeAccount } = inviteAcceptedEvent.params.invite
+        if (isInvite && inviteAcceptedEvent.params.invite.inviteeAccount === peer) {
+          nav(`/messages/chat/${inviteeAccount}?topic=${inviteAcceptedEvent.params.topic}`)
+        }
+      }
+    })
+
+    const inviteRejectedSub = chatClientProxy.observe('chat_invite_rejected', {
+      next: inviteRejectedEvent => {
+        if (isInvite && inviteRejectedEvent.params.invite.inviteeAccount === peer) {
+          const { inviteeAccount } = inviteRejectedEvent.params.invite
+          nav(`/messages/chat/${inviteeAccount}?topic=invite:rejected:${inviteeAccount}`)
+        }
+      }
+    })
+
+    return () => {
+      inviteAcceptedSub.unsubscribe()
+      inviteRejectedSub.unsubscribe()
+      sub.unsubscribe()
+    }
+  }, [chatClientProxy, refreshMessages, topic, nav, peer])
 
   useEffect(() => {
     refreshMessages()

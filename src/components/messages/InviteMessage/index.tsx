@@ -49,7 +49,7 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
     () => ({
       pending: <PendingStatus />,
       rejected: <RejectedStatus />,
-      accepted: <AcceptedStatus />
+      approved: <AcceptedStatus />
     }),
     [PendingStatus, RejectedStatus, AcceptedStatus]
   )
@@ -58,7 +58,7 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
     () => ({
       pending: ChatInviteHandEmoji,
       rejected: HandStopEmoji,
-      accepted: ChatInviteHandEmoji
+      approved: ChatInviteHandEmoji
     }),
     []
   )

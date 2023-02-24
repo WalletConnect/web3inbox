@@ -181,12 +181,12 @@ const ThreadSelector: React.FC = () => {
             )
           })}
           {sentInvites
-            .filter(invite => invite.status !== 'accepted')
+            .filter(invite => invite.status !== 'approved')
             .map(({ inviteeAccount, status }) => (
               <Thread
                 searchQuery={search}
                 topic={`invite:${status}:${inviteeAccount}`}
-                lastMessage={`Invite Pending`}
+                lastMessage={`Invite ${status}`}
                 lastMessageTimestamp={Date.now()}
                 threadPeer={inviteeAccount}
                 key={inviteeAccount}

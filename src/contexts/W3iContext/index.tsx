@@ -113,6 +113,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshChatState })
     const chatMessageSentSub = chatClient.observe('chat_message_sent', { next: refreshChatState })
     const chatJoinedSub = chatClient.observe('chat_joined', { next: refreshChatState })
+    const inviteAcceptedSub = chatClient.observe('chat_invite_accepted', { next: refreshChatState })
+    const inviteRejectedSub = chatClient.observe('chat_invite_rejected', { next: refreshChatState })
 
     return () => {
       inviteSub.unsubscribe()
