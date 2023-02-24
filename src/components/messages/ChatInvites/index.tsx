@@ -19,15 +19,22 @@ const ChatInvites: React.FC = () => {
 
   const handleAcceptInvite = useCallback(() => {
     if (invitesSelected.length) {
-      invitesSelected.forEach(id => {
-        chatClientProxy?.accept({ id }).then(refreshThreadsAndInvites)
+      Promise.all(
+        invitesSelected.map(id => {
+          return chatClientProxy?.accept({ id }).then(refreshThreadsAndInvites)
+        })
+      ).then(() => {
+        refreshThreadsAndInvites()
+        setInvitesSelected([])
       })
-      setInvitesSelected([])
     } else {
-      invites.forEach(invite => {
-        if (invite.id) {
-          chatClientProxy?.accept({ id: invite.id }).then(refreshThreadsAndInvites)
-        }
+      Promise.all(
+        invites.map(invite => {
+          return chatClientProxy?.accept({ id: invite.id }).then(refreshThreadsAndInvites)
+        })
+      ).then(() => {
+        refreshThreadsAndInvites()
+        setInvitesSelected([])
       })
     }
   }, [invitesSelected, invites, chatClientProxy, refreshThreadsAndInvites, setInvitesSelected])
