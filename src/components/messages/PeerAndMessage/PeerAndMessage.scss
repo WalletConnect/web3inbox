@@ -13,6 +13,7 @@
     justify-content: center;
     flex-direction: column;
     width: 100%;
+    max-width: 15em;
   }
 
   &__peer__mobile {
@@ -34,6 +35,7 @@
   &__message {
     font-size: 0.9em;
     color: var(--fg-color-2);
+    width: 75%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

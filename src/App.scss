@@ -7,7 +7,7 @@
   background: var(--bg-color-1);
   min-height: 100vh;
   display: grid;
-  gap: 5em;
+  gap: 3em;
   grid-template: var(--grid-template);
   grid-template-columns: 1fr;
   max-width: 100vw;
@@ -30,7 +30,8 @@
   }
 
   .Main {
-    padding: 2em 1em;
+    @include padding-y(2em);
+    @include padding-x(0.4em);
     grid-area: main;
 
     display: var(--main-display);
@@ -45,5 +46,10 @@
     --main-display: unset;
     grid-template: 'sidebar target-selector main header';
     grid-template-columns: minmax(4em, 0.5fr) minmax(20%, 2fr) 8fr minmax(min-content, 1fr);
+
+    .Main {
+      @include padding-x(0em);
+      max-width: 70vw;
+    }
   }
 }
