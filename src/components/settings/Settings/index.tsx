@@ -76,7 +76,7 @@ const Settings: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className="Settings__section Settings__notifications">
+      {/* <div className="Settings__section Settings__notifications">
         <div className="Settings__section-title">
           <IconWrapper shape="square" bgColor="blue">
             <img src={ColoredNotificationBell} alt="coloredNotification-icon" />
@@ -166,7 +166,7 @@ const Settings: React.FC = () => {
             />
           </div>
         </div>
-      </div>
+      </div>*/}
     </div>
   )
 }

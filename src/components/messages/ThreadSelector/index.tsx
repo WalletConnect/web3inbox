@@ -108,31 +108,35 @@ const ThreadSelector: React.FC = () => {
               </NavLink>
             </div>
           </div>
-          {invites.length > 0 && (
+          {invites.filter(invite => invite.status === 'pending').length > 0 && (
             <NavLink to="/messages/chat-invites" className="ThreadSelector__mobile-link">
               <div className="ThreadSelector__invites">
                 <div className="ThreadSelector__invites-link">
                   <div className="ThreadSelector__invites-avatars">
-                    {invites.map(
-                      (invite, i) =>
-                        i < 6 && (
-                          <div
-                            key={invite.id}
-                            className="ThreadSelector__invites-avatar"
-                            style={{ marginLeft: i * 10 }}
-                          >
-                            <Avatar
-                              address={getEthChainAddress(invite.inviterAccount)}
-                              width="40px"
-                              height="40px"
-                            />
-                          </div>
-                        )
-                    )}
+                    {invites
+                      .filter(invite => invite.status === 'pending')
+                      .map(
+                        (invite, i) =>
+                          i < 6 && (
+                            <div
+                              key={invite.id}
+                              className="ThreadSelector__invites-avatar"
+                              style={{ marginLeft: i * 10 }}
+                            >
+                              <Avatar
+                                address={getEthChainAddress(invite.inviterAccount)}
+                                width="40px"
+                                height="40px"
+                              />
+                            </div>
+                          )
+                      )}
                   </div>
                 </div>
                 <span>Chat Invites</span>
-                <CircleBadge>{invites.length}</CircleBadge>
+                <CircleBadge>
+                  {invites.filter(invite => invite.status === 'pending').length}
+                </CircleBadge>
               </div>
             </NavLink>
           )}

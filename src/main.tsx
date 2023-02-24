@@ -37,8 +37,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <WagmiConfig client={wagmiClient}>
       <SettingsContextProvider>
-        <W3iContextProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <W3iContextProvider>
             <Routes>
               <Route path="/login" element={<Login />} />
 
@@ -59,10 +59,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 </Route>
               </Route>
 
-              <Route index element={<Navigate to="/messages" />} />
+              <Route index element={<Navigate to={`/messages`} />} />
             </Routes>
-          </BrowserRouter>
-        </W3iContextProvider>
+          </W3iContextProvider>
+        </BrowserRouter>
       </SettingsContextProvider>
     </WagmiConfig>
     <Web3Modal

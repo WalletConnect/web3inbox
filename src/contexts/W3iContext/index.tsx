@@ -5,6 +5,7 @@ import W3iContext from './context'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import { noop } from 'rxjs'
 import type { PushClientTypes } from '@walletconnect/push-client'
+import { useLocation } from 'react-router-dom'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -31,6 +32,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   >([])
 
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
+  const { search } = useLocation()
 
   // PUSH STATE
   const [pushClient, setPushClient] = useState<W3iPushClient | null>(null)
@@ -39,8 +41,19 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   )
 
   useEffect(() => {
+    const account = new URLSearchParams(search).get('account')
+
+    console.log('In account useEffect')
+    if (account) {
+      console.log('In account useEffect > settingla', account)
+      setUserPubkey(account)
+    }
+  }, [search, setUserPubkey])
+
+  useEffect(() => {
     const sub = chatClient?.observe('chat_account_change', {
       next: ({ account }) => {
+        console.log('Setting in observer')
         setUserPubkey(account)
       }
     })
@@ -67,7 +80,10 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       .init()
       .then(() => setChatClient(w3iProxy.chat))
       .then(() => {
-        setUserPubkey(w3iProxy.chat.getAccount())
+        const account = w3iProxy.chat.getAccount()
+        if (account) {
+          setUserPubkey(account)
+        }
       })
       .then(() => setPushClient(w3iProxy.push))
   }, [setChatClient, chatClient, setUserPubkey, setPushClient, pushClient])
@@ -78,7 +94,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     }
 
     pushClient.getActiveSubscriptions().then(subscriptions => {
-      console.log('refreshPushState > activeSubscriptions', subscriptions)
       setActiveSubscriptions(Object.values(subscriptions))
     })
   }, [pushClient, userPubkey])
@@ -119,6 +134,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     return () => {
       inviteSub.unsubscribe()
       inviteSentSub.unsubscribe()
+      inviteAcceptedSub.unsubscribe()
+      inviteRejectedSub.unsubscribe()
       chatMessageSentSub.unsubscribe()
       chatJoinedSub.unsubscribe()
     }
