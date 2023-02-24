@@ -9,7 +9,8 @@ export default class ExternalChatProvider implements W3iChatProvider {
   private readonly methodsListenedTo = [
     'chat_message',
     'chat_invite',
-    'chat_joined',
+    'chat_invite_accepted',
+    'chat_invite_rejected',
     'chat_left',
     'chat_ping',
     'chat_set_account'
@@ -50,7 +51,8 @@ export default class ExternalChatProvider implements W3iChatProvider {
     switch (request.method) {
       case 'chat_message':
       case 'chat_ping':
-      case 'chat_joined':
+      case 'chat_invite_rejected':
+      case 'chat_invite_accepted':
       case 'chat_invite':
       case 'chat_left':
         this.emitter.emit(request.method, request.params)
