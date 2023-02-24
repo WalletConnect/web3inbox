@@ -21,7 +21,7 @@ const ChatInvites: React.FC = () => {
     if (invitesSelected.length) {
       Promise.all(
         invitesSelected.map(id => {
-          return chatClientProxy?.accept({ id }).then(refreshThreadsAndInvites)
+          return chatClientProxy?.accept({ id })
         })
       ).then(() => {
         refreshThreadsAndInvites()
@@ -30,7 +30,7 @@ const ChatInvites: React.FC = () => {
     } else {
       Promise.all(
         invites.map(invite => {
-          return chatClientProxy?.accept({ id: invite.id }).then(refreshThreadsAndInvites)
+          return chatClientProxy?.accept({ id: invite.id })
         })
       ).then(() => {
         refreshThreadsAndInvites()
@@ -41,15 +41,22 @@ const ChatInvites: React.FC = () => {
 
   const handleDeclineInvite = useCallback(() => {
     if (invitesSelected.length) {
-      invitesSelected.forEach(id => {
-        chatClientProxy?.reject({ id })
+      Promise.all(
+        invitesSelected.map(id => {
+          return chatClientProxy?.reject({ id })
+        })
+      ).then(() => {
+        refreshThreadsAndInvites()
+        setInvitesSelected([])
       })
-      setInvitesSelected([])
     } else {
-      invites.forEach(invite => {
-        if (invite.id) {
-          chatClientProxy?.reject({ id: invite.id })
-        }
+      Promise.all(
+        invites.map(({ id }) => {
+          return chatClientProxy?.reject({ id })
+        })
+      ).then(() => {
+        refreshThreadsAndInvites()
+        setInvitesSelected([])
       })
     }
   }, [invitesSelected, chatClientProxy, invites])
