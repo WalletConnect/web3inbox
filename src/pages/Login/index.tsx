@@ -28,7 +28,7 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { userPubkey } = useContext(W3iContext)
+  const { userPubkey, chatClientProxy } = useContext(W3iContext)
   const nav = useNavigate()
 
   useEffect(() => {
