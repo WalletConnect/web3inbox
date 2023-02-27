@@ -3,6 +3,9 @@
   gap: 1em;
   justify-content: flex-start;
   align-items: center;
+  @media screen and (max-width: 700px) {
+    padding: 0 calc(0.625em - 0.4em);
+  }
 
   .Textarea {
     flex-grow: 1;

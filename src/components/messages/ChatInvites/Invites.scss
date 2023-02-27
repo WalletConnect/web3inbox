@@ -27,6 +27,9 @@
     display: flex;
     flex-direction: column;
     gap: 1em;
+    @media screen and (max-width: 700px) {
+      padding: 0 calc(1.25em - 0.4em);
+    }
   }
 
   &__inviter {
@@ -63,6 +66,7 @@
     font-weight: 600;
     color: var(--fg-color-1);
     @media screen and (max-width: 700px) {
+      padding: 0 calc(1.25em - 0.4em);
       flex-direction: column;
       align-items: flex-start;
       font-weight: 600;
