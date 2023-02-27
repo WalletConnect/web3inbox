@@ -1,8 +1,8 @@
+import type { ChatClientTypes } from '@walletconnect/chat-client'
+import type { PushClientTypes } from '@walletconnect/push-client'
 import type { Dispatch, SetStateAction } from 'react'
 import { createContext } from 'react'
-import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
-import { PushClientTypes } from '@walletconnect/push-client'
 
 interface W3iContextState {
   chatClientProxy: W3iChatClient | null
@@ -15,6 +15,7 @@ interface W3iContextState {
   invites: ChatClientTypes.ReceivedInvite[]
   userPubkey?: string
   pushClientProxy: W3iPushClient | null
+  isRegistering: boolean
 }
 
 const W3iContext = createContext<W3iContextState>({
@@ -28,7 +29,8 @@ const W3iContext = createContext<W3iContextState>({
   activeSubscriptions: [],
   sentInvites: [],
   invites: [],
-  pushClientProxy: null
+  pushClientProxy: null,
+  isRegistering: false
 })
 
 export default W3iContext

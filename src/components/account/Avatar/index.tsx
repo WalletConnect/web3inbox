@@ -10,8 +10,7 @@ import { profileModalService, shareModalService } from '../../../utils/store'
 import { truncate } from '../../../utils/string'
 import { generateAvatarColors } from '../../../utils/ui'
 import Divider from '../../general/Divider'
-import PersonIcon from '../../general/Icon/PersonIcon'
-import ShareIcon from '../../general/Icon/ShareIcon'
+
 import './Avatar.scss'
 
 interface AvatarProps {
@@ -114,14 +113,14 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
             <Divider />
             <div className="Avatar__dropdown__block">
               <div className="Avatar__dropdown__block__actions">
-                <button onClick={handleViewProfile}>
+                {/* <button onClick={handleViewProfile}>
                   <PersonIcon />
                   <span>View Profile</span>
                 </button>
                 <button onClick={handleShare}>
                   <ShareIcon />
                   <span>Share</span>
-                </button>
+                </button> */}
                 <button
                   className="Avatar__dropdown__block__actions__disconnect"
                   onClick={handleDisconnect}

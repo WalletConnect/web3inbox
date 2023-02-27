@@ -12,6 +12,7 @@ interface W3iContextProviderProps {
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
+  const [isRegistering, setIsRegistering] = useState(false)
   const relayUrl = import.meta.env.VITE_RELAY_URL
   const projectId = import.meta.env.VITE_PROJECT_ID
   const query = new URLSearchParams(window.location.search)
@@ -62,12 +63,20 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [chatClient])
 
   useEffect(() => {
-    if (chatClient && userPubkey) {
-      chatClient.register({ account: `eip155:1:${userPubkey}` }).then(registeredKeyRes => {
-        console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
-        setRegistered(registeredKeyRes)
-      })
+    const handleRegistration = async () => {
+      if (chatClient && userPubkey) {
+        setIsRegistering(true)
+        try {
+          const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
+          console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
+          setRegistered(registeredKeyRes)
+          setIsRegistering(false)
+        } catch (error) {
+          setIsRegistering(false)
+        }
+      }
     }
+    handleRegistration()
   }, [chatClient, userPubkey])
 
   useEffect(() => {
@@ -161,6 +170,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         invites,
         registeredKey,
         setUserPubkey,
+        isRegistering,
         pushClientProxy: pushClient
       }}
     >

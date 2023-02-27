@@ -10,7 +10,6 @@ import SendIcon from '../../general/Icon/SendIcon'
 import Input from '../../general/Input'
 import MobileHeading from '../../layout/MobileHeading'
 import './NewChat.scss'
-import SearchHistoryContacts from './SearchHistoryContacts'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
@@ -120,7 +119,7 @@ const NewChat: React.FC = () => {
           </div>
         )}
       </div>
-      <SearchHistoryContacts />
+      {/* <SearchHistoryContacts /> */}
     </Fragment>
   )
 }

@@ -10,6 +10,7 @@ import {
   profileModalService,
   pushSearchService,
   shareModalService,
+  signatureModalService,
   unsubscribeModalService
 } from './store'
 import { isMobile } from './ui'
@@ -50,9 +51,11 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       bg2: 'hsla(180, 4%, 16%, 1)',
       bg3: 'hsla(0, 0%, 0%, 0.1)',
       bg4: 'hsla(0, 0%, 100%, 0.1)',
+      senderBubbleBg: '#272a2a',
       bgGradient1: 'linear-gradient(180deg, #1b1d1d 0%, #141414 29.96%)',
       bgGradient2: 'linear-gradient(92.29deg, #19324D 0%, rgba(25, 50, 77, 0.5) 100%)',
       activeLinkGradient: 'linear-gradient(92.29deg, #19324D 0%, rgba(25, 50, 77, 0.5) 100%)',
+      senderBoxShadow: 'inset 1px 1px 4px #585f5f, inset -1px -1px 4px #141414',
       fg1: 'hsla(180, 6%, 90%, 1)',
       fg2: 'hsla(0, 0%, 100%, 0.66)',
       fg3: 'hsla(180, 6%, 64%, 1)',
@@ -69,6 +72,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       bg2: 'hsla(0, 0%, 96%, 1)',
       bg3: 'hsla(0, 0%, 100%, 0.1)',
       bg4: 'hsla(0, 0%, 0%, 0.1)',
+      senderBubbleBg: '#F1F3F3',
+      senderBoxShadow: 'inset 1px 1px 4px #FFFFFF, inset -1px -1px 4px #9EA9A9',
       bgGradient1: 'linear-gradient(180deg, #f7f7f7 0%, rgba(255, 255, 255, 0) 29.96%)',
       bgGradient2: 'linear-gradient(91.31deg, #E8F2FC 0%, rgba(232, 242, 252, 0) 100%)',
       activeLinkGradient: ' linear-gradient(92.43deg, #CDE5FE 0%, #E8F2FC 101.3%)',
@@ -93,6 +98,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--bg-gradient-1': colors[specifiedMode].bgGradient1,
     '--bg-gradient-2': colors[specifiedMode].bgGradient2,
     '--active-link-gradient': colors[specifiedMode].activeLinkGradient,
+    '--sender-bubble-bg': colors[specifiedMode].senderBubbleBg,
+    '--sender-box-shadow': colors[specifiedMode].senderBoxShadow,
     '--fg-color-1': colors[specifiedMode].fg1,
     '--fg-color-2': colors[specifiedMode].fg2,
     '--fg-color-3': colors[specifiedMode].fg3,
@@ -140,12 +147,16 @@ export const useModals = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
+  const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
     const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
       setIsProfileModalOpen(isOpen)
+    })
+    const signatureSubscription = signatureModalService.modalState.subscribe(isOpen => {
+      setIsSignatureModalOpen(isOpen)
     })
     const shareSubscription = shareModalService.modalState.subscribe(isOpen => {
       setIsShareModalOpen(isOpen)
@@ -162,6 +173,7 @@ export const useModals = () => {
     return () => {
       profileSubscription.unsubscribe()
       shareSubscription.unsubscribe()
+      signatureSubscription.unsubscribe()
       preferencesSubscription.unsubscribe()
       unsubscribeSubscription.unsubscribe()
     }
@@ -170,6 +182,7 @@ export const useModals = () => {
   return {
     isProfileModalOpen,
     isShareModalOpen,
+    isSignatureModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
     preferencesModalAppId,

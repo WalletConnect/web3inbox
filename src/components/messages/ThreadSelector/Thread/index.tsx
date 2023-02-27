@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useEnsName } from 'wagmi'
 import W3iContext from '../../../../contexts/W3iContext/context'
-import { getEthChainAddress } from '../../../../utils/address'
 import NavLink from '../../../general/NavLink'
 import PeerAndMessage from '../../PeerAndMessage'
 import './Thread.scss'
@@ -21,9 +19,6 @@ const Thread: React.FC<ThreadProps> = ({
   searchQuery,
   threadPeer
 }) => {
-  const address = getEthChainAddress(threadPeer)
-  const { data: ensName } = useEnsName({ address })
-
   const [calculatedLastMessage, setCalculatedLastMessage] = useState<string | undefined>()
   const [calculatedLastMsgTimestamp, setCalculatedLastMsgTimestamp] = useState<number | undefined>()
   const { chatClientProxy } = useContext(W3iContext)
@@ -43,7 +38,7 @@ const Thread: React.FC<ThreadProps> = ({
     <NavLink to={`/messages/chat/${threadPeer}?topic=${topic}`}>
       <PeerAndMessage
         highlightedText={searchQuery}
-        peer={ensName ?? threadPeer}
+        peer={threadPeer}
         message={lastMessage ?? calculatedLastMessage}
         timestamp={lastMessageTimestamp ?? calculatedLastMsgTimestamp}
       />
