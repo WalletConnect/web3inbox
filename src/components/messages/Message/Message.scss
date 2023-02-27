@@ -17,15 +17,16 @@
   }
 
   &__from-peer &__bubble {
-    background: #272a2a;
-    box-shadow: inset 1px 1px 4px #585f5f, inset -1px -1px 4px #141414;
+    background: var(--sender-bubble-bg);
+    box-shadow: var(--sender-box-shadow);
     border-radius: 16px 16px 16px 6px;
-    color: #e4e7e7;
+    color: var(--fg-color-1);
   }
 
   &__from-sender &__bubble {
     box-shadow: inset 1px 1px 4px #99cbff, inset -1px -1px 4px #1464b8;
     background: #3396ff;
     border-radius: 16px 16px 6px 16px;
+    color: #ffffff;
   }
 }

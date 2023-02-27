@@ -1,6 +1,9 @@
+import 'react-toastify/dist/ReactToastify.css'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import { Fragment, useContext, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+
 import './App.scss'
 import { Profile } from './components/account/Profile'
 import { Share } from './components/account/Share/Share'
@@ -56,6 +59,7 @@ const App = () => {
           <Fragment>
             <Sidebar />
             <Outlet />
+            <ToastContainer />
             {isProfileModalOpen && <Profile />}
             {isShareModalOpen && <Share />}
             {isPreferencesModalOpen && <PreferencesModal />}

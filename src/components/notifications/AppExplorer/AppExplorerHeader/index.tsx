@@ -31,10 +31,7 @@ const AppExplorerHeader = () => {
           name="explorer-selector"
           id="explorer-selector"
           onChange={console.log}
-          options={[
-            { label: 'All', value: 'all' },
-            { label: 'DeFi', value: 'defi' }
-          ]}
+          options={[{ label: 'All', value: 'all' }]}
         />
       </div>
     </div>

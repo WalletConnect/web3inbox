@@ -1,16 +1,17 @@
 import { Web3Button } from '@web3modal/react'
-import React, { useContext, useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useContext, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ByWalletConnect from '../../assets/by_walletconnect.png'
 import ChatDisplay from '../../assets/chat.png'
 import Logo from '../../assets/Logo.svg'
 import NotificationDisplay from '../../assets/notifs.png'
 import Web3InboxDisplay from '../../assets/web3inbox.png'
-import Button from '../../components/general/Button'
 import MessageIcon from '../../components/general/Icon/MessageIcon'
 import NotificationIcon from '../../components/general/Icon/NotificationIcon'
 import W3iContext from '../../contexts/W3iContext/context'
+import { signatureModalService } from '../../utils/store'
 import './Login.scss'
+import { SignatureModal } from './SignatureModal'
 
 const Web3InboxFeatures = [
   {
@@ -28,17 +29,21 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { userPubkey } = useContext(W3iContext)
+  const { userPubkey, registeredKey, isRegistering } = useContext(W3iContext)
   const nav = useNavigate()
 
   useEffect(() => {
     if (!userPubkey) {
       nav('/login')
     }
-    if (userPubkey) {
+    if (userPubkey && registeredKey) {
       nav('/')
     }
-  }, [userPubkey])
+
+    if (userPubkey && !registeredKey && isRegistering) {
+      signatureModalService.openModal()
+    }
+  }, [userPubkey, registeredKey, isRegistering])
 
   return (
     <div className="Login">
@@ -69,7 +74,7 @@ const Login: React.FC = () => {
         </div>
         <div className="Login__actions">
           <div className="Login__actions-container">
-            <Web3Button />
+            {userPubkey && !registeredKey && isRegistering ? <SignatureModal /> : <Web3Button />}
           </div>
         </div>
       </div>

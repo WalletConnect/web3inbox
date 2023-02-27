@@ -22,6 +22,7 @@ const appSearchSubject = new BehaviorSubject<IAppSearchState>({
 
 const profileModalSubject = new BehaviorSubject(false)
 const shareModalSubject = new BehaviorSubject(false)
+const signatureModalSubject = new BehaviorSubject(false)
 const preferencesModalSubject = new BehaviorSubject<IPreferencesModalState>({
   preferencesModalAppId: undefined,
   isOpen: false
@@ -79,6 +80,13 @@ export const shareModalService = {
   openModal: () => shareModalSubject.next(true),
   closeModal: () => shareModalSubject.next(false),
   modalState: shareModalSubject.asObservable()
+}
+
+export const signatureModalService = {
+  toggleModal: () => signatureModalSubject.next(!signatureModalSubject.value),
+  openModal: () => signatureModalSubject.next(true),
+  closeModal: () => signatureModalSubject.next(false),
+  modalState: signatureModalSubject.asObservable()
 }
 
 export const preferencesModalService = {

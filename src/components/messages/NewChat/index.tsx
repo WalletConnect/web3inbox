@@ -1,5 +1,6 @@
 import { fetchEnsAddress } from '@wagmi/core'
 import React, { Fragment, useCallback, useContext, useMemo, useState } from 'react'
+import { toast } from 'react-toastify'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { isValidAddressOrEnsDomain, isValidEnsDomain } from '../../../utils/address'
@@ -10,7 +11,6 @@ import SendIcon from '../../general/Icon/SendIcon'
 import Input from '../../general/Input'
 import MobileHeading from '../../layout/MobileHeading'
 import './NewChat.scss'
-import SearchHistoryContacts from './SearchHistoryContacts'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
@@ -19,6 +19,12 @@ const NewChat: React.FC = () => {
   const [query, setQuery] = useState('')
   const isMobile = useIsMobile()
   const themeColors = useColorModeValue(mode)
+  const toastTheme = useMemo(() => {
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    const specifiedMode = mode === 'system' ? systemTheme : mode
+
+    return specifiedMode
+  }, [mode])
 
   const resolveAddress = async (inviteeAddress: string) => {
     // eslint-disable-next-line prefer-regex-literals
@@ -47,18 +53,35 @@ const NewChat: React.FC = () => {
       try {
         const resolvedAddress = await resolveAddress(inviteeAddress)
 
-        chatClientProxy
-          .invite({
-            inviteeAccount: resolvedAddress,
-            inviterAccount: `eip155:1:${userPubkey}`,
-            inviteePublicKey: await chatClientProxy.resolve({ account: resolvedAddress }),
-            message: 'Inviting'
-          })
-          .finally(() => {
-            setQuery('')
-            setIsInviting(false)
-          })
+        await chatClientProxy.invite({
+          inviteeAccount: resolvedAddress,
+          inviterAccount: `eip155:1:${userPubkey}`,
+          inviteePublicKey: await chatClientProxy.resolve({ account: resolvedAddress }),
+          message: 'Inviting'
+        })
+
+        toast('Invite sent successfully', {
+          type: 'success',
+          position: 'bottom-right',
+          autoClose: 5000,
+          theme: toastTheme,
+          style: {
+            borderRadius: '1em'
+          }
+        })
       } catch (error) {
+        if (error instanceof Error) {
+          toast(error.message, {
+            type: 'error',
+            position: 'bottom-right',
+            autoClose: 5000,
+            theme: toastTheme,
+            style: {
+              borderRadius: '1em'
+            }
+          })
+        }
+      } finally {
         setQuery('')
         setIsInviting(false)
       }
@@ -120,7 +143,7 @@ const NewChat: React.FC = () => {
           </div>
         )}
       </div>
-      <SearchHistoryContacts />
+      {/* <SearchHistoryContacts /> */}
     </Fragment>
   )
 }

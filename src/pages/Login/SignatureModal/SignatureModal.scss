@@ -1,0 +1,31 @@
+.SignatureModal {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+
+  &__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em 0;
+    h2 {
+      color: var(--fg-color-1);
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.2em;
+      flex-grow: 1;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4375em;
+    &__title {
+      color: var(--fg-color-1);
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.25em;
+    }
+  }
+}
