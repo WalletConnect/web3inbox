@@ -6,7 +6,6 @@ import ChatDisplay from '../../assets/chat.png'
 import Logo from '../../assets/Logo.svg'
 import NotificationDisplay from '../../assets/notifs.png'
 import Web3InboxDisplay from '../../assets/web3inbox.png'
-import Button from '../../components/general/Button'
 import MessageIcon from '../../components/general/Icon/MessageIcon'
 import NotificationIcon from '../../components/general/Icon/NotificationIcon'
 import W3iContext from '../../contexts/W3iContext/context'
@@ -76,7 +75,6 @@ const Login: React.FC = () => {
         <div className="Login__actions">
           <div className="Login__actions-container">
             {userPubkey && !registeredKey && isRegistering ? <SignatureModal /> : <Web3Button />}
-            <Button customType="secondary">Learn More</Button>
           </div>
         </div>
       </div>
