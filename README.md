@@ -1,8 +1,6 @@
 # Web3Inbox
 
-A dApp that will show off capabilities of Push and Chat APIs.
-
-Deployment: https://web3inbox-dev-hidden.vercel.app/login
+Web3Inbox is a dapp that showcases the WalletConnect Push and Chat API's. 
 
 ## Installation
 
@@ -26,9 +24,3 @@ Run the development server:
 ```bash
 yarn dev
 ```
-
-## Deployment
-
-Web3Inbox is currently deployed via [Vercel](https://vercel.com/walletconnect/web3inbox-dev-hidden).
-
-To deploy, simply push your branch to GitHub and Vercel will automatically deploy it.
