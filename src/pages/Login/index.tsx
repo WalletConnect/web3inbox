@@ -70,7 +70,6 @@ const Login: React.FC = () => {
         <div className="Login__actions">
           <div className="Login__actions-container">
             <Web3Button />
-            <Button customType="secondary">Learn More</Button>
           </div>
         </div>
       </div>
