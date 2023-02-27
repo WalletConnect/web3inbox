@@ -50,7 +50,12 @@ export default class InternalChatProvider implements W3iChatProvider {
 
     this.chatClient.on('chat_ping', args => this.emitter.emit('chat_ping', args))
     this.chatClient.on('chat_message', args => this.emitter.emit('chat_message', args))
-    this.chatClient.on('chat_joined', args => this.emitter.emit('chat_joined', args))
+    this.chatClient.on('chat_invite_accepted', args =>
+      this.emitter.emit('chat_invite_accepted', args)
+    )
+    this.chatClient.on('chat_invite_rejected', args =>
+      this.emitter.emit('chat_invite_rejected', args)
+    )
     this.chatClient.on('chat_invite', args => {
       this.emitter.emit('chat_invite', args)
     })

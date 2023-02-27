@@ -8,8 +8,9 @@ interface AuthProtectedPageProps {
 
 const AuthProtectedPage: React.FC<AuthProtectedPageProps> = ({ children }) => {
   const { userPubkey } = useContext(W3iContext)
+
   if (!userPubkey) {
-    return <Navigate to="/login" />
+    return <Navigate to={'/login'} />
   }
 
   return <Fragment>{children}</Fragment>

@@ -19,30 +19,44 @@ const ChatInvites: React.FC = () => {
 
   const handleAcceptInvite = useCallback(() => {
     if (invitesSelected.length) {
-      invitesSelected.forEach(id => {
-        chatClientProxy?.accept({ id }).then(refreshThreadsAndInvites)
+      Promise.all(
+        invitesSelected.map(id => {
+          return chatClientProxy?.accept({ id })
+        })
+      ).then(() => {
+        refreshThreadsAndInvites()
+        setInvitesSelected([])
       })
-      setInvitesSelected([])
     } else {
-      invites.forEach(invite => {
-        if (invite.id) {
-          chatClientProxy?.accept({ id: invite.id }).then(refreshThreadsAndInvites)
-        }
+      Promise.all(
+        invites.map(invite => {
+          return chatClientProxy?.accept({ id: invite.id })
+        })
+      ).then(() => {
+        refreshThreadsAndInvites()
+        setInvitesSelected([])
       })
     }
   }, [invitesSelected, invites, chatClientProxy, refreshThreadsAndInvites, setInvitesSelected])
 
   const handleDeclineInvite = useCallback(() => {
     if (invitesSelected.length) {
-      invitesSelected.forEach(id => {
-        chatClientProxy?.reject({ id })
+      Promise.all(
+        invitesSelected.map(id => {
+          return chatClientProxy?.reject({ id })
+        })
+      ).then(() => {
+        refreshThreadsAndInvites()
+        setInvitesSelected([])
       })
-      setInvitesSelected([])
     } else {
-      invites.forEach(invite => {
-        if (invite.id) {
-          chatClientProxy?.reject({ id: invite.id })
-        }
+      Promise.all(
+        invites.map(({ id }) => {
+          return chatClientProxy?.reject({ id })
+        })
+      ).then(() => {
+        refreshThreadsAndInvites()
+        setInvitesSelected([])
       })
     }
   }, [invitesSelected, chatClientProxy, invites])
@@ -104,34 +118,36 @@ const ChatInvites: React.FC = () => {
         </div>
       </div>
       <div className="Invites__inviters">
-        {invites.map(invite => {
-          return (
-            <div key={invite.inviterAccount} className="Invites__inviter">
-              <div className="Invites__inviter-selector">
-                <Checkbox
-                  checked={(invite.id && invitesSelected.includes(invite.id)) || false}
-                  onCheck={() => onCheck(invite.id)}
-                  onUncheck={() => onUncheck(invite.id)}
-                  id={invite.id}
-                  name="inviter"
-                />
-                <PeerAndMessage
-                  key={invite.inviterPublicKey}
-                  peer={invite.inviterAccount}
-                  message={invite.message}
-                />
+        {invites
+          .filter(invite => invite.status === 'pending')
+          .map(invite => {
+            return (
+              <div key={invite.inviterAccount} className="Invites__inviter">
+                <div className="Invites__inviter-selector">
+                  <Checkbox
+                    checked={(invite.id && invitesSelected.includes(invite.id)) || false}
+                    onCheck={() => onCheck(invite.id)}
+                    onUncheck={() => onUncheck(invite.id)}
+                    id={invite.id}
+                    name="inviter"
+                  />
+                  <PeerAndMessage
+                    key={invite.inviterPublicKey}
+                    peer={invite.inviterAccount}
+                    message={invite.message}
+                  />
+                </div>
+                <div className="Invites__inviter-actions">
+                  <Button customType="action-icon" onClick={() => onAccept(invite.id)}>
+                    <CheckIcon />
+                  </Button>
+                  <Button customType="action-icon" onClick={() => onReject(invite.id)}>
+                    <img src={CrossIcon} alt="Accept" />
+                  </Button>
+                </div>
               </div>
-              <div className="Invites__inviter-actions">
-                <Button customType="action-icon" onClick={() => onAccept(invite.id)}>
-                  <CheckIcon />
-                </Button>
-                <Button customType="action-icon" onClick={() => onReject(invite.id)}>
-                  <img src={CrossIcon} alt="Accept" />
-                </Button>
-              </div>
-            </div>
-          )
-        })}
+            )
+          })}
       </div>
     </div>
   )

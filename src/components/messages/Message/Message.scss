@@ -10,7 +10,10 @@
   }
 
   &__bubble {
+    max-width: 50%;
+    overflow-wrap: break-word;
     padding: 0.4em 0.8em;
+    margin-top: 0.5em;
   }
 
   &__from-peer &__bubble {

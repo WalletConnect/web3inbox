@@ -1,6 +1,6 @@
 import { Web3Button } from '@web3modal/react'
-import React, { useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import ByWalletConnect from '../../assets/by_walletconnect.png'
 import ChatDisplay from '../../assets/chat.png'
 import Logo from '../../assets/Logo.svg'

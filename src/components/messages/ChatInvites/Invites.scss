@@ -23,6 +23,12 @@
     color: var(--accent-color-1);
   }
 
+  &__inviters {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
   &__inviter {
     width: 100%;
     display: flex;
