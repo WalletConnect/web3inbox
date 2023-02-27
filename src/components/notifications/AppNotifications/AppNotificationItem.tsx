@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFormattedTime, useIsMobile } from '../../../utils/hooks'
+import { useFormattedTime } from '../../../utils/hooks'
 import CircleIcon from '../../general/Icon/CircleIcon'
 import './AppNotifications.scss'
 

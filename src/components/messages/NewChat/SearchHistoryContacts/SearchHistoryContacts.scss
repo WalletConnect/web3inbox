@@ -3,6 +3,7 @@
   place-items: center;
   height: 88%;
   color: var(--fg-color-1);
+  padding: 0 calc(1.25em - 0.4em);
   &__container {
     display: flex;
     flex-direction: column;

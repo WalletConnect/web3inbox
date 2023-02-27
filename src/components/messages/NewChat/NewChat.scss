@@ -30,4 +30,7 @@
       width: 80%;
     }
   }
+  &__input-container {
+    padding: 0 calc(1.25em - 0.4em);
+  }
 }
