@@ -35,6 +35,7 @@
     @include padding-x(0.4em);
     grid-area: main;
     max-width: 100vw;
+    height: 96vh;
 
     display: var(--main-display);
   }
