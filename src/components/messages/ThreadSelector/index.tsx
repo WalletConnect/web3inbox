@@ -160,7 +160,9 @@ const ThreadSelector: React.FC = () => {
                 <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
                 <span>Chat Invites</span>
               </div>
-              <CircleBadge>{invites.length}</CircleBadge>
+              <CircleBadge>
+                {invites.filter(invite => invite.status === 'pending').length}
+              </CircleBadge>
             </div>
           </NavLink>
         </>

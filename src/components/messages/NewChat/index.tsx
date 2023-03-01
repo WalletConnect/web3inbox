@@ -57,7 +57,7 @@ const NewChat: React.FC = () => {
           inviteeAccount: resolvedAddress,
           inviterAccount: `eip155:1:${userPubkey}`,
           inviteePublicKey: await chatClientProxy.resolve({ account: resolvedAddress }),
-          message: 'Inviting'
+          message: 'Hey there! Wanna chat?'
         })
 
         toast('Invite sent successfully', {
