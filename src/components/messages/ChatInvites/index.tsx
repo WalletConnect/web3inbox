@@ -102,7 +102,7 @@ const ChatInvites: React.FC = () => {
       </BackButton>
       <div className="Invites__header">
         <ChatInvitesHeader
-          invitesCount={invites.length}
+          invitesCount={invites.filter(({ status }) => status === 'pending').length}
           invitesSelectedCount={invitesSelected.length}
         />
 
