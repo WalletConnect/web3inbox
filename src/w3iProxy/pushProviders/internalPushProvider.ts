@@ -8,7 +8,7 @@ export default class InternalPushProvider implements W3iPushProvider {
   private readonly emitter: EventEmitter
   public providerName = 'InternalChatProvider'
 
-  public constructor(emitter: EventEmitter) {
+  public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
   }
 

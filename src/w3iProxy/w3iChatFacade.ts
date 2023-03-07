@@ -29,8 +29,8 @@ class W3iChatFacade implements W3iChat {
   private readonly providerMap = {
     internal: InternalChatProvider,
     external: ExternalChatProvider,
-    android: AndroidChatProvider,
-    ios: iOSChatProvider
+    ios: ExternalChatProvider,
+    android: ExternalChatProvider
   }
   private readonly providerName: keyof typeof this.providerMap
   private readonly messageReplaySubject: ReplaySubject<ReplayMessage>
@@ -46,7 +46,7 @@ class W3iChatFacade implements W3iChat {
     this.emitter = new EventEmitter()
 
     const ProviderClass = this.providerMap[this.providerName]
-    this.provider = new ProviderClass(this.emitter)
+    this.provider = new ProviderClass(this.emitter, providerName)
 
     // Discuss expiry of messages
     this.messageReplaySubject = new ReplaySubject(undefined, ONE_DAY / 2)

@@ -18,8 +18,8 @@ class W3iPushFacade implements W3iPush {
   private readonly providerMap = {
     internal: InternalPushProvider,
     external: ExternalPushProvider,
-    android: AndroidPushProvider,
-    ios: iOSPushProvider
+    android: ExternalPushProvider,
+    ios: ExternalPushProvider
   }
   private readonly providerName: keyof typeof this.providerMap
   private readonly emitter: EventEmitter
@@ -33,7 +33,7 @@ class W3iPushFacade implements W3iPush {
     this.emitter = new EventEmitter()
 
     const ProviderClass = this.providerMap[this.providerName]
-    this.provider = new ProviderClass(this.emitter)
+    this.provider = new ProviderClass(this.emitter, providerName)
   }
 
   public initInternalProvider(pushClient: PushWalletClient) {
