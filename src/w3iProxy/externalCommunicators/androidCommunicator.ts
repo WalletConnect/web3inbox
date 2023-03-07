@@ -3,6 +3,14 @@ import type { EventEmitter } from 'events'
 import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 
+declare global {
+  interface Window {
+    android?: {
+      postMessage: (message: unknown) => void
+    }
+  }
+}
+
 export class AndroidCommunicator implements ExternalCommunicator {
   private readonly emitter: EventEmitter
 

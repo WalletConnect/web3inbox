@@ -9,8 +9,6 @@ import type {
   W3iPush
 } from './pushProviders/types'
 import ExternalPushProvider from './pushProviders/externalPushProvider'
-import AndroidPushProvider from './pushProviders/androidPushProvider'
-import iOSPushProvider from './pushProviders/iosPushProvider'
 import InternalPushProvider from './pushProviders/internalPushProvider'
 import type { PushFacadeEvents } from './listenerTypes'
 

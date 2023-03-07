@@ -3,6 +3,18 @@ import type { EventEmitter } from 'events'
 import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 
+declare global {
+  interface Window {
+    webkit?: {
+      messageHandlers?: {
+        web3inbox?: {
+          postMessage: (message: unknown) => void
+        }
+      }
+    }
+  }
+}
+
 export class IOSCommunicator implements ExternalCommunicator {
   private readonly emitter: EventEmitter
 
