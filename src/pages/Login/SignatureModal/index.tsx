@@ -21,10 +21,11 @@ export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
         <div className="SignatureModal__header">
           <h2>Signature requested</h2>
         </div>
+        <div className="SignatureModal__explanation">
+          <p>You need to perform a final signature to establish an identity key.</p>
+        </div>
         <div className="SignatureModal__content">
-          <div className="SignatureModal__content__title">
-            <Button onClick={onSign}>Sign Message</Button>
-          </div>
+          <Button onClick={onSign}>Sign Message</Button>
         </div>
       </div>
     </Modal>
