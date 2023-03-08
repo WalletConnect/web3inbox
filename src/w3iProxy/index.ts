@@ -65,7 +65,7 @@ class Web3InboxProxy {
     if (this.chatProvider === 'internal') {
       this.chatClient = await ChatClient.init({
         core,
-        keyseverUrl: 'https://keys.walletconnect.com'
+        keyserverUrl: 'https://keys.walletconnect.com'
       })
       console.log('this.chatClient', this.chatClient)
       this.chatFacade.initInternalProvider(this.chatClient)
