@@ -1,13 +1,16 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
+// eslint-disable-next-line no-duplicate-imports
 import type ChatClient from '@walletconnect/chat-client'
+import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { W3iChatProvider } from './types'
-import { watchAccount, getAccount, signMessage } from '@wagmi/core'
+import { watchAccount, getAccount } from '@wagmi/core'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
   private readonly emitter: EventEmitter
   public providerName = 'InternalChatProvider'
+  private readonly methodsListenedTo = ['chat_signature_delivered']
 
   public constructor(emitter: EventEmitter) {
     this.emitter = emitter
@@ -91,12 +94,18 @@ export default class InternalChatProvider implements W3iChatProvider {
     return `An initialized chat client is required for method: [${method}].`
   }
 
-  public isListeningToMethodFromPostMessage() {
-    return false
+  public isListeningToMethodFromPostMessage(method: string) {
+    return this.methodsListenedTo.includes(method)
   }
 
-  public handleMessage() {
-    throw new Error(`${this.providerName} does not support listening to external messages`)
+  public handleMessage(request: JsonRpcRequest<unknown>) {
+    switch (request.method) {
+      case 'chat_signature_delivered':
+        this.emitter.emit('chat_signature_delivered', request.params)
+        break
+      default:
+        throw new Error(`Method ${request.method} unsupported by provider ${this.providerName}`)
+    }
   }
 
   public async getMessages(params: { topic: string }) {
@@ -195,7 +204,16 @@ export default class InternalChatProvider implements W3iChatProvider {
 
     return this.chatClient.register({
       ...params,
-      onSign: async message => signMessage({ message })
+      onSign: async message => {
+        this.emitter.emit('chat_signature_requested', { message })
+
+        return new Promise(resolve => {
+          this.emitter.once('chat_signature_delivered', ({ signature }: { signature: string }) => {
+            console.log('Signature: ', signature)
+            resolve(signature)
+          })
+        })
+      }
     })
   }
 

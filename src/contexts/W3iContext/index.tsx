@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
+// eslint-disable-next-line no-duplicate-imports
 import Web3InboxProxy from '../../w3iProxy'
 import W3iContext from './context'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
@@ -12,7 +13,7 @@ interface W3iContextProviderProps {
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
-  const [isRegistering, setIsRegistering] = useState(false)
+  const [registerMessage, setRegisterMessage] = useState<string | null>(null)
   const relayUrl = import.meta.env.VITE_RELAY_URL
   const projectId = import.meta.env.VITE_PROJECT_ID
   const query = new URLSearchParams(window.location.search)
@@ -65,14 +66,12 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   useEffect(() => {
     const handleRegistration = async () => {
       if (chatClient && userPubkey) {
-        setIsRegistering(true)
         try {
           const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
           console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
           setRegistered(registeredKeyRes)
-          setIsRegistering(false)
         } catch (error) {
-          setIsRegistering(false)
+          setRegisterMessage(null)
         }
       }
     }
@@ -134,6 +133,12 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       }
     })
 
+    const signatureSub = chatClient.observe('chat_signature_requested', {
+      next: ({ message }) => {
+        setRegisterMessage(message)
+      }
+    })
+
     const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshChatState })
     const chatMessageSentSub = chatClient.observe('chat_message_sent', { next: refreshChatState })
     const chatJoinedSub = chatClient.observe('chat_joined', { next: refreshChatState })
@@ -142,6 +147,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
     return () => {
       inviteSub.unsubscribe()
+      signatureSub.unsubscribe()
       inviteSentSub.unsubscribe()
       inviteAcceptedSub.unsubscribe()
       inviteRejectedSub.unsubscribe()
@@ -170,7 +176,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         invites,
         registeredKey,
         setUserPubkey,
-        isRegistering,
+        registerMessage,
         pushClientProxy: pushClient
       }}
     >

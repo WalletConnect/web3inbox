@@ -15,7 +15,7 @@ interface W3iContextState {
   invites: ChatClientTypes.ReceivedInvite[]
   userPubkey?: string
   pushClientProxy: W3iPushClient | null
-  isRegistering: boolean
+  registerMessage: string | null
 }
 
 const W3iContext = createContext<W3iContextState>({
@@ -30,7 +30,7 @@ const W3iContext = createContext<W3iContextState>({
   sentInvites: [],
   invites: [],
   pushClientProxy: null,
-  isRegistering: false
+  registerMessage: null
 })
 
 export default W3iContext

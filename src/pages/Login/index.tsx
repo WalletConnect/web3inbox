@@ -29,7 +29,7 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { userPubkey, registeredKey, isRegistering } = useContext(W3iContext)
+  const { userPubkey, registeredKey, registerMessage } = useContext(W3iContext)
   const nav = useNavigate()
 
   useEffect(() => {
@@ -40,10 +40,10 @@ const Login: React.FC = () => {
       nav('/')
     }
 
-    if (userPubkey && !registeredKey && isRegistering) {
+    if (userPubkey && !registeredKey && registerMessage) {
       signatureModalService.openModal()
     }
-  }, [userPubkey, registeredKey, isRegistering])
+  }, [userPubkey, registeredKey, registerMessage])
 
   return (
     <div className="Login">
@@ -74,7 +74,11 @@ const Login: React.FC = () => {
         </div>
         <div className="Login__actions">
           <div className="Login__actions-container">
-            {userPubkey && !registeredKey && isRegistering ? <SignatureModal /> : <Web3Button />}
+            {userPubkey && !registeredKey && registerMessage ? (
+              <SignatureModal message={registerMessage} />
+            ) : (
+              <Web3Button />
+            )}
           </div>
         </div>
       </div>

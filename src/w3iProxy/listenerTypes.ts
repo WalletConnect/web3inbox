@@ -14,6 +14,7 @@ export interface ChatFacadeEvents {
   chat_invite_rejected: ChatClientTypes.BaseEventArgs<{ invite: ChatClientTypes.SentInvite }>
   chat_invite_sent: never
   chat_message_sent: never
+  chat_signature_requested: { message: string }
   chat_account_change: { account: string }
 }
 
