@@ -14,6 +14,50 @@
 
   padding: 0.75em;
 
+  &Wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  &Actions {
+    position: absolute;
+    left: -1.25em;
+    transform: translateX(-100%);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    width: 150px;
+    height: 100%;
+    border-radius: 0 5px 5px 0;
+    overflow: hidden;
+    &__clear,
+    &__unread {
+      outline: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      height: 100%;
+      &--text {
+        font-size: 12px;
+      }
+      & img {
+        height: 1.5em;
+      }
+    }
+    &__unread {
+      background-color: hsl(211, 100%, 60%);
+    }
+    &__clear {
+      background-color: hsl(211, 80%, 40%);
+    }
+  }
+
   &__icon {
     border-radius: 50%;
     width: 1em;
