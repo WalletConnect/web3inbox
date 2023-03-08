@@ -2211,10 +2211,10 @@
     "@walletconnect/window-metadata" "1.0.0"
     detect-browser "5.2.0"
 
-"@walletconnect/chat-client@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.3.2.tgz#6fc4ceb7ef1207ed821d1a0ea1451f7affa96965"
-  integrity sha512-xs84upGbLtMn9Ev4z+S8e2o5bYr070gCDwK84K5AgBM8BKhAexz956aVRUq90sKBMuKl0cCCp5lzm13eGIFKJA==
+"@walletconnect/chat-client@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.3.3.tgz#00fe0101e7a9245d6da4fbdf3224ddea6527ab35"
+  integrity sha512-KGdnlbg5D5QayFscJ4+fvY2GUtHc9JxrzF9P/HY+dEgyWgI6BGIl7sbfBXypjJu4WiMqXO+y/WrrDy9eNefyZA==
   dependencies:
     "@noble/ed25519" "^1.7.1"
     "@walletconnect/core" "^2.3.3"
