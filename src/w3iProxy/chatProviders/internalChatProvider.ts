@@ -202,10 +202,14 @@ export default class InternalChatProvider implements W3iChatProvider {
       throw new Error(this.formatClientRelatedError('register'))
     }
 
+    console.log('internalChatProvider > register > account:', params.account)
+
     return this.chatClient.register({
       ...params,
       onSign: async message => {
         this.emitter.emit('chat_signature_requested', { message })
+
+        console.log('Currently in the onSign method')
 
         return new Promise(resolve => {
           this.emitter.once('chat_signature_delivered', ({ signature }: { signature: string }) => {

@@ -13,12 +13,19 @@ import { UnsubscribeModal } from './components/notifications/NotificationsLayout
 import AuthProtectedPage from './components/utils/AuthProtectedPage'
 import W3iContext from './contexts/W3iContext/context'
 import { useMobileResponsiveGrid, useModals } from './utils/hooks'
+import { signatureModalService } from './utils/store'
 import { truncate } from './utils/string'
+import { SignatureModal } from './pages/Login/SignatureModal'
 
 const App = () => {
-  const { chatClientProxy } = useContext(W3iContext)
-  const { isProfileModalOpen, isShareModalOpen, isPreferencesModalOpen, isUnsubscribeModalOpen } =
-    useModals()
+  const { chatClientProxy, userPubkey, registeredKey, registerMessage } = useContext(W3iContext)
+  const {
+    isProfileModalOpen,
+    isShareModalOpen,
+    isPreferencesModalOpen,
+    isUnsubscribeModalOpen,
+    isSignatureModalOpen
+  } = useModals()
 
   const ref = useMobileResponsiveGrid()
 
@@ -52,6 +59,14 @@ const App = () => {
     }
   }, [chatClientProxy])
 
+  useEffect(() => {
+    if (userPubkey && !registeredKey && registerMessage) {
+      signatureModalService.openModal()
+    } else {
+      signatureModalService.closeModal()
+    }
+  }, [userPubkey, registeredKey, registerMessage])
+
   return (
     <AuthProtectedPage>
       <div ref={ref} className="App">
@@ -64,6 +79,9 @@ const App = () => {
             {isShareModalOpen && <Share />}
             {isPreferencesModalOpen && <PreferencesModal />}
             {isUnsubscribeModalOpen && <UnsubscribeModal />}
+            {isSignatureModalOpen && registerMessage && (
+              <SignatureModal message={registerMessage} />
+            )}
           </Fragment>
         )}
       </div>

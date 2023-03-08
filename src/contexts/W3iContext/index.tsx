@@ -45,18 +45,17 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   useEffect(() => {
     const account = new URLSearchParams(search).get('account')
 
-    console.log('In account useEffect')
     if (account) {
-      console.log('In account useEffect > settingla', account)
       setUserPubkey(account)
+      setRegistered(null)
     }
   }, [search, setUserPubkey])
 
   useEffect(() => {
     const sub = chatClient?.observe('chat_account_change', {
       next: ({ account }) => {
-        console.log('Setting in observer')
         setUserPubkey(account)
+        setRegistered(null)
       }
     })
 
@@ -65,6 +64,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
   useEffect(() => {
     const handleRegistration = async () => {
+      console.log('HANDLING REGISTRATION')
       if (chatClient && userPubkey) {
         try {
           const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
