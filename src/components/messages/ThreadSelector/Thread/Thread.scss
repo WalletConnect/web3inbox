@@ -1,3 +1,85 @@
+// .Thread {
+//   display: flex;
+//   align-items: center;
+//   gap: 0.5em;
+//   width: 100%;
+
+//   cursor: pointer;
+
+//   outline: none;
+//   border: none;
+
+//   background: linear-gradient(92.29deg, #19324d 0%, rgba(25, 50, 77, 0.5) 100%);
+//   border-radius: 10px;
+
+//   padding: 0.75em;
+
+//   &Wrapper {
+//     display: flex;
+//     align-items: center;
+//     position: relative;
+//   }
+
+//   &Actions {
+//     position: absolute;
+//     left: -1.25em;
+//     transform: translateX(-100%);
+//     display: grid;
+//     grid-template-columns: repeat(2, minmax(0, 1fr));
+//     align-items: center;
+//     justify-content: flex-end;
+//     position: absolute;
+//     width: 150px;
+//     height: 100%;
+//     border-radius: 0 5px 5px 0;
+//     overflow: hidden;
+//     &__clear,
+//     &__unread {
+//       outline: none;
+//       border: none;
+//       display: flex;
+//       flex-direction: column;
+//       align-items: center;
+//       justify-content: center;
+//       gap: 3px;
+//       height: 100%;
+//       &--text {
+//         font-size: 12px;
+//       }
+//       & img {
+//         height: 1.5em;
+//       }
+//     }
+//     &__unread {
+//       background-color: hsl(211, 100%, 60%);
+//     }
+//     &__clear {
+//       background-color: hsl(211, 80%, 40%);
+//     }
+//   }
+
+//   &__icon {
+//     border-radius: 50%;
+//     width: 1em;
+//     height: 1em;
+//     background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+//       radial-gradient(
+//         70.19% 70.19% at 64.96% 24.36%,
+//         #faf8fe 2.08%,
+//         #ffdfc8 6.25%,
+//         #ffc633 23.44%,
+//         #f99c59 42.71%,
+//         #acb8ca 68.75%,
+//         #958f9d 82.29%,
+//         #797176 100%
+//       );
+//   }
+
+//   &__peer-name {
+//     font-weight: bold;
+//   }
+// }
+
 .Thread {
   display: flex;
   align-items: center;
@@ -13,50 +95,6 @@
   border-radius: 10px;
 
   padding: 0.75em;
-
-  &Wrapper {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-
-  &Actions {
-    position: absolute;
-    left: -1.25em;
-    transform: translateX(-100%);
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: center;
-    justify-content: flex-end;
-    position: absolute;
-    width: 150px;
-    height: 100%;
-    border-radius: 0 5px 5px 0;
-    overflow: hidden;
-    &__clear,
-    &__unread {
-      outline: none;
-      border: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      height: 100%;
-      &--text {
-        font-size: 12px;
-      }
-      & img {
-        height: 1.5em;
-      }
-    }
-    &__unread {
-      background-color: hsl(211, 100%, 60%);
-    }
-    &__clear {
-      background-color: hsl(211, 80%, 40%);
-    }
-  }
 
   &__icon {
     border-radius: 50%;
