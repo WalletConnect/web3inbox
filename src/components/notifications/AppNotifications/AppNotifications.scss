@@ -24,8 +24,17 @@
     height: 100%;
     border-radius: 0 5px 5px 0;
     padding-right: 1em;
+    @media only screen and (min-width: 700px) {
+      padding-right: 2em;
+      left: 1em;
+    }
     & button:last-child {
       border-radius: 0 5px 5px 0;
+    }
+    @media only screen and (min-width: 700px) {
+      & button:first-child {
+        border-radius: 5px 0 0 5px;
+      }
     }
     &__clear,
     &__unread {
@@ -55,7 +64,7 @@
 
   &__list {
     padding: 0 calc(1.25em - 0.4em) 0 calc(0.75em - 0.4em);
-    overflow-x: hidden;
+    // overflow-x: hidden;
   }
   &__item {
     position: relative;
