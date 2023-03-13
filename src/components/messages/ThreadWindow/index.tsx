@@ -118,6 +118,8 @@ const ThreadWindow: React.FC = () => {
             message={message}
             index={i}
             peer={peer}
+            previousMessageAccount={messages[i - 1]?.authorAccount}
+            nextMessageAccount={messages[i + 1]?.authorAccount}
             messages={messages}
           />
         ))}
