@@ -16,6 +16,7 @@
   }
 
   &__messages {
+    height: 100%;
     overflow-y: auto;
     display: flex;
     max-height: 75vh;
