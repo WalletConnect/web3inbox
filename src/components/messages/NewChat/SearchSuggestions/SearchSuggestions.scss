@@ -1,0 +1,34 @@
+.SearchSuggestions {
+  background-color: var(--bg-color-2);
+  display: flex;
+  gap: 1em;
+  border-radius: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 14px -6px rgba(0, 0, 0, 0.12), 0px 10px 32px -4px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  color: var(--fg-color-1);
+
+  &__suggestion {
+    &:first-child {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
+    cursor: pointer;
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    font-weight: 800;
+    overflow: hidden;
+    padding: 0.5em;
+
+    &:hover {
+      background-color: hsla(211, 90%, 50%, 0.5);
+    }
+  }
+}

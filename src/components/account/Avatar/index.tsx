@@ -14,7 +14,7 @@ import Divider from '../../general/Divider'
 import './Avatar.scss'
 
 interface AvatarProps {
-  address?: `0x${string}`
+  address?: string
   width: number | string
   height: number | string
   hasProfileDropdown?: boolean
@@ -25,10 +25,11 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
   const { setUserPubkey } = useContext(W3iContext)
   const ref = useRef(null)
   const navigate = useNavigate()
-  const { data: ensName } = useEnsName({ address })
-  const { data: ensAvatar } = useEnsAvatar({ address })
+  const addressOrEnsDomain = address as `0x${string}` | undefined
+  const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
+  const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
   const { data: balance } = useBalance({
-    address: address ? address : undefined
+    address: addressOrEnsDomain ? addressOrEnsDomain : undefined
   })
   const { disconnect } = useDisconnect()
   const handleToggleProfileDropdown = useCallback(
