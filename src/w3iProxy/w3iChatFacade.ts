@@ -12,7 +12,7 @@ import type {
 } from './chatProviders/types'
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
-import { distinct, filter, ReplaySubject } from 'rxjs'
+import { distinct, filter, from, ReplaySubject, take, timeout } from 'rxjs'
 // eslint-disable-next-line no-duplicate-imports
 import { fromEvent } from 'rxjs'
 import { ONE_DAY } from '@walletconnect/time'
@@ -55,28 +55,33 @@ class W3iChatFacade implements W3iChat {
   private handleMessagePublishing() {
     // Stop trying to resend the message after 3 tries.
     this.messageReplaySubject.pipe(filter(params => params.count < 3)).subscribe(params => {
-      this.provider
-        .message(params)
-        .then(() => {
-          console.log('Successfully published')
-          this.emitter.emit('chat_message_sent', {
-            ...params
+      from(this.provider.message(params))
+        .pipe(
+          timeout({
+            first: 3000
           })
-        })
-        .catch(() => {
-          console.log('Failed publishing')
-          /*
-           * Create arbitrary delay.
-           * The timestamp is updated to be the current time.
-           */
-          const timeDiff = Date.now() - params.originalTimestamp
-          setTimeout(() => {
-            this.messageReplaySubject.next({
-              ...params,
-              count: params.count + 1,
-              timestamp: Date.now()
+        )
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.emitter.emit('chat_message_sent', {
+              ...params
             })
-          }, timeDiff * 2)
+          },
+          error: () => {
+            /*
+             * Create arbitrary delay.
+             * The timestamp is updated to be the current time.
+             */
+            const timeDiff = Date.now() - params.originalTimestamp
+            setTimeout(() => {
+              this.messageReplaySubject.next({
+                ...params,
+                count: params.count + 1,
+                timestamp: Date.now()
+              })
+            }, timeDiff * 2)
+          }
         })
     })
   }

@@ -5,6 +5,7 @@ import type ChatClient from '@walletconnect/chat-client'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { W3iChatProvider } from './types'
 import { watchAccount, getAccount } from '@wagmi/core'
+import { interval } from 'rxjs'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -14,6 +15,36 @@ export default class InternalChatProvider implements W3iChatProvider {
 
   public constructor(emitter: EventEmitter) {
     this.emitter = emitter
+
+    interval(2000).subscribe(() => {
+      if (!this.chatClient) {
+        return
+      }
+
+      console.log(
+        'Currently connected: ',
+        this.chatClient.core.relayer.connected,
+        'Connecting: ',
+        this.chatClient.core.relayer.connecting
+      )
+
+      if (!this.chatClient.core.relayer.connected) {
+        this.chatClient.ping({ topic: '' }).then(() => {
+          console.log('Pinged')
+        })
+      }
+
+      /*
+       * This.chatClient.core.relayer.provider.connection
+       *   .close()
+       *   .catch(() => null)
+       *   .then(() => {
+       *     console.log('Closed and opened')
+       *
+       *     Return this.chatClient?.core.relayer.provider.connection.open()
+       *   })
+       */
+    })
 
     watchAccount(account => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
