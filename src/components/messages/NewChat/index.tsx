@@ -95,6 +95,8 @@ const NewChat: React.FC = () => {
     [query, isInviting]
   )
 
+  console.log('Searchhh')
+
   return (
     <Fragment>
       <div className="NewChat">
