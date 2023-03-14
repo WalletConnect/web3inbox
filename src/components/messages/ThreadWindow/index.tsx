@@ -12,6 +12,7 @@ import { MessageItem } from '../Message/MessageItem'
 import MessageBox from '../MessageBox'
 import './ThreadWindow.scss'
 import { noop } from 'rxjs'
+import { AnimatePresence } from 'framer-motion'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -112,17 +113,19 @@ const ThreadWindow: React.FC = () => {
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />
         {isInvite && <InviteMessage peer={peerAddress} status={inviteStatus} />}
-        {messages.map((message, i) => (
-          <MessageItem
-            key={message.timestamp}
-            message={message}
-            index={i}
-            peer={peer}
-            previousMessageAccount={messages[i - 1]?.authorAccount}
-            nextMessageAccount={messages[i + 1]?.authorAccount}
-            messages={messages}
-          />
-        ))}
+        <AnimatePresence initial={false}>
+          {messages.map((message, i) => (
+            <MessageItem
+              key={message.timestamp}
+              message={message}
+              index={i}
+              peer={peer}
+              messages={messages}
+              nextMessageAccount={messages[i + 1]?.authorAccount}
+              previousMessageAccount={messages[i - 1]?.authorAccount}
+            />
+          ))}
+        </AnimatePresence>
       </div>
       <MessageBox
         onSuccessfulSend={refreshMessages}

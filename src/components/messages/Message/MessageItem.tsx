@@ -22,11 +22,11 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
   previousMessageAccount,
   nextMessageAccount
 }) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   }, [messagesEndRef, messages])
 
@@ -62,19 +62,15 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
     return isDifferentDay || hasTwoHoursGap
   }, [index, messages, message.timestamp, isFirstMessage])
 
-  return isLastMessage ? (
-    <div className={`Message__container--${localMessageType} Message--recent`} ref={messagesEndRef}>
+  return (
+    <div
+      className={`Message__container--${localMessageType} Message__recent--${
+        message.authorAccount === peer ? 'peer' : 'sender'
+      }`}
+      ref={isLastMessage ? messagesEndRef : null}
+    >
       {isDateTagDisplayed && <MessageDateTag timestamp={message.timestamp} />}
       <Message text={message.message} from={message.authorAccount === peer ? 'peer' : 'sender'} />
-    </div>
-  ) : (
-    <div className={`Message__container--${localMessageType}`}>
-      {isDateTagDisplayed && <MessageDateTag timestamp={message.timestamp} />}
-      <Message
-        key={message.timestamp}
-        text={message.message}
-        from={message.authorAccount === peer ? 'peer' : 'sender'}
-      />
     </div>
   )
 }
