@@ -35,6 +35,8 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ name, onNameClick
   useEffect(() => {
     if (name.length > 2) {
       queryEnsSubgraph(name).then(setDomains)
+    } else {
+      setDomains([])
     }
   }, [name, setDomains])
 
