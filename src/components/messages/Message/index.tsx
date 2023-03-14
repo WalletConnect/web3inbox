@@ -18,7 +18,7 @@ const Message: React.FC<MessageProps> = ({ text, from }) => {
             transformOrigin: `bottom ${from === 'peer' ? 'left' : 'right'}`
           }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.25 }}
+          transition={{ type: 'spring', stiffness: 240, damping: 24 }}
           exit={{ opacity: 0, transition: { duration: 0.15 } }}
           className="Message__bubble"
         >
