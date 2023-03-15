@@ -10,6 +10,9 @@
   .Textarea {
     flex-grow: 1;
     border-radius: 16px 16px 6px 16px;
+    &:focus-within {
+      outline: 1px solid var(--accent-color-1);
+    }
   }
 
   &__send {
