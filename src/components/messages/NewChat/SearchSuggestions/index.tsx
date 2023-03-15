@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import debounce from 'lodash.debounce'
 import { isValidEnsDomain } from '../../../../utils/address'
 import Avatar from '../../../account/Avatar'
 import './SearchSuggestions.scss'
@@ -32,7 +31,6 @@ const queryEnsSubgraph = async (beginsWith: string) => {
 
 const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ name, onNameClick }) => {
   const [domains, setDomains] = useState<string[]>([])
-  const [debouncedName, setDebouncedName] = useState<string>('')
 
   useEffect(() => {
     if (name.length > 2) {
@@ -40,7 +38,7 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ name, onNameClick
     } else {
       setDomains([])
     }
-  }, [debouncedName, setDomains])
+  }, [name, setDomains])
 
   const shouldDisplay = name.length > 2 && !isValidEnsDomain(name) && domains.length > 0
 

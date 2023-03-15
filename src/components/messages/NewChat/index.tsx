@@ -11,13 +11,21 @@ import SendIcon from '../../general/Icon/SendIcon'
 import Input from '../../general/Input'
 import MobileHeading from '../../layout/MobileHeading'
 import SearchSuggestions from './SearchSuggestions'
+import debounce from 'lodash.debounce'
 import './NewChat.scss'
+import { truncate } from '../../../utils/string'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
   const { mode } = useContext(SettingsContext)
   const [isInviting, setIsInviting] = useState(false)
   const [query, setQuery] = useState('')
+
+  const [debouncedQuery, setDebouncedQuery] = useState<string>('')
+  const debouncedUpdateQuery = useCallback(debounce(setDebouncedQuery, 300), [setDebouncedQuery])
+
+  const [doesExistOnKeyserver, setDoesExistOnKeyserver] = useState(false)
+  const [searchingOnKeyserver, setSearchingOnKeyserver] = useState(false)
   const isMobile = useIsMobile()
   const themeColors = useColorModeValue(mode)
   const toastTheme = useMemo(() => {
@@ -41,6 +49,35 @@ const NewChat: React.FC = () => {
 
     return `eip155:1:${inviteeAddress}`
   }
+
+  useEffect(() => {
+    debouncedUpdateQuery(query)
+  }, [query, debouncedUpdateQuery])
+
+  useEffect(() => {
+    const checkIfOnKeyserver = async () => {
+      if (!(isValidAddressOrEnsDomain(debouncedQuery) && chatClientProxy)) {
+        return false
+      }
+
+      try {
+        setSearchingOnKeyserver(true)
+        const resolvedAddress = await resolveAddress(debouncedQuery)
+        await chatClientProxy.resolve({ account: resolvedAddress })
+        setSearchingOnKeyserver(false)
+
+        return true
+      } catch {
+        setSearchingOnKeyserver(false)
+
+        return false
+      }
+    }
+
+    checkIfOnKeyserver().then(doesExist => {
+      setDoesExistOnKeyserver(doesExist)
+    })
+  }, [debouncedQuery])
 
   const invite = useCallback(
     async (inviteeAddress: string) => {
@@ -90,10 +127,23 @@ const NewChat: React.FC = () => {
     [userPubkey, chatClientProxy]
   )
 
-  const isDisabled = useMemo(
-    () => !isValidAddressOrEnsDomain(query) || isInviting,
-    [query, isInviting]
-  )
+  const disabledReason = useMemo(() => {
+    const truncatedQuery = truncate(query, 20)
+
+    if (!isValidAddressOrEnsDomain(query)) {
+      return `Address ${truncatedQuery} not valid ethereum domain name or address`
+    } else if (isInviting) {
+      return `Currently inviting ${truncatedQuery}`
+    } else if (!doesExistOnKeyserver) {
+      return `${truncatedQuery} not registered on chat keyserver`
+    } else if (query.length === 0) {
+      return `Need to provide an address to invite`
+    }
+
+    return ``
+  }, [query, isInviting, doesExistOnKeyserver])
+
+  const isDisabled = useMemo(() => Boolean(disabledReason), [disabledReason])
 
   return (
     <Fragment>
@@ -101,7 +151,7 @@ const NewChat: React.FC = () => {
         {isMobile ? (
           <div className="NewChat__mobile-header">
             <div className="NewChat__search-box">
-              <SearchSuggestions onNameClick={name => setQuery(name)} name={query} />
+              <SearchSuggestions onNameClick={name => setQuery(name)} name={debouncedQuery} />
               <BackButton backTo="/messages">Chat</BackButton>
               <MobileHeading size="small">New Chat</MobileHeading>
               <div className="NewChat__search-box__actions">
@@ -109,7 +159,6 @@ const NewChat: React.FC = () => {
                   customType="action-icon"
                   className="NewChat__search-box__actions__invite"
                   onClick={() => {
-                    console.log('Button clicked.')
                     invite(query)
                   }}
                   disabled={isDisabled}
@@ -128,7 +177,7 @@ const NewChat: React.FC = () => {
           </div>
         ) : (
           <div className="NewChat__search-box">
-            <SearchSuggestions onNameClick={name => setQuery(name)} name={query} />
+            <SearchSuggestions onNameClick={name => setQuery(name)} name={debouncedQuery} />
             <Input
               value={query}
               placeholder="ENS Username (vitalik.eth) / Wallet Address (0x423…)"
@@ -136,12 +185,15 @@ const NewChat: React.FC = () => {
             />
             <Button
               onClick={() => {
-                console.log('Button clicked.')
                 invite(query)
               }}
+              title={disabledReason}
               disabled={isDisabled}
             >
-              {isInviting ? `Inviting...` : `Send Invite`}
+              {
+                // eslint-disable-next-line no-nested-ternary
+                isInviting ? `Inviting...` : searchingOnKeyserver ? `Looking up...` : `Send Invite`
+              }
             </Button>
           </div>
         )}
