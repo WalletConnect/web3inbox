@@ -6,7 +6,8 @@
   height: 100%;
   align-items: center;
   gap: 1em;
-  min-width: 17.5em;
+  max-width: 17.5em;
+  min-width: 16em;
 
   @media only screen and (max-width: 700px) {
     padding: 0 1.25em 1.25em 1.25em;
@@ -56,6 +57,7 @@
 
   &__link {
     display: flex;
+    gap: 0.5em;
 
     @media only screen and (max-width: 700px) {
       background: var(--accent-color-1);
@@ -74,8 +76,8 @@
         background: var(--accent-color-1);
         border-radius: 50%;
         padding: 0.5em;
-        width: 2.25em;
-        height: 2.25em;
+        width: 1.75em;
+        height: 1.75em;
       }
     }
   }

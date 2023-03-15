@@ -119,7 +119,7 @@ const NewChat: React.FC = () => {
             <div className="NewChat__input-container">
               <Input
                 value={query}
-                placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"
+                placeholder="ENS Username (vitalik.eth) / Wallet Address (0x423…)"
                 onChange={e => setQuery(e.target.value)}
               />
             </div>
@@ -128,7 +128,7 @@ const NewChat: React.FC = () => {
           <div className="NewChat__search-box">
             <Input
               value={query}
-              placeholder="ENS Username (vitalik.eth)⠀ ⠀ ⠀Wallet Address (0x423…)"
+              placeholder="ENS Username (vitalik.eth) / Wallet Address (0x423…)"
               onChange={e => setQuery(e.target.value)}
             />
             <Button
