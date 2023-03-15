@@ -56,6 +56,7 @@
 
   &__link {
     display: flex;
+    gap: 0.5em;
 
     @media only screen and (max-width: 700px) {
       background: var(--accent-color-1);
@@ -74,8 +75,8 @@
         background: var(--accent-color-1);
         border-radius: 50%;
         padding: 0.5em;
-        width: 2.25em;
-        height: 2.25em;
+        width: 1.75em;
+        height: 1.75em;
       }
     }
   }
