@@ -43,14 +43,13 @@
   }
 
   &__bubble {
-    max-width: 50%;
     overflow-wrap: break-word;
     padding: 0.4em 0.8em;
     will-change: border-radius;
     transition: border-radius ease 0.2s;
     max-width: 80%;
     @media only screen and (min-width: 700px) {
-        max-width: unset;
+      max-width: 50%;
     }
   }
 
