@@ -9,18 +9,44 @@ interface IMessageItemProps {
   message: ChatClientTypes.Message
   index: number
   peer?: string
+  previousMessageAccount?: string
+  nextMessageAccount?: string
 }
-export const MessageItem: React.FC<IMessageItemProps> = ({ messages, message, index, peer }) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+type ILocalMessageType = 'first' | 'last' | 'same' | 'solo'
+export const MessageItem: React.FC<IMessageItemProps> = ({
+  messages,
+  message,
+  index,
+  peer,
+  previousMessageAccount,
+  nextMessageAccount
+}) => {
+  const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   }, [messagesEndRef, messages])
 
   const isFirstMessage = useMemo(() => index === 0, [index])
   const isLastMessage = useMemo(() => messages.length - 1 === index, [index, messages])
+
+  const localMessageType = useMemo<ILocalMessageType>(() => {
+    if (
+      message.authorAccount !== previousMessageAccount &&
+      message.authorAccount !== nextMessageAccount
+    ) {
+      return 'solo'
+    } else if (message.authorAccount !== previousMessageAccount) {
+      return 'first'
+    } else if (message.authorAccount !== nextMessageAccount) {
+      return 'last'
+    }
+
+    return 'same'
+  }, [messages])
 
   const isDateTagDisplayed = useMemo(() => {
     if (isFirstMessage) {
@@ -36,19 +62,15 @@ export const MessageItem: React.FC<IMessageItemProps> = ({ messages, message, in
     return isDifferentDay || hasTwoHoursGap
   }, [index, messages, message.timestamp, isFirstMessage])
 
-  return isLastMessage ? (
-    <div ref={messagesEndRef}>
+  return (
+    <div
+      className={`Message__container--${localMessageType} Message__recent--${
+        message.authorAccount === peer ? 'peer' : 'sender'
+      }`}
+      ref={isLastMessage ? messagesEndRef : null}
+    >
       {isDateTagDisplayed && <MessageDateTag timestamp={message.timestamp} />}
       <Message text={message.message} from={message.authorAccount === peer ? 'peer' : 'sender'} />
-    </div>
-  ) : (
-    <div>
-      {isDateTagDisplayed && <MessageDateTag timestamp={message.timestamp} />}
-      <Message
-        key={message.timestamp}
-        text={message.message}
-        from={message.authorAccount === peer ? 'peer' : 'sender'}
-      />
     </div>
   )
 }
