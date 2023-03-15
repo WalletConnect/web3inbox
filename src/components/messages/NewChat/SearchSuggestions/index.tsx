@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { isValidEnsDomain } from '../../../../utils/address'
 import Avatar from '../../../account/Avatar'
 import './SearchSuggestions.scss'
@@ -9,11 +9,9 @@ interface SearchSuggestionsProps {
   onNameClick: (name: string) => void
 }
 
-const queryEnsSubgraph = debounce(async (beginsWith: string) => {
+const queryEnsSubgraph = async (beginsWith: string) => {
   const query = {
-    query:
-      '\n  query lookup($name: String!) {\n    domains(\n      first: 4\n      where: { name_starts_with: $name, resolvedAddress_not: null }\n      orderBy: labelName\n      orderDirection: asc\n    ) {\n      name\n      resolver {\n        addr {\n          id\n        }\n      }\n      owner {\n        id\n      }\n    }\n  }\n',
-    variables: { name: beginsWith }
+    query: `  query lookup {    domains(      first: 4      where: { name_starts_with: "${beginsWith}", resolvedAddress_not: null }      orderBy: labelName      orderDirection: asc    ) {      name      resolver {        addr {          id        }      }      owner {        id      }    }  }`
   }
 
   const url = 'https://api.thegraph.com/subgraphs/name/ensdomains/ens'
@@ -31,20 +29,27 @@ const queryEnsSubgraph = debounce(async (beginsWith: string) => {
   const names = json.data.domains.map(domain => domain.name)
 
   return names
-}, 200)
+}
 
 const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ name, onNameClick }) => {
   const [domains, setDomains] = useState<string[]>([])
+  const [debouncedName, setDebouncedName] = useState<string>('')
+
+  const debouncedUpdateName = useCallback(debounce(setDebouncedName, 300), [setDebouncedName])
 
   useEffect(() => {
-    if (name.length > 2) {
-      queryEnsSubgraph(name)?.then(setDomains)
+    debouncedUpdateName(name)
+  }, [name, debouncedUpdateName])
+
+  useEffect(() => {
+    if (debouncedName.length > 2) {
+      queryEnsSubgraph(debouncedName).then(setDomains)
     } else {
       setDomains([])
     }
-  }, [name, setDomains])
+  }, [debouncedName, setDomains])
 
-  const shouldDisplay = name.length > 2 && !isValidEnsDomain(name)
+  const shouldDisplay = name.length > 2 && !isValidEnsDomain(name) && domains.length > 0
 
   return (
     <div style={{ display: shouldDisplay ? 'flex' : 'none' }} className="SearchSuggestions">
