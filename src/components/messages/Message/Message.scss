@@ -48,6 +48,9 @@
     padding: 0.4em 0.8em;
     will-change: border-radius;
     transition: border-radius ease 0.2s;
+    @media only screen and (max-width: 700px) {
+      max-width: 80%;
+    }
   }
 
   &__from-peer &__bubble {
