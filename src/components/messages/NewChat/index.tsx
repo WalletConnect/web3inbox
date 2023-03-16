@@ -1,5 +1,5 @@
 import { fetchEnsAddress } from '@wagmi/core'
-import React, { Fragment, useCallback, useContext, useMemo, useState } from 'react'
+import React, { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import W3iContext from '../../../contexts/W3iContext/context'
@@ -10,6 +10,7 @@ import Button from '../../general/Button'
 import SendIcon from '../../general/Icon/SendIcon'
 import Input from '../../general/Input'
 import MobileHeading from '../../layout/MobileHeading'
+import SearchSuggestions from './SearchSuggestions'
 import './NewChat.scss'
 
 const NewChat: React.FC = () => {
@@ -100,6 +101,7 @@ const NewChat: React.FC = () => {
         {isMobile ? (
           <div className="NewChat__mobile-header">
             <div className="NewChat__search-box">
+              <SearchSuggestions onNameClick={name => setQuery(name)} name={query} />
               <BackButton backTo="/messages">Chat</BackButton>
               <MobileHeading size="small">New Chat</MobileHeading>
               <div className="NewChat__search-box__actions">
@@ -126,6 +128,7 @@ const NewChat: React.FC = () => {
           </div>
         ) : (
           <div className="NewChat__search-box">
+            <SearchSuggestions onNameClick={name => setQuery(name)} name={query} />
             <Input
               value={query}
               placeholder="ENS Username (vitalik.eth) / Wallet Address (0x423…)"

@@ -6,11 +6,19 @@
   }
   &__search-box {
     width: 100%;
+    position: relative;
     display: flex;
     align-items: center;
     gap: 1em;
     @media screen and (max-width: 700px) {
       justify-content: space-between;
+    }
+
+    .SearchSuggestions {
+      position: absolute;
+      width: 90%;
+      top: 300%;
+      left: 5%;
     }
 
     &__actions {
@@ -32,5 +40,14 @@
   }
   &__input-container {
     padding: 0 calc(1.25em - 0.4em);
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .NewChat {
+    .SearchSuggestions {
+      top: 125%;
+      left: unset;
+    }
   }
 }
