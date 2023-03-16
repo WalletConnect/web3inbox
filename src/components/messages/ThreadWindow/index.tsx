@@ -13,6 +13,7 @@ import MessageBox from '../MessageBox'
 import './ThreadWindow.scss'
 import { noop } from 'rxjs'
 import { AnimatePresence } from 'framer-motion'
+import ThreadDropdown from './ThreadDropdown'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -20,7 +21,7 @@ const ThreadWindow: React.FC = () => {
   const [topic, setTopic] = useState('')
   const { search } = useLocation()
   const { data: ensName } = useEnsName({ address: peerAddress })
-  const { chatClientProxy, userPubkey, sentInvites } = useContext(W3iContext)
+  const { chatClientProxy, userPubkey, threads, sentInvites } = useContext(W3iContext)
   const nav = useNavigate()
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
@@ -53,6 +54,7 @@ const ThreadWindow: React.FC = () => {
       .then(allChatMessages => {
         setMessages(allChatMessages)
       })
+      .catch(() => nav('/'))
   }, [chatClientProxy, search, setMessages, topic])
 
   useEffect(() => {
@@ -103,12 +105,25 @@ const ThreadWindow: React.FC = () => {
     refreshMessages()
   }, [refreshMessages, chatClientProxy])
 
+  if (!(threads.map(thread => thread.topic).includes(topic) || topic.includes('invite'))) {
+    nav('/')
+  }
+
   return (
     <div className="ThreadWindow">
-      <div className="ThreadWindow__peer">
-        <BackButton backTo="/messages" />
-        <Avatar address={peerAddress} width="1.25em" height="1.25em" />
-        <span>{ensName ?? truncate(peer ?? '', 10)}</span>
+      <div className="ThreadWindow__header">
+        <div className="ThreadWindow__peer">
+          <BackButton backTo="/messages" />
+          <Avatar address={peerAddress} width="1.25em" height="1.25em" />
+          <span>{ensName ?? truncate(peer ?? '', 10)}</span>
+        </div>
+        <ThreadDropdown
+          dropdownPlacement="bottomLeft"
+          h="1em"
+          w="2em"
+          threadId={topic}
+          closeDropdown={() => {}}
+        />
       </div>
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />
