@@ -1,13 +1,12 @@
 .ThreadDropdown {
   width: 100%;
   button {
-    display: grid;
-    grid-template-columns: 10% 90%;
+    display: flex;
+    gap: 1em;
     width: 100%;
     align-items: center;
     height: 2.625em;
     padding: 0.625em 0.8125em;
-    gap: 0.375em;
     height: 2.3125em;
     border: none;
     border-radius: 10px;

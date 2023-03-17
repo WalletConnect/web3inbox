@@ -24,7 +24,6 @@ const ThreadDropdown: React.FC<ThreadDropdownProps> = ({
   const onClickLeave = useCallback(
     (thread: string) => {
       if (chatClientProxy) {
-        console.log('Removing: ', thread)
         chatClientProxy.leave({ topic: thread }).then(refreshThreadsAndInvites)
         closeDropdown()
       }
