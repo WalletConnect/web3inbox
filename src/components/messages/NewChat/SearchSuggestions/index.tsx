@@ -10,7 +10,21 @@ interface SearchSuggestionsProps {
 
 const queryEnsSubgraph = async (beginsWith: string) => {
   const query = {
-    query: `  query lookup {    domains(      first: 4      where: { name_starts_with: "${beginsWith}", resolvedAddress_not: null }      orderBy: labelName      orderDirection: asc    ) {      name      resolver {        addr {          id        }      }      owner {        id      }    }  }`
+    query: `
+		query lookup {
+			domains(first: 4, where: {name_starts_with: "${beginsWith}", resolvedAddress_not: null}, orderBy: labelName, orderDirection: asc) {
+				name
+				resolver {
+					addr {
+						id
+					}
+				}
+				owner {
+					id
+				}
+			}
+		}
+	`
   }
   const url = 'https://api.thegraph.com/subgraphs/name/ensdomains/ens'
 
