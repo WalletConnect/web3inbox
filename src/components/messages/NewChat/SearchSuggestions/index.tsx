@@ -1,5 +1,4 @@
-import debounce from 'lodash.debounce'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isValidEnsDomain } from '../../../../utils/address'
 import Avatar from '../../../account/Avatar'
 import './SearchSuggestions.scss'
@@ -11,9 +10,22 @@ interface SearchSuggestionsProps {
 
 const queryEnsSubgraph = async (beginsWith: string) => {
   const query = {
-    query: `  query lookup {    domains(      first: 4      where: { name_starts_with: "${beginsWith}", resolvedAddress_not: null }      orderBy: labelName      orderDirection: asc    ) {      name      resolver {        addr {          id        }      }      owner {        id      }    }  }`
+    query: `
+		query lookup {
+			domains(first: 4, where: {name_starts_with: "${beginsWith}", resolvedAddress_not: null}, orderBy: labelName, orderDirection: asc) {
+				name
+				resolver {
+					addr {
+						id
+					}
+				}
+				owner {
+					id
+				}
+			}
+		}
+	`
   }
-
   const url = 'https://api.thegraph.com/subgraphs/name/ensdomains/ens'
 
   const result = await fetch(url, {
@@ -33,21 +45,14 @@ const queryEnsSubgraph = async (beginsWith: string) => {
 
 const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ name, onNameClick }) => {
   const [domains, setDomains] = useState<string[]>([])
-  const [debouncedName, setDebouncedName] = useState<string>('')
-
-  const debouncedUpdateName = useCallback(debounce(setDebouncedName, 300), [setDebouncedName])
 
   useEffect(() => {
-    debouncedUpdateName(name)
-  }, [name, debouncedUpdateName])
-
-  useEffect(() => {
-    if (debouncedName.length > 2) {
-      queryEnsSubgraph(debouncedName).then(setDomains)
+    if (name.length > 2) {
+      queryEnsSubgraph(name).then(setDomains)
     } else {
       setDomains([])
     }
-  }, [debouncedName, setDomains])
+  }, [name, setDomains])
 
   const shouldDisplay = name.length > 2 && !isValidEnsDomain(name) && domains.length > 0
 

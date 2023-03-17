@@ -30,7 +30,6 @@ const Web3InboxFeatures = [
 
 const Login: React.FC = () => {
   const { userPubkey, registeredKey, registerMessage } = useContext(W3iContext)
-  console.table({ userPubkey, registeredKey, registerMessage })
   const nav = useNavigate()
 
   useEffect(() => {
