@@ -1,0 +1,30 @@
+.ThreadDropdown {
+  width: 100%;
+  button {
+    display: flex;
+    gap: 1em;
+    width: 100%;
+    align-items: center;
+    height: 2.625em;
+    padding: 0.625em 0.8125em;
+    height: 2.3125em;
+    border: none;
+    border-radius: 10px;
+    background: none;
+    color: var(--fg-color-1);
+    cursor: pointer;
+    transition: background 500ms ease;
+
+    &:hover {
+      background-color: var(--bg-color-4);
+    }
+    img {
+      width: 1em;
+      height: 1em;
+    }
+    span {
+      text-align: start;
+      line-height: 1.0625em;
+    }
+  }
+}
