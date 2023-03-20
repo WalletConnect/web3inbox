@@ -21,29 +21,10 @@ export default class InternalChatProvider implements W3iChatProvider {
         return
       }
 
-      console.log(
-        'Currently connected: ',
-        this.chatClient.core.relayer.connected,
-        'Connecting: ',
-        this.chatClient.core.relayer.connecting
-      )
-
       if (!this.chatClient.core.relayer.connected) {
-        this.chatClient.ping({ topic: '' }).then(() => {
-          console.log('Pinged')
-        })
+        // Ping empty topic to trigger reconnection mechanism
+        this.chatClient.ping({ topic: '' })
       }
-
-      /*
-       * This.chatClient.core.relayer.provider.connection
-       *   .close()
-       *   .catch(() => null)
-       *   .then(() => {
-       *     console.log('Closed and opened')
-       *
-       *     Return this.chatClient?.core.relayer.provider.connection.open()
-       *   })
-       */
     })
 
     watchAccount(account => {
