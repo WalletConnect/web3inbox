@@ -9,7 +9,12 @@ const SettingsLayout: React.FC = () => {
     <Fragment>
       <div
         className="Main"
-        style={{ display: 'block', gridArea: isMobile ? 'target-selector' : 'main' }}
+        style={{
+          display: 'block',
+          gridArea: isMobile
+            ? 'target-selector'
+            : 'target-selector / target-selector / target-selector / main'
+        }}
       >
         <Outlet />
       </div>
