@@ -190,15 +190,6 @@ class W3iChatFacade implements W3iChat {
     })
 
     return Promise.resolve()
-    /*
-     * 1. It calls next() on the replay subject with params
-     * 2. A subscriber attempts to publish the message using provider
-     * 3a. On success, a `chat_message_sent` is emitted.
-     * 3b. On failure, it recalls next on the replay subject
-     * Note: a scan pipe maintains count, when over a certain limit,
-     * it stops re-quing the message.
-     *
-     */
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {
