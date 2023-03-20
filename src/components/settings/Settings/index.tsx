@@ -44,14 +44,14 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
  */
 
 const Settings: React.FC = () => {
-  const { mode, newContacts, updateSettings: updateTheme } = useContext(SettingsContext)
+  const { mode, newContacts, updateSettings } = useContext(SettingsContext)
 
   const handleThemeChange = useCallback(
     (modeId: SettingsContextSimpleState['mode']) => {
-      updateTheme({ mode: modeId })
+      updateSettings({ mode: modeId })
       localStorage.setItem('w3i-theme', modeId)
     },
-    [updateTheme]
+    [updateSettings]
   )
 
   return (
@@ -119,7 +119,7 @@ const Settings: React.FC = () => {
               key={id}
               label={label}
               checked={newContacts === id}
-              onCheck={() => updateTheme({ newContacts: id })}
+              onCheck={() => updateSettings({ newContacts: id })}
             />
           ))}
           <div className="Settings__section-helper-text">
