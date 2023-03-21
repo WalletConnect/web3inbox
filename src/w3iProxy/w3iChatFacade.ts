@@ -17,6 +17,7 @@ import { fromEvent } from 'rxjs'
 import { ONE_DAY } from '@walletconnect/time'
 import AndroidChatProvider from './chatProviders/androidChatProvider'
 import iOSChatProvider from './chatProviders/iosChatProvider'
+import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 
 type ReplayMessage = ChatClientTypes.Message & {
   id: string
