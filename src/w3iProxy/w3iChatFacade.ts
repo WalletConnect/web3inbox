@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events'
-import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type ChatClient from '@walletconnect/chat-client'
 // eslint-disable-next-line no-duplicate-imports
 import type { ChatClientTypes } from '@walletconnect/chat-client'
@@ -12,7 +11,7 @@ import type {
 } from './chatProviders/types'
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
-import { distinct, filter, from, ReplaySubject, take, timeout } from 'rxjs'
+import { distinct, filter, from, ReplaySubject, throwError, timeout } from 'rxjs'
 // eslint-disable-next-line no-duplicate-imports
 import { fromEvent } from 'rxjs'
 import { ONE_DAY } from '@walletconnect/time'
@@ -37,6 +36,7 @@ class W3iChatFacade implements W3iChat {
   private readonly emitter: EventEmitter
   private readonly observables: ObservableMap
   private readonly provider: ExternalChatProvider | InternalChatProvider
+  private readonly messageSendTimeout = 5000
   private account?: string
 
   public constructor(providerName: W3iChatFacade['providerName']) {
@@ -58,10 +58,10 @@ class W3iChatFacade implements W3iChat {
       from(this.provider.message(params))
         .pipe(
           timeout({
-            first: 3000
+            first: this.messageSendTimeout,
+            with: () => throwError(() => new Error())
           })
         )
-        .pipe(take(1))
         .subscribe({
           next: () => {
             this.emitter.emit('chat_message_sent', {
@@ -73,14 +73,13 @@ class W3iChatFacade implements W3iChat {
              * Create arbitrary delay.
              * The timestamp is updated to be the current time.
              */
-            const timeDiff = Date.now() - params.originalTimestamp
             setTimeout(() => {
               this.messageReplaySubject.next({
                 ...params,
                 count: params.count + 1,
                 timestamp: Date.now()
               })
-            }, timeDiff * 2)
+            }, this.messageSendTimeout * 1.25)
           }
         })
     })

@@ -204,7 +204,15 @@ export default class InternalChatProvider implements W3iChatProvider {
       throw new Error(this.formatClientRelatedError('message'))
     }
 
-    await this.chatClient.message(params)
+    const isConnected = this.chatClient.core.relayer.provider.connection.connected
+
+    console.log({ isConnected })
+
+    try {
+      await this.chatClient.message(params)
+    } catch {
+      throw new Error('Message failed')
+    }
 
     return Promise.resolve()
   }
