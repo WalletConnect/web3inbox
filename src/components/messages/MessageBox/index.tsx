@@ -7,10 +7,9 @@ import './MessageBox.scss'
 interface MessageBoxProps {
   topic: string
   authorAccount: string
-  onSuccessfulSend: () => void
 }
 
-const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccessfulSend }) => {
+const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount }) => {
   const [messageText, setMessageText] = useState('')
   const { chatClientProxy } = useContext(W3iContext)
 
@@ -24,9 +23,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount, onSuccess
       message: messageText,
       timestamp: new Date().getTime()
     })
-    onSuccessfulSend()
     setMessageText('')
-  }, [messageText, authorAccount, topic, onSuccessfulSend])
+  }, [messageText, authorAccount, topic])
 
   useEffect(() => {
     const onKeydown = (keydownEvent: KeyboardEvent) => {

@@ -61,7 +61,7 @@ const ThreadWindow: React.FC = () => {
     if (!chatClientProxy) {
       return noop
     }
-    const sub = chatClientProxy.observe('chat_message', {
+    const receivedMessageSub = chatClientProxy.observe('chat_message', {
       next: messageEvent => {
         /*
          * Ignore message events from other threads
@@ -74,6 +74,10 @@ const ThreadWindow: React.FC = () => {
 
         refreshMessages()
       }
+    })
+
+    const sentMessageSub = chatClientProxy.observe('chat_message_sent', {
+      next: refreshMessages
     })
 
     const inviteAcceptedSub = chatClientProxy.observe('chat_invite_accepted', {
@@ -97,7 +101,8 @@ const ThreadWindow: React.FC = () => {
     return () => {
       inviteAcceptedSub.unsubscribe()
       inviteRejectedSub.unsubscribe()
-      sub.unsubscribe()
+      receivedMessageSub.unsubscribe()
+      sentMessageSub.unsubscribe()
     }
   }, [chatClientProxy, refreshMessages, topic, nav, peer])
 
@@ -142,11 +147,7 @@ const ThreadWindow: React.FC = () => {
           ))}
         </AnimatePresence>
       </div>
-      <MessageBox
-        onSuccessfulSend={refreshMessages}
-        authorAccount={`eip155:1:${userPubkey ?? ''}`}
-        topic={topic}
-      />
+      <MessageBox authorAccount={`eip155:1:${userPubkey ?? ''}`} topic={topic} />
     </div>
   )
 }

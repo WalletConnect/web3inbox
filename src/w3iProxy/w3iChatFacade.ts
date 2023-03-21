@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events'
-import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type ChatClient from '@walletconnect/chat-client'
+// eslint-disable-next-line no-duplicate-imports
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { ChatFacadeEvents } from './listenerTypes'
 import type {
@@ -11,9 +11,19 @@ import type {
 } from './chatProviders/types'
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
+import { distinct, filter, from, ReplaySubject, throwError, timeout } from 'rxjs'
+// eslint-disable-next-line no-duplicate-imports
 import { fromEvent } from 'rxjs'
+import { ONE_DAY } from '@walletconnect/time'
 import AndroidChatProvider from './chatProviders/androidChatProvider'
 import iOSChatProvider from './chatProviders/iosChatProvider'
+import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
+
+type ReplayMessage = ChatClientTypes.Message & {
+  id: string
+  originalTimestamp: number
+  count: number
+}
 
 class W3iChatFacade implements W3iChat {
   private readonly providerMap = {
@@ -23,9 +33,11 @@ class W3iChatFacade implements W3iChat {
     ios: iOSChatProvider
   }
   private readonly providerName: keyof typeof this.providerMap
+  private readonly messageReplaySubject: ReplaySubject<ReplayMessage>
   private readonly emitter: EventEmitter
   private readonly observables: ObservableMap
   private readonly provider: ExternalChatProvider | InternalChatProvider
+  private readonly messageSendTimeout = 5000
   private account?: string
 
   public constructor(providerName: W3iChatFacade['providerName']) {
@@ -35,6 +47,58 @@ class W3iChatFacade implements W3iChat {
 
     const ProviderClass = this.providerMap[this.providerName]
     this.provider = new ProviderClass(this.emitter)
+
+    // Discuss expiry of messages
+    this.messageReplaySubject = new ReplaySubject(undefined, ONE_DAY / 2)
+    this.handleMessagePublishing()
+  }
+
+  private handleMessagePublishing() {
+    // Stop trying to resend the message after 3 tries.
+    this.messageReplaySubject.pipe(filter(params => params.count < 3)).subscribe(params => {
+      from(this.provider.message(params))
+        .pipe(
+          timeout({
+            first: this.messageSendTimeout,
+            with: () => throwError(() => new Error())
+          })
+        )
+        .subscribe({
+          next: () => {
+            this.emitter.emit('chat_message_sent', {
+              ...params
+            })
+          },
+          error: () => {
+            /*
+             * Create arbitrary delay.
+             * The timestamp is updated to be the current time.
+             */
+            setTimeout(() => {
+              this.messageReplaySubject.next({
+                ...params,
+                count: params.count + 1,
+                timestamp: Date.now()
+              })
+            }, this.messageSendTimeout * 1.25)
+          }
+        })
+    })
+  }
+
+  /*
+   * Messages that are not in the chat client due to them not being
+   * successfully sent.
+   */
+  public getUnsentMessages() {
+    const messages: ChatClientTypes.Message[] = []
+    const sub = this.messageReplaySubject
+      .pipe(distinct<ReplayMessage, string>(({ id }) => id))
+      .subscribe(messages.push)
+
+    sub.unsubscribe()
+
+    return messages
   }
 
   public initInternalProvider(chatClient: ChatClient) {
@@ -118,11 +182,14 @@ class W3iChatFacade implements W3iChat {
     return this.provider.ping(params)
   }
   public async message(params: ChatClientTypes.Message) {
-    return this.provider.message(params).then(() => {
-      this.emitter.emit('chat_message_sent', {
-        ...params
-      })
+    this.messageReplaySubject.next({
+      ...params,
+      originalTimestamp: params.timestamp,
+      id: `${params.message}${params.timestamp}${params.authorAccount}`,
+      count: 0
     })
+
+    return Promise.resolve()
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {

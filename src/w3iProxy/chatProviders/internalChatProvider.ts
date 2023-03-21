@@ -5,6 +5,7 @@ import type ChatClient from '@walletconnect/chat-client'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { W3iChatProvider } from './types'
 import { watchAccount, getAccount } from '@wagmi/core'
+import { interval } from 'rxjs'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -14,6 +15,17 @@ export default class InternalChatProvider implements W3iChatProvider {
 
   public constructor(emitter: EventEmitter) {
     this.emitter = emitter
+
+    interval(2000).subscribe(() => {
+      if (!this.chatClient) {
+        return
+      }
+
+      if (!this.chatClient.core.relayer.connected) {
+        // Ping empty topic to trigger reconnection mechanism
+        this.chatClient.ping({ topic: '' })
+      }
+    })
 
     watchAccount(account => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -192,7 +204,15 @@ export default class InternalChatProvider implements W3iChatProvider {
       throw new Error(this.formatClientRelatedError('message'))
     }
 
-    await this.chatClient.message(params)
+    const isConnected = this.chatClient.core.relayer.provider.connection.connected
+
+    console.log({ isConnected })
+
+    try {
+      await this.chatClient.message(params)
+    } catch {
+      throw new Error('Message failed')
+    }
 
     return Promise.resolve()
   }
