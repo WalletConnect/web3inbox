@@ -114,4 +114,16 @@ export default class ExternalChatProvider implements W3iChatProvider {
   public async resolve(params: { account: string }) {
     return this.postToExternalProvider('resolve', params)
   }
+
+  public async muteContact({ topic }: { topic: string }) {
+    return this.postToExternalProvider('muteContact', { topic })
+  }
+
+  public async unmuteContact({ topic }: { topic: string }) {
+    return this.postToExternalProvider('unmuteContact', { topic })
+  }
+
+  public async getMutedContacts() {
+    return this.postToExternalProvider('getMutedContacts')
+  }
 }

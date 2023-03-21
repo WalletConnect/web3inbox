@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type ChatClient from '@walletconnect/chat-client'
+// eslint-disable-next-line no-duplicate-imports
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { ChatFacadeEvents } from './listenerTypes'
 import type {
@@ -37,9 +38,9 @@ class W3iChatFacade implements W3iChat {
     this.provider = new ProviderClass(this.emitter)
   }
 
-  public initInternalProvider(chatClient: ChatClient) {
+  public async initInternalProvider(chatClient: ChatClient) {
     const internalProvider = this.provider as InternalChatProvider
-    internalProvider.initState(chatClient)
+    await internalProvider.initState(chatClient)
   }
 
   // Method to be used by external providers. Not internal use.
@@ -135,6 +136,18 @@ class W3iChatFacade implements W3iChat {
 
   public async getMessages(params: { topic: string }) {
     return this.provider.getMessages(params)
+  }
+
+  public async muteContact({ topic }: { topic: string }) {
+    return this.provider.muteContact({ topic })
+  }
+
+  public async unmuteContact({ topic }: { topic: string }) {
+    return this.provider.unmuteContact({ topic })
+  }
+
+  public async getMutedContacts() {
+    return this.provider.getMutedContacts()
   }
 
   public observe<K extends keyof ChatFacadeEvents>(eventName: K, observer: ChatEventObserver<K>) {

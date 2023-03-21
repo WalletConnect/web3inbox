@@ -10,12 +10,16 @@ import MoneyWithWings from '../../../assets/MoneyWithWings.png'
 import type { SettingsContextSimpleState } from '../../../contexts/SettingsContext/context'
 // eslint-disable-next-line no-duplicate-imports
 import SettingsContext from '../../../contexts/SettingsContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
+import { useModals } from '../../../utils/hooks'
+import { contactsModalService } from '../../../utils/store'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import ArrowRightIcon from '../../general/Icon/ArrowRightIcon'
 import IconWrapper from '../../general/Icon/IconWrapper/IconWrapper'
 import Radio from '../../general/Radio'
 // import Select from '../../general/Select/Select'
 import Toggle from '../../general/Toggle'
+import ContactsModal from '../ContactsModal'
 import './Settings.scss'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
@@ -45,6 +49,8 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
 
 const Settings: React.FC = () => {
   const { mode, newContacts, updateSettings } = useContext(SettingsContext)
+  const { isContactModalOpen } = useModals()
+  const { chatClientProxy } = useContext(W3iContext)
 
   const handleThemeChange = useCallback(
     (modeId: SettingsContextSimpleState['mode']) => {
@@ -138,7 +144,16 @@ const Settings: React.FC = () => {
             can help weed out spam.
           </div>
 					*/}
-          <div className="Settings__setting">
+          <div
+            className="Settings__setting"
+            onClick={() => {
+              chatClientProxy?.getMutedContacts().then(({ length }) => {
+                if (length) {
+                  contactsModalService.openModal()
+                }
+              })
+            }}
+          >
             <div>Muted contacts</div>
             <div className="Settings__toggle-dropdown">
               <CircleBadge>0</CircleBadge>
@@ -176,6 +191,7 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>*/}
+      {isContactModalOpen && <ContactsModal status="muted" />}
     </div>
   )
 }

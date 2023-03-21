@@ -38,6 +38,7 @@
     "@typescript-eslint/eslint-plugin": "^5.45.1",
     "@typescript-eslint/parser": "^5.45.1",
     "@vitejs/plugin-react": "^2.2.0",
+    "@walletconnect/types": "^2.5.1",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.3",
