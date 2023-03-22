@@ -16,6 +16,12 @@
     max-width: 15em;
   }
 
+  &__text {
+    @media screen and (max-width: 700px) {
+      max-width: none;
+    }
+  }
+
   &__peer__mobile {
     width: 100%;
     display: flex;

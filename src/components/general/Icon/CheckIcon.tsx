@@ -1,11 +1,6 @@
-import React, { useContext } from 'react'
-import SettingsContext from '../../../contexts/SettingsContext/context'
-import { useColorModeValue } from '../../../utils/hooks'
+import React from 'react'
 
 const CheckIcon: React.FC = () => {
-  const { mode } = useContext(SettingsContext)
-  const themeColors = useColorModeValue(mode)
-
   return (
     <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
