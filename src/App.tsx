@@ -16,6 +16,7 @@ import { useMobileResponsiveGrid, useModals } from './utils/hooks'
 import { signatureModalService } from './utils/store'
 import { truncate } from './utils/string'
 import { SignatureModal } from './pages/Login/SignatureModal'
+import TransitionDiv from './components/general/TransitionDiv'
 
 const App = () => {
   const { chatClientProxy, userPubkey, registeredKey, registerMessage } = useContext(W3iContext)
@@ -69,7 +70,7 @@ const App = () => {
 
   return (
     <AuthProtectedPage>
-      <div ref={ref} className="App">
+      <TransitionDiv ref={ref} className="App">
         {chatClientProxy && (
           <Fragment>
             <Sidebar />
@@ -84,7 +85,7 @@ const App = () => {
             )}
           </Fragment>
         )}
-      </div>
+      </TransitionDiv>
     </AuthProtectedPage>
   )
 }

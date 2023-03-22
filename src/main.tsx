@@ -20,6 +20,7 @@ import W3iContextProvider from './contexts/W3iContext'
 import './index.css'
 import Login from './pages/Login'
 import './styles/fonts.css'
+import { AnimatePresence } from 'framer-motion'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -39,28 +40,30 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <SettingsContextProvider>
         <BrowserRouter>
           <W3iContextProvider>
-            <Routes>
-              <Route path="/login" element={<Login />} />
+            <AnimatePresence mode="wait">
+              <Routes>
+                <Route path="/login" element={<Login />} />
 
-              <Route path="/" element={<App />}>
-                <Route path="notifications" element={<NotificationsLayout />}>
-                  <Route index element={<Web3InboxPlaceholder />} />
-                  <Route path="/notifications/new-app" element={<AppExplorer />} />
-                  <Route path="/notifications/:topic" element={<AppNotifications />} />
+                <Route path="/" element={<App />}>
+                  <Route path="notifications" element={<NotificationsLayout />}>
+                    <Route index element={<Web3InboxPlaceholder />} />
+                    <Route path="/notifications/new-app" element={<AppExplorer />} />
+                    <Route path="/notifications/:topic" element={<AppNotifications />} />
+                  </Route>
+                  <Route path="messages" element={<MessagesLayout />}>
+                    <Route index element={<Web3InboxPlaceholder />} />
+                    <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
+                    <Route path="/messages/new-chat" element={<NewChat />} />
+                    <Route path="/messages/chat-invites" element={<ChatInvites />} />
+                  </Route>
+                  <Route path="settings" element={<SettingsLayout />}>
+                    <Route index element={<Settings />} />
+                  </Route>
                 </Route>
-                <Route path="messages" element={<MessagesLayout />}>
-                  <Route index element={<Web3InboxPlaceholder />} />
-                  <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
-                  <Route path="/messages/new-chat" element={<NewChat />} />
-                  <Route path="/messages/chat-invites" element={<ChatInvites />} />
-                </Route>
-                <Route path="settings" element={<SettingsLayout />}>
-                  <Route index element={<Settings />} />
-                </Route>
-              </Route>
 
-              <Route index element={<Navigate to={`/messages`} />} />
-            </Routes>
+                <Route index element={<Navigate to={`/messages`} />} />
+              </Routes>
+            </AnimatePresence>
           </W3iContextProvider>
         </BrowserRouter>
       </SettingsContextProvider>

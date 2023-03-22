@@ -12,6 +12,7 @@ import W3iContext from '../../contexts/W3iContext/context'
 import { signatureModalService } from '../../utils/store'
 import './Login.scss'
 import { SignatureModal } from './SignatureModal'
+import TransitionDiv from '../../components/general/TransitionDiv'
 
 const Web3InboxFeatures = [
   {
@@ -46,7 +47,7 @@ const Login: React.FC = () => {
   }, [userPubkey, registeredKey, registerMessage])
 
   return (
-    <div className="Login">
+    <TransitionDiv className="Login">
       <div className="Login__container">
         <div className="Login__displays">
           {[
@@ -86,7 +87,7 @@ const Login: React.FC = () => {
         <img src={Logo} alt="WC Logo" />
         <img src={ByWalletConnect} alt="WC Logo" />
       </div>
-    </div>
+    </TransitionDiv>
   )
 }
 
