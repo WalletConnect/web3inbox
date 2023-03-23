@@ -50,6 +50,7 @@
     "@typescript-eslint/no-unsafe-return": "off",
     "@typescript-eslint/naming-convention": "off",
     "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/lines-around-comment": "off",
     "@typescript-eslint/consistent-type-imports": ["error", { "prefer": "type-imports" }],
     "@typescript-eslint/prefer-readonly-parameter-types": "off",
     "@typescript-eslint/no-magic-numbers": "off",

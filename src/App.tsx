@@ -16,6 +16,7 @@ import { useMobileResponsiveGrid, useModals } from './utils/hooks'
 import { signatureModalService } from './utils/store'
 import { truncate } from './utils/string'
 import { SignatureModal } from './pages/Login/SignatureModal'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 
 const App = () => {
   const { chatClientProxy, userPubkey, registeredKey, registerMessage } = useContext(W3iContext)
@@ -69,22 +70,31 @@ const App = () => {
 
   return (
     <AuthProtectedPage>
-      <div ref={ref} className="App">
-        {chatClientProxy && (
-          <Fragment>
-            <Sidebar />
-            <Outlet />
-            <ToastContainer />
-            {isProfileModalOpen && <Profile />}
-            {isShareModalOpen && <Share />}
-            {isPreferencesModalOpen && <PreferencesModal />}
-            {isUnsubscribeModalOpen && <UnsubscribeModal />}
-            {isSignatureModalOpen && registerMessage && (
-              <SignatureModal message={registerMessage} />
-            )}
-          </Fragment>
-        )}
-      </div>
+      <LazyMotion features={domAnimation}>
+        <m.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 25 }}
+          transition={{ duration: 0.2, ease: 'easeInOut', delay: 0.1 }}
+          ref={ref}
+          className="App"
+        >
+          {chatClientProxy && (
+            <Fragment>
+              <Sidebar />
+              <Outlet />
+              <ToastContainer />
+              {isProfileModalOpen && <Profile />}
+              {isShareModalOpen && <Share />}
+              {isPreferencesModalOpen && <PreferencesModal />}
+              {isUnsubscribeModalOpen && <UnsubscribeModal />}
+              {isSignatureModalOpen && registerMessage && (
+                <SignatureModal message={registerMessage} />
+              )}
+            </Fragment>
+          )}
+        </m.div>
+      </LazyMotion>
     </AuthProtectedPage>
   )
 }
