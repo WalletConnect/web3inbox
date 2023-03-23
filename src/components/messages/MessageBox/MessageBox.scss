@@ -17,14 +17,27 @@
   }
 
   &__send {
-    background: transparent;
     cursor: pointer;
     grid-area: send-button;
     display: grid;
     place-items: center;
     border-radius: 50%;
 
+    background: var(--accent-color-1);
+    border: solid 1px var(--accent-color-1);
+    color: var(--fg-color-1);
+
+    transition: color 0.1s;
+
     height: 3em;
     width: 3em;
+
+    &:disabled {
+      white-space: nowrap;
+      background-color: var(--sender-bubble-bg);
+      border-color: var(--border-color-2);
+      color: #585f5f;
+      cursor: not-allowed;
+    }
   }
 }

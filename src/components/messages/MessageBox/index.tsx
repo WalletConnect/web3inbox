@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import SendIcon from '../../../assets/SendFilled.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import Textarea from '../../general/Textarea'
 import './MessageBox.scss'
+import SendIcon from '../../general/Icon/SendIcon'
 
 interface MessageBoxProps {
   topic: string
@@ -52,8 +52,13 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount }) => {
         value={messageText}
         onChange={({ target }) => setMessageText(target.value)}
       />
-      <button onClick={onSend} className="MessageBox__send">
-        <img src={SendIcon} alt="Send" />
+      <button
+        onClick={onSend}
+        title={messageText === '' ? 'Message cannot be empty' : 'Send message'}
+        disabled={messageText === ''}
+        className="MessageBox__send"
+      >
+        <SendIcon />
       </button>
     </div>
   )
