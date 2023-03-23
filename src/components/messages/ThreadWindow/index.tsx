@@ -18,8 +18,8 @@ import ThreadDropdown from './ThreadDropdown'
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
-  const [topic, setTopic] = useState('')
   const { search } = useLocation()
+  const [topic, setTopic] = useState(() => new URLSearchParams(search).get('topic') ?? '')
   const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey, threads, sentInvites } = useContext(W3iContext)
   const nav = useNavigate()
@@ -117,13 +117,7 @@ const ThreadWindow: React.FC = () => {
           <Avatar address={peerAddress} width="1.25em" height="1.25em" />
           <span>{ensName ?? truncate(peer ?? '', 10)}</span>
         </div>
-        <ThreadDropdown
-          dropdownPlacement="bottomLeft"
-          h="1em"
-          w="2em"
-          threadId={topic}
-          closeDropdown={() => {}}
-        />
+        <ThreadDropdown dropdownPlacement="bottomLeft" h="1em" w="2em" threadId={topic} />
       </div>
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />

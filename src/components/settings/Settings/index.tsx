@@ -1,7 +1,7 @@
 import cn from 'classnames'
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ArtistPalette from '../../../assets/ArtistPalette.png'
-// import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
+// Import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
 import DarkCity from '../../../assets/DarkCity.png'
 import HalfHalfCity from '../../../assets/HalfHalfCity.png'
 import Handshake from '../../../assets/Handshake.png'
@@ -17,8 +17,6 @@ import CircleBadge from '../../general/Badge/CircleBadge'
 import ArrowRightIcon from '../../general/Icon/ArrowRightIcon'
 import IconWrapper from '../../general/Icon/IconWrapper/IconWrapper'
 import Radio from '../../general/Radio'
-// import Select from '../../general/Select/Select'
-import Toggle from '../../general/Toggle'
 import ContactsModal from '../ContactsModal'
 import './Settings.scss'
 
@@ -50,7 +48,8 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
 const Settings: React.FC = () => {
   const { mode, newContacts, updateSettings } = useContext(SettingsContext)
   const { isContactModalOpen } = useModals()
-  const { chatClientProxy } = useContext(W3iContext)
+  const { chatClientProxy, threads } = useContext(W3iContext)
+  const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
 
   const handleThemeChange = useCallback(
     (modeId: SettingsContextSimpleState['mode']) => {
@@ -59,6 +58,29 @@ const Settings: React.FC = () => {
     },
     [updateSettings]
   )
+
+  useEffect(() => {
+    if (!chatClientProxy) {
+      return
+    }
+
+    chatClientProxy.getMutedContacts().then(mContacts => {
+      setMutedContacts(
+        mContacts
+          .filter(mutedContact => {
+            const address = threads.find(t => t.topic === mutedContact)?.peerAccount
+
+            return Boolean(address)
+          })
+          .map(mutedContact => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const address = threads.find(t => t.topic === mutedContact)!.peerAccount
+
+            return { address, topic: mutedContact }
+          })
+      )
+    })
+  }, [chatClientProxy, threads])
 
   return (
     <div className="Settings">
@@ -156,7 +178,7 @@ const Settings: React.FC = () => {
           >
             <div>Muted contacts</div>
             <div className="Settings__toggle-dropdown">
-              <CircleBadge>0</CircleBadge>
+              <CircleBadge>{mutedContacts.length}</CircleBadge>
               <ArrowRightIcon />
             </div>
           </div>
@@ -191,7 +213,13 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>*/}
-      {isContactModalOpen && <ContactsModal status="muted" />}
+      {isContactModalOpen && (
+        <ContactsModal
+          status="muted"
+          mutedContacts={mutedContacts}
+          setMutedContacts={setMutedContacts}
+        />
+      )}
     </div>
   )
 }

@@ -1,50 +1,78 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext } from 'react'
+import capitalize from 'lodash/capitalize'
+import SettingsContext from '../../../contexts/SettingsContext/context'
 import W3iContext from '../../../contexts/W3iContext/context'
+import SearchSvg from '../../../assets/Search.svg'
+import { useColorModeValue } from '../../../utils/hooks'
 import { contactsModalService } from '../../../utils/store'
+import Button from '../../general/Button'
+import CrossIcon from '../../general/Icon/CrossIcon'
 import { Modal } from '../../general/Modal/Modal'
 import PeerAndMessage from '../../messages/PeerAndMessage'
+import './ContactsModal.scss'
+import Input from '../../general/Input'
 
 interface ContactsModalProps {
   status: 'blocked' | 'muted'
+  mutedContacts: { topic: string; address: string }[]
+  setMutedContacts: React.Dispatch<
+    React.SetStateAction<
+      {
+        topic: string
+        address: string
+      }[]
+    >
+  >
 }
 
-const ContactsModal: React.FC<ContactsModalProps> = ({ status }) => {
-  const { chatClientProxy, threads } = useContext(W3iContext)
-  const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
+const ContactsModal: React.FC<ContactsModalProps> = ({
+  status,
+  mutedContacts,
+  setMutedContacts
+}) => {
+  const { chatClientProxy } = useContext(W3iContext)
+  const { mode } = useContext(SettingsContext)
+  const themeColors = useColorModeValue(mode)
 
-  useEffect(() => {
-    if (!chatClientProxy) {
-      return
-    }
+  const handleContactAction = useCallback(
+    async (topic: string) => {
+      if (status === 'muted') {
+        await chatClientProxy?.unmuteContact({ topic })
 
-    chatClientProxy.getMutedContacts().then(mContacts => {
-      setMutedContacts(
-        mContacts
-          .filter(mutedContact => {
-            const address = threads.find(t => t.topic === mutedContact)?.peerAccount
-
-            return Boolean(address)
-          })
-          .map(mutedContact => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const address = threads.find(t => t.topic === mutedContact)!.peerAccount
-
-            return { address, topic: mutedContact }
-          })
-          .filter(contact => Boolean(contact))
-      )
-    })
-  }, [chatClientProxy, threads])
+        setMutedContacts(currentlyMutedContacts =>
+          currentlyMutedContacts.filter(contacts => topic !== contacts.topic)
+        )
+      }
+    },
+    [status]
+  )
 
   return (
     <Modal onToggleModal={contactsModalService.toggleModal}>
       <div className="ContactsModal">
-        <div className="ContactsModal__title">{status} contacts</div>
-        <div className="ContactsModal__search"></div>
-        <div className="ContactsModal__contacts">
+        <div className="ContactsModal__header">
+          <h2>{capitalize(status)} contacts</h2>
+          <Button
+            className="ContactsModal__close"
+            customType="action-icon"
+            onClick={contactsModalService.closeModal}
+          >
+            <CrossIcon fillColor={themeColors['--fg-color-1']} />
+          </Button>
+        </div>
+        <div className="ContactsModal__content">
+          <Input
+            type="search"
+            placeholder="Search"
+            icon={SearchSvg}
+            containerClassName="ContactsModal__content__search"
+          />
           {mutedContacts.map(contact => (
-            <div className="ContactsModal__contact">
+            <div key={contact.topic} className="ContactsModal__content__contact">
               <PeerAndMessage peer={contact.address} message="" withAvatar={true} />
+              <Button customType="action" onClick={async () => handleContactAction(contact.topic)}>
+                {status === 'muted' ? 'Unmute' : 'Unblock'}
+              </Button>
             </div>
           ))}
         </div>

@@ -1,6 +1,7 @@
 .Radio {
   display: flex;
   gap: 0.3em;
+  align-items: center;
 
   input[type='radio'] {
     min-width: 1.75em;
