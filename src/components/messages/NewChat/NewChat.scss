@@ -14,6 +14,13 @@
       justify-content: space-between;
     }
 
+    .Button:disabled {
+      white-space: nowrap;
+      background-color: var(--sender-bubble-bg);
+      border-color: var(--border-color-2);
+      color: var(--fg-color-3);
+    }
+
     .SearchSuggestions {
       position: absolute;
       width: 90%;
