@@ -34,7 +34,10 @@ const ThreadDropdown: React.FC<ThreadDropdownProps> = ({
   return (
     <Dropdown btnShape="square" h={h} dropdownPlacement={dropdownPlacement} w={w}>
       <div className="ThreadDropdown">
-        <button onClick={() => onClickLeave(threadId)}>
+        <button
+          className="ThreadDropdown__button ThreadDropdown__button--leave"
+          onClick={() => onClickLeave(threadId)}
+        >
           <CrossIcon fillColor="hsla(5, 85%, 60%, 1)" />
           Leave Thread
         </button>
