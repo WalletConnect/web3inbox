@@ -18,8 +18,10 @@ import ThreadDropdown from './ThreadDropdown'
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
-  const [topic, setTopic] = useState('')
   const { search } = useLocation()
+
+  const topic = new URLSearchParams(search).get('topic') ?? ''
+  console.log(`Pulling a topic from search query: ${search}, result: ${topic}`)
   const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey, threads, sentInvites } = useContext(W3iContext)
   const nav = useNavigate()
@@ -37,10 +39,6 @@ const ThreadWindow: React.FC = () => {
         : 'approved',
     [topic]
   )
-
-  useEffect(() => {
-    setTopic(new URLSearchParams(search).get('topic') ?? '')
-  }, [search])
 
   const refreshMessages = useCallback(() => {
     console.log(
