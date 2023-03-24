@@ -37,7 +37,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (userPubkey && registeredKey) {
-      const path = next ? next : '/'
+      const path = next ?? '/'
       nav(path)
     }
 
