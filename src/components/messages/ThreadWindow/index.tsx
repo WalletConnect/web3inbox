@@ -47,11 +47,14 @@ const ThreadWindow: React.FC = () => {
       return
     }
 
+    console.log(`Retreiving messages for topic ${topic}`)
+
     chatClientProxy
       .getMessages({
         topic
       })
       .then(allChatMessages => {
+        console.log(`Retreived messages: ${allChatMessages.map(m => m.timestamp).join(',')} `)
         setMessages(allChatMessages)
       })
       .catch(() => {
@@ -59,8 +62,9 @@ const ThreadWindow: React.FC = () => {
         nav('/')
       })
 
-    if (!topic.includes('invite')) {
-      chatClientProxy.getThreads().then(retreivedThreads => {
+    if (!topic.includes('invite') && userPubkey) {
+      // Not using `threads` to avoid a data race.
+      chatClientProxy.getThreads({ account: `eip155:1:${userPubkey}` }).then(retreivedThreads => {
         if (!retreivedThreads.get(topic)) {
           console.error('topic not in threads, redirecting to root')
           nav('/')
@@ -120,7 +124,7 @@ const ThreadWindow: React.FC = () => {
 
   useEffect(() => {
     refreshMessages()
-  }, [refreshMessages, chatClientProxy])
+  }, [refreshMessages])
 
   return (
     <div className="ThreadWindow">
