@@ -109,13 +109,13 @@ const ThreadWindow: React.FC = () => {
 
     const inviteAcceptedSub = chatClientProxy.observe('chat_invite_accepted', {
       next: inviteAcceptedEvent => {
-        const { inviteeAccount } = inviteAcceptedEvent.params.invite
         console.log(
-          `Accepted invite event, isInvite: ${isInvite ? 'YES' : 'NO'}, inviteeAccount: ${
-            inviteAcceptedEvent.params.invite.inviteeAccount
-          }`
+          `Accepted invite event, isInvite: ${
+            isInvite ? 'YES' : 'NO'
+          }, inviteeAccount: ${JSON.stringify(inviteAcceptedEvent)}`
         )
-        if (isInvite && inviteAcceptedEvent.params.invite.inviteeAccount === peer) {
+        const { inviteeAccount } = inviteAcceptedEvent.params.invite
+        if (isInvite && inviteeAccount === peer) {
           nav(`/messages/chat/${inviteeAccount}?topic=${inviteAcceptedEvent.params.topic}`)
         }
       }
