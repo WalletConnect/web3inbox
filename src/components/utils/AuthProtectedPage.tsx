@@ -12,7 +12,7 @@ const AuthProtectedPage: React.FC<AuthProtectedPageProps> = ({ children }) => {
   const next = loc.pathname
 
   if (!userPubkey) {
-    const query = next.length > 1 ? `?next=${next}` : ''
+    const query = next.length > 1 ? `?next=${encodeURIComponent(next)}` : ''
 
     return <Navigate to={`/login${query}`} />
   }

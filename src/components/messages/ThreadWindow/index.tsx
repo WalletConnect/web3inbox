@@ -24,8 +24,6 @@ const ThreadWindow: React.FC = () => {
 
   const topic = threads.find(thread => thread.peerAccount === peer)?.topic ?? ''
 
-  console.log(`Using topic ${topic}`)
-
   const nav = useNavigate()
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
