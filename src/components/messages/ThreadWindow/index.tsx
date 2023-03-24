@@ -43,6 +43,12 @@ const ThreadWindow: React.FC = () => {
   }, [search])
 
   const refreshMessages = useCallback(() => {
+    console.log(
+      `Calling refreshMessages with topic ${topic} and a ${
+        chatClientProxy ? 'truthy' : 'falsy'
+      } client`
+    )
+
     if (!chatClientProxy || !topic) {
       return
     }
@@ -123,6 +129,7 @@ const ThreadWindow: React.FC = () => {
   }, [chatClientProxy, refreshMessages, topic, nav, peer])
 
   useEffect(() => {
+    console.log('Refresh messages useEffect')
     refreshMessages()
   }, [refreshMessages])
 
