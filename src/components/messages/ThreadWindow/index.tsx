@@ -54,7 +54,10 @@ const ThreadWindow: React.FC = () => {
       .then(allChatMessages => {
         setMessages(allChatMessages)
       })
-      .catch(() => nav('/'))
+      .catch(() => {
+        console.error('getMessages failed, redirecting to root')
+        nav('/')
+      })
   }, [chatClientProxy, search, setMessages, topic])
 
   useEffect(() => {
@@ -111,6 +114,7 @@ const ThreadWindow: React.FC = () => {
   }, [refreshMessages, chatClientProxy])
 
   if (!(threads.map(thread => thread.topic).includes(topic) || topic.includes('invite'))) {
+    console.error('topic not in threads, redirecting to root')
     nav('/')
   }
 
