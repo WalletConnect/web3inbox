@@ -1,6 +1,6 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
@@ -22,7 +22,14 @@ const ThreadWindow: React.FC = () => {
   const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey, threads, sentInvites } = useContext(W3iContext)
 
-  const topic = threads.find(thread => thread.peerAccount === peer)?.topic ?? ''
+  const topic =
+    new URLSearchParams(search).get('topic') ??
+    threads.find(thread => thread.peerAccount === peer)?.topic ??
+    ''
+
+  if (!topic) {
+    return <Navigate to="/messages" />
+  }
 
   const nav = useNavigate()
 
