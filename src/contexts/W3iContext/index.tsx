@@ -181,6 +181,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     <W3iContext.Provider
       value={{
         chatClientProxy: chatClient,
+        chatProvider,
+        pushProvider,
         userPubkey,
         refreshThreadsAndInvites: refreshChatState,
         sentInvites,

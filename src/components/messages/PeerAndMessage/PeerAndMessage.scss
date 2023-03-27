@@ -13,7 +13,13 @@
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    max-width: 15em;
+    max-width: none;
+  }
+
+  &__text {
+    @media screen and (min-width: 700px) {
+      max-width: 15em;
+    }
   }
 
   &__peer__mobile {

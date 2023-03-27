@@ -1,16 +1,17 @@
+import { getAccount, watchAccount } from '@wagmi/core'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 // eslint-disable-next-line no-duplicate-imports
 import type ChatClient from '@walletconnect/chat-client'
+import { Core, Store } from '@walletconnect/core'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { W3iChatProvider } from './types'
-import { watchAccount, getAccount } from '@wagmi/core'
-import type { IStore, ICore } from '@walletconnect/types'
 import type { Logger } from '@walletconnect/logger'
+import type { ICore, IStore } from '@walletconnect/types'
+import type { W3iChatProvider } from './types'
 // eslint-disable-next-line no-duplicate-imports
 import { getDefaultLoggerOptions } from '@walletconnect/logger'
-import { Store, Core } from '@walletconnect/core'
 import pino from 'pino'
+import { interval } from 'rxjs'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -21,7 +22,7 @@ export default class InternalChatProvider implements W3iChatProvider {
   private readonly mutedContacts: IStore<string, { topic: string }>
   private readonly methodsListenedTo = ['chat_signature_delivered']
 
-  public constructor(emitter: EventEmitter) {
+  public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
 
     this.core = new Core()
@@ -33,6 +34,16 @@ export default class InternalChatProvider implements W3iChatProvider {
       'web3inbox',
       ({ topic }: { topic: string }) => topic
     )
+    interval(2000).subscribe(() => {
+      if (!this.chatClient) {
+        return
+      }
+
+      if (!this.chatClient.core.relayer.connected) {
+        // Ping empty topic to trigger reconnection mechanism
+        this.chatClient.ping({ topic: '' })
+      }
+    })
 
     watchAccount(account => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -213,7 +224,15 @@ export default class InternalChatProvider implements W3iChatProvider {
       throw new Error(this.formatClientRelatedError('message'))
     }
 
-    await this.chatClient.message(params)
+    const isConnected = this.chatClient.core.relayer.provider.connection.connected
+
+    console.log({ isConnected })
+
+    try {
+      await this.chatClient.message(params)
+    } catch {
+      throw new Error('Message failed')
+    }
 
     return Promise.resolve()
   }

@@ -13,11 +13,11 @@
     "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'"
   },
   "dependencies": {
-    "@walletconnect/chat-client": "^0.3.3",
-    "@walletconnect/core": "2.4.4",
-    "@walletconnect/push-client": "^0.6.1",
-    "@web3modal/ethereum": "^2.0.0-rc.2",
-    "@web3modal/react": "^2.0.0-rc.2",
+    "@walletconnect/chat-client": "^0.3.7",
+    "@walletconnect/core": "^2.5.2",
+    "@walletconnect/push-client": "^0.6.2",
+    "@web3modal/ethereum": "^2.2.2",
+    "@web3modal/react": "^2.2.2",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
     "ethers": "^5.7.2",
@@ -29,7 +29,7 @@
     "react-select": "^5.7.0",
     "react-toastify": "^9.1.1",
     "rxjs": "^7.6.0",
-    "wagmi": "^0.8.9"
+    "wagmi": "^0.12.6"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.7",
@@ -38,7 +38,7 @@
     "@typescript-eslint/eslint-plugin": "^5.45.1",
     "@typescript-eslint/parser": "^5.45.1",
     "@vitejs/plugin-react": "^2.2.0",
-    "@walletconnect/types": "^2.5.1",
+    "@walletconnect/types": "^2.5.2",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.3",
