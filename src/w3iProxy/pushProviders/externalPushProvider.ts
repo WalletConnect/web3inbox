@@ -1,8 +1,7 @@
 import type { EventEmitter } from 'events'
-import type { JsonRpcRequest, JsonRpcResult } from '@walletconnect/jsonrpc-utils'
-import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { PushClientFunctions, W3iPushProvider } from './types'
-import { ExternalCommunicator } from '../externalCommunicators/communicatorType'
+import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
 import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
@@ -36,17 +35,10 @@ export default class ExternalPushProvider implements W3iPushProvider {
     methodName: MName,
     ...params: Parameters<PushClientFunctions[MName]>
   ) {
-    return new Promise<ReturnType<PushClientFunctions[MName]>>(resolve => {
-      const message = formatJsonRpcRequest(methodName, params)
-
-      const messageListener = (
-        messageResponse: JsonRpcResult<ReturnType<PushClientFunctions[MName]>>
-      ) => {
-        resolve(messageResponse.result)
-      }
-      this.emitter.once(message.id.toString(), messageListener)
-      this.emitter.emit(methodName, message)
-    })
+    return this.communicator.postToExternalProvider<ReturnType<PushClientFunctions[MName]>>(
+      methodName,
+      params
+    )
   }
 
   public isListeningToMethodFromPostMessage(method: string) {
