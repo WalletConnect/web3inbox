@@ -11,7 +11,7 @@ Please put an `x` in the boxes that apply. You can also fill these out after cre
 - [ ] Draft PR (breaking/non-breaking change which needs more work for having a proper functionality _[Mark this PR as ready to review only when completely ready]_)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 
-# Resolves (Optional)
+# Fixes/Resolves (Optional)
 
 Please list any issues that are fixed by this PR in the format `#<issue number>`. If it fixes multiple issues, please put each issue in a separate line. If this Pull Request does not fix any issues, please delete this section.
 
