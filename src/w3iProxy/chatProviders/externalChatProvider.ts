@@ -1,11 +1,15 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
-import type { JsonRpcRequest, JsonRpcResult } from '@walletconnect/jsonrpc-utils'
-import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { ChatClientFunctions, W3iChatProvider } from './types'
+import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
+import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
+import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
+import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
 
 export default class ExternalChatProvider implements W3iChatProvider {
   protected readonly emitter: EventEmitter
+  protected readonly communicator: ExternalCommunicator
   private readonly methodsListenedTo = [
     'chat_message',
     'chat_invite',
@@ -21,25 +25,30 @@ export default class ExternalChatProvider implements W3iChatProvider {
    * We have no need to register events here like we do in internal provider
    * because the events come through the emitter anyway.
    */
-  public constructor(emitter: EventEmitter) {
+  public constructor(emitter: EventEmitter, name: string) {
     this.emitter = emitter
+
+    switch (name) {
+      case 'android':
+        this.communicator = new AndroidCommunicator(this.emitter)
+        break
+      case 'ios':
+        this.communicator = new IOSCommunicator(this.emitter)
+        break
+      default:
+        this.communicator = new JsCommunicator(this.emitter)
+        break
+    }
   }
 
   protected async postToExternalProvider<MName extends keyof ChatClientFunctions>(
     methodName: MName,
     ...params: Parameters<ChatClientFunctions[MName]>
   ) {
-    return new Promise<ReturnType<ChatClientFunctions[MName]>>(resolve => {
-      const message = formatJsonRpcRequest(methodName, params)
-
-      const messageListener = (
-        messageResponse: JsonRpcResult<ReturnType<ChatClientFunctions[MName]>>
-      ) => {
-        resolve(messageResponse.result)
-      }
-      this.emitter.once(message.id.toString(), messageListener)
-      this.emitter.emit(methodName, message)
-    })
+    return this.communicator.postToExternalProvider<ReturnType<ChatClientFunctions[MName]>>(
+      methodName,
+      params
+    )
   }
 
   public isListeningToMethodFromPostMessage(method: string) {

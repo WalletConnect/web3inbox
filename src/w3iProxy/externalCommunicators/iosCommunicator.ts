@@ -1,7 +1,7 @@
-import ExternalChatProvider from './externalChatProvider'
-import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import type { ExternalCommunicator } from './communicatorType'
+import type { EventEmitter } from 'events'
 import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
-import type { ChatClientFunctions } from './types'
+import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 
 declare global {
   interface Window {
@@ -15,18 +15,18 @@ declare global {
   }
 }
 
-export default class iOSChatProvider extends ExternalChatProvider {
-  public providerName = 'iOSChatProvider'
-  protected async postToExternalProvider<MName extends keyof ChatClientFunctions>(
-    methodName: MName,
-    ...params: Parameters<ChatClientFunctions[MName]>
-  ) {
-    return new Promise<ReturnType<ChatClientFunctions[MName]>>(resolve => {
+export class IOSCommunicator implements ExternalCommunicator {
+  private readonly emitter: EventEmitter
+
+  public constructor(emitter: EventEmitter) {
+    this.emitter = emitter
+  }
+
+  public async postToExternalProvider<TReturn>(methodName: string, ...params: unknown[]) {
+    return new Promise<TReturn>(resolve => {
       const message = formatJsonRpcRequest(methodName, params[0])
 
-      const messageListener = (
-        messageResponse: JsonRpcResult<ReturnType<ChatClientFunctions[MName]>>
-      ) => {
+      const messageListener = (messageResponse: JsonRpcResult<TReturn>) => {
         resolve(messageResponse.result)
       }
       this.emitter.once(message.id.toString(), messageListener)

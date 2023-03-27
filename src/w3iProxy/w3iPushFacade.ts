@@ -9,8 +9,6 @@ import type {
   W3iPush
 } from './pushProviders/types'
 import ExternalPushProvider from './pushProviders/externalPushProvider'
-import AndroidPushProvider from './pushProviders/androidPushProvider'
-import iOSPushProvider from './pushProviders/iosPushProvider'
 import InternalPushProvider from './pushProviders/internalPushProvider'
 import type { PushFacadeEvents } from './listenerTypes'
 
@@ -18,8 +16,8 @@ class W3iPushFacade implements W3iPush {
   private readonly providerMap = {
     internal: InternalPushProvider,
     external: ExternalPushProvider,
-    android: AndroidPushProvider,
-    ios: iOSPushProvider
+    android: ExternalPushProvider,
+    ios: ExternalPushProvider
   }
   private readonly providerName: keyof typeof this.providerMap
   private readonly emitter: EventEmitter
@@ -33,7 +31,7 @@ class W3iPushFacade implements W3iPush {
     this.emitter = new EventEmitter()
 
     const ProviderClass = this.providerMap[this.providerName]
-    this.provider = new ProviderClass(this.emitter)
+    this.provider = new ProviderClass(this.emitter, providerName)
   }
 
   public initInternalProvider(pushClient: PushWalletClient) {
