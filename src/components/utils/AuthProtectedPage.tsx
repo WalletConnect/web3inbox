@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import W3iContext from '../../contexts/W3iContext/context'
 
 interface AuthProtectedPageProps {
@@ -8,9 +8,13 @@ interface AuthProtectedPageProps {
 
 const AuthProtectedPage: React.FC<AuthProtectedPageProps> = ({ children }) => {
   const { userPubkey } = useContext(W3iContext)
+  const loc = useLocation()
+  const next = `${loc.pathname}${loc.search}`
 
   if (!userPubkey) {
-    return <Navigate to={'/login'} />
+    const query = next.length > 1 ? `?next=${encodeURIComponent(next)}` : ''
+
+    return <Navigate to={`/login${query}`} />
   }
 
   return <Fragment>{children}</Fragment>

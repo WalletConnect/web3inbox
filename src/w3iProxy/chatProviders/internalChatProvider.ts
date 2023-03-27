@@ -13,7 +13,7 @@ export default class InternalChatProvider implements W3iChatProvider {
   public providerName = 'InternalChatProvider'
   private readonly methodsListenedTo = ['chat_signature_delivered']
 
-  public constructor(emitter: EventEmitter) {
+  public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
 
     interval(2000).subscribe(() => {
