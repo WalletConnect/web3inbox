@@ -8,6 +8,7 @@ Please put an `x` in the boxes that apply. You can also fill these out after cre
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
+- [ ] Draft PR (breaking/non-breaking change which needs more work for having a proper functionality _[Mark this PR as ready to review only when completely ready]_)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 
 # Resolves (Optional)
