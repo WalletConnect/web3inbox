@@ -19,14 +19,15 @@ const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
   const { search } = useLocation()
-  const [topic, setTopic] = useState(() => new URLSearchParams(search).get('topic') ?? '')
-  const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey, threads, sentInvites } = useContext(W3iContext)
-
-  const topic =
-    new URLSearchParams(search).get('topic') ??
-    threads.find(thread => thread.peerAccount === peer)?.topic ??
-    ''
+  const { data: ensName } = useEnsName({ address: peerAddress })
+  const topic = useMemo(
+    () =>
+      new URLSearchParams(search).get('topic') ??
+      threads.find(thread => thread.peerAccount === peer)?.topic ??
+      '',
+    [threads, search]
+  )
 
   if (!topic) {
     return <Navigate to="/messages" />
