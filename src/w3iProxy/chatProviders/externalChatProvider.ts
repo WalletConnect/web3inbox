@@ -47,7 +47,7 @@ export default class ExternalChatProvider implements W3iChatProvider {
   ) {
     return this.communicator.postToExternalProvider<ReturnType<ChatClientFunctions[MName]>>(
       methodName,
-      params
+      params[0]
     )
   }
 
