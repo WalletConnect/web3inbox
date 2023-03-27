@@ -84,6 +84,15 @@
       margin-top: 1em;
     }
 
+    &-actions {
+      .Button {
+        white-space: nowrap;
+        svg {
+          max-width: none;
+        }
+      }
+    }
+
     &-icon {
       display: grid;
       place-items: center;

@@ -14,7 +14,7 @@
     gap: 12px;
     width: 100%;
     align-items: center;
-    padding: 8px;
+    padding: 0.625em 0.25em;
     border-radius: 20px;
 
     &:hover {
@@ -23,8 +23,8 @@
     }
 
     &__status {
-      position: absolute;
-      left: -8px;
+      position: relative;
+      left: 4px;
       background: var(--bg-color-2);
     }
     img {

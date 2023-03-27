@@ -14,12 +14,15 @@ import SearchSuggestions from './SearchSuggestions'
 import debounce from 'lodash.debounce'
 import './NewChat.scss'
 import { truncate } from '../../../utils/string'
+import { useNavigate } from 'react-router-dom'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
   const { mode } = useContext(SettingsContext)
   const [isInviting, setIsInviting] = useState(false)
   const [query, setQuery] = useState('')
+
+  const navigate = useNavigate()
 
   const [debouncedQuery, setDebouncedQuery] = useState<string>('')
   const debouncedUpdateQuery = useCallback(debounce(setDebouncedQuery, 300), [setDebouncedQuery])
@@ -98,15 +101,8 @@ const NewChat: React.FC = () => {
           message: 'Hey there! Wanna chat?'
         })
 
-        toast('Invite sent successfully', {
-          type: 'success',
-          position: 'bottom-right',
-          autoClose: 5000,
-          theme: toastTheme,
-          style: {
-            borderRadius: '1em'
-          }
-        })
+        // Removed toast since upon successful invite, we are navigating directly to chat
+        navigate(`/messages/chat/${resolvedAddress}?topic=invite:pending:${resolvedAddress}`)
       } catch (error) {
         if (error instanceof Error) {
           toast(error.message, {
