@@ -1,6 +1,6 @@
 # Description
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
+Please include a brief summary of the change.
 
 # Type of change
 
@@ -10,11 +10,11 @@ Please put an `x` in the boxes that apply. You can also fill these out after cre
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 
-# Fixes (Optional)
+# Resolves (Optional)
 
 Please list any issues that are fixed by this PR in the format `#<issue number>`. If it fixes multiple issues, please put each issue in a separate line. If this Pull Request does not fix any issues, please delete this section.
 
-# Examples/Screenshots
+# Examples/Screenshots (Optional)
 
 Please attach a screenshot or screen recording of features/fixes you've implemented to verify your changes. Please also note any relevant details for your configuration. If your changes do not affect the UI, please delete this section.
 
@@ -27,7 +27,6 @@ Use this table template to show examples of your changes:
 
 # Checklist:
 
-- [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my own code
 - [ ] My changes generate no new warnings
 - [ ] Any dependent changes have been merged and published in downstream modules
