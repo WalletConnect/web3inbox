@@ -7,11 +7,11 @@ export interface ChatFacadeEvents {
   chat_joined: ChatClientTypes.BaseEventArgs
   chat_ping: ChatClientTypes.BaseEventArgs
   chat_left: ChatClientTypes.BaseEventArgs
-  chat_invite_accepted: ChatClientTypes.BaseEventArgs<{
+  chat_invite_accepted: {
     invite: ChatClientTypes.SentInvite
     topic: string
-  }>
-  chat_invite_rejected: ChatClientTypes.BaseEventArgs<{ invite: ChatClientTypes.SentInvite }>
+  }
+  chat_invite_rejected: { invite: ChatClientTypes.SentInvite }
   chat_invite_sent: never
   chat_message_sent: never
   chat_signature_requested: { message: string }
