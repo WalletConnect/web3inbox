@@ -23,6 +23,7 @@ const appSearchSubject = new BehaviorSubject<IAppSearchState>({
 const profileModalSubject = new BehaviorSubject(false)
 const shareModalSubject = new BehaviorSubject(false)
 const signatureModalSubject = new BehaviorSubject(false)
+const contactsModalSubject = new BehaviorSubject(false)
 const preferencesModalSubject = new BehaviorSubject<IPreferencesModalState>({
   preferencesModalAppId: undefined,
   isOpen: false
@@ -115,4 +116,11 @@ export const unsubscribeModalService = {
       isOpen: false
     }),
   modalState: unsubscribeModalSubject.asObservable()
+}
+
+export const contactsModalService = {
+  toggleModal: () => contactsModalSubject.next(!contactsModalSubject.value),
+  openModal: () => contactsModalSubject.next(true),
+  closeModal: () => contactsModalSubject.next(false),
+  modalState: contactsModalSubject.asObservable()
 }

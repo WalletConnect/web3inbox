@@ -1,20 +1,23 @@
 import cn from 'classnames'
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ArtistPalette from '../../../assets/ArtistPalette.png'
-import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
+// Import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
 import DarkCity from '../../../assets/DarkCity.png'
 import HalfHalfCity from '../../../assets/HalfHalfCity.png'
 import Handshake from '../../../assets/Handshake.png'
 import LightCity from '../../../assets/LightCity.png'
 import MoneyWithWings from '../../../assets/MoneyWithWings.png'
 import type { SettingsContextSimpleState } from '../../../contexts/SettingsContext/context'
+// eslint-disable-next-line no-duplicate-imports
 import SettingsContext from '../../../contexts/SettingsContext/context'
+import W3iContext from '../../../contexts/W3iContext/context'
+import { useModals } from '../../../utils/hooks'
+import { contactsModalService } from '../../../utils/store'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import ArrowRightIcon from '../../general/Icon/ArrowRightIcon'
 import IconWrapper from '../../general/Icon/IconWrapper/IconWrapper'
 import Radio from '../../general/Radio'
-import Select from '../../general/Select/Select'
-import Toggle from '../../general/Toggle'
+import ContactsModal from '../ContactsModal'
 import './Settings.scss'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
@@ -29,27 +32,55 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
   { id: 'accept-new', label: 'Accept all chat invites from new contacts' }
 ]
 
-const currencyOptions = [
-  {
-    label: 'USD',
-    value: 'USD'
-  },
-  {
-    label: 'ETH',
-    value: 'ETH'
-  }
-]
+/*
+ * Const currencyOptions = [
+ *   {
+ *     label: 'USD',
+ *     value: 'USD'
+ *   },
+ *   {
+ *     label: 'ETH',
+ *     value: 'ETH'
+ *   }
+ * ]
+ */
 
 const Settings: React.FC = () => {
-  const { mode, newContacts, updateSettings: updateTheme } = useContext(SettingsContext)
+  const { mode, newContacts, updateSettings } = useContext(SettingsContext)
+  const { isContactModalOpen } = useModals()
+  const { chatClientProxy, threads } = useContext(W3iContext)
+  const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
 
   const handleThemeChange = useCallback(
     (modeId: SettingsContextSimpleState['mode']) => {
-      updateTheme({ mode: modeId })
+      updateSettings({ mode: modeId })
       localStorage.setItem('w3i-theme', modeId)
     },
-    [updateTheme]
+    [updateSettings]
   )
+
+  useEffect(() => {
+    if (!chatClientProxy) {
+      return
+    }
+
+    chatClientProxy.getMutedContacts().then(mContacts => {
+      setMutedContacts(
+        mContacts
+          .filter(mutedContact => {
+            const address = threads.find(t => t.topic === mutedContact)?.peerAccount
+
+            return Boolean(address)
+          })
+          .map(mutedContact => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const address = threads.find(t => t.topic === mutedContact)!.peerAccount
+
+            return { address, topic: mutedContact }
+          })
+      )
+    })
+  }, [chatClientProxy, threads])
 
   return (
     <div className="Settings">
@@ -99,6 +130,7 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>
+			*/}
       <div className="Settings__section Settings__contacts">
         <div className="Settings__section-title">
           <IconWrapper shape="square" bgColor="purple">
@@ -115,13 +147,14 @@ const Settings: React.FC = () => {
               key={id}
               label={label}
               checked={newContacts === id}
-              onCheck={() => updateTheme({ newContacts: id })}
+              onCheck={() => updateSettings({ newContacts: id })}
             />
           ))}
           <div className="Settings__section-helper-text">
             People that want to message you will need to send an invite first that you can accept or
             decline. Think of it as a polite handshake to start the conversation.
           </div>
+          {/*
           <div className="Settings__setting">
             <div className="Settings__toggle-label">
               Decline new contacts without any transactions onchain
@@ -132,13 +165,24 @@ const Settings: React.FC = () => {
             People with no transaction history will be blocked from contacting you. Enabling this
             can help weed out spam.
           </div>
-          <div className="Settings__setting">
+					*/}
+          <div
+            className="Settings__setting"
+            onClick={() => {
+              chatClientProxy?.getMutedContacts().then(({ length }) => {
+                if (length) {
+                  contactsModalService.openModal()
+                }
+              })
+            }}
+          >
             <div>Muted contacts</div>
             <div className="Settings__toggle-dropdown">
-              <CircleBadge>0</CircleBadge>
+              <CircleBadge>{mutedContacts.length}</CircleBadge>
               <ArrowRightIcon />
             </div>
           </div>
+          {/*
           <div className="Settings__setting">
             <div>Blocked contacts</div>
             <div className="Settings__toggle-dropdown">
@@ -146,8 +190,10 @@ const Settings: React.FC = () => {
               <ArrowRightIcon />
             </div>
           </div>
+					*/}
         </div>
       </div>
+      {/*
       <div className="Settings__section Settings_crypto">
         <div className="Settings__section-title">
           <IconWrapper shape="square" bgColor="green">
@@ -167,6 +213,13 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>*/}
+      {isContactModalOpen && (
+        <ContactsModal
+          status="muted"
+          mutedContacts={mutedContacts}
+          setMutedContacts={setMutedContacts}
+        />
+      )}
     </div>
   )
 }

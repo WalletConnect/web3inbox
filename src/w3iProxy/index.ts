@@ -68,7 +68,7 @@ class Web3InboxProxy {
         keyserverUrl: 'https://keys.walletconnect.com'
       })
       console.log('this.chatClient', this.chatClient)
-      this.chatFacade.initInternalProvider(this.chatClient)
+      await this.chatFacade.initInternalProvider(this.chatClient)
     }
 
     if (this.pushProvider === 'internal') {
@@ -76,6 +76,7 @@ class Web3InboxProxy {
         core
       })
       console.log('this.pushClient', this.pushClient)
+
       this.pushFacade.initInternalProvider(this.pushClient)
     }
   }

@@ -1,5 +1,4 @@
 import type ChatClient from '@walletconnect/chat-client'
-import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NextObserver, Observable } from 'rxjs'
 import type { ChatFacadeEvents } from '../listenerTypes'
@@ -46,6 +45,9 @@ interface ModifiedChatClientFunctions {
   getThreads: (
     ...params: Parameters<ChatClient['getThreads']>
   ) => Promise<ReturnType<ChatClient['getThreads']>>
+  getMutedContacts: () => Promise<string[]>
+  muteContact: (params: { topic: string }) => Promise<void>
+  unmuteContact: (params: { topic: string }) => Promise<void>
 }
 
 export type ObservableMap = Map<

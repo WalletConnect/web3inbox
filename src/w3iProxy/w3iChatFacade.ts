@@ -99,9 +99,9 @@ class W3iChatFacade implements W3iChat {
     return messages
   }
 
-  public initInternalProvider(chatClient: ChatClient) {
+  public async initInternalProvider(chatClient: ChatClient) {
     const internalProvider = this.provider as InternalChatProvider
-    internalProvider.initState(chatClient)
+    await internalProvider.initState(chatClient)
   }
 
   // Method to be used by external providers. Not internal use.
@@ -200,6 +200,18 @@ class W3iChatFacade implements W3iChat {
 
   public async getMessages(params: { topic: string }) {
     return this.provider.getMessages(params)
+  }
+
+  public async muteContact({ topic }: { topic: string }) {
+    return this.provider.muteContact({ topic })
+  }
+
+  public async unmuteContact({ topic }: { topic: string }) {
+    return this.provider.unmuteContact({ topic })
+  }
+
+  public async getMutedContacts() {
+    return this.provider.getMutedContacts()
   }
 
   public observe<K extends keyof ChatFacadeEvents>(eventName: K, observer: ChatEventObserver<K>) {

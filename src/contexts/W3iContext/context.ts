@@ -1,6 +1,7 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { PushClientTypes } from '@walletconnect/push-client'
 import type { Dispatch, SetStateAction } from 'react'
+// eslint-disable-next-line no-duplicate-imports
 import { createContext } from 'react'
 import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
 

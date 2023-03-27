@@ -1,21 +1,39 @@
+import { getAccount, watchAccount } from '@wagmi/core'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 // eslint-disable-next-line no-duplicate-imports
 import type ChatClient from '@walletconnect/chat-client'
+import { Core, Store } from '@walletconnect/core'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import type { Logger } from '@walletconnect/logger'
+import type { ICore, IStore } from '@walletconnect/types'
 import type { W3iChatProvider } from './types'
-import { watchAccount, getAccount } from '@wagmi/core'
+// eslint-disable-next-line no-duplicate-imports
+import { getDefaultLoggerOptions } from '@walletconnect/logger'
+import pino from 'pino'
 import { interval } from 'rxjs'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
   private readonly emitter: EventEmitter
   public providerName = 'InternalChatProvider'
+  private readonly core: ICore
+  private readonly logger: Logger
+  private readonly mutedContacts: IStore<string, { topic: string }>
   private readonly methodsListenedTo = ['chat_signature_delivered']
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
 
+    this.core = new Core()
+    this.logger = pino(getDefaultLoggerOptions({ level: 'error' }))
+    this.mutedContacts = new Store(
+      this.core,
+      this.logger,
+      'mutedContacts',
+      'web3inbox',
+      ({ topic }: { topic: string }) => topic
+    )
     interval(2000).subscribe(() => {
       if (!this.chatClient) {
         return
@@ -48,7 +66,7 @@ export default class InternalChatProvider implements W3iChatProvider {
    * We need to re-register events from the chat client to the emitter
    * to allow the observers in the facade to work seamlessly.
    */
-  public initState(chatClient: ChatClient) {
+  public async initState(chatClient: ChatClient) {
     this.chatClient = chatClient
 
     const address: string | undefined = getAccount().address
@@ -62,6 +80,8 @@ export default class InternalChatProvider implements W3iChatProvider {
         }
       })
     }
+
+    await this.mutedContacts.init()
 
     this.chatClient.on('chat_ping', args => this.emitter.emit('chat_ping', args))
     this.chatClient.on('chat_message', args => this.emitter.emit('chat_message', args))
@@ -247,5 +267,21 @@ export default class InternalChatProvider implements W3iChatProvider {
     }
 
     return this.chatClient.resolve(params)
+  }
+
+  public async muteContact({ topic }: { topic: string }) {
+    this.mutedContacts.set(topic, { topic })
+
+    return Promise.resolve()
+  }
+
+  public async unmuteContact({ topic }: { topic: string }) {
+    this.mutedContacts.delete(topic, { code: -1, message: 'Unmuted' })
+
+    return Promise.resolve()
+  }
+
+  public async getMutedContacts() {
+    return Promise.resolve(this.mutedContacts.getAll().map(params => params.topic))
   }
 }

@@ -19,13 +19,15 @@ const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
   const { search } = useLocation()
-  const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey, threads, sentInvites } = useContext(W3iContext)
-
-  const topic =
-    new URLSearchParams(search).get('topic') ??
-    threads.find(thread => thread.peerAccount === peer)?.topic ??
-    ''
+  const { data: ensName } = useEnsName({ address: peerAddress })
+  const topic = useMemo(
+    () =>
+      new URLSearchParams(search).get('topic') ??
+      threads.find(thread => thread.peerAccount === peer)?.topic ??
+      '',
+    [threads, search]
+  )
 
   if (!topic) {
     return <Navigate to="/messages" />
@@ -151,13 +153,7 @@ const ThreadWindow: React.FC = () => {
           <Avatar address={peerAddress} width="1.25em" height="1.25em" />
           <span>{ensName ?? truncate(peer ?? '', 10)}</span>
         </div>
-        <ThreadDropdown
-          dropdownPlacement="bottomLeft"
-          h="1em"
-          w="2em"
-          threadId={topic}
-          closeDropdown={() => {}}
-        />
+        <ThreadDropdown dropdownPlacement="bottomLeft" h="1em" w="2em" threadId={topic} />
       </div>
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />

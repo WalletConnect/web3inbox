@@ -25,7 +25,8 @@ const App = () => {
     isShareModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
-    isSignatureModalOpen
+    isSignatureModalOpen,
+    isContactModalOpen
   } = useModals()
 
   const ref = useMobileResponsiveGrid()

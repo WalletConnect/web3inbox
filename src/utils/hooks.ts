@@ -6,6 +6,7 @@ import type { SettingsContextSimpleState } from '../contexts/SettingsContext/con
 import {
   appSearchService,
   chatSearchService,
+  contactsModalService,
   preferencesModalService,
   profileModalService,
   pushSearchService,
@@ -148,6 +149,7 @@ export const useModals = () => {
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
@@ -157,6 +159,9 @@ export const useModals = () => {
     })
     const signatureSubscription = signatureModalService.modalState.subscribe(isOpen => {
       setIsSignatureModalOpen(isOpen)
+    })
+    const contactsSubscription = contactsModalService.modalState.subscribe(isOpen => {
+      setIsContactModalOpen(isOpen)
     })
     const shareSubscription = shareModalService.modalState.subscribe(isOpen => {
       setIsShareModalOpen(isOpen)
@@ -173,6 +178,7 @@ export const useModals = () => {
     return () => {
       profileSubscription.unsubscribe()
       shareSubscription.unsubscribe()
+      contactsSubscription.unsubscribe()
       signatureSubscription.unsubscribe()
       preferencesSubscription.unsubscribe()
       unsubscribeSubscription.unsubscribe()
@@ -183,6 +189,7 @@ export const useModals = () => {
     isProfileModalOpen,
     isShareModalOpen,
     isSignatureModalOpen,
+    isContactModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
     preferencesModalAppId,
