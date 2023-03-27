@@ -1,6 +1,6 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
@@ -18,10 +18,19 @@ import ThreadDropdown from './ThreadDropdown'
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
-  const [topic, setTopic] = useState('')
   const { search } = useLocation()
   const { data: ensName } = useEnsName({ address: peerAddress })
   const { chatClientProxy, userPubkey, threads, sentInvites } = useContext(W3iContext)
+
+  const topic =
+    new URLSearchParams(search).get('topic') ??
+    threads.find(thread => thread.peerAccount === peer)?.topic ??
+    ''
+
+  if (!topic) {
+    return <Navigate to="/messages" />
+  }
+
   const nav = useNavigate()
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
@@ -38,23 +47,41 @@ const ThreadWindow: React.FC = () => {
     [topic]
   )
 
-  useEffect(() => {
-    setTopic(new URLSearchParams(search).get('topic') ?? '')
-  }, [search])
-
   const refreshMessages = useCallback(() => {
+    console.log(
+      `Calling refreshMessages with topic ${topic} and a ${
+        chatClientProxy ? 'truthy' : 'falsy'
+      } client`
+    )
+
     if (!chatClientProxy || !topic) {
       return
     }
+
+    console.log(`Retreiving messages for topic ${topic}`)
 
     chatClientProxy
       .getMessages({
         topic
       })
       .then(allChatMessages => {
+        console.log(`Retreived messages: ${allChatMessages.map(m => m.timestamp).join(',')} `)
         setMessages(allChatMessages)
       })
-      .catch(() => nav('/'))
+      .catch(() => {
+        console.error('getMessages failed, redirecting to root')
+        nav('/')
+      })
+
+    if (!topic.includes('invite') && userPubkey) {
+      // Not using `threads` to avoid a data race.
+      chatClientProxy.getThreads({ account: `eip155:1:${userPubkey}` }).then(retreivedThreads => {
+        if (!retreivedThreads.get(topic)) {
+          console.error('topic not in threads, redirecting to root')
+          nav('/')
+        }
+      })
+    }
   }, [chatClientProxy, search, setMessages, topic])
 
   useEffect(() => {
@@ -82,8 +109,13 @@ const ThreadWindow: React.FC = () => {
 
     const inviteAcceptedSub = chatClientProxy.observe('chat_invite_accepted', {
       next: inviteAcceptedEvent => {
+        console.log(
+          `Accepted invite event, isInvite: ${
+            isInvite ? 'YES' : 'NO'
+          }, inviteeAccount: ${JSON.stringify(inviteAcceptedEvent)}`
+        )
         const { inviteeAccount } = inviteAcceptedEvent.params.invite
-        if (isInvite && inviteAcceptedEvent.params.invite.inviteeAccount === peer) {
+        if (isInvite && inviteeAccount === peer) {
           nav(`/messages/chat/${inviteeAccount}?topic=${inviteAcceptedEvent.params.topic}`)
         }
       }
@@ -107,12 +139,9 @@ const ThreadWindow: React.FC = () => {
   }, [chatClientProxy, refreshMessages, topic, nav, peer])
 
   useEffect(() => {
+    console.log('Refresh messages useEffect')
     refreshMessages()
-  }, [refreshMessages, chatClientProxy])
-
-  if (!(threads.map(thread => thread.topic).includes(topic) || topic.includes('invite'))) {
-    nav('/')
-  }
+  }, [refreshMessages])
 
   return (
     <div className="ThreadWindow">

@@ -98,7 +98,12 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
               >
                 {ensAvatar && <img className="Avatar__icon" src={ensAvatar} alt="Avatar" />}
               </div>
-              <div className="Avatar__dropdown__block__username">
+              <div
+                className="Avatar__dropdown__block__username"
+                onClick={() => {
+                  window.navigator.clipboard.writeText(address ?? '')
+                }}
+              >
                 {ensName ?? truncate(address ?? '', 4)}
               </div>
             </div>
