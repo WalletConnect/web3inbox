@@ -95,6 +95,22 @@ export default class InternalChatProvider implements W3iChatProvider {
       this.emitter.emit('chat_invite', args)
     })
     this.chatClient.on('chat_left', args => this.emitter.emit('chat_left', args))
+
+    this.chatClient.chatThreads.core.on('sync_store_update', () => {
+      console.log('sync store update')
+      this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
+    })
+
+    this.chatClient.chatReceivedInvites.core.on('sync_store_update', () => {
+      console.log('sync store update')
+      this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
+    })
+
+    console.log('Using events', this.chatClient.chatSentInvites.core.events)
+    this.chatClient.chatSentInvites.core.on('sync_store_update', () => {
+      console.log('sync store update')
+      this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
+    })
   }
 
   private getRequiredInternalAddress(): string {

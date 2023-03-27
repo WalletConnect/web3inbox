@@ -44,6 +44,63 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     pushProviderQuery ? (pushProviderQuery as Web3InboxProxy['pushProvider']) : 'internal'
   )
 
+  const refreshChatState = useCallback(() => {
+    if (!chatClient || !userPubkey) {
+      return
+    }
+
+    chatClient
+      .getReceivedInvites({ account: `eip155:1:${userPubkey}` })
+      .then(invite => setInvites(Array.from(invite.values())))
+    chatClient
+      .getSentInvites({ account: `eip155:1:${userPubkey}` })
+      .then(invite => setSentInvites(Array.from(invite.values())))
+    chatClient
+      .getThreads({ account: `eip155:1:${userPubkey}` })
+      .then(invite => setThreads(Array.from(invite.values())))
+  }, [chatClient, userPubkey, setThreads, setInvites])
+
+  useEffect(() => {
+    if (!chatClient) {
+      return noop
+    }
+
+    const inviteSub = chatClient.observe('chat_invite', {
+      next: () => {
+        refreshChatState()
+      }
+    })
+
+    const signatureSub = chatClient.observe('chat_signature_requested', {
+      next: ({ message }) => {
+        setRegisterMessage(message)
+      }
+    })
+
+    const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshChatState })
+    const pingSub = chatClient.observe('chat_ping', {
+      next: () => {
+        console.log('Got a ping!')
+        refreshChatState()
+      }
+    })
+    const chatMessageSentSub = chatClient.observe('chat_message_sent', { next: refreshChatState })
+    const chatJoinedSub = chatClient.observe('chat_joined', { next: refreshChatState })
+    const inviteAcceptedSub = chatClient.observe('chat_invite_accepted', { next: refreshChatState })
+    const inviteRejectedSub = chatClient.observe('chat_invite_rejected', { next: refreshChatState })
+
+    return () => {
+      inviteSub.unsubscribe()
+      pingSub.unsubscribe()
+      signatureSub.unsubscribe()
+      inviteSentSub.unsubscribe()
+      inviteAcceptedSub.unsubscribe()
+      inviteRejectedSub.unsubscribe()
+      chatMessageSentSub.unsubscribe()
+      chatJoinedSub.unsubscribe()
+    }
+  }, [chatClient, refreshChatState])
+
   useEffect(() => {
     const account = new URLSearchParams(search).get('account')
 
@@ -71,6 +128,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         try {
           const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
           console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
+          refreshChatState()
           setRegistered(registeredKeyRes)
         } catch (error) {
           setRegisterMessage(null)
@@ -107,67 +165,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       setActiveSubscriptions(Object.values(subscriptions))
     })
   }, [pushClient, userPubkey])
-
-  const refreshChatState = useCallback(() => {
-    if (!chatClient || !userPubkey) {
-      return
-    }
-
-    chatClient
-      .getReceivedInvites({ account: `eip155:1:${userPubkey}` })
-      .then(invite => setInvites(Array.from(invite.values())))
-    chatClient
-      .getSentInvites({ account: `eip155:1:${userPubkey}` })
-      .then(invite => setSentInvites(Array.from(invite.values())))
-    chatClient
-      .getThreads({ account: `eip155:1:${userPubkey}` })
-      .then(invite => setThreads(Array.from(invite.values())))
-  }, [chatClient, userPubkey, setThreads, setInvites])
-
-  useEffect(() => {
-    if (!chatClient) {
-      return noop
-    }
-
-    const inviteSub = chatClient.observe('chat_invite', {
-      next: ({ id }) => {
-        switch (newContacts) {
-          case 'reject-new':
-            chatClient.reject({ id })
-            break
-          case 'accept-new':
-            chatClient.accept({ id }).then(refreshChatState)
-            break
-          case 'require-invite':
-          default:
-            refreshChatState()
-            break
-        }
-      }
-    })
-
-    const signatureSub = chatClient.observe('chat_signature_requested', {
-      next: ({ message }) => {
-        setRegisterMessage(message)
-      }
-    })
-
-    const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshChatState })
-    const chatMessageSentSub = chatClient.observe('chat_message_sent', { next: refreshChatState })
-    const chatJoinedSub = chatClient.observe('chat_joined', { next: refreshChatState })
-    const inviteAcceptedSub = chatClient.observe('chat_invite_accepted', { next: refreshChatState })
-    const inviteRejectedSub = chatClient.observe('chat_invite_rejected', { next: refreshChatState })
-
-    return () => {
-      inviteSub.unsubscribe()
-      signatureSub.unsubscribe()
-      inviteSentSub.unsubscribe()
-      inviteAcceptedSub.unsubscribe()
-      inviteRejectedSub.unsubscribe()
-      chatMessageSentSub.unsubscribe()
-      chatJoinedSub.unsubscribe()
-    }
-  }, [chatClient, refreshChatState])
 
   useEffect(() => {
     refreshChatState()
