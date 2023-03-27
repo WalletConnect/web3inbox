@@ -1,9 +1,10 @@
-import { EthereumClient, modalConnectors, walletConnectProvider } from '@web3modal/ethereum'
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/react'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
+import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains'
 import App from './App'
 import Web3InboxPlaceholder from './components/general/Web3InboxPlaceholder'
 import ChatInvites from './components/messages/ChatInvites'
@@ -24,11 +25,11 @@ import { AnimatePresence } from 'framer-motion'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
-const chains = [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum]
-const { provider } = configureChains(chains, [walletConnectProvider({ projectId })])
+const chains = [mainnet, polygon, optimism, arbitrum]
+const { provider } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiClient = createClient({
   autoConnect: true,
-  connectors: modalConnectors({ appName: 'web3Modal', chains }),
+  connectors: w3mConnectors({ projectId, chains, version: 1 }),
   provider
 })
 export const ethereumClient = new EthereumClient(wagmiClient, chains)
