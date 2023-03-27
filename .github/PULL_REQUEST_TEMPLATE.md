@@ -32,6 +32,6 @@ Use this table template to show examples of your changes:
 - [ ] My changes generate no new warnings
 - [ ] Any dependent changes have been merged and published in downstream modules
 
-# Additional Information
+# Additional Information (Optional)
 
 Please include any additional information that may be useful for the reviewer.
