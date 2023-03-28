@@ -18,9 +18,9 @@ export class AndroidCommunicator implements ExternalCommunicator {
     this.emitter = emitter
   }
 
-  public async postToExternalProvider<TReturn>(methodName: string, ...params: unknown[]) {
+  public async postToExternalProvider<TReturn>(methodName: string, params: unknown) {
     return new Promise<TReturn>(resolve => {
-      const message = formatJsonRpcRequest(methodName, params[0])
+      const message = formatJsonRpcRequest(methodName, params)
 
       const messageListener = (messageResponse: JsonRpcResult<TReturn>) => {
         resolve(messageResponse.result)

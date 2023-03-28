@@ -2288,10 +2288,10 @@
     eventemitter3 "^4.0.7"
     zustand "^4.3.1"
 
-"@walletconnect/chat-client@^0.3.7":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.3.7.tgz#625e3f76c1e0a06e070f01dd911af8b360bdf08a"
-  integrity sha512-jrdrCTqgxRJVo1HKdmp2pVxS6ZRE4z5Ea7GW/iBn5885pfYn+/c9Ld/sMmc6v1LnH3sxIxh3ZcfwhTTGYOCu6A==
+"@walletconnect/chat-client@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.4.0.tgz#6d39847d85aeb14e76270d6e47ac0cf527a18210"
+  integrity sha512-VIDtiGja7zWDbAo5YWZyOTnAormtnN0rcKG9j4vvfGomLHIG1q3eXk6hjJ/5tslf0Kxj6+qzGRdjT3iYg2Wg7g==
   dependencies:
     "@noble/ed25519" "^1.7.1"
     "@walletconnect/core" "^2.5.2"

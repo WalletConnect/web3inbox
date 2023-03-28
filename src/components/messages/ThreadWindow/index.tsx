@@ -114,19 +114,19 @@ const ThreadWindow: React.FC = () => {
         console.log(
           `Accepted invite event, isInvite: ${
             isInvite ? 'YES' : 'NO'
-          }, inviteeAccount: ${JSON.stringify(inviteAcceptedEvent)}`
+          }, invite TEST2: ${JSON.stringify(inviteAcceptedEvent)}`
         )
-        const { inviteeAccount } = inviteAcceptedEvent.params.invite
+        const { inviteeAccount } = inviteAcceptedEvent.invite
         if (isInvite && inviteeAccount === peer) {
-          nav(`/messages/chat/${inviteeAccount}?topic=${inviteAcceptedEvent.params.topic}`)
+          nav(`/messages/chat/${inviteeAccount}?topic=${inviteAcceptedEvent.topic}`)
         }
       }
     })
 
     const inviteRejectedSub = chatClientProxy.observe('chat_invite_rejected', {
       next: inviteRejectedEvent => {
-        if (isInvite && inviteRejectedEvent.params.invite.inviteeAccount === peer) {
-          const { inviteeAccount } = inviteRejectedEvent.params.invite
+        if (isInvite && inviteRejectedEvent.invite.inviteeAccount === peer) {
+          const { inviteeAccount } = inviteRejectedEvent.invite
           nav(`/messages/chat/${inviteeAccount}?topic=invite:rejected:${inviteeAccount}`)
         }
       }
