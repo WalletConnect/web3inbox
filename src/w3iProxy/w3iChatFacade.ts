@@ -28,6 +28,7 @@ class W3iChatFacade implements W3iChat {
     internal: InternalChatProvider,
     external: ExternalChatProvider,
     ios: ExternalChatProvider,
+    reactnative: ExternalChatProvider,
     android: ExternalChatProvider
   }
   private readonly providerName: keyof typeof this.providerMap

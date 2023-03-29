@@ -6,6 +6,7 @@ import type { ExternalCommunicator } from '../externalCommunicators/communicator
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
 import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
+import { ReactNativeCommunicator } from '../externalCommunicators/reactNativeCommunicator'
 
 export default class ExternalChatProvider implements W3iChatProvider {
   protected readonly emitter: EventEmitter
@@ -34,6 +35,9 @@ export default class ExternalChatProvider implements W3iChatProvider {
         break
       case 'ios':
         this.communicator = new IOSCommunicator(this.emitter)
+        break
+      case 'reactnative':
+        this.communicator = new ReactNativeCommunicator(this.emitter)
         break
       default:
         this.communicator = new JsCommunicator(this.emitter)

@@ -17,6 +17,7 @@ class W3iPushFacade implements W3iPush {
     internal: InternalPushProvider,
     external: ExternalPushProvider,
     android: ExternalPushProvider,
+    reactnative: ExternalPushProvider,
     ios: ExternalPushProvider
   }
   private readonly providerName: keyof typeof this.providerMap
