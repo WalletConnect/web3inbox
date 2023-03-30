@@ -44,6 +44,69 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     pushProviderQuery ? (pushProviderQuery as Web3InboxProxy['pushProvider']) : 'internal'
   )
 
+  useEffect(() => {
+    const account = new URLSearchParams(search).get('account')
+
+    if (account) {
+      setUserPubkey(account)
+      setRegistered(null)
+    }
+  }, [search, setUserPubkey])
+
+  useEffect(() => {
+    const sub = chatClient?.observe('chat_account_change', {
+      next: ({ account }) => {
+        setUserPubkey(account)
+        setRegistered(null)
+      }
+    })
+
+    return () => sub?.unsubscribe()
+  }, [chatClient])
+
+  useEffect(() => {
+    const handleRegistration = async () => {
+      if (chatClient && userPubkey) {
+        try {
+          const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
+          console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
+          setRegistered(registeredKeyRes)
+        } catch (error) {
+          setRegisterMessage(null)
+        }
+      }
+    }
+    handleRegistration()
+  }, [chatClient, userPubkey])
+
+  useEffect(() => {
+    if (chatClient && pushClient) {
+      return
+    }
+
+    const w3iProxy = new Web3InboxProxy(chatProvider, pushProvider, projectId, relayUrl)
+    w3iProxy
+      .init()
+      .then(() => setChatClient(w3iProxy.chat))
+      .then(() => {
+        const account = w3iProxy.chat.getAccount()
+        if (account) {
+          setUserPubkey(account)
+        }
+      })
+      .then(() => setPushClient(w3iProxy.push))
+  }, [setChatClient, chatClient, setUserPubkey, setPushClient, pushClient])
+
+  const refreshPushState = useCallback(() => {
+    if (!pushClient || !userPubkey) {
+      return
+    }
+
+    pushClient.getActiveSubscriptions().then(subscriptions => {
+      setActiveSubscriptions(Object.values(subscriptions))
+    })
+  }, [pushClient, userPubkey])
+
   const refreshChatState = useCallback(() => {
     if (!chatClient || !userPubkey) {
       return
@@ -102,73 +165,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [chatClient, refreshChatState])
 
   useEffect(() => {
-    const account = new URLSearchParams(search).get('account')
-
-    if (account) {
-      setUserPubkey(account)
-      setRegistered(null)
-    }
-  }, [search, setUserPubkey])
-
-  useEffect(() => {
-    const sub = chatClient?.observe('chat_account_change', {
-      next: ({ account }) => {
-        setUserPubkey(account)
-        setRegistered(null)
-      }
-    })
-
-    return () => sub?.unsubscribe()
-  }, [chatClient])
-
-  useEffect(() => {
-    const handleRegistration = async () => {
-      console.log('HANDLING REGISTRATION')
-      if (chatClient && userPubkey) {
-        try {
-          const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
-          console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
-          refreshChatState()
-          setRegistered(registeredKeyRes)
-        } catch (error) {
-          setRegisterMessage(null)
-        }
-      }
-    }
-    handleRegistration()
-  }, [chatClient, userPubkey])
-
-  useEffect(() => {
-    if (chatClient && pushClient) {
-      return
-    }
-
-    const w3iProxy = new Web3InboxProxy(chatProvider, pushProvider, projectId, relayUrl)
-    w3iProxy
-      .init()
-      .then(() => setChatClient(w3iProxy.chat))
-      .then(() => {
-        const account = w3iProxy.chat.getAccount()
-        if (account) {
-          setUserPubkey(account)
-        }
-      })
-      .then(() => setPushClient(w3iProxy.push))
-  }, [setChatClient, chatClient, setUserPubkey, setPushClient, pushClient])
-
-  const refreshPushState = useCallback(() => {
-    if (!pushClient || !userPubkey) {
-      return
-    }
-
-    pushClient.getActiveSubscriptions().then(subscriptions => {
-      setActiveSubscriptions(Object.values(subscriptions))
-    })
-  }, [pushClient, userPubkey])
-
-  useEffect(() => {
     refreshChatState()
-  }, [refreshChatState])
+  }, [refreshChatState, userPubkey])
 
   useEffect(() => {
     refreshPushState()
