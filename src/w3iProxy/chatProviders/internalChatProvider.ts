@@ -11,7 +11,7 @@ import type { W3iChatProvider } from './types'
 // eslint-disable-next-line no-duplicate-imports
 import { getDefaultLoggerOptions } from '@walletconnect/logger'
 import pino from 'pino'
-import { interval } from 'rxjs'
+import { fromEvent, interval } from 'rxjs'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -88,27 +88,36 @@ export default class InternalChatProvider implements W3iChatProvider {
     this.chatClient.on('chat_invite_accepted', args =>
       this.emitter.emit('chat_invite_accepted', args)
     )
-    this.chatClient.on('chat_invite_rejected', args =>
+
+    fromEvent(this.chatClient, 'chat_left').subscribe(args => {
+      this.emitter.emit('chat_left', args)
+    })
+
+    fromEvent(this.chatClient, 'chat_ping').subscribe(args => {
+      this.emitter.emit('chat_ping', args)
+    })
+
+    fromEvent(this.chatClient, 'chat_message').subscribe(args => {
+      this.emitter.emit('chat_message', args)
+    })
+
+    fromEvent(this.chatClient, 'chat_invite_rejected').subscribe(args => {
       this.emitter.emit('chat_invite_rejected', args)
-    )
-    this.chatClient.on('chat_invite', args => {
+    })
+
+    fromEvent(this.chatClient, 'chat_invite_accepted').subscribe(args => {
+      this.emitter.emit('chat_invite_accepted', args)
+    })
+
+    fromEvent(this.chatClient, 'chat_invite').subscribe(args => {
       this.emitter.emit('chat_invite', args)
     })
-    this.chatClient.on('chat_left', args => this.emitter.emit('chat_left', args))
 
-    this.chatClient.chatThreads.core.on('sync_store_update', () => {
-      console.log('sync store update')
+    fromEvent(this.chatClient.chatThreads.core, 'sync_store_update').subscribe(() => {
       this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
     })
 
-    this.chatClient.chatReceivedInvites.core.on('sync_store_update', () => {
-      console.log('sync store update')
-      this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
-    })
-
-    console.log('Using events', this.chatClient.chatSentInvites.core.events)
-    this.chatClient.chatSentInvites.core.on('sync_store_update', () => {
-      console.log('sync store update')
+    fromEvent(this.chatClient.chatSentInvites.core, 'sync_store_update').subscribe(() => {
       this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
     })
   }
