@@ -18,6 +18,7 @@ type NonFunctionChatClientKeys =
   | 'events'
   | 'history'
   | 'init'
+  | 'initSyncStores'
   | 'keyserverUrl'
   | 'logger'
   | 'name'
@@ -26,6 +27,7 @@ type NonFunctionChatClientKeys =
   | 'once'
   | 'opts'
   | 'removeListener'
+  | 'syncClient'
 
 /*
  * These methods are not currently async in the chat client
