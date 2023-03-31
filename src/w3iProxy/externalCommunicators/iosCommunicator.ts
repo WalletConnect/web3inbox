@@ -29,9 +29,12 @@ export class IOSCommunicator implements ExternalCommunicator {
       const messageListener = (messageResponse: JsonRpcResult<TReturn>) => {
         resolve(messageResponse.result)
       }
+      console.log(
+        `iOS Post handler: ${JSON.stringify(Boolean(window.webkit?.messageHandlers?.web3inbox))} `
+      )
       this.emitter.once(message.id.toString(), messageListener)
       if (window.webkit?.messageHandlers?.web3inbox) {
-        console.log('Web3Inbox interface: ', window.webkit.messageHandlers.web3inbox)
+        console.log(`Posting to iOS ${JSON.stringify(message)}`)
         window.webkit.messageHandlers.web3inbox.postMessage({
           ...message
         })
