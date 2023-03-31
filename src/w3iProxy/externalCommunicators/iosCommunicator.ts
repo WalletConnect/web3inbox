@@ -34,10 +34,12 @@ export class IOSCommunicator implements ExternalCommunicator {
       )
       this.emitter.once(message.id.toString(), messageListener)
       if (window.webkit?.messageHandlers?.web3inbox) {
-        console.log(`Posting to iOS ${JSON.stringify(message)}`)
-        window.webkit.messageHandlers.web3inbox.postMessage({
-          ...message
-        })
+        console.log(
+          `Posting to iOS window.webkit.messageHandlers.web3inbox.postMessage(${JSON.stringify(
+            message
+          )})`
+        )
+        window.webkit.messageHandlers.web3inbox.postMessage(JSON.stringify(message))
       }
     })
   }
