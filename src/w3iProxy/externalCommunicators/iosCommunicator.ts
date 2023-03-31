@@ -31,10 +31,7 @@ export class IOSCommunicator implements ExternalCommunicator {
       }
       this.emitter.once(message.id.toString(), messageListener)
       if (window.webkit?.messageHandlers?.web3inbox) {
-        console.log('Web3Inbox interface: ', window.webkit.messageHandlers.web3inbox)
-        window.webkit.messageHandlers.web3inbox.postMessage({
-          ...message
-        })
+        window.webkit.messageHandlers.web3inbox.postMessage(JSON.stringify(message))
       }
     })
   }
