@@ -63,22 +63,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
     return () => sub?.unsubscribe()
   }, [chatClient])
-
-  useEffect(() => {
-    const handleRegistration = async () => {
-      if (chatClient && userPubkey) {
-        try {
-          const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
-          console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
-          setRegistered(registeredKeyRes)
-        } catch (error) {
-          setRegisterMessage(null)
-        }
-      }
-    }
-    handleRegistration()
-  }, [chatClient, userPubkey])
-
   useEffect(() => {
     if (chatClient && pushClient) {
       return
@@ -165,8 +149,24 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [chatClient, refreshChatState])
 
   useEffect(() => {
+    const handleRegistration = async () => {
+      if (chatClient && userPubkey) {
+        try {
+          const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
+          console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
+          refreshChatState()
+          setRegistered(registeredKeyRes)
+        } catch (error) {
+          setRegisterMessage(null)
+        }
+      }
+    }
+    handleRegistration()
+  }, [chatClient, userPubkey])
+
+  useEffect(() => {
     refreshChatState()
-  }, [refreshChatState, userPubkey])
+  }, [refreshChatState])
 
   useEffect(() => {
     refreshPushState()

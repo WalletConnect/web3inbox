@@ -89,35 +89,37 @@ export default class InternalChatProvider implements W3iChatProvider {
       this.emitter.emit('chat_invite_accepted', args)
     )
 
-    fromEvent(this.chatClient, 'chat_left').subscribe(args => {
+    this.chatClient.on('chat_left', args => {
       this.emitter.emit('chat_left', args)
     })
 
-    fromEvent(this.chatClient, 'chat_ping').subscribe(args => {
+    this.chatClient.on('chat_ping', args => {
       this.emitter.emit('chat_ping', args)
     })
 
-    fromEvent(this.chatClient, 'chat_message').subscribe(args => {
+    this.chatClient.on('chat_message', args => {
       this.emitter.emit('chat_message', args)
     })
 
-    fromEvent(this.chatClient, 'chat_invite_rejected').subscribe(args => {
+    this.chatClient.on('chat_invite_rejected', args => {
       this.emitter.emit('chat_invite_rejected', args)
     })
 
-    fromEvent(this.chatClient, 'chat_invite_accepted').subscribe(args => {
+    this.chatClient.on('chat_invite_accepted', args => {
       this.emitter.emit('chat_invite_accepted', args)
     })
 
-    fromEvent(this.chatClient, 'chat_invite').subscribe(args => {
+    this.chatClient.on('chat_invite', args => {
       this.emitter.emit('chat_invite', args)
     })
 
-    fromEvent(this.chatClient.chatThreads.core, 'sync_store_update').subscribe(() => {
+    this.chatClient.chatThreads.core.on('sync_store_update', () => {
+      console.log('Threads update')
       this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
     })
 
-    fromEvent(this.chatClient.chatSentInvites.core, 'sync_store_update').subscribe(() => {
+    this.chatClient.chatSentInvites.core.on('sync_store_update', () => {
+      console.log('Invites update')
       this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
     })
   }
