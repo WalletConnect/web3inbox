@@ -121,6 +121,13 @@
     gap: 1em;
     width: 100%;
     justify-content: flex-start;
+
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    max-height: 70vh;
+    @media only screen and (max-width: 700px) {
+      max-height: 75vh;
+    }
   }
 
   &__action {

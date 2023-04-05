@@ -3,6 +3,7 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { VitePWA } from 'vite-plugin-pwa'
 import type { VitePWAOptions } from 'vite-plugin-pwa'
 import react from '@vitejs/plugin-react'
+import autoprefixer from 'autoprefixer'
 
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: 'development',
@@ -52,5 +53,10 @@ export default defineConfig({
     VitePWA({
       ...pwaOptions
     })
-  ]
+  ],
+  css: {
+    postcss: {
+      plugins: [autoprefixer({})]
+    }
+  }
 })
