@@ -124,9 +124,9 @@
 
     overflow-y: auto;
     padding-right: 0.5rem;
-    max-height: 75vh;
-    @media only screen and (min-width: 700px) {
-      max-height: 70vh;
+    max-height: 70vh;
+    @media only screen and (max-width: 700px) {
+      max-height: 75vh;
     }
   }
 
