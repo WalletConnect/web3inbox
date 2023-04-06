@@ -22,6 +22,7 @@ import './index.css'
 import Login from './pages/Login'
 import './styles/fonts.css'
 import { AnimatePresence } from 'framer-motion'
+import { Web3AccountConnector, walletImages } from '@chris13524/web3account-wagmi-connector'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -29,7 +30,15 @@ const chains = [mainnet, polygon, optimism, arbitrum]
 const { provider } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiClient = createClient({
   autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains, version: 1 }),
+  connectors: [
+    ...w3mConnectors({ projectId, chains, version: 1 }),
+    new Web3AccountConnector({
+      chains,
+      options: {
+        provider,
+      },
+    })
+  ],
   provider
 })
 export const ethereumClient = new EthereumClient(wagmiClient, chains)
@@ -72,6 +81,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Web3Modal
       ethereumClient={ethereumClient}
       projectId={import.meta.env.VITE_PROJECT_ID}
+      walletImages={walletImages}
     ></Web3Modal>
   </React.StrictMode>
 )

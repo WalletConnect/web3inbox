@@ -13,6 +13,7 @@
     "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'"
   },
   "dependencies": {
+    "@chris13524/web3account-wagmi-connector": "^0.0.1-alpha.1",
     "@walletconnect/chat-client": "^0.4.0",
     "@walletconnect/core": "^2.5.2",
     "@walletconnect/push-client": "^0.6.2",
