@@ -60,7 +60,7 @@ const ThreadDropdown: React.FC<ThreadDropdownProps> = ({ w, h, dropdownPlacement
     <Dropdown btnShape="square" h={h} dropdownPlacement={dropdownPlacement} w={w}>
       <div className="ThreadDropdown">
         <button
-          className="ThreadDropdown__button"
+          className="ThreadDropdown__button ThreadDropdown__button--mute"
           onClick={async () => handleContactMuting(threadId)}
         >
           <NotificationMuteIcon fillColor="white" />
