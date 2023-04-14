@@ -92,7 +92,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [pushClient, userPubkey])
 
   const refreshChatState = useCallback(() => {
-    if (!chatClient || !userPubkey) {
+    if (!chatClient || !userPubkey || !registeredKey) {
       return
     }
 
@@ -105,7 +105,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     chatClient
       .getThreads({ account: `eip155:1:${userPubkey}` })
       .then(invite => setThreads(Array.from(invite.values())))
-  }, [chatClient, userPubkey, setThreads, setInvites])
+  }, [chatClient, userPubkey, setThreads, registeredKey, setInvites])
 
   useEffect(() => {
     if (!chatClient) {

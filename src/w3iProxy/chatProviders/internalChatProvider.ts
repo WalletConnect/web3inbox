@@ -292,8 +292,6 @@ export default class InternalChatProvider implements W3iChatProvider {
       onSign: async message => {
         this.emitter.emit('chat_signature_requested', { message })
 
-        console.log('Currently in the onSign method')
-
         return new Promise(resolve => {
           this.emitter.once('chat_signature_delivered', ({ signature }: { signature: string }) => {
             console.log('Signature: ', signature)

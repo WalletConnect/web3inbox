@@ -15,6 +15,10 @@ export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
     })
   }, [message])
 
+  const purpose = message.includes('did:key')
+    ? 'Sign for your identity key.'
+    : 'Sign for syncing capabilities'
+
   return (
     <Modal onToggleModal={signatureModalService.toggleModal}>
       <div className="SignatureModal">
@@ -22,8 +26,12 @@ export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
           <h2>Signature requested</h2>
         </div>
         <div className="SignatureModal__explanation">
-          <p>You need to perform a final signature to establish an identity key.</p>
+          <p>
+            You need to perform a couple of signatures to establish an identity key and enable
+            syncing across clients.
+          </p>
         </div>
+        <div className="SignatureModal__message">{purpose}</div>
         <div className="SignatureModal__content">
           <Button onClick={onSign}>Sign Message</Button>
         </div>
