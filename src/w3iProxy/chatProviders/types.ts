@@ -26,6 +26,7 @@ type NonFunctionChatClientKeys =
   | 'on'
   | 'once'
   | 'opts'
+  | 'projectId'
   | 'removeListener'
   | 'syncClient'
 

@@ -11,7 +11,7 @@ import type { W3iChatProvider } from './types'
 // eslint-disable-next-line no-duplicate-imports
 import { getDefaultLoggerOptions } from '@walletconnect/logger'
 import pino from 'pino'
-import { fromEvent, interval } from 'rxjs'
+import { interval } from 'rxjs'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -21,6 +21,7 @@ export default class InternalChatProvider implements W3iChatProvider {
   private readonly logger: Logger
   private readonly mutedContacts: IStore<string, { topic: string }>
   private readonly methodsListenedTo = ['chat_signature_delivered']
+  public projectId = ''
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
@@ -68,6 +69,7 @@ export default class InternalChatProvider implements W3iChatProvider {
    */
   public async initState(chatClient: ChatClient) {
     this.chatClient = chatClient
+    this.projectId = this.chatClient.projectId
 
     const address: string | undefined = getAccount().address
     if (address) {
@@ -131,20 +133,28 @@ export default class InternalChatProvider implements W3iChatProvider {
     return address
   }
 
+  public async goPublic(params: { account: string }): Promise<string> {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('chatMessages'))
+    }
+
+    return this.chatClient.goPublic(params)
+  }
+
+  public async goPrivate(params: { account: string }): Promise<void> {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('chatMessages'))
+    }
+
+    await this.chatClient.goPrivate(params)
+  }
+
   public get chatMessages() {
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('chatMessages'))
     }
 
     return this.chatClient.chatMessages
-  }
-
-  public addContact(params: { account: string; publicKey: string }) {
-    if (!this.chatClient) {
-      throw new Error(this.formatClientRelatedError('chatMessages'))
-    }
-
-    this.chatClient.addContact(params)
   }
 
   private formatClientRelatedError(method: string) {
@@ -260,6 +270,14 @@ export default class InternalChatProvider implements W3iChatProvider {
     }
 
     return Promise.resolve()
+  }
+
+  public async unregister(params: { account: string }) {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('register'))
+    }
+
+    await this.chatClient.unregister(params)
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {

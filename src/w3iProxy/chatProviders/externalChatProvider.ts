@@ -98,8 +98,12 @@ export default class ExternalChatProvider implements W3iChatProvider {
     return this.postToExternalProvider('getReceivedInvites', params)
   }
 
-  public async addContact(params: { account: string; publicKey: string }) {
-    return this.postToExternalProvider('addContact', params)
+  public async goPublic(params: { account: string }) {
+    return this.postToExternalProvider('goPublic', params)
+  }
+
+  public async goPrivate(params: { account: string }) {
+    return this.postToExternalProvider('goPrivate', params)
   }
 
   public async invite(params: ChatClientTypes.Invite) {
@@ -110,6 +114,10 @@ export default class ExternalChatProvider implements W3iChatProvider {
   }
   public async message(params: ChatClientTypes.Message) {
     return this.postToExternalProvider('message', params)
+  }
+
+  public async unregister(params: { account: string }) {
+    return this.postToExternalProvider('unregister', params)
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {

@@ -21,7 +21,7 @@ class Web3InboxProxy {
   private readonly pushProvider: W3iPushFacade['providerName']
   private pushClient?: PushWalletClient
   private readonly relayUrl?: string
-  private readonly projectId?: string
+  private readonly projectId: string
 
   /**
    *
@@ -64,6 +64,7 @@ class Web3InboxProxy {
 
     if (this.chatProvider === 'internal') {
       this.chatClient = await ChatClient.init({
+        projectId: this.projectId,
         core,
         keyserverUrl: 'https://keys.walletconnect.com'
       })

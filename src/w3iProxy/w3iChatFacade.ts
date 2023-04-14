@@ -130,6 +130,7 @@ class W3iChatFacade implements W3iChat {
   public async leave(params: { topic: string }) {
     return this.provider.leave(params)
   }
+
   public async reject(params: { id: number }) {
     return this.provider.reject(params)
   }
@@ -137,6 +138,19 @@ class W3iChatFacade implements W3iChat {
   public async accept(params: { id: number }) {
     return this.provider.accept(params)
   }
+
+  public async unregister(params: { account: string }) {
+    return this.provider.unregister(params)
+  }
+
+  public async goPrivate(params: { account: string }) {
+    return this.provider.goPrivate(params)
+  }
+
+  public async goPublic(params: { account: string }) {
+    return this.provider.goPublic(params)
+  }
+
   public async getThreads(params?: { account: string }) {
     return this.provider.getThreads(params)
   }
@@ -161,10 +175,6 @@ class W3iChatFacade implements W3iChat {
     }
 
     return this.provider.getReceivedInvites({ account })
-  }
-
-  public addContact(params: { account: string; publicKey: string }) {
-    return this.provider.addContact(params)
   }
 
   public async invite(params: ChatClientTypes.Invite) {
