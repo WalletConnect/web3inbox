@@ -187,7 +187,11 @@ const ThreadSelector: React.FC = () => {
             )
           })}
           {sentInvites
-            .filter(invite => invite.status !== 'approved')
+            .filter(
+              invite =>
+                invite.status !== 'approved' &&
+                !threads.some(thread => thread.peerAccount === invite.inviteeAccount)
+            )
             .reverse()
             .map(({ inviteeAccount, status }) => (
               <Thread
