@@ -25,7 +25,7 @@
     top: 0;
     bottom: inherit;
     margin-top: 0.5em;
-    width: 9em;
+    min-width: 10em;
     color: var(--fg-color-1);
     background-color: var(--bg-color-1);
     border: solid 1px var(--border-color-2);
@@ -33,6 +33,28 @@
     box-shadow: 0px 6px 14px -6px rgba(0, 0, 0, 0.12), 0px 10px 32px -4px rgba(0, 0, 0, 0.1);
     z-index: 1;
     cursor: default;
+
+    &__button {
+      border-radius: 0.5em;
+      background: var(--bg-color-2);
+      border: 1px solid var(--border-color-2);
+      color: var(--fg-color-2);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      height: 1.5em;
+      width: 1.5em;
+      opacity: 0;
+      will-change: opacity;
+      transition: opacity 0.15s;
+      svg {
+        width: 0.875em;
+        height: 0.875em;
+      }
+      &:hover {
+        background-color: var(--bg-color-2);
+      }
+    }
 
     @media only screen and (max-width: 700px) {
       top: inherit;
@@ -48,6 +70,16 @@
       font-weight: 700;
       font-size: 0.875em;
 
+      &__group {
+        justify-content: center;
+      }
+
+      &:hover {
+        .Avatar__dropdown__button {
+          opacity: 1;
+        }
+      }
+
       &__logo {
         display: flex;
         img {
@@ -56,6 +88,9 @@
       }
 
       &__username {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
         padding-left: 0.625em;
         font-size: 1.1em;
       }
@@ -88,6 +123,7 @@
             line-height: 1.0625em;
           }
         }
+
         &__disconnect {
           span {
             color: var(--error-color-1);

@@ -60,15 +60,18 @@ const ThreadDropdown: React.FC<ThreadDropdownProps> = ({ w, h, dropdownPlacement
     <Dropdown btnShape="square" h={h} dropdownPlacement={dropdownPlacement} w={w}>
       <div className="ThreadDropdown">
         <button
+          className="ThreadDropdown__button ThreadDropdown__button--mute"
+          onClick={async () => handleContactMuting(threadId)}
+        >
+          <NotificationMuteIcon fillColor="white" />
+          <span>{isMuted ? 'Unmute' : 'Mute'}</span>
+        </button>
+        <button
           className="ThreadDropdown__button ThreadDropdown__button--leave"
           onClick={() => onClickLeave(threadId)}
         >
           <CrossIcon fillColor="hsla(5, 85%, 60%, 1)" />
           <span>Leave Thread</span>
-        </button>
-        <button onClick={async () => handleContactMuting(threadId)}>
-          <NotificationMuteIcon fillColor="hsla(5, 85%, 60%, 1)" />
-          <span>{isMuted ? 'Unmute' : 'Mute'}</span>
         </button>
       </div>
     </Dropdown>
