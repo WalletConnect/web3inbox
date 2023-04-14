@@ -1,9 +1,9 @@
 .SignatureModal {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 1em;
-  padding: 1em;
+  padding: 1.25em;
 
   &__header {
     display: flex;
@@ -12,17 +12,19 @@
     h2 {
       color: var(--fg-color-1);
       font-weight: 700;
-      font-size: 20px;
+      font-size: 24px;
       line-height: 1.2em;
       flex-grow: 1;
     }
   }
 
   &__explanation {
-    width: 60%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: var(--fg-color-3);
+    font-size: 16px;
   }
 
   &__content {
@@ -30,6 +32,11 @@
     flex-direction: column;
     align-items: center;
     gap: 0.4em;
-    width: 75%;
+    width: 100%;
+    & button {
+      width: 100% !important;
+      border-radius: 8px;
+      border: solid 1px hsl(211deg 100% 59.66%);
+    }
   }
 }
