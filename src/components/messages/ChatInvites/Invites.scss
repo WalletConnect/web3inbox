@@ -79,9 +79,8 @@
     &-text,
     &-actions {
       display: flex;
-      gap: 0.5em;
+      gap: 0.75em;
       align-items: center;
-      margin-top: 1em;
     }
 
     &-actions {
@@ -97,14 +96,14 @@
       display: grid;
       place-items: center;
       background: linear-gradient(135deg, #1ac6ff, #ffffff 90%);
-      width: 2.75em;
-      height: 2.75em;
+      width: 2.25em;
+      height: 2.25em;
       border-radius: 50%;
       box-shadow: inset 0px 0px 10px #1ac6ff;
       img {
         padding: 0.05em;
-        width: 2em;
-        height: 2em;
+        width: 1.5em;
+        height: 1.5em;
       }
     }
   }
