@@ -90,7 +90,7 @@ const App = () => {
               {isPreferencesModalOpen && <PreferencesModal />}
               {isUnsubscribeModalOpen && <UnsubscribeModal />}
               {isSignatureModalOpen && registerMessage && (
-                <SignatureModal purpose={''} message={registerMessage} />
+                <SignatureModal message={registerMessage} />
               )}
             </Fragment>
           )}
