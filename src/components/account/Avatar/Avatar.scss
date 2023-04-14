@@ -70,6 +70,10 @@
       font-weight: 700;
       font-size: 0.875em;
 
+      &__group {
+        justify-content: center;
+      }
+
       &:hover {
         .Avatar__dropdown__button {
           opacity: 1;
@@ -119,6 +123,7 @@
             line-height: 1.0625em;
           }
         }
+
         &__disconnect {
           span {
             color: var(--error-color-1);

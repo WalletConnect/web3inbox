@@ -166,8 +166,8 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
               </div>
             </div>
             <Divider />
-            <div className="Avatar__dropdown__block">
-              <div className="Avatar__dropdown__block__actions">
+            <div className="Avatar__dropdown__block Avatar__dropdown__block__group">
+              <div className="Avatar__dropdown__block__actions ">
                 {/* <button onClick={handleViewProfile}>
                   <PersonIcon />
                   <span>View Profile</span>
