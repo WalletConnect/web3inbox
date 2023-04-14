@@ -114,12 +114,10 @@ export default class InternalChatProvider implements W3iChatProvider {
     })
 
     this.chatClient.chatThreads.core.on('sync_store_update', () => {
-      console.log('Threads update')
       this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
     })
 
     this.chatClient.chatSentInvites.core.on('sync_store_update', () => {
-      console.log('Invites update')
       this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
     })
   }

@@ -2295,16 +2295,26 @@
     eventemitter3 "^4.0.7"
     zustand "^4.3.1"
 
-"@walletconnect/chat-client@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.5.0.tgz#35a73689c481f7c568e4a94896212372a3455128"
-  integrity sha512-9eyaQ73WzzfONcPcOQvawvY249Wg5Rr3s8gz49rPzF6hoD587UfTnb7ZnneJnd5qAbNzbhZrjiBNNnQD+P9Gog==
+"@walletconnect/cacao@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@walletconnect/cacao/-/cacao-1.0.2.tgz#a5b36db21047503d2cfa0b5466aed30fc02a2840"
+  integrity sha512-LEO/MqbVvaOj0BerlBJQMsyEfSZGGUusHkICkVH1tIxrk7QCBJ5SCU0XzbVkncXMHqNPvyThEjEFSvf+vdYFJA==
+  dependencies:
+    "@ethersproject/hash" "^5.7.0"
+    "@ethersproject/transactions" "^5.7.0"
+    isomorphic-unfetch "^3.1.0"
+
+"@walletconnect/chat-client@^0.6.1-canary.1":
+  version "0.6.1-canary.1"
+  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.6.1-canary.1.tgz#179a1c0307236d446c3ae26855a2f99d1381d48d"
+  integrity sha512-xvCmyXdUArnXzyFS5A0uaD91QKK1KkZZu0IPsjrlOiinfFBmfuS8P0ZWn6SXBshuRtGxEyhJDjwiWfW+bfNyIQ==
   dependencies:
     "@noble/ed25519" "^1.7.1"
+    "@walletconnect/cacao" "^1.0.2"
     "@walletconnect/core" "^2.5.2"
     "@walletconnect/jsonrpc-utils" "^1.0.6"
     "@walletconnect/logger" "^2.0.1"
-    "@walletconnect/sync-client" "^0.2.7"
+    "@walletconnect/sync-client" "^0.3.1-canary.1"
     "@walletconnect/time" "^1.0.2"
     "@walletconnect/utils" "^2.5.2"
     axios "^0.27.2"
@@ -2667,10 +2677,10 @@
     events "^3.3.0"
     pino "7.11.0"
 
-"@walletconnect/sync-client@^0.2.7":
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/@walletconnect/sync-client/-/sync-client-0.2.7.tgz#873941bfcb4b83b26434c992ef9a2fad299be309"
-  integrity sha512-tCcP68sDw6y2UGzEbFXxuf/uzkUIlVBfhFaEgWFo1EONqhiofCSmHabJaFpYk+0P6dYWjmgba0E1GPVh8TUbHQ==
+"@walletconnect/sync-client@^0.3.1-canary.1":
+  version "0.3.1-canary.1"
+  resolved "https://registry.yarnpkg.com/@walletconnect/sync-client/-/sync-client-0.3.1-canary.1.tgz#6b5ad0beb24d822631ba0c44b600bdccf4670436"
+  integrity sha512-yTmbNTV7QMbskoZLKFZFVqeh8GKVCgi8WyDfWSbhTjHPm9gAz7kUFOIb3n7/a/J0/Rutu9RB8IxJyyxMDzN4Xw==
   dependencies:
     "@ethersproject/wallet" "^5.7.0"
     "@walletconnect/core" "^2.5.2"
@@ -5107,6 +5117,14 @@ isomorphic-timers-promises@^1.0.1:
   resolved "https://registry.yarnpkg.com/isomorphic-timers-promises/-/isomorphic-timers-promises-1.0.1.tgz#e4137c24dbc54892de8abae3a4b5c1ffff381598"
   integrity sha512-u4sej9B1LPSxTGKB/HiuzvEQnXH0ECYkSVQU39koSwmFAxhlEAFl9RdTvLv4TOTQUgBS5O3O5fwUxk6byBZ+IQ==
 
+isomorphic-unfetch@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/isomorphic-unfetch/-/isomorphic-unfetch-3.1.0.tgz#87341d5f4f7b63843d468438128cb087b7c3e98f"
+  integrity sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==
+  dependencies:
+    node-fetch "^2.6.1"
+    unfetch "^4.2.0"
+
 isomorphic-ws@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/isomorphic-ws/-/isomorphic-ws-4.0.1.tgz#55fd4cd6c5e6491e76dc125938dd863f5cd4f2dc"
@@ -5676,7 +5694,7 @@ node-fetch@2.6.7:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-fetch@^2.6.7:
+node-fetch@^2.6.1, node-fetch@^2.6.7:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.9.tgz#7c7f744b5cc6eb5fd404e0c7a9fec630a55657e6"
   integrity sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg==
@@ -7024,6 +7042,11 @@ unbox-primitive@^1.0.2:
     has-bigints "^1.0.2"
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
+
+unfetch@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-4.2.0.tgz#7e21b0ef7d363d8d9af0fb929a5555f6ef97a3be"
+  integrity sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.0"
