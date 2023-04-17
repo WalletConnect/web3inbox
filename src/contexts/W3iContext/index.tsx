@@ -63,23 +63,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
     return () => sub?.unsubscribe()
   }, [chatClient])
-
-  useEffect(() => {
-    const handleRegistration = async () => {
-      console.log('HANDLING REGISTRATION')
-      if (chatClient && userPubkey) {
-        try {
-          const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
-          console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
-          setRegistered(registeredKeyRes)
-        } catch (error) {
-          setRegisterMessage(null)
-        }
-      }
-    }
-    handleRegistration()
-  }, [chatClient, userPubkey])
-
   useEffect(() => {
     if (chatClient && pushClient) {
       return
@@ -109,7 +92,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [pushClient, userPubkey])
 
   const refreshChatState = useCallback(() => {
-    if (!chatClient || !userPubkey) {
+    if (!chatClient || !userPubkey || !registeredKey) {
       return
     }
 
@@ -122,7 +105,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     chatClient
       .getThreads({ account: `eip155:1:${userPubkey}` })
       .then(invite => setThreads(Array.from(invite.values())))
-  }, [chatClient, userPubkey, setThreads, setInvites])
+  }, [chatClient, userPubkey, setThreads, registeredKey, setInvites])
 
   useEffect(() => {
     if (!chatClient) {
@@ -130,19 +113,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     }
 
     const inviteSub = chatClient.observe('chat_invite', {
-      next: ({ id }) => {
-        switch (newContacts) {
-          case 'reject-new':
-            chatClient.reject({ id })
-            break
-          case 'accept-new':
-            chatClient.accept({ id }).then(refreshChatState)
-            break
-          case 'require-invite':
-          default:
-            refreshChatState()
-            break
-        }
+      next: () => {
+        refreshChatState()
       }
     })
 
@@ -153,6 +125,12 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     })
 
     const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshChatState })
+    const pingSub = chatClient.observe('chat_ping', {
+      next: () => {
+        console.log('Got a ping!')
+        refreshChatState()
+      }
+    })
     const chatMessageSentSub = chatClient.observe('chat_message_sent', { next: refreshChatState })
     const chatJoinedSub = chatClient.observe('chat_joined', { next: refreshChatState })
     const inviteAcceptedSub = chatClient.observe('chat_invite_accepted', { next: refreshChatState })
@@ -160,6 +138,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
     return () => {
       inviteSub.unsubscribe()
+      pingSub.unsubscribe()
       signatureSub.unsubscribe()
       inviteSentSub.unsubscribe()
       inviteAcceptedSub.unsubscribe()
@@ -168,6 +147,22 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       chatJoinedSub.unsubscribe()
     }
   }, [chatClient, refreshChatState])
+
+  useEffect(() => {
+    const handleRegistration = async () => {
+      if (chatClient && userPubkey) {
+        try {
+          const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
+          console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
+          refreshChatState()
+          setRegistered(registeredKeyRes)
+        } catch (error) {
+          setRegisterMessage(null)
+        }
+      }
+    }
+    handleRegistration()
+  }, [chatClient, userPubkey])
 
   useEffect(() => {
     refreshChatState()
