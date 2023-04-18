@@ -16,7 +16,7 @@ import { useMobileResponsiveGrid, useModals } from './utils/hooks'
 import { signatureModalService } from './utils/store'
 import { truncate } from './utils/string'
 import { SignatureModal } from './pages/Login/SignatureModal'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 
 const App = () => {
   const { chatClientProxy, userPubkey, registeredKey, registerMessage } = useContext(W3iContext)
@@ -85,13 +85,15 @@ const App = () => {
               <Sidebar />
               <Outlet />
               <ToastContainer />
-              {isProfileModalOpen && <Profile />}
-              {isShareModalOpen && <Share />}
-              {isPreferencesModalOpen && <PreferencesModal />}
-              {isUnsubscribeModalOpen && <UnsubscribeModal />}
-              {isSignatureModalOpen && registerMessage && (
-                <SignatureModal message={registerMessage} />
-              )}
+              <AnimatePresence mode="wait">
+                {isProfileModalOpen && <Profile />}
+                {isShareModalOpen && <Share />}
+                {isPreferencesModalOpen && <PreferencesModal />}
+                {isUnsubscribeModalOpen && <UnsubscribeModal />}
+                {isSignatureModalOpen && registerMessage && (
+                  <SignatureModal message={registerMessage} />
+                )}
+              </AnimatePresence>
             </Fragment>
           )}
         </m.div>

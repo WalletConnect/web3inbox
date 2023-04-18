@@ -1,5 +1,6 @@
 import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import type { RefObject } from 'react'
+// eslint-disable-next-line no-duplicate-imports
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
@@ -66,7 +67,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       border2: 'hsla(0, 0%, 100%, 0.1)',
       accent1: 'hsla(211, 90%, 50%, 1)',
       error1: 'hsla(5, 85%, 60%, 1)',
-      icon1: 'hsla(180, 6%, 80%, 1)'
+      icon1: 'hsla(180, 6%, 80%, 1)',
+      qr1: '#e4e7e7'
     },
     light: {
       bg1: 'hsla(0, 0%, 100%, 1)',
@@ -87,7 +89,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       border2: 'hsla(0, 0%, 0%, 0.1)',
       accent1: 'hsla(211, 100%, 60%, 1)',
       error1: 'hsla(5, 85%, 60%, 1)',
-      icon1: 'hsla(180, 4%, 16%, 1)'
+      icon1: 'hsla(180, 4%, 16%, 1)',
+      qr1: '#141414'
     }
   }
 
@@ -110,7 +113,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--border-color-2': colors[specifiedMode].border2,
     '--accent-color-1': colors[specifiedMode].accent1,
     '--error-color-1': colors[specifiedMode].error1,
-    '--icon-color-1': colors[specifiedMode].icon1
+    '--icon-color-1': colors[specifiedMode].icon1,
+    '--qr-color-1': colors[specifiedMode].qr1
   }
 
   return colorModeVariables

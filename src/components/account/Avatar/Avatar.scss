@@ -51,9 +51,6 @@
         width: 0.875em;
         height: 0.875em;
       }
-      &:hover {
-        background-color: var(--bg-color-2);
-      }
     }
 
     @media only screen and (max-width: 700px) {
@@ -71,7 +68,7 @@
       font-size: 0.875em;
 
       &__group {
-        justify-content: center;
+        padding-left: 1em;
       }
 
       &:hover {
@@ -105,11 +102,12 @@
         flex-direction: column;
         font-size: 1em;
         button {
+          user-select: none;
           height: 2.625em;
           display: flex;
           justify-content: flex-start;
           padding: 0.625em 0.8125em;
-          gap: 0.375em;
+          gap: 0.5em;
           height: 2.3125em;
           border: none;
           background: none;
@@ -119,12 +117,18 @@
             width: 1em;
             height: 1em;
           }
-          span {
-            line-height: 1.0625em;
-          }
+        }
+
+        &__button {
+          display: flex;
+          align-items: center;
+          border-radius: 0.75em;
         }
 
         &__disconnect {
+          svg {
+            color: var(--error-color-1);
+          }
           span {
             color: var(--error-color-1);
           }
