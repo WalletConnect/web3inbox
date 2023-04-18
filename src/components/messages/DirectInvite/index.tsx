@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import W3iContext from '../../../contexts/W3iContext/context'
 import Spinner from '../../general/Spinner'
+import './DirectInvite.scss'
 
 const DirectInvite: React.FC = () => {
   const { account } = useParams<{ account: string }>()
@@ -26,7 +27,7 @@ const DirectInvite: React.FC = () => {
         })
         nav('/messages')
       } catch {
-        toast('Failed to invite', {
+        toast(`Failed to invite ${account}`, {
           type: 'error'
         })
         nav('/messages')
@@ -37,8 +38,11 @@ const DirectInvite: React.FC = () => {
   }, [account, key, userPubkey, nav])
 
   return (
-    <div style={{ display: 'grid', placeItems: 'center' }}>
-      <Spinner width="5em" />
+    <div className="DirectInvite">
+      <div className="DirectInvite__message">
+        <span>Inviting {account}... </span>
+        <Spinner width="1em" />
+      </div>
     </div>
   )
 }

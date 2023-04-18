@@ -14,9 +14,11 @@ const ScanQrCode: React.FC = () => {
       return
     }
     const web3inboxRegex = new RegExp(`${window.location.origin}/messages/invite/.*`, 'u')
+
     if (web3inboxRegex.test(scanResult)) {
-      nav(scanResult)
+      nav(scanResult.replace(window.location.origin, ''))
     } else {
+      console.error('Not a valid invite url', scanResult)
       nav('/messages')
     }
   }, [scanResult])
