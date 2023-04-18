@@ -14,7 +14,8 @@ import SearchSuggestions from './SearchSuggestions'
 import debounce from 'lodash.debounce'
 import './NewChat.scss'
 import { truncate } from '../../../utils/string'
-import { useNavigate } from 'react-router-dom'
+import QrIcon from '../../../assets/QrCodeScan.svg'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
@@ -174,6 +175,9 @@ const NewChat: React.FC = () => {
         ) : (
           <div className="NewChat__search-box">
             <SearchSuggestions onNameClick={name => setQuery(name)} name={debouncedQuery} />
+            <NavLink className="ThreadSelector__link" to="/qrcode-scan">
+              <img className="ThreadSelector__link-icon" src={QrIcon} alt="QrCode" />
+            </NavLink>
             <Input
               value={query}
               placeholder="ENS Username (vitalik.eth) / Wallet Address (0x423…)"

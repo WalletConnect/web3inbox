@@ -22,6 +22,8 @@ import './index.css'
 import Login from './pages/Login'
 import './styles/fonts.css'
 import { AnimatePresence } from 'framer-motion'
+import ScanQrCode from './pages/ScanQrCode'
+import DirectInvite from './components/messages/DirectInvite'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -45,6 +47,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Routes>
                 <Route path="/login" element={<Login />} />
 
+                <Route path="/qrcode-scan" element={<ScanQrCode />} />
+
                 <Route path="/" element={<App />}>
                   <Route path="notifications" element={<NotificationsLayout />}>
                     <Route index element={<Web3InboxPlaceholder />} />
@@ -56,6 +60,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     <Route path="/messages/chat/:peer" element={<ThreadWindow />} />
                     <Route path="/messages/new-chat" element={<NewChat />} />
                     <Route path="/messages/chat-invites" element={<ChatInvites />} />
+                    <Route path="/messages/invite/:account" element={<DirectInvite />} />
                   </Route>
                   <Route path="settings" element={<SettingsLayout />}>
                     <Route index element={<Settings />} />
