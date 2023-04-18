@@ -5,7 +5,7 @@
   top: 0;
   left: 0;
   background: var(--bg-color-3);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px) brightness(0.8);
   z-index: 1;
   width: 100vw;
   height: 100vh;
@@ -28,5 +28,9 @@
   &__content {
     width: 100%;
     color: var(--fg-color-1);
+  }
+  &__container {
+    height: fit-content;
+    width: fit-content;
   }
 }
