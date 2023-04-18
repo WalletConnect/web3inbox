@@ -21,18 +21,6 @@ const ScanQrCode: React.FC = () => {
     }
   }, [scanResult])
 
-  /*
-   * Const dimensions = isMobile
-   *   ? {
-   *       width: window.innerWidth,
-   *       height: window.innerHeight
-   *     }
-   *   : {
-   *       width: window.innerWidth / SCANNER_ASPECT_RATIO,
-   *       height: window.innerHeight / 1.25
-   *     }
-   */
-
   const dimensions = {
     width: 390,
     height: 844
