@@ -11,9 +11,12 @@ import { useColorModeValue } from '../../../utils/hooks'
 import { toast } from 'react-toastify'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
+import { useEnsName } from 'wagmi'
 
 export const Share: React.FC = () => {
   const { userPubkey: address } = useContext(W3iContext)
+  const addressOrEnsDomain = address as `0x${string}` | undefined
+  const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
 
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
@@ -79,7 +82,7 @@ export const Share: React.FC = () => {
     <Modal onToggleModal={shareModalService.toggleModal}>
       <div className="Share">
         <div className="Share__header">
-          <button className="Share__header--back">
+          <button className="Share__header--back" onClick={shareModalService.toggleModal}>
             <svg
               width="10"
               height="20"
@@ -95,6 +98,7 @@ export const Share: React.FC = () => {
               />
             </svg>
           </button>
+          <p className="Share__header--address">{ensName ?? truncate(address ?? '', 4)}</p>
           <button className="Share__header--close" onClick={shareModalService.toggleModal}>
             ✕
           </button>

@@ -16,6 +16,10 @@
       line-height: 2em;
       color: var(--accent-color-1);
     }
+    &--address {
+      font-size: 1.1em;
+      color: var(--fg-color-1);
+    }
     &--close {
       border-radius: 1000em;
       border: 1px solid var(--border-color-2);
