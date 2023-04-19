@@ -1,7 +1,8 @@
 import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import type { RefObject } from 'react'
+
 // eslint-disable-next-line no-duplicate-imports
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
 import {
@@ -278,4 +279,32 @@ export const useFormattedTime = (timestamp?: number) => {
   }, [timestamp])
 
   return formattedTime
+}
+
+// eslint-disable-next-line func-style
+export function useResizeObserver<T extends HTMLElement>(
+  callback: (target: T, entry: ResizeObserverEntry) => void
+) {
+  const ref = useRef<T>(null)
+
+  useLayoutEffect(() => {
+    const element = ref.current
+
+    if (!element) {
+      return
+    }
+
+    const observer = new ResizeObserver(entries => {
+      callback(element, entries[0])
+    })
+
+    observer.observe(element)
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      observer.disconnect()
+    }
+  }, [callback, ref])
+
+  return ref
 }
