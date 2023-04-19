@@ -18,7 +18,7 @@ export const Share: React.FC = () => {
   const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
 
   const { mode } = useContext(SettingsContext)
-  const uri = `${window.location.origin}/messages/invite/${address ?? ''}`
+  const uri = `${window.location.origin}/messages/invite/eip155:1:${address ?? ''}`
 
   const toastTheme = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
