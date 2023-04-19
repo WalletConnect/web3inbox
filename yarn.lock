@@ -2884,7 +2884,6 @@
     motion "10.15.5"
     qrcode "1.5.1"
 
-<<<<<<< HEAD
 "@web3modal/ui@2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-2.3.1.tgz#ba8ce5b50333c9860acc9f3b3006afd696aff584"
