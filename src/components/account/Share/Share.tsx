@@ -80,7 +80,7 @@ export const Share: React.FC = () => {
           </button>
         </div>
         <div className="Share__qr">
-          <W3mQrCode size={250} imageUrl={ensAvatar ?? '/logo.png'} uri={uri} />
+          <W3mQrCode size={318} imageUrl={ensAvatar ?? '/logo.png'} uri={uri} />
         </div>
         <div className="Share__address">
           <p className="Share__address--label">Address</p>
