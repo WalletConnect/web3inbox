@@ -37,7 +37,8 @@ export default class ExternalPushProvider implements W3iPushProvider {
   ) {
     return this.communicator.postToExternalProvider<ReturnType<PushClientFunctions[MName]>>(
       methodName,
-      params[0]
+      params[0],
+      'push'
     )
   }
 
