@@ -1,3 +1,4 @@
+import {useWeb3ModalTheme} from '@web3modal/react'
 import cn from 'classnames'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ArtistPalette from '../../../assets/ArtistPalette.png'
@@ -51,9 +52,16 @@ const Settings: React.FC = () => {
   const { chatClientProxy, threads } = useContext(W3iContext)
   const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
 
+	const { setTheme } = useWeb3ModalTheme()
+
   const handleThemeChange = useCallback(
     (modeId: SettingsContextSimpleState['mode']) => {
       updateSettings({ mode: modeId })
+			// Can't set `mode` directly due it being able to be 'system'
+			setTheme({
+				themeMode: mode === 'dark' ? "dark" : "light"
+			})
+			
       localStorage.setItem('w3i-theme', modeId)
     },
     [updateSettings]

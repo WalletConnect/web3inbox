@@ -2115,13 +2115,6 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
-"@types/qrcode@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@types/qrcode/-/qrcode-1.5.0.tgz#6a98fe9a9a7b2a9a3167b6dde17eff999eabe40b"
-  integrity sha512-x5ilHXRxUPIMfjtM+1vf/GPTRWZ81nqscursm5gMznJeK9M0YnZ1c3bEvRLQ0zSSgedLx1J6MGL231ObQGGhaA==
-  dependencies:
-    "@types/node" "*"
-
 "@types/react-dom@^18.0.8":
   version "18.0.11"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.11.tgz#321351c1459bc9ca3d216aefc8a167beec334e33"
@@ -2843,21 +2836,37 @@
     buffer "6.0.3"
     valtio "1.10.4"
 
-"@web3modal/ethereum@^2.2.2":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/ethereum/-/ethereum-2.3.0.tgz#81fa2d7c087377da0181268a9e06ff05f1efcc6b"
-  integrity sha512-ugm/uv+WMh1NKfv3dxq3rIkmWkxWR2OmsC+FIJ8bGp62H5VRXbSLiOXIqtgC+CQp/RoyX0shzS4WzApbcnvrBA==
-
-"@web3modal/react@^2.2.2":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/react/-/react-2.3.0.tgz#1552427709e596fb4ec07b81b35c7fed50d7d82d"
-  integrity sha512-lu4ojYwL7+3QtlwtQQKQL0P+V6Gszsg8GwgDQeXkofubjOe5mBiUZSHZcWc8k9VXeIrcT75TSjfdWcmucHcIbg==
+"@web3modal/core@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-2.3.1.tgz#a4a5a9d9102cb5cd469b51d1b93631622d4d0380"
+  integrity sha512-u0gQMt5IImTk9xv6/YGLcIFC+Mxs8ewPdwu4ZgeViZwH3DBV3J4sepzH6Nw7zb3Rcnq/x+Jr8/pElPLY7AXirQ==
   dependencies:
-    "@web3modal/core" "2.3.0"
-    "@web3modal/standalone" "2.3.0"
-    "@web3modal/ui" "2.3.0"
+    buffer "6.0.3"
+    valtio "1.10.4"
 
-"@web3modal/standalone@2.3.0", "@web3modal/standalone@^2.2.2":
+"@web3modal/ethereum@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/ethereum/-/ethereum-2.3.1.tgz#5a9a4e673ded48c0146e51da4845b89889342cdf"
+  integrity sha512-uzmSdClE75Fha+pJCCLamKuMZI/E9jtXx4SBg1hEendLQoePY3zlr7G3IQMIJbjG6L6eEfCjO7yMPxHmIdsOlw==
+
+"@web3modal/react@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/react/-/react-2.3.1.tgz#f29988f72f0fd6e201c1772a74eafde6715b5f06"
+  integrity sha512-rM7jACuwOB2FQcCdObmVj3BdB2hUooS+7y2CPisD1gb6+Qo1m4x4XyO/PNG2hI3hdjYA2WQFawEAmKmujnMDaQ==
+  dependencies:
+    "@web3modal/core" "2.3.1"
+    "@web3modal/standalone" "2.3.1"
+    "@web3modal/ui" "2.3.1"
+
+"@web3modal/standalone@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/standalone/-/standalone-2.3.1.tgz#079228a7c7e95a1868f35c4c670ad150074e53d0"
+  integrity sha512-CAnMlnbOQX0oIjPEr0+m5AWKLmFwT5P5KIG2IluWhwKjJzOYvkL6bW3qfzKh73ETLUIBj0GE2DFuz6W4bSvnVQ==
+  dependencies:
+    "@web3modal/core" "2.3.1"
+    "@web3modal/ui" "2.3.1"
+
+"@web3modal/standalone@^2.2.2":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@web3modal/standalone/-/standalone-2.3.0.tgz#4709a611adc893e07a46b6763861f394f8cf06ad"
   integrity sha512-O2vfsT83r2UlEYCFEKcIRQLt7XmsAUapazb1rjYr6PWN1hU4FVksWiUwG9UGNoU8lznvaiFiCUNmjje1+4NHgQ==
@@ -2871,6 +2880,16 @@
   integrity sha512-iXpT4UPwQCxU/+JcqxjNcyBMM5imepmtO47ogbPQkvpZXrjsyiAqxLAXFAbY/W6uoNvGez1sQDtTdzt0umlKyQ==
   dependencies:
     "@web3modal/core" "2.3.0"
+    lit "2.7.2"
+    motion "10.15.5"
+    qrcode "1.5.1"
+
+"@web3modal/ui@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-2.3.1.tgz#ba8ce5b50333c9860acc9f3b3006afd696aff584"
+  integrity sha512-h/e/8D2CwXN91+QMc2v8fwMZBY6u2CcI+3XSmcg1nqSMSYppNIRnx5choezFpnf7SiJJJOiJnKmf6nrffe2tTg==
+  dependencies:
+    "@web3modal/core" "2.3.1"
     lit "2.7.2"
     motion "10.15.5"
     qrcode "1.5.1"

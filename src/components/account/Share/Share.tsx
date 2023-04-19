@@ -1,25 +1,24 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { shareModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Share.scss'
-import type { QRCodeErrorCorrectionLevel } from 'qrcode'
 // eslint-disable-next-line no-duplicate-imports
-import QRCode from 'qrcode'
 import CopyIcon from '../../general/Icon/CopyIcon'
+import { W3mQrCode } from '@web3modal/react'
 import SettingsContext from '../../../contexts/SettingsContext/context'
-import { useColorModeValue } from '../../../utils/hooks'
 import { toast } from 'react-toastify'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
-import { useEnsName } from 'wagmi'
+import { useEnsAvatar, useEnsName } from 'wagmi'
 
 export const Share: React.FC = () => {
   const { userPubkey: address } = useContext(W3iContext)
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
+  const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
 
   const { mode } = useContext(SettingsContext)
-  const themeColors = useColorModeValue(mode)
+  const uri = `${window.location.origin}/messages/invite/${address ?? ''}`
 
   const toastTheme = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -27,29 +26,6 @@ export const Share: React.FC = () => {
 
     return specifiedMode
   }, [mode])
-
-  const [qrCode, setQrCode] = useState<string | null>(null)
-
-  const qrOptions = {
-    errorCorrectionLevel: 'H' as QRCodeErrorCorrectionLevel,
-    width: 314,
-    margin: 0,
-    version: 10,
-    color: {
-      dark: themeColors['--qr-color-1'],
-      light: '#00000000'
-    }
-  }
-
-  useEffect(() => {
-    QRCode.toString('https://web3inbox.com', qrOptions)
-      .then(url => {
-        setQrCode(url)
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  }, [qrOptions])
 
   const handleCopyClick = () => {
     window.navigator.clipboard
@@ -104,11 +80,7 @@ export const Share: React.FC = () => {
           </button>
         </div>
         <div className="Share__qr">
-          {qrCode ? (
-            <img src={`data:image/svg+xml;utf8,${encodeURIComponent(qrCode)}`} />
-          ) : (
-            'Loading...'
-          )}
+          <W3mQrCode size={318} imageUrl={ensAvatar ?? '/logo.png'} uri={uri} />
         </div>
         <div className="Share__address">
           <p className="Share__address--label">Address</p>
