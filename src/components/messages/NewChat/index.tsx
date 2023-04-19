@@ -165,9 +165,6 @@ const NewChat: React.FC = () => {
               </div>
             </div>
             <div className="NewChat__input-container">
-              <NavLink className="ThreadSelector__link" to="/qrcode-scan">
-                <img className="ThreadSelector__link-icon" src={QrIcon} alt="QrCode" />
-              </NavLink>
               <Input
                 value={query}
                 placeholder="ENS Username (vitalik.eth) / Wallet Address (0x423…)"
