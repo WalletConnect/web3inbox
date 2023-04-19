@@ -118,7 +118,7 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
                   className="Avatar__dropdown__button"
                   onClick={() => {
                     window.navigator.clipboard
-                      .writeText(address ?? '')
+                      .writeText(address ? `${address}/${''}` : '')
                       .then(() => {
                         toast('Copied address to clipboard', {
                           type: 'success',

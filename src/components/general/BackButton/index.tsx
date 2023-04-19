@@ -11,15 +11,16 @@ import './BackButton.scss'
  */
 interface BackButtonProps {
   backTo: string
+  force?: boolean
   children?: ReactNode
 }
 
-const BackButton: React.FC<BackButtonProps> = ({ backTo, children }) => {
+const BackButton: React.FC<BackButtonProps> = ({ backTo, children, force }) => {
   const isMobile = useIsMobile()
 
   const nav = useNavigate()
 
-  return isMobile ? (
+  return isMobile || force ? (
     <div
       onClick={() => {
         nav(backTo)

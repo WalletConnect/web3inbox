@@ -1,0 +1,12 @@
+.DirectInvite {
+  display: grid;
+  place-items: center;
+  height: 100%;
+
+  .DirectInvite__message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+  }
+}
