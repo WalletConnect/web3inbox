@@ -27,7 +27,9 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
   const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
 
   const { mode } = useContext(SettingsContext)
+  console.log('QRCODE MODAL >>>> GENERATING URI')
   const uri = `${window.location.origin}/messages/invite/eip155:1:${address ?? ''}`
+  console.log(`QRCODE MODAL >>>> URI: ${uri}`)
 
   const toastTheme = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
