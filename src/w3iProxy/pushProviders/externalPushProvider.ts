@@ -1,5 +1,6 @@
 import type { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import type { PushClientTypes } from '@walletconnect/push-client'
 import type { PushClientFunctions, W3iPushProvider } from './types'
 import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
@@ -64,6 +65,14 @@ export default class ExternalPushProvider implements W3iPushProvider {
 
   public async reject(params: { id: number; reason: string }) {
     return this.postToExternalProvider('reject', params)
+  }
+
+  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
+    return this.postToExternalProvider('subscribe', {
+      ...params,
+      // Signing will be handled wallet-side.
+      onSign: async () => Promise.resolve('')
+    })
   }
 
   public async deleteSubscription(params: { topic: string }) {
