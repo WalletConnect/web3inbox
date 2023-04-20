@@ -60,7 +60,9 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
 
-    // Noop until we have a real push client implementation ready.
+    /**
+     * TODO: Noop until we have a real push client implementation ready.
+     */
     return Promise.resolve(false)
   }
 
