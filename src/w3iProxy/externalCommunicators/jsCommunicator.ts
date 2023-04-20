@@ -10,7 +10,11 @@ export class JsCommunicator implements ExternalCommunicator {
     this.emitter = emitter
   }
 
-  public async postToExternalProvider<TReturn>(methodName: string, params: unknown) {
+  public async postToExternalProvider<TReturn>(
+    methodName: string,
+    params: unknown,
+    _: 'chat' | 'push'
+  ) {
     return new Promise<TReturn>(resolve => {
       const message = formatJsonRpcRequest(methodName, params)
 
