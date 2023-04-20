@@ -37,7 +37,7 @@ const ScanQrCode: React.FC = () => {
       <div className="ScanQrCode__body">
         <div className="ScanQrCode__container" style={dimensions}>
           <QrReader
-            constraints={dimensions}
+            constraints={{ ...dimensions, facingMode: 'environment' }}
             onResult={result => {
               if (result) {
                 setResult(result.getText())
