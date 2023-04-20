@@ -84,7 +84,7 @@ class W3iPushFacade implements W3iPush {
 
     const subscription = eventObservable.subscribe(observer)
 
-    return subscription.unsubscribe
+    return subscription
   }
 }
 

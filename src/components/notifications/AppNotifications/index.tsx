@@ -1,6 +1,7 @@
 import type { PushClientTypes } from '@walletconnect/push-client'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { noop } from 'rxjs'
 import W3iContext from '../../../contexts/W3iContext/context'
 import AppNotificationItem from './AppNotificationItem'
 import './AppNotifications.scss'
@@ -19,6 +20,24 @@ const AppNotifications = () => {
         .then(messageHistory => setNotifications(Object.values(messageHistory)))
     }
   }, [setNotifications, pushClientProxy, topic])
+
+  useEffect(() => {
+    if (!(pushClientProxy && topic)) {
+      return noop
+    }
+
+    const pushMessageSentSub = pushClientProxy.observe('push_message', {
+      next: () => {
+        pushClientProxy
+          .getMessageHistory({ topic })
+          .then(messageHistory => setNotifications(Object.values(messageHistory)))
+      }
+    })
+
+    return () => {
+      pushMessageSentSub.unsubscribe()
+    }
+  }, [pushClientProxy, setNotifications, topic])
 
   console.log({ app, activeSubscriptions, topic })
 
