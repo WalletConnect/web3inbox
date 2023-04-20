@@ -1,6 +1,6 @@
 import type { EventEmitter } from 'events'
 import type { W3iPushProvider } from './types'
-import type { WalletClient as PushWalletClient } from '@walletconnect/push-client'
+import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
 import { appNotificationsMock, myAppsMock } from '../../utils/mocks'
 
 export default class InternalPushProvider implements W3iPushProvider {
@@ -53,6 +53,19 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
 
     return this.pushClient.reject(params)
+  }
+
+  public async subscribe(_params: {
+    metadata: PushClientTypes.Metadata
+    account: string
+    onSign: (message: string) => string
+  }) {
+    if (!this.pushClient) {
+      throw new Error(this.formatClientRelatedError('subscribe'))
+    }
+
+    // Noop until we have a real push client implementation ready.
+    return Promise.resolve(false)
   }
 
   public async deleteSubscription(params: { topic: string }) {
