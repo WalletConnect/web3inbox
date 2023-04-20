@@ -1,18 +1,16 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { shareModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Share.scss'
-import type { QRCodeErrorCorrectionLevel } from 'qrcode'
 // eslint-disable-next-line no-duplicate-imports
-import QRCode from 'qrcode'
 import CopyIcon from '../../general/Icon/CopyIcon'
+import { W3mQrCode } from '@web3modal/react'
 import SettingsContext from '../../../contexts/SettingsContext/context'
-import { useColorModeValue } from '../../../utils/hooks'
 import { toast } from 'react-toastify'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
-import { useEnsName } from 'wagmi'
-import { m } from 'framer-motion'
+import { useEnsAvatar, useEnsName } from 'wagmi'
+import { AnimatePresence, m } from 'framer-motion'
 
 interface ModalContentProps {
   modalService: typeof shareModalService
@@ -26,9 +24,10 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
   const { userPubkey: address } = useContext(W3iContext)
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
+  const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
 
   const { mode } = useContext(SettingsContext)
-  const themeColors = useColorModeValue(mode)
+  const uri = `${window.location.origin}/messages/invite/eip155:1:${address ?? ''}`
 
   const toastTheme = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -36,29 +35,6 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
 
     return specifiedMode
   }, [mode])
-
-  const [qrCode, setQrCode] = useState<string | null>(null)
-
-  const qrOptions = {
-    errorCorrectionLevel: 'H' as QRCodeErrorCorrectionLevel,
-    width: 314,
-    margin: 0,
-    version: 10,
-    color: {
-      dark: themeColors['--qr-color-1'],
-      light: '#00000000'
-    }
-  }
-
-  useEffect(() => {
-    QRCode.toString('https://web3inbox.com', qrOptions)
-      .then(url => {
-        setQrCode(url)
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  }, [qrOptions])
 
   const handleCopyClick = () => {
     window.navigator.clipboard
@@ -123,16 +99,18 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
           </svg>
         </button>
         <p className="Share__header--address">{ensName ?? truncate(address ?? '', 4)}</p>
-        <button className="Share__header--close" onClick={modalService.toggleModal}>
+        <button
+          className="Share__header--close"
+          onClick={() => {
+            modalService.toggleModal()
+            localStorage.removeItem('ens-records')
+          }}
+        >
           ✕
         </button>
       </div>
       <div className="Share__qr">
-        {qrCode ? (
-          <img src={`data:image/svg+xml;utf8,${encodeURIComponent(qrCode)}`} />
-        ) : (
-          'Loading...'
-        )}
+        <W3mQrCode size={318} imageUrl={ensAvatar ?? '/logo.svg'} uri={uri} />
       </div>
       <div className="Share__address">
         <p className="Share__address--label">Address</p>
@@ -150,7 +128,13 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
 export const Share: React.FC = () => {
   return (
     <Modal onToggleModal={shareModalService.toggleModal}>
-      <ShareModalContent modalService={shareModalService} />
+      <AnimatePresence mode="wait" initial={false}>
+        <ShareModalContent
+          key="Share"
+          modalService={shareModalService}
+          handleBack={shareModalService.toggleModal}
+        />
+      </AnimatePresence>
     </Modal>
   )
 }

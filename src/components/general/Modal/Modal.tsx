@@ -1,7 +1,7 @@
 import React, { Fragment, useRef, useCallback } from 'react'
 import { useOnClickOutside, useResizeObserver } from '../../../utils/hooks'
 import './Modal.scss'
-import { LazyMotion, domAnimation, domMax, m } from 'framer-motion'
+import { LazyMotion, domMax, m } from 'framer-motion'
 
 interface IModalProps {
   onToggleModal: () => void

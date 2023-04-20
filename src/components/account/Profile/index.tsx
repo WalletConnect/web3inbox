@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
-import { profileModalService, shareModalService } from '../../../utils/store'
+import React, { useContext, useEffect, useState } from 'react'
+import { profileModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Profile.scss'
-import { useEnsName } from 'wagmi'
+import { useEnsAvatar, useEnsName, useProvider } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { generateAvatarColors } from '../../../utils/ui'
 import CrossIcon from '../../general/Icon/CrossIcon'
@@ -13,6 +13,12 @@ import TwitterIcon from '../../general/Icon/TwitterIcon'
 import GithubIcon from '../../general/Icon/GithubIcon'
 import { ShareModalContent } from '../Share/Share'
 import { AnimatePresence, m } from 'framer-motion'
+import type { ENSRecords, ResolvedENS } from 'get-ens'
+// eslint-disable-next-line no-duplicate-imports
+import { getENS } from 'get-ens'
+import Spinner from '../../general/Spinner'
+import EmailIcon from '../../general/Icon/EmailIcon'
+import RedditIcon from '../../general/Icon/RedditIcon'
 
 const ProfileLink = ({
   title,
@@ -31,19 +37,33 @@ const ProfileLink = ({
   )
 }
 
+interface ModifiedResolvedENS extends ResolvedENS {
+  records: ENSRecords
+}
+
 const ProfileModalContent: React.FC<{
   handleShareClick: () => void
 }> = ({ handleShareClick }) => {
+  const provider = useProvider()
   const { userPubkey: address } = useContext(W3iContext)
+  const locallyStoredData = localStorage.getItem('ens-records')
+  const [resolvedRecords, setResolvedRecords] = useState<ENSRecords | undefined>(
+    locallyStoredData ? JSON.parse(locallyStoredData) : undefined
+  )
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
-  //   Const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
+  const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
 
-  const userData = {
-    website: 'https://boidushya.com',
-    twitter: 'https://twitter.com/boidushya',
-    github: 'https://github.com/boidushya'
-  }
+  useEffect(() => {
+    const getData = async () => {
+      const data = (await getENS({ provider })(ensName ?? '')) as ModifiedResolvedENS
+      setResolvedRecords(data.records)
+      localStorage.setItem('ens-records', JSON.stringify(data.records))
+    }
+    if (!locallyStoredData) {
+      getData()
+    }
+  }, [])
 
   return (
     <m.div
@@ -72,26 +92,108 @@ const ProfileModalContent: React.FC<{
           <button onClick={handleShareClick}>
             <ShareIcon />
           </button>
-          <button onClick={profileModalService.toggleModal}>
+          <button
+            onClick={() => {
+              profileModalService.toggleModal()
+              localStorage.removeItem('ens-records')
+            }}
+          >
             <CrossIcon />
           </button>
         </div>
         <div className="Profile__TitleBar__background__container">
           <div className="Profile__TitleBar__background" />
         </div>
-        <div className="Profile__icon" />
+        <div className="Profile__icon">{ensAvatar && <img src={ensAvatar} alt="ENS Avatar" />}</div>
       </div>
       <div className="Profile__Container">
         <div className="Profile__Container__name">{ensName ?? truncate(address ?? '', 4)}</div>
-        <div className="Profile__Container__bio">
-          Hey i’m a ENS bio. i can include <a href="https://boidushya.com">links to websites</a>,
-          and funny characters. i can be long too, witness me!{' '}
-        </div>
-        <div className="Profile__Container__socials">
-          <ProfileLink title="Website" url={userData.website} icon={<WebsiteIcon />} />
-          <ProfileLink title="Github" url={userData.github} icon={<GithubIcon />} />
-          <ProfileLink title="Twitter" url={userData.twitter} icon={<TwitterIcon />} />
-        </div>
+        <AnimatePresence mode="wait">
+          {!ensName && (
+            <div className="Profile__Container__bio Profile__Container__bio--default">
+              Give your profile a personality upgrade with your unique ENS name, bio, and more from{' '}
+              <a href="https://app.ens.domains?utm_source=web3inbox_profile&utm_medium=web&utm_campaign=web3inbox">
+                app.ens.domains
+              </a>
+            </div>
+          )}
+          {ensName &&
+            (resolvedRecords ? (
+              <m.div
+                initial={{
+                  y: -5,
+                  opacity: 0,
+                  transformOrigin: 'top'
+                }}
+                animate={{
+                  y: 0,
+                  opacity: 1
+                }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                key="Bio"
+              >
+                <div className="Profile__Container__bio">
+                  {/* Hey i’m a ENS bio. i can include <a href="https://boidushya.com">links to websites</a>,
+          and funny characters. i can be long too, witness me!{' '} */}
+                  {resolvedRecords.description}
+                </div>
+                <div className="Profile__Container__socials">
+                  {resolvedRecords.url && (
+                    <ProfileLink title="Website" url={resolvedRecords.url} icon={<WebsiteIcon />} />
+                  )}
+                  {resolvedRecords.twitter && (
+                    <ProfileLink
+                      title="Twitter"
+                      url={`https://twitter.com/${resolvedRecords.twitter}`}
+                      icon={<TwitterIcon />}
+                    />
+                  )}
+                  {resolvedRecords.email && (
+                    <ProfileLink
+                      title="Email"
+                      url={`mailto:${resolvedRecords.email}`}
+                      icon={<EmailIcon />}
+                    />
+                  )}
+                  {resolvedRecords.github && (
+                    <ProfileLink
+                      title="Github"
+                      url={`https://github.com/${resolvedRecords.github}`}
+                      icon={<GithubIcon />}
+                    />
+                  )}
+                  {resolvedRecords.reddit && (
+                    <ProfileLink
+                      title="Reddit"
+                      url={`https://reddit.com/u/${resolvedRecords.reddit}`}
+                      icon={<RedditIcon />}
+                    />
+                  )}
+                </div>
+              </m.div>
+            ) : (
+              <m.div
+                initial={{
+                  y: 5,
+                  opacity: 0
+                }}
+                animate={{
+                  y: 0,
+                  opacity: 1
+                }}
+                exit={{
+                  opacity: 0,
+                  transition: { duration: 0.4 }
+                }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                key="Spinner"
+                className="Profile__Container__spinner"
+              >
+                <span>Fetching ENS Information</span>
+                <Spinner width="12px" />
+              </m.div>
+            ))}
+        </AnimatePresence>
       </div>
     </m.div>
   )
@@ -107,13 +209,13 @@ export const Profile: React.FC = () => {
     setShowShareModal(false)
   }
 
-  /*
-   * Once done with the modals, get the height and add this line to Modal component to animate between those heights
-   * Code: height={showShareModal ? '444.5px' : '292px'}
-   */
-
   return (
-    <Modal onToggleModal={profileModalService.toggleModal}>
+    <Modal
+      onToggleModal={() => {
+        profileModalService.toggleModal()
+        localStorage.removeItem('ens-records')
+      }}
+    >
       <AnimatePresence mode="wait" initial={false}>
         {showShareModal ? (
           <ShareModalContent
