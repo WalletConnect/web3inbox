@@ -67,12 +67,12 @@ export default class ExternalPushProvider implements W3iPushProvider {
     return this.postToExternalProvider('reject', params)
   }
 
-  public async subscribe(params: {
-    metadata: PushClientTypes.Metadata
-    account: string
-    onSign: (message: string) => string
-  }) {
-    return this.postToExternalProvider('subscribe', params)
+  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
+    return this.postToExternalProvider('subscribe', {
+      ...params,
+      // Signing will be handled wallet-side.
+      onSign: async () => Promise.resolve('')
+    })
   }
 
   public async deleteSubscription(params: { topic: string }) {

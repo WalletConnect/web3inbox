@@ -59,11 +59,7 @@ class W3iPushFacade implements W3iPush {
     return this.provider.reject(params)
   }
 
-  public async subscribe(params: {
-    metadata: PushClientTypes.Metadata
-    account: string
-    onSign: (message: string) => string
-  }) {
+  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
     return this.provider.subscribe(params)
   }
 

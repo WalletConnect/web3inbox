@@ -55,11 +55,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.reject(params)
   }
 
-  public async subscribe(_params: {
-    metadata: PushClientTypes.Metadata
-    account: string
-    onSign: (message: string) => string
-  }) {
+  public async subscribe(_params: { metadata: PushClientTypes.Metadata; account: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }

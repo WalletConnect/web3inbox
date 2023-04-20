@@ -49,7 +49,7 @@ type PushWalletClientWithSubscribe = PushWalletClient & {
   subscribe: (params: {
     metadata: PushClientTypes.Metadata
     account: string
-    onSign: (message: string) => string
+    onSign: (message: string) => Promise<string>
   }) => Promise<boolean>
 }
 
