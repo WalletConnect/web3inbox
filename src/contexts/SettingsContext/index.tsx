@@ -33,7 +33,7 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
 
   useEffect(() => {
     setTheme({
-      themeMode: favoriteTheme === 'dark' ? 'dark' : 'light'
+      themeMode: favoriteTheme === 'light' ? 'light' : 'dark'
     })
   }, [setTheme, favoriteTheme])
 
