@@ -1,9 +1,4 @@
 .Profile {
-  --color-av-1: #fff;
-  --color-av-2: #fff;
-  --color-av-3: #fff;
-  --color-av-4: #fff;
-  --color-av-5: #fff;
   &__Container {
     padding: 1em;
     margin-top: 2em;
@@ -76,14 +71,6 @@
     bottom: -2em;
     left: 0;
     margin-left: 1em;
-    height: 4em;
-    width: 4em;
-    border-radius: 1000rem;
-    background-color: var(--color-av-1);
-    background-image: radial-gradient(at 66% 77%, var(--color-av-2) 0px, transparent 50%),
-      radial-gradient(at 29% 97%, var(--color-av-3) 0px, transparent 50%),
-      radial-gradient(at 99% 86%, var(--color-av-4) 0px, transparent 50%),
-      radial-gradient(at 29% 88%, var(--color-av-5) 0px, transparent 50%);
     box-shadow: 0px 4px 4px -2px #00000014, 0px 2px 4px -2px #0000001f;
   }
   &__TitleBar {
@@ -116,6 +103,11 @@
       }
     }
     &__background {
+      --color-av-1: #fff;
+      --color-av-2: #fff;
+      --color-av-3: #fff;
+      --color-av-4: #fff;
+      --color-av-5: #fff;
       position: absolute;
       top: 0;
       left: 0;

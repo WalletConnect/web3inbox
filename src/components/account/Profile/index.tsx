@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { profileModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Profile.scss'
-import { useEnsAvatar, useEnsName, useProvider } from 'wagmi'
+import { useEnsName, useProvider } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { generateAvatarColors } from '../../../utils/ui'
+import Avatar from '../../account/Avatar'
 import CrossIcon from '../../general/Icon/CrossIcon'
 import ShareIcon from '../../general/Icon/ShareIcon'
 import { truncate } from '../../../utils/string'
@@ -52,7 +53,6 @@ const ProfileModalContent: React.FC<{
   )
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
-  const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
 
   useEffect(() => {
     const getData = async () => {
@@ -82,10 +82,6 @@ const ProfileModalContent: React.FC<{
       }}
       transition={{ type: 'spring', duration: 0.4, bounce: 0.15 }}
       className="Profile"
-      style={{
-        position: 'static',
-        ...(address ? generateAvatarColors(address) : {})
-      }}
     >
       <div className="Profile__TitleBar">
         <div className="Profile__TitleBar__buttons">
@@ -102,9 +98,17 @@ const ProfileModalContent: React.FC<{
           </button>
         </div>
         <div className="Profile__TitleBar__background__container">
-          <div className="Profile__TitleBar__background" />
+          <div
+            className="Profile__TitleBar__background"
+            style={{
+              position: 'static',
+              ...(address ? generateAvatarColors(address) : {})
+            }}
+          />
         </div>
-        <div className="Profile__icon">{ensAvatar && <img src={ensAvatar} alt="ENS Avatar" />}</div>
+        <div className="Profile__icon">
+          <Avatar address={address} width="4em" height="4em" />
+        </div>
       </div>
       <div className="Profile__Container">
         <div className="Profile__Container__name">{ensName ?? truncate(address ?? '', 4)}</div>
@@ -182,8 +186,7 @@ const ProfileModalContent: React.FC<{
                   opacity: 1
                 }}
                 exit={{
-                  opacity: 0,
-                  transition: { duration: 0.4 }
+                  opacity: 0
                 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 key="Spinner"
