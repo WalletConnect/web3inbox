@@ -22,6 +22,7 @@
     "date-fns": "^2.29.3",
     "ethers": "^5.7.2",
     "framer-motion": "^10.3.0",
+    "get-ens": "^2.1.1",
     "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

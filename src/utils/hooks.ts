@@ -1,7 +1,8 @@
 import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import type { RefObject } from 'react'
+
 // eslint-disable-next-line no-duplicate-imports
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
 import {
@@ -68,7 +69,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       accent1: 'hsla(211, 90%, 50%, 1)',
       error1: 'hsla(5, 85%, 60%, 1)',
       icon1: 'hsla(180, 6%, 80%, 1)',
-      qr1: '#e4e7e7'
+      qr1: '#e4e7e7',
+      brightness: '0.66'
     },
     light: {
       bg1: 'hsla(0, 0%, 100%, 1)',
@@ -90,7 +92,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       accent1: 'hsla(211, 100%, 60%, 1)',
       error1: 'hsla(5, 85%, 60%, 1)',
       icon1: 'hsla(180, 4%, 16%, 1)',
-      qr1: '#141414'
+      qr1: '#141414',
+      brightness: '1.33'
     }
   }
 
@@ -114,7 +117,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--accent-color-1': colors[specifiedMode].accent1,
     '--error-color-1': colors[specifiedMode].error1,
     '--icon-color-1': colors[specifiedMode].icon1,
-    '--qr-color-1': colors[specifiedMode].qr1
+    '--qr-color-1': colors[specifiedMode].qr1,
+    '--brightness-multiplier': colors[specifiedMode].brightness
   }
 
   return colorModeVariables
@@ -278,4 +282,32 @@ export const useFormattedTime = (timestamp?: number) => {
   }, [timestamp])
 
   return formattedTime
+}
+
+// eslint-disable-next-line func-style
+export function useResizeObserver<T extends HTMLElement>(
+  callback: (target: T, entry: ResizeObserverEntry) => void
+) {
+  const ref = useRef<T>(null)
+
+  useLayoutEffect(() => {
+    const element = ref.current
+
+    if (!element) {
+      return
+    }
+
+    const observer = new ResizeObserver(entries => {
+      callback(element, entries[0])
+    })
+
+    observer.observe(element)
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      observer.disconnect()
+    }
+  }, [callback, ref])
+
+  return ref
 }
