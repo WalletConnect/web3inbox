@@ -42,7 +42,8 @@ const ScanQrCode: React.FC = () => {
           <QrReader
             delay={150}
             facingMode="environment"
-            onError={() => {
+            onError={e => {
+              console.error(`Failed to scan: ${JSON.stringify(e)}`)
               nav('/messages?qrScan=fail')
             }}
             style={{ boxShadow: 'unset' }}
