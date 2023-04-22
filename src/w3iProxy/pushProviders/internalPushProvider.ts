@@ -1,7 +1,7 @@
-import type { EventEmitter } from 'events'
-import type { W3iPushProvider } from './types'
 import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
-import { appNotificationsMock, myAppsMock } from '../../utils/mocks'
+import type { EventEmitter } from 'events'
+import { appNotificationsMock } from '../../utils/mocks'
+import type { W3iPushProvider } from './types'
 
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: PushWalletClient | undefined
@@ -79,7 +79,7 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
 
-    return Promise.resolve(myAppsMock)
+    return Promise.resolve(this.pushClient.getActiveSubscriptions())
 
     /*
      * TODO: Hookup actual push client
