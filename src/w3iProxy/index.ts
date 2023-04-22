@@ -58,7 +58,7 @@ class Web3InboxProxy {
 
   public async init() {
     const core = new Core({
-      logger: 'debug',
+      logger: 'info',
       relayUrl: this.relayUrl,
       projectId: this.projectId
     })
@@ -78,6 +78,7 @@ class Web3InboxProxy {
 
     if (this.pushProvider === 'internal' && this.uiEnabled.push) {
       this.pushClient = await PushWalletClient.init({
+        logger: 'info',
         core
       })
 

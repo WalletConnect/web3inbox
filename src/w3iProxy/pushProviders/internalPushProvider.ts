@@ -1,4 +1,5 @@
 import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
+import { signMessage } from '@wagmi/core'
 import type { EventEmitter } from 'events'
 import { signMessage } from '@wagmi/core'
 import { appNotificationsMock, appsSubscriptionMock } from '../../utils/mocks'
@@ -64,15 +65,24 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.reject(params)
   }
 
-  public async subscribe(_params: { metadata: PushClientTypes.Metadata; account: string }) {
+  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
 
-    /**
-     * TODO: Noop until we have a real push client implementation ready.
-     */
-    return Promise.resolve(false)
+    console.log('InternalPushProvider > PushClient.subscribe > params', params)
+
+    const subscribed = await this.pushClient.subscribe({
+      ...params,
+      onSign: async message =>
+        signMessage({ message }).then(signature => {
+          console.log('PushClient.subscribe > onSign > signature', signature)
+
+          return signature
+        })
+    })
+
+    return subscribed
   }
 
   public async deleteSubscription(params: { topic: string }) {
