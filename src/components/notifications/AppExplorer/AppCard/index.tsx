@@ -1,7 +1,9 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import externalLinkIcon from '../../../../assets/ExternalLink.svg'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import './AppCard.scss'
+import Button from '../../../general/Button'
+import W3iContext from '../../../../contexts/W3iContext/context'
 
 interface AppCardProps {
   name: string
@@ -16,12 +18,17 @@ interface AppCardProps {
 
 const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
   const { mode } = useContext(SettingsContext)
+  const { pushClientProxy } = useContext(W3iContext)
   const cardBgColor = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     const specifiedMode = mode === 'system' ? systemTheme : mode
 
     return specifiedMode === 'dark' ? bgColor.dark : bgColor.light
   }, [mode, bgColor])
+
+  const handleSubscription = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+  }, [])
 
   return (
     <a
@@ -44,6 +51,9 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         <h2 className="AppCard__body__name">{name}</h2>
         <div className="AppCard__body__description">{description}</div>
         <div className="AppCard__body__url">{url}</div>
+        <Button className="AppCard__body__subscribe" onClick={e => handleSubscription(e)}>
+          Subscribe
+        </Button>
       </div>
     </a>
   )
