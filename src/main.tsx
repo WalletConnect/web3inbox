@@ -31,7 +31,7 @@ const chains = [mainnet, polygon, optimism, arbitrum]
 const { provider } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiClient = createClient({
   autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains, version: 2 }),
+  connectors: w3mConnectors({ projectId, chains, version: 1 }),
   provider
 })
 export const ethereumClient = new EthereumClient(wagmiClient, chains)
