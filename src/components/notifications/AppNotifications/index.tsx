@@ -39,8 +39,6 @@ const AppNotifications = () => {
     }
   }, [pushClientProxy, setNotifications, topic])
 
-  console.log({ app, activeSubscriptions, topic })
-
   return app?.metadata ? (
     <div className="AppNotifications">
       <AppNotificationsHeader
