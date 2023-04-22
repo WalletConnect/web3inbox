@@ -81,8 +81,6 @@ export default class InternalPushProvider implements W3iPushProvider {
 
     const activeSubscriptions = this.pushClient.getActiveSubscriptions()
 
-    console.log({ activeSubscriptions })
-
     return Promise.resolve(activeSubscriptions)
   }
 

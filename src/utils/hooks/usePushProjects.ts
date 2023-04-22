@@ -6,16 +6,10 @@ const usePushProjects = () => {
 
   useEffect(() => {
     const fetchPushProjects = async () => {
-      const explorerApiBaseUrl = import.meta.env.VITE_EXPLORER_API_URL as string | undefined
-      const projectId = import.meta.env.VITE_PROJECT_ID as string | undefined
-      if (!explorerApiBaseUrl) {
-        throw new Error('import.meta.env.VITE_EXPLORER_API_URL is undefined')
-      }
-      if (!projectId) {
-        throw new Error('import.meta.env.VITE_PROJECT_ID is undefined')
-      }
+      const explorerApiBaseUrl: string = import.meta.env.VITE_EXPLORER_API_URL
+      const projectId: string = import.meta.env.VITE_PROJECT_ID
 
-      const explorerUrl = `${explorerApiBaseUrl}/v3/all?projectId=${projectId}&is_push_enabled=true&x=y`
+      const explorerUrl = `${explorerApiBaseUrl}/v3/all?projectId=${projectId}&is_push_enabled=true`
       const discoverableProjetsRawRes = await fetch(explorerUrl)
       const discoverableProjetsRes = await discoverableProjetsRawRes.json()
 
