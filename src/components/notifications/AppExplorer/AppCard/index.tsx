@@ -57,7 +57,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         return
       }
 
-      toast(`Sucessfully subscribed to ${name}`, {
+      toast(`Successfully subscribed to ${name}`, {
         type: 'success',
         position: 'bottom-right',
         autoClose: 5000,

@@ -85,7 +85,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     }
 
     pushClient.getActiveSubscriptions().then(subscriptions => {
-      console.log({ subscriptions })
       setActiveSubscriptions(Object.values(subscriptions))
     })
   }, [pushClient, userPubkey])
