@@ -6,7 +6,7 @@ import type { W3iPushProvider } from './types'
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: PushWalletClient | undefined
   private readonly emitter: EventEmitter
-  public providerName = 'InternalChatProvider'
+  public providerName = 'InternalPushProvider'
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
