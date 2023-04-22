@@ -11,14 +11,14 @@ const AppExplorer = () => {
   const projects = usePushProjects()
   const filteredApps = useMemo(
     () =>
-      projects?.filter(app =>
+      projects.filter(app =>
         appSearchTerm
           ? app.name.includes(appSearchTerm) ||
             app.description.includes(appSearchTerm) ||
             app.url.includes(appSearchTerm)
           : projects
       ),
-    [appSearchTerm]
+    [appSearchTerm, projects]
   )
 
   return (
@@ -28,7 +28,7 @@ const AppExplorer = () => {
       <div className="AppExplorer__apps">
         <div className="AppExplorer__apps__column">
           {filteredApps
-            ?.filter((_, i) => i % 2 === 0)
+            .filter((_, i) => i % 2 === 0)
             .filter(app => Boolean(app.name))
             .map(app => (
               <AppCard

@@ -1,4 +1,6 @@
 import React, { useCallback, useContext, useMemo } from 'react'
+import { toast } from 'react-toastify'
+
 import externalLinkIcon from '../../../../assets/ExternalLink.svg'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import './AppCard.scss'
@@ -18,7 +20,7 @@ interface AppCardProps {
 
 const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
   const { mode } = useContext(SettingsContext)
-  const { pushClientProxy } = useContext(W3iContext)
+  const { pushClientProxy, userPubkey } = useContext(W3iContext)
   const cardBgColor = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     const specifiedMode = mode === 'system' ? systemTheme : mode
@@ -26,9 +28,46 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
     return specifiedMode === 'dark' ? bgColor.dark : bgColor.light
   }, [mode, bgColor])
 
-  const handleSubscription = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-  }, [])
+  const handleSubscription = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+      if (!userPubkey) {
+        return
+      }
+      const hasSubscribed = await pushClientProxy?.subscribe({
+        account: `eip155:1:${userPubkey}`,
+        metadata: {
+          name,
+          description,
+          icons: [logo],
+          url
+        }
+      })
+
+      if (!hasSubscribed) {
+        toast(`Failed to subscribe to ${name}`, {
+          type: 'error',
+          position: 'bottom-right',
+          autoClose: 5000,
+          style: {
+            borderRadius: '1em'
+          }
+        })
+
+        return
+      }
+
+      toast(`Sucessfully subscribed to ${name}`, {
+        type: 'success',
+        position: 'bottom-right',
+        autoClose: 5000,
+        style: {
+          borderRadius: '1em'
+        }
+      })
+    },
+    [userPubkey, name, description, logo, bgColor, url]
+  )
 
   return (
     <a
@@ -51,7 +90,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         <h2 className="AppCard__body__name">{name}</h2>
         <div className="AppCard__body__description">{description}</div>
         <div className="AppCard__body__url">{url}</div>
-        <Button className="AppCard__body__subscribe" onClick={e => handleSubscription(e)}>
+        <Button className="AppCard__body__subscribe" onClick={async e => handleSubscription(e)}>
           Subscribe
         </Button>
       </div>

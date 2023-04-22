@@ -30,7 +30,6 @@ const usePushProjects = () => {
           colors: metadata.colors
         })
       )
-      console.log({ pushApps })
 
       setProjects(pushApps)
     }
