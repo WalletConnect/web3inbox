@@ -1,29 +1,66 @@
 import { signMessage } from '@wagmi/core'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import Button from '../../../components/general/Button'
 import { Modal } from '../../../components/general/Modal/Modal'
 import { signatureModalService } from '../../../utils/store'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import './SignatureModal.scss'
+import CheckIcon from '../../../components/general/Icon/CheckIcon'
+import Spinner from '../../../components/general/Spinner'
 
 export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
+  const purpose: 'identity' | 'sync' = message.includes('did:key') ? 'identity' : 'sync'
+  const [stepProgress, setStepProgress] = useState(0)
+  const [signing, setSigning] = useState(false)
+
+  const steps = [
+    {
+      step: 1,
+      label: 'identity'
+    },
+    {
+      step: 2,
+      label: 'sync'
+    }
+  ]
+
   const onSign = useCallback(() => {
+    setSigning(true)
     signMessage({ message }).then(signature => {
+      setStepProgress(pv => pv + 1)
       window.web3inbox.chat.postMessage(
         formatJsonRpcRequest('chat_signature_delivered', { signature })
       )
+      setSigning(false)
     })
-  }, [message])
+  }, [message, setStepProgress, setSigning])
 
-  const purpose = message.includes('did:key')
-    ? 'Sign for your identity key.'
-    : 'Sign for syncing capabilities'
+  const purposeMessage =
+    purpose === 'identity' ? 'Sign for your identity key.' : 'Sign for syncing capabilities'
 
   return (
     <Modal onToggleModal={signatureModalService.toggleModal}>
       <div className="SignatureModal">
         <div className="SignatureModal__header">
-          <h2>Signature requested</h2>
+          <div className="SignatureModal__progress">
+            <div className="SignatureModal__progress-bubbles">
+              <div className="SignatureModal__progress-line"></div>
+              {steps.map(({ step }) => (
+                <div key={step} className="SignatureModal__progress-bubble-container">
+                  <div
+                    className={`SignatureModal__progress-bubble SignatureModal__progress-bubble-${
+                      stepProgress > step - 1 ? 'checked' : ''
+                    }`}
+                  >
+                    {stepProgress > step - 1 ? <CheckIcon /> : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="SignatureModal__header-text">
+            <h2>Signature requested</h2>
+          </div>
         </div>
         <div className="SignatureModal__explanation">
           <p>
@@ -31,9 +68,9 @@ export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
             syncing across clients.
           </p>
         </div>
-        <div className="SignatureModal__message">{purpose}</div>
+        <div className="SignatureModal__message">{purposeMessage}</div>
         <div className="SignatureModal__content">
-          <Button onClick={onSign}>Sign Message</Button>
+          <Button onClick={onSign}>{signing ? <Spinner width="1em" /> : 'Sign Message'}</Button>
         </div>
       </div>
     </Modal>
