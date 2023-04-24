@@ -33,9 +33,11 @@
   .Main {
     @include padding-y(2em);
     @include padding-x(0.4em);
+    padding-top: 1.5em;
+    padding-bottom: 0.75em;
     grid-area: main;
     max-width: 100vw;
-    height: 96vh;
+    height: 100vh;
 
     display: var(--main-display);
   }
