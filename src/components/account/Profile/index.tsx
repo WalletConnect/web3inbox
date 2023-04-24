@@ -188,7 +188,7 @@ const ProfileModalContent: React.FC<{
                 exit={{
                   opacity: 0
                 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                transition={{ duration: 0.4, ease: 'easeInOut' }}
                 key="Spinner"
                 className="Profile__Container__spinner"
               >
