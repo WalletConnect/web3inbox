@@ -21,6 +21,10 @@
       color: var(--fg-color-3);
     }
 
+    .Button {
+      flex-shrink: 0;
+    }
+
     .SearchSuggestions {
       position: absolute;
       width: 90%;
