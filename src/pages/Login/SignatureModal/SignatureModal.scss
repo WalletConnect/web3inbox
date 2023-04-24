@@ -44,14 +44,6 @@
       align-items: center;
     }
 
-    &-labels {
-      width: 100%;
-      position: relative;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-
     &-bubble {
       width: var(--circle-width);
       height: var(--circle-width);
