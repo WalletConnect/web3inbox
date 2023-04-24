@@ -1,12 +1,15 @@
 import { useContext, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
+import { truncate } from '../../../utils/string'
 import Spinner from '../../general/Spinner'
 import './DirectInvite.scss'
 
 const DirectInvite: React.FC = () => {
   const { account } = useParams<{ account: string }>()
+  const { data: ensName } = useEnsName({ address: account as `0x${string}` })
   const loc = useLocation()
   const key = new URLSearchParams(loc.search).get('key')
   const nav = useNavigate()
@@ -40,7 +43,7 @@ const DirectInvite: React.FC = () => {
   return (
     <div className="DirectInvite">
       <div className="DirectInvite__message">
-        <span>Inviting {account}... </span>
+        <span>Inviting {ensName ?? truncate(account ?? '', 4)}... </span>
         <Spinner width="1em" />
       </div>
     </div>

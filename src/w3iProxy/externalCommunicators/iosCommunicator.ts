@@ -7,7 +7,10 @@ declare global {
   interface Window {
     webkit?: {
       messageHandlers?: {
-        web3inbox?: {
+        web3inboxPush?: {
+          postMessage: (message: unknown) => void
+        }
+        web3inboxChat?: {
           postMessage: (message: unknown) => void
         }
       }
@@ -22,7 +25,11 @@ export class IOSCommunicator implements ExternalCommunicator {
     this.emitter = emitter
   }
 
-  public async postToExternalProvider<TReturn>(methodName: string, params: unknown) {
+  public async postToExternalProvider<TReturn>(
+    methodName: string,
+    params: unknown,
+    target: 'chat' | 'push'
+  ) {
     return new Promise<TReturn>(resolve => {
       const message = formatJsonRpcRequest(methodName, params)
 
@@ -30,8 +37,19 @@ export class IOSCommunicator implements ExternalCommunicator {
         resolve(messageResponse.result)
       }
       this.emitter.once(message.id.toString(), messageListener)
-      if (window.webkit?.messageHandlers?.web3inbox) {
-        window.webkit.messageHandlers.web3inbox.postMessage(JSON.stringify(message))
+      switch (target) {
+        case 'chat':
+          if (window.webkit?.messageHandlers?.web3inboxChat) {
+            window.webkit.messageHandlers.web3inboxChat.postMessage(JSON.stringify(message))
+          }
+          break
+        case 'push':
+          if (window.webkit?.messageHandlers?.web3inboxPush) {
+            window.webkit.messageHandlers.web3inboxPush.postMessage(JSON.stringify(message))
+          }
+          break
+        default:
+          throw new Error('Unsupported target for communicator')
       }
     })
   }

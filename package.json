@@ -26,7 +26,7 @@
     "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-qr-reader": "^3.0.0-beta-1",
+    "react-qr-reader-es6": "^2.2.1-2",
     "react-router-dom": "^6.4.4",
     "react-select": "^5.7.0",
     "react-toastify": "^9.1.1",

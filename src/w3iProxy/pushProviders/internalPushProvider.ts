@@ -1,12 +1,12 @@
+import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
 import type { EventEmitter } from 'events'
+import { appNotificationsMock } from '../../utils/mocks'
 import type { W3iPushProvider } from './types'
-import type { WalletClient as PushWalletClient } from '@walletconnect/push-client'
-import { appNotificationsMock, myAppsMock } from '../../utils/mocks'
 
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: PushWalletClient | undefined
   private readonly emitter: EventEmitter
-  public providerName = 'InternalChatProvider'
+  public providerName = 'InternalPushProvider'
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
@@ -55,6 +55,17 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.reject(params)
   }
 
+  public async subscribe(_params: { metadata: PushClientTypes.Metadata; account: string }) {
+    if (!this.pushClient) {
+      throw new Error(this.formatClientRelatedError('subscribe'))
+    }
+
+    /**
+     * TODO: Noop until we have a real push client implementation ready.
+     */
+    return Promise.resolve(false)
+  }
+
   public async deleteSubscription(params: { topic: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('deleteSubscription'))
@@ -68,12 +79,9 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
 
-    return Promise.resolve(myAppsMock)
+    const activeSubscriptions = this.pushClient.getActiveSubscriptions()
 
-    /*
-     * TODO: Hookup actual push client
-     * return Promise.resolve(this.pushClient.getActiveSubscriptions())
-     */
+    return Promise.resolve(activeSubscriptions)
   }
 
   public async getMessageHistory(params: { topic: string }) {

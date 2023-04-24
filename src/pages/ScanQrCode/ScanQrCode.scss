@@ -8,6 +8,7 @@
 
   &__header {
     z-index: 100;
+    background: var(--bg-color-1);
     color: var(--fg-color-1);
     width: 100%;
     display: flex;
@@ -47,6 +48,10 @@
       padding-top: 0 !important;
       height: 100%;
       width: 100%;
+    }
+
+    section > section > div {
+      display: none;
     }
   }
 

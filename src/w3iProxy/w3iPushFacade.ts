@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import { fromEvent } from 'rxjs'
-import type { WalletClient as PushWalletClient } from '@walletconnect/push-client'
+import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
 import type {
   PushEventObservable,
   PushEventObserver,
@@ -59,6 +59,10 @@ class W3iPushFacade implements W3iPush {
     return this.provider.reject(params)
   }
 
+  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
+    return this.provider.subscribe(params)
+  }
+
   public async deleteSubscription(params: { topic: string }) {
     return this.provider.deleteSubscription(params)
   }
@@ -84,7 +88,7 @@ class W3iPushFacade implements W3iPush {
 
     const subscription = eventObservable.subscribe(observer)
 
-    return subscription.unsubscribe
+    return subscription
   }
 }
 

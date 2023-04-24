@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
 // eslint-disable-next-line no-duplicate-imports
 import Web3InboxProxy from '../../w3iProxy'
@@ -7,14 +7,12 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import { noop } from 'rxjs'
 import type { PushClientTypes } from '@walletconnect/push-client'
 import { useLocation } from 'react-router-dom'
-import SettingsContext from '../SettingsContext/context'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
-  const { newContacts } = useContext(SettingsContext)
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
   const relayUrl = import.meta.env.VITE_RELAY_URL
   const projectId = import.meta.env.VITE_PROJECT_ID
@@ -167,7 +165,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   useEffect(() => {
     refreshChatState()
   }, [refreshChatState])
-
   useEffect(() => {
     refreshPushState()
   }, [refreshPushState])

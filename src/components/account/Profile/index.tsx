@@ -42,12 +42,14 @@ interface ModifiedResolvedENS extends ResolvedENS {
   records: ENSRecords
 }
 
+declare const localStorage: Storage | undefined
+
 const ProfileModalContent: React.FC<{
   handleShareClick: () => void
 }> = ({ handleShareClick }) => {
   const provider = useProvider()
   const { userPubkey: address } = useContext(W3iContext)
-  const locallyStoredData = localStorage.getItem('ens-records')
+  const locallyStoredData = localStorage?.getItem('ens-records')
   const [resolvedRecords, setResolvedRecords] = useState<ENSRecords | undefined>(
     locallyStoredData ? JSON.parse(locallyStoredData) : undefined
   )
@@ -58,7 +60,7 @@ const ProfileModalContent: React.FC<{
     const getData = async () => {
       const data = (await getENS({ provider })(ensName ?? '')) as ModifiedResolvedENS
       setResolvedRecords(data.records)
-      localStorage.setItem('ens-records', JSON.stringify(data.records))
+      localStorage?.setItem('ens-records', JSON.stringify(data.records))
     }
     if (!locallyStoredData) {
       getData()
@@ -91,7 +93,7 @@ const ProfileModalContent: React.FC<{
           <button
             onClick={() => {
               profileModalService.toggleModal()
-              localStorage.removeItem('ens-records')
+              localStorage?.removeItem('ens-records')
             }}
           >
             <CrossIcon />
@@ -216,7 +218,7 @@ export const Profile: React.FC = () => {
     <Modal
       onToggleModal={() => {
         profileModalService.toggleModal()
-        localStorage.removeItem('ens-records')
+        localStorage?.removeItem('ens-records')
       }}
     >
       <AnimatePresence mode="wait" initial={false}>
