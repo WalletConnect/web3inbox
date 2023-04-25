@@ -7,6 +7,7 @@ import type { ChatClientTypes } from '@walletconnect/chat-client'
 import { noop } from 'rxjs'
 import type { PushClientTypes } from '@walletconnect/push-client'
 import { useLocation } from 'react-router-dom'
+import { useDisconnect } from 'wagmi'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -14,6 +15,7 @@ interface W3iContextProviderProps {
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
+  const { disconnect: wagmiDisconnect } = useDisconnect()
   const relayUrl = import.meta.env.VITE_RELAY_URL
   const projectId = import.meta.env.VITE_PROJECT_ID
   const query = new URLSearchParams(window.location.search)
@@ -42,6 +44,12 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     pushProviderQuery ? (pushProviderQuery as Web3InboxProxy['pushProvider']) : 'internal'
   )
 
+  const disconnect = useCallback(() => {
+    setUserPubkey(undefined)
+    setRegistered(null)
+    wagmiDisconnect()
+  }, [wagmiDisconnect])
+
   useEffect(() => {
     const account = new URLSearchParams(search).get('account')
 
@@ -61,6 +69,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
     return () => sub?.unsubscribe()
   }, [chatClient])
+
   useEffect(() => {
     if (chatClient && pushClient) {
       return
@@ -181,6 +190,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         threads,
         activeSubscriptions,
         invites,
+        disconnect,
         registeredKey,
         setUserPubkey,
         registerMessage,

@@ -1,14 +1,29 @@
 @import '../../../styles/mixins.scss';
 
 .SignatureModal {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 1em;
   padding: 1.25em;
 
+  &__cancel-container {
+    width: 100%;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    justify-content: flex-end;
+    display: flex;
+
+    & button {
+      width: 10% !important;
+    }
+  }
+
   &__header {
     display: flex;
+    padding-top: 1em;
     flex-direction: column;
     align-items: center;
     gap: 0.5em;

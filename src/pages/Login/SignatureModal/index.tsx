@@ -1,5 +1,5 @@
 import { signMessage } from '@wagmi/core'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import Button from '../../../components/general/Button'
 import { Modal } from '../../../components/general/Modal/Modal'
 import { signatureModalService } from '../../../utils/store'
@@ -7,10 +7,17 @@ import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import './SignatureModal.scss'
 import CheckIcon from '../../../components/general/Icon/CheckIcon'
 import Spinner from '../../../components/general/Spinner'
+import CrossIcon from '../../../components/general/Icon/CrossIcon'
+import W3iContext from '../../../contexts/W3iContext/context'
 
 export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
+  const { disconnect } = useContext(W3iContext)
   const purpose: 'identity' | 'sync' = message.includes('did:key') ? 'identity' : 'sync'
-  const [stepProgress, setStepProgress] = useState(0)
+  /*
+   * If identity was already signed, and sync was requested then we are in the
+   * final step.
+   */
+  const [stepProgress, setStepProgress] = useState(purpose === 'identity' ? 0 : 1)
   const [signing, setSigning] = useState(false)
 
   const steps = [
@@ -41,6 +48,11 @@ export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
   return (
     <Modal onToggleModal={signatureModalService.toggleModal}>
       <div className="SignatureModal">
+        <div className="SignatureModal__cancel-container">
+          <Button onClick={disconnect} customType="danger">
+            <CrossIcon />
+          </Button>
+        </div>
         <div className="SignatureModal__header">
           <div className="SignatureModal__progress">
             <div className="SignatureModal__progress-bubbles">
