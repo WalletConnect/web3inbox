@@ -17,6 +17,7 @@ import { signatureModalService } from './utils/store'
 import { truncate } from './utils/string'
 import { SignatureModal } from './pages/Login/SignatureModal'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
+import Subscribe from './components/notifications/SubscribeModal'
 
 const App = () => {
   const { chatClientProxy, userPubkey, registeredKey, registerMessage } = useContext(W3iContext)
@@ -26,7 +27,8 @@ const App = () => {
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
     isSignatureModalOpen,
-    isContactModalOpen
+    isContactModalOpen,
+    isSubscribeModalOpen
   } = useModals()
 
   const ref = useMobileResponsiveGrid()
@@ -88,6 +90,7 @@ const App = () => {
               <AnimatePresence mode="wait">
                 {isProfileModalOpen && <Profile />}
                 {isShareModalOpen && <Share />}
+                {isSubscribeModalOpen && <Subscribe />}
                 {isPreferencesModalOpen && <PreferencesModal />}
                 {isUnsubscribeModalOpen && <UnsubscribeModal />}
                 {isSignatureModalOpen && registerMessage && (

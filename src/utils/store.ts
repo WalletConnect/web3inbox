@@ -24,6 +24,7 @@ const profileModalSubject = new BehaviorSubject(false)
 const shareModalSubject = new BehaviorSubject(false)
 const signatureModalSubject = new BehaviorSubject(false)
 const contactsModalSubject = new BehaviorSubject(false)
+const subscribeModalSubject = new BehaviorSubject(false)
 const preferencesModalSubject = new BehaviorSubject<IPreferencesModalState>({
   preferencesModalAppId: undefined,
   isOpen: false
@@ -74,6 +75,13 @@ export const profileModalService = {
   openModal: () => profileModalSubject.next(true),
   closeModal: () => profileModalSubject.next(false),
   modalState: profileModalSubject.asObservable()
+}
+
+export const subscribeModalService = {
+  toggleModal: () => subscribeModalSubject.next(!subscribeModalSubject.value),
+  openModal: () => subscribeModalSubject.next(true),
+  closeModal: () => subscribeModalSubject.next(false),
+  modalState: subscribeModalSubject.asObservable()
 }
 
 export const shareModalService = {

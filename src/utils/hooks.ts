@@ -14,6 +14,7 @@ import {
   pushSearchService,
   shareModalService,
   signatureModalService,
+  subscribeModalService,
   unsubscribeModalService
 } from './store'
 import { isMobile } from './ui'
@@ -153,6 +154,7 @@ export const useSearch = () => {
 
 export const useModals = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+  const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
@@ -164,6 +166,9 @@ export const useModals = () => {
   useEffect(() => {
     const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
       setIsProfileModalOpen(isOpen)
+    })
+    const subscribeSubscription = subscribeModalService.modalState.subscribe(isOpen => {
+      setIsSubscribeModalOpen(isOpen)
     })
     const signatureSubscription = signatureModalService.modalState.subscribe(isOpen => {
       setIsSignatureModalOpen(isOpen)
@@ -190,6 +195,7 @@ export const useModals = () => {
       signatureSubscription.unsubscribe()
       preferencesSubscription.unsubscribe()
       unsubscribeSubscription.unsubscribe()
+      subscribeSubscription.unsubscribe()
     }
   }, [])
 
@@ -200,6 +206,7 @@ export const useModals = () => {
     isContactModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
+    isSubscribeModalOpen,
     preferencesModalAppId,
     unsubscribeModalAppId
   }
