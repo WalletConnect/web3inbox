@@ -19,7 +19,8 @@ import { SignatureModal } from './pages/Login/SignatureModal'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 
 const App = () => {
-  const { chatClientProxy, userPubkey, registeredKey, registerMessage } = useContext(W3iContext)
+  const { chatClientProxy, userPubkey, uiEnabled, registeredKey, registerMessage } =
+    useContext(W3iContext)
   const {
     isProfileModalOpen,
     isShareModalOpen,
@@ -82,7 +83,7 @@ const App = () => {
         >
           {chatClientProxy && (
             <Fragment>
-              <Sidebar />
+              {uiEnabled.settings ? <Sidebar /> : null}
               <Outlet />
               <ToastContainer />
               <AnimatePresence mode="wait">
