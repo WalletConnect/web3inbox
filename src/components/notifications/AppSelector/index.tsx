@@ -13,6 +13,7 @@ import NavLink from '../../general/NavLink'
 import Search from '../../general/Search'
 import MobileHeading from '../../layout/MobileHeading'
 import type { IAppNotification } from '../AppNotifications/AppNotificationItem'
+import Foundation from '../../../assets/Foundation.svg'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
 
@@ -37,10 +38,26 @@ const AppSelector: React.FC = () => {
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<PushClientTypes.PushSubscription[]>([])
   const { mode } = useContext(SettingsContext)
-  const { activeSubscriptions } = useContext(W3iContext)
+  const { userPubkey: address, activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const themeColors = useColorModeValue(mode)
 
   const handleSubscribeModal = () => {
+    pushClientProxy?.postMessage({
+      method: 'push_request',
+      jsonrpc: '2.0',
+      id: Date.now(),
+      params: {
+        id: 1,
+        account: address,
+        metadata: {
+          name: 'Foundation',
+          description:
+            'Foundation is a decentralized organization that supports the development of the Web3 ecosystem.',
+          url: 'https://foundation.app',
+          icons: [Foundation]
+        }
+      }
+    })
     subscribeModalService.toggleModal()
   }
 

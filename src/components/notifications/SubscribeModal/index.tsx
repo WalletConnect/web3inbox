@@ -26,7 +26,10 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { userPubkey: address } = useContext(W3iContext)
 
-  const appName = 'Foundation'
+  const appDetails = {
+    name: 'Foundation',
+    img: Foundation
+  }
 
   const onAllow = () => {
     setAllowing(true)
@@ -83,7 +86,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
             transition={{ type: 'spring', duration: 0.4, bounce: 0.2 }}
             className="Subscribe__illustration__current"
           >
-            <img src={Foundation} alt="Foundation" />
+            <img src={appDetails.img} alt="Foundation" />
           </m.div>
         </AnimatePresence>
         <div className="Subscribe__illustration__mask">
@@ -161,9 +164,9 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
           transition={{ delay: 0.1, duration: 0.2 }}
           className="Subscribe__container"
         >
-          <div className="Subscribe__container--title">Subscribe to {appName}</div>
+          <div className="Subscribe__container--title">Subscribe to {appDetails.name}</div>
           <div className="Subscribe__container--description">
-            <p>You will start receiving notifications from {appName} on Web3Inbox.</p>
+            <p>You will start receiving notifications from {appDetails.name} on Web3Inbox.</p>
             <p>You can un-subscribe later.</p>
           </div>
         </m.div>
