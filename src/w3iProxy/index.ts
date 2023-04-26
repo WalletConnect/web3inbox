@@ -63,7 +63,10 @@ class Web3InboxProxy {
       projectId: this.projectId
     })
 
-    // Not disabling chatClient as it manages the account
+    /*
+     * Has to be init'd even if uiEnabled.chat is false due to the fact it
+     * currently manages account
+     */
     if (this.chatProvider === 'internal') {
       this.chatClient = await ChatClient.init({
         projectId: this.projectId,
