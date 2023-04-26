@@ -83,7 +83,7 @@ const App = () => {
         >
           {chatClientProxy && (
             <Fragment>
-              {uiEnabled.settings ? <Sidebar /> : null}
+              {uiEnabled.sidebar ? <Sidebar /> : null}
               <Outlet />
               <ToastContainer />
               <AnimatePresence mode="wait">
