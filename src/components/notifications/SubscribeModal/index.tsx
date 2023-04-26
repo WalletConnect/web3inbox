@@ -76,6 +76,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
       <div className="Subscribe__illustration">
         <AnimatePresence>
           <m.div
+            key="Current"
             initial={{ opacity: 0, y: '100%' }}
             animate={{ opacity: 1, y: '0%' }}
             exit={{ opacity: 0 }}
@@ -88,6 +89,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
         <div className="Subscribe__illustration__mask">
           <AnimatePresence>
             <m.div
+              key="Money"
               initial={{ opacity: 0, y: '100%' }}
               animate={{ opacity: 1, y: '0%' }}
               exit={{ opacity: 0 }}
@@ -97,6 +99,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
               <img src={MoneyWithWings} alt="Money with wings" />
             </m.div>
             <m.div
+              key="Frame"
               initial={{ opacity: 0, y: '100%' }}
               animate={{ opacity: 1, y: '0%' }}
               exit={{ opacity: 0 }}
@@ -106,6 +109,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
               <img src={FramedPicture} alt="Framed Picture" />
             </m.div>
             <m.div
+              key="Eyes"
               initial={{ opacity: 0, y: '100%' }}
               animate={{ opacity: 1, y: '-33.33%' }}
               exit={{ opacity: 0 }}
@@ -115,6 +119,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
               <img src={Eyes} alt="Eyes" />
             </m.div>
             <m.div
+              key="Heart"
               initial={{ opacity: 0, y: '100%' }}
               animate={{ opacity: 1, y: '-66.66%' }}
               exit={{ opacity: 0 }}
@@ -124,6 +129,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
               <img src={Heart} alt="Heart" />
             </m.div>
             <m.div
+              key="Coin"
               initial={{ opacity: 0, y: '100%' }}
               animate={{ opacity: 1, y: '-175%' }}
               exit={{ opacity: 0 }}
@@ -136,6 +142,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
         </div>
         <AnimatePresence>
           <m.div
+            key="W3i"
             initial={{ opacity: 0, y: '100%' }}
             animate={{ opacity: 1, y: '0%' }}
             exit={{ opacity: 0 }}
