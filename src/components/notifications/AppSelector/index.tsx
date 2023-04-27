@@ -42,7 +42,7 @@ const AppSelector: React.FC = () => {
   const themeColors = useColorModeValue(mode)
 
   const handleSubscribeModal = () => {
-    pushClientProxy?.postMessage({
+    window.web3inbox.push.postMessage({
       method: 'push_request',
       jsonrpc: '2.0',
       id: Date.now(),
@@ -58,6 +58,7 @@ const AppSelector: React.FC = () => {
         }
       }
     })
+
     subscribeModalService.toggleModal()
   }
 
