@@ -24,25 +24,46 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
   const [declining, setDeclining] = useState(false)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { userPubkey: address } = useContext(W3iContext)
+  const { userPubkey: address, pushClientProxy } = useContext(W3iContext)
 
   const appDetails = {
+    id: 1,
     name: 'Foundation',
     img: Foundation
   }
 
   const onAllow = () => {
     setAllowing(true)
-    setTimeout(() => {
-      setAllowing(false)
-    }, 1000)
+    pushClientProxy
+      ?.approve({ id: appDetails.id })
+      .then(() => {
+        console.log(`Allowed push_request for ${appDetails.name} with id ${appDetails.id}`)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setAllowing(false)
+        }, 1000)
+      })
   }
 
   const onDecline = () => {
     setDeclining(true)
-    setTimeout(() => {
-      setDeclining(false)
-    }, 1000)
+    pushClientProxy
+      ?.reject({ id: appDetails.id, reason: 'Rejected by user from modal' })
+      .then(() => {
+        console.log(`Rejected push_request for ${appDetails.name} with id ${appDetails.id}`)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setDeclining(false)
+        }, 1000)
+      })
   }
 
   return (

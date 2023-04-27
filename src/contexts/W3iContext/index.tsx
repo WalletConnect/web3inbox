@@ -84,6 +84,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       return
     }
 
+    console.log('refreshPushState')
+
     pushClient.getActiveSubscriptions().then(subscriptions => {
       setActiveSubscriptions(Object.values(subscriptions))
     })
@@ -145,6 +147,18 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       chatJoinedSub.unsubscribe()
     }
   }, [chatClient, refreshChatState])
+
+  useEffect(() => {
+    if (!pushClient) {
+      return noop
+    }
+
+    const pushRequestSub = pushClient.observe('push_request', { next: refreshPushState })
+
+    return () => {
+      pushRequestSub.unsubscribe()
+    }
+  }, [pushClient, refreshPushState])
 
   useEffect(() => {
     const handleRegistration = async () => {
