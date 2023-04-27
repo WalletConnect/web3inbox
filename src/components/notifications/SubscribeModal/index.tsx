@@ -11,7 +11,7 @@ import FramedPicture from '../../../assets/FramedPicture.png'
 import Eyes from '../../../assets/Eyes.png'
 import Heart from '../../../assets/Heart.png'
 import Coin from '../../../assets/Coin.png'
-import Foundation from '../../../assets/Foundation.svg'
+import Foundation from '../../../assets/foundation.svg'
 import W3iIcon from '../../../assets/web3inbox.png'
 
 interface ModalContentProps {

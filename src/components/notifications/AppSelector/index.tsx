@@ -13,7 +13,7 @@ import NavLink from '../../general/NavLink'
 import Search from '../../general/Search'
 import MobileHeading from '../../layout/MobileHeading'
 import type { IAppNotification } from '../AppNotifications/AppNotificationItem'
-import Foundation from '../../../assets/Foundation.svg'
+import Foundation from '../../../assets/foundation.svg'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
 
