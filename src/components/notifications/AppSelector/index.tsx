@@ -42,24 +42,29 @@ const AppSelector: React.FC = () => {
   const themeColors = useColorModeValue(mode)
 
   const handleSubscribeModal = () => {
+    const content = {
+      id: 1,
+      account: address,
+      metadata: {
+        name: 'Foundation',
+        description:
+          'Foundation is a decentralized organization that supports the development of the Web3 ecosystem.',
+        url: 'https://foundation.app',
+        icons: [Foundation]
+      }
+    }
+
     window.web3inbox.push.postMessage({
       method: 'push_request',
       jsonrpc: '2.0',
       id: Date.now(),
-      params: {
-        id: 1,
-        account: address,
-        metadata: {
-          name: 'Foundation',
-          description:
-            'Foundation is a decentralized organization that supports the development of the Web3 ecosystem.',
-          url: 'https://foundation.app',
-          icons: [Foundation]
-        }
-      }
+      params: content
     })
 
-    subscribeModalService.toggleModal()
+    subscribeModalService.toggleModal({
+      ...content.metadata,
+      id: content.id
+    })
   }
 
   const filterApps = useCallback(

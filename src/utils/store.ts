@@ -13,6 +13,23 @@ interface IAppSearchState {
   isOpen: boolean
 }
 
+interface ISubscribeModalState {
+  metadata?: MetadataArgs
+  isOpen: boolean
+}
+
+export interface MetadataArgs {
+  id: number
+  name: string
+  description: string
+  url: string
+  icons: string[]
+  redirect?: {
+    native?: string
+    universal?: string
+  }
+}
+
 const chatSearchSubject = new BehaviorSubject(false)
 const pushSearchSubject = new BehaviorSubject(false)
 const appSearchSubject = new BehaviorSubject<IAppSearchState>({
@@ -24,7 +41,10 @@ const profileModalSubject = new BehaviorSubject(false)
 const shareModalSubject = new BehaviorSubject(false)
 const signatureModalSubject = new BehaviorSubject(false)
 const contactsModalSubject = new BehaviorSubject(false)
-const subscribeModalSubject = new BehaviorSubject(false)
+const subscribeModalSubject = new BehaviorSubject<ISubscribeModalState>({
+  metadata: undefined,
+  isOpen: false
+})
 const preferencesModalSubject = new BehaviorSubject<IPreferencesModalState>({
   preferencesModalAppId: undefined,
   isOpen: false
@@ -77,13 +97,6 @@ export const profileModalService = {
   modalState: profileModalSubject.asObservable()
 }
 
-export const subscribeModalService = {
-  toggleModal: () => subscribeModalSubject.next(!subscribeModalSubject.value),
-  openModal: () => subscribeModalSubject.next(true),
-  closeModal: () => subscribeModalSubject.next(false),
-  modalState: subscribeModalSubject.asObservable()
-}
-
 export const shareModalService = {
   toggleModal: () => shareModalSubject.next(!shareModalSubject.value),
   openModal: () => shareModalSubject.next(true),
@@ -110,6 +123,25 @@ export const preferencesModalService = {
       isOpen: false
     }),
   modalState: preferencesModalSubject.asObservable()
+}
+
+export const subscribeModalService = {
+  toggleModal: (metadata: MetadataArgs) =>
+    subscribeModalSubject.next({
+      metadata,
+      isOpen: !subscribeModalSubject.value.isOpen
+    }),
+  openModal: (metadata: MetadataArgs) =>
+    subscribeModalSubject.next({
+      metadata,
+      isOpen: true
+    }),
+  closeModal: () =>
+    subscribeModalSubject.next({
+      metadata: undefined,
+      isOpen: false
+    }),
+  modalState: subscribeModalSubject.asObservable()
 }
 
 export const unsubscribeModalService = {

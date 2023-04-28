@@ -1,4 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import type { MetadataArgs } from '../../../utils/store'
+// eslint-disable-next-line no-duplicate-imports
 import { subscribeModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Subscribe.scss'
@@ -11,8 +13,8 @@ import FramedPicture from '../../../assets/FramedPicture.png'
 import Eyes from '../../../assets/Eyes.png'
 import Heart from '../../../assets/Heart.png'
 import Coin from '../../../assets/Coin.png'
-import Foundation from '../../../assets/foundation.svg'
 import W3iIcon from '../../../assets/web3inbox.png'
+import { useModals } from '../../../utils/hooks'
 
 interface ModalContentProps {
   modalService: typeof subscribeModalService
@@ -22,18 +24,28 @@ interface ModalContentProps {
 export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalService }) => {
   const [allowing, setAllowing] = useState(false)
   const [declining, setDeclining] = useState(false)
+  const { subscribeModalMetadata } = useModals()
+  const [appDetails, setAppDetails] = useState<MetadataArgs>()
+
+  useEffect(() => {
+    if (!subscribeModalMetadata) {
+      return
+    }
+    setAppDetails(subscribeModalMetadata)
+  }, [subscribeModalMetadata])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { userPubkey: address, pushClientProxy } = useContext(W3iContext)
 
-  const appDetails = {
-    id: 1,
-    name: 'Foundation',
-    img: Foundation
-  }
-
   const onAllow = () => {
     setAllowing(true)
+    if (!appDetails) {
+      setTimeout(() => {
+        setAllowing(false)
+      }, 1000)
+
+      return
+    }
     pushClientProxy
       ?.approve({ id: appDetails.id })
       .then(() => {
@@ -51,6 +63,13 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
 
   const onDecline = () => {
     setDeclining(true)
+    if (!appDetails) {
+      setTimeout(() => {
+        setDeclining(false)
+      }, 1000)
+
+      return
+    }
     pushClientProxy
       ?.reject({ id: appDetails.id, reason: 'Rejected by user from modal' })
       .then(() => {
@@ -90,7 +109,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
         <button
           className="Subscribe__header--close"
           onClick={() => {
-            modalService.toggleModal()
+            modalService.closeModal()
             localStorage.removeItem('ens-records')
           }}
         >
@@ -107,7 +126,11 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
             transition={{ type: 'spring', duration: 0.4, bounce: 0.2 }}
             className="Subscribe__illustration__current"
           >
-            <img src={appDetails.img} alt="Foundation" />
+            {appDetails ? (
+              <img src={appDetails.icons[0]} alt="Foundation" />
+            ) : (
+              <div className="Subscribe__Shimmer Subscribe__Shimmer--logo" />
+            )}
           </m.div>
         </AnimatePresence>
         <div className="Subscribe__illustration__mask">
@@ -185,9 +208,22 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
           transition={{ delay: 0.1, duration: 0.2 }}
           className="Subscribe__container"
         >
-          <div className="Subscribe__container--title">Subscribe to {appDetails.name}</div>
+          {appDetails ? (
+            <div className="Subscribe__container--title">Subscribe to {appDetails.name}</div>
+          ) : (
+            <span className="Subscribe__Shimmer Subscribe__Shimmer--heading" />
+          )}
+
           <div className="Subscribe__container--description">
-            <p>You will start receiving notifications from {appDetails.name} on Web3Inbox.</p>
+            <p>
+              You will start receiving notifications from{' '}
+              {appDetails ? (
+                <span>{appDetails.name}</span>
+              ) : (
+                <span className="Subscribe__Shimmer Subscribe__Shimmer--text" />
+              )}
+              on Web3Inbox.
+            </p>
             <p>You can un-subscribe later.</p>
           </div>
         </m.div>
@@ -246,12 +282,12 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
 
 const Subscribe: React.FC = () => {
   return (
-    <Modal onToggleModal={subscribeModalService.toggleModal}>
+    <Modal onToggleModal={subscribeModalService.closeModal}>
       <AnimatePresence mode="wait" initial={false}>
         <SubscribeModalContent
           key="Subscribe"
           modalService={subscribeModalService}
-          handleBack={subscribeModalService.toggleModal}
+          handleBack={subscribeModalService.closeModal}
         />
       </AnimatePresence>
     </Modal>
