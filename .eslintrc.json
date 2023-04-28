@@ -22,6 +22,7 @@
   "extends": ["eslint:all", "plugin:@typescript-eslint/all", "prettier"],
   "rules": {
     "sort-imports": "off",
+    "no-duplicate-imports": "off",
     "no-console": "off",
     "one-var": "off",
     "sort-keys": "off",

@@ -1,6 +1,7 @@
 import ChatClient from '@walletconnect/chat-client'
 import { Core } from '@walletconnect/core'
 import { WalletClient as PushWalletClient } from '@walletconnect/push-client'
+import { UiEnabled } from '../contexts/W3iContext/context'
 import W3iChatFacade from './w3iChatFacade'
 import W3iPushFacade from './w3iPushFacade'
 
@@ -22,6 +23,7 @@ class Web3InboxProxy {
   private pushClient?: PushWalletClient
   private readonly relayUrl?: string
   private readonly projectId: string
+  private readonly uiEnabled: UiEnabled
 
   /**
    *
@@ -30,7 +32,8 @@ class Web3InboxProxy {
     chatProvider: Web3InboxProxy['chatProvider'],
     pushProvider: Web3InboxProxy['pushProvider'],
     projectId: string,
-    relayUrl: string
+    relayUrl: string,
+    uiEnabled: UiEnabled
   ) {
     // Bind Chat properties
     this.chatProvider = chatProvider
@@ -41,6 +44,7 @@ class Web3InboxProxy {
     // Bind other configuration properties
     this.relayUrl = relayUrl
     this.projectId = projectId
+    this.uiEnabled = uiEnabled
     window.web3inbox = this
   }
 
@@ -59,24 +63,23 @@ class Web3InboxProxy {
       projectId: this.projectId
     })
 
-    console.log('this.chatProvider', this.chatProvider)
-    console.log('this.pushProvider', this.pushProvider)
-
+    /*
+     * Has to be init'd even if uiEnabled.chat is false due to the fact it
+     * currently manages account
+     */
     if (this.chatProvider === 'internal') {
       this.chatClient = await ChatClient.init({
         projectId: this.projectId,
         core,
         keyserverUrl: 'https://keys.walletconnect.com'
       })
-      console.log('this.chatClient', this.chatClient)
       await this.chatFacade.initInternalProvider(this.chatClient)
     }
 
-    if (this.pushProvider === 'internal') {
+    if (this.pushProvider === 'internal' && this.uiEnabled.push) {
       this.pushClient = await PushWalletClient.init({
         core
       })
-      console.log('this.pushClient', this.pushClient)
 
       this.pushFacade.initInternalProvider(this.pushClient)
     }

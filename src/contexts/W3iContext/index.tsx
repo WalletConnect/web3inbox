@@ -50,6 +50,26 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     wagmiDisconnect()
   }, [wagmiDisconnect])
 
+  const pushEnabledQuery = query.get('pushEnabled')
+  const chatEnabledQuery = query.get('chatEnabled')
+  const settingsEnabledQuery = query.get('settingsEnabled')
+
+  const [uiEnabled] = useState({
+    push: pushEnabledQuery ? JSON.parse(pushEnabledQuery) : true,
+    settings: settingsEnabledQuery ? JSON.parse(settingsEnabledQuery) : true,
+    chat: chatEnabledQuery ? JSON.parse(chatEnabledQuery) : true,
+    sidebar: false
+  })
+
+  const totalPagesEnabled = Object.values(uiEnabled).reduce<number>(
+    (pagesAvailable, pageEnabled) => (pageEnabled ? pagesAvailable + 1 : pagesAvailable),
+    0
+  )
+
+  if (totalPagesEnabled > 1) {
+    uiEnabled.sidebar = true
+  }
+
   useEffect(() => {
     const account = new URLSearchParams(search).get('account')
 
@@ -75,7 +95,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       return
     }
 
-    const w3iProxy = new Web3InboxProxy(chatProvider, pushProvider, projectId, relayUrl)
+    const w3iProxy = new Web3InboxProxy(chatProvider, pushProvider, projectId, relayUrl, uiEnabled)
     w3iProxy
       .init()
       .then(() => setChatClient(w3iProxy.chat))
@@ -134,7 +154,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshChatState })
     const pingSub = chatClient.observe('chat_ping', {
       next: () => {
-        console.log('Got a ping!')
         refreshChatState()
       }
     })
@@ -157,10 +176,9 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
   useEffect(() => {
     const handleRegistration = async () => {
-      if (chatClient && userPubkey) {
+      if (chatClient && userPubkey && uiEnabled.chat) {
         try {
           const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
-          console.log('registed with', `eip155:1:${userPubkey}`, 'pub key: ', registeredKeyRes)
           refreshChatState()
           setRegistered(registeredKeyRes)
         } catch (error) {
@@ -174,6 +192,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   useEffect(() => {
     refreshChatState()
   }, [refreshChatState])
+
   useEffect(() => {
     refreshPushState()
   }, [refreshPushState])
@@ -185,6 +204,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         chatProvider,
         pushProvider,
         userPubkey,
+        uiEnabled,
         refreshThreadsAndInvites: refreshChatState,
         sentInvites,
         threads,
