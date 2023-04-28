@@ -221,7 +221,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
                 <span>{appDetails.name}</span>
               ) : (
                 <span className="Subscribe__Shimmer Subscribe__Shimmer--text" />
-              )}
+              )}{' '}
               on Web3Inbox.
             </p>
             <p>You can un-subscribe later.</p>
