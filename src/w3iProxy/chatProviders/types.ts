@@ -17,6 +17,7 @@ type NonFunctionChatClientKeys =
   | 'engine'
   | 'events'
   | 'history'
+  | 'identityKeys'
   | 'init'
   | 'initSyncStores'
   | 'keyserverUrl'
