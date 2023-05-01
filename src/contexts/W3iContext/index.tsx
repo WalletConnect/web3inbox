@@ -8,6 +8,7 @@ import { noop } from 'rxjs'
 import type { PushClientTypes } from '@walletconnect/push-client'
 import { useLocation } from 'react-router-dom'
 import { useDisconnect } from 'wagmi'
+import { subscribeModalService } from '../../utils/store'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -113,8 +114,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       return
     }
 
-    console.log('refreshPushState')
-
     pushClient.getActiveSubscriptions().then(subscriptions => {
       setActiveSubscriptions(Object.values(subscriptions))
     })
@@ -181,7 +180,12 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       return noop
     }
 
-    const pushRequestSub = pushClient.observe('push_request', { next: refreshPushState })
+    const pushRequestSub = pushClient.observe('push_request', {
+      next: pushRequest => {
+        subscribeModalService.toggleModal(pushRequest.params)
+        refreshPushState()
+      }
+    })
 
     return () => {
       pushRequestSub.unsubscribe()

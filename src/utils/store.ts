@@ -1,3 +1,4 @@
+import type { PushClientTypes } from '@walletconnect/push-client'
 import { BehaviorSubject } from 'rxjs'
 
 interface IPreferencesModalState {
@@ -14,20 +15,8 @@ interface IAppSearchState {
 }
 
 interface ISubscribeModalState {
-  metadata?: MetadataArgs
+  metadata?: PushClientTypes.PushRequestEventArgs
   isOpen: boolean
-}
-
-export interface MetadataArgs {
-  id: number
-  name: string
-  description: string
-  url: string
-  icons: string[]
-  redirect?: {
-    native?: string
-    universal?: string
-  }
 }
 
 const chatSearchSubject = new BehaviorSubject(false)
@@ -126,12 +115,13 @@ export const preferencesModalService = {
 }
 
 export const subscribeModalService = {
-  toggleModal: (metadata: MetadataArgs) =>
+  toggleModal: (metadata: PushClientTypes.PushRequestEventArgs) => {
     subscribeModalSubject.next({
       metadata,
       isOpen: !subscribeModalSubject.value.isOpen
-    }),
-  openModal: (metadata: MetadataArgs) =>
+    })
+  },
+  openModal: (metadata: PushClientTypes.PushRequestEventArgs) =>
     subscribeModalSubject.next({
       metadata,
       isOpen: true
