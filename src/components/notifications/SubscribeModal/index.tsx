@@ -1,6 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import type { MetadataArgs } from '../../../utils/store'
-// eslint-disable-next-line no-duplicate-imports
 import { subscribeModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Subscribe.scss'
@@ -15,6 +13,7 @@ import Heart from '../../../assets/Heart.png'
 import Coin from '../../../assets/Coin.png'
 import W3iIcon from '../../../assets/web3inbox.png'
 import { useModals } from '../../../utils/hooks'
+import type { PushClientTypes } from '@walletconnect/push-client'
 
 interface ModalContentProps {
   modalService: typeof subscribeModalService
@@ -25,17 +24,17 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
   const [allowing, setAllowing] = useState(false)
   const [declining, setDeclining] = useState(false)
   const { subscribeModalMetadata } = useModals()
-  const [appDetails, setAppDetails] = useState<MetadataArgs>()
+  const [appDetails, setAppDetails] = useState<PushClientTypes.PushRequestEventArgs>()
 
   useEffect(() => {
+    console.log({ subscribeModalMetadata })
     if (!subscribeModalMetadata) {
       return
     }
     setAppDetails(subscribeModalMetadata)
-  }, [subscribeModalMetadata])
+  }, [subscribeModalMetadata, setAppDetails])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { userPubkey: address, pushClientProxy } = useContext(W3iContext)
+  const { pushClientProxy } = useContext(W3iContext)
 
   const onAllow = () => {
     setAllowing(true)
@@ -49,7 +48,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
     pushClientProxy
       ?.approve({ id: appDetails.id })
       .then(() => {
-        console.log(`Allowed push_request for ${appDetails.name} with id ${appDetails.id}`)
+        console.log(`Allowed push_request for ${appDetails.metadata.name} with id ${appDetails.id}`)
       })
       .catch(err => {
         console.error(err)
@@ -73,7 +72,9 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
     pushClientProxy
       ?.reject({ id: appDetails.id, reason: 'Rejected by user from modal' })
       .then(() => {
-        console.log(`Rejected push_request for ${appDetails.name} with id ${appDetails.id}`)
+        console.log(
+          `Rejected push_request for ${appDetails.metadata.name} with id ${appDetails.id}`
+        )
       })
       .catch(err => {
         console.error(err)
@@ -127,7 +128,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
             className="Subscribe__illustration__current"
           >
             {appDetails ? (
-              <img src={appDetails.icons[0]} alt="Foundation" />
+              <img src={appDetails.metadata.icons[0]} alt="Foundation" />
             ) : (
               <div className="Subscribe__Shimmer Subscribe__Shimmer--logo" />
             )}
@@ -209,7 +210,9 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
           className="Subscribe__container"
         >
           {appDetails ? (
-            <div className="Subscribe__container--title">Subscribe to {appDetails.name}</div>
+            <div className="Subscribe__container--title">
+              Subscribe to {appDetails.metadata.name}
+            </div>
           ) : (
             <span className="Subscribe__Shimmer Subscribe__Shimmer--heading" />
           )}
@@ -218,7 +221,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
             <p>
               You will start receiving notifications from{' '}
               {appDetails ? (
-                <span>{appDetails.name}</span>
+                <span>{appDetails.metadata.name}</span>
               ) : (
                 <span className="Subscribe__Shimmer Subscribe__Shimmer--text" />
               )}{' '}

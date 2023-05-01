@@ -1,3 +1,4 @@
+import type { PushClientTypes } from '@walletconnect/push-client'
 import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import type { RefObject } from 'react'
 
@@ -5,7 +6,6 @@ import type { RefObject } from 'react'
 import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
-import type { MetadataArgs } from './store'
 // eslint-disable-next-line no-duplicate-imports
 import {
   appSearchService,
@@ -169,7 +169,8 @@ export const useModals = () => {
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
-  const [subscribeModalMetadata, setSubscribeModalMetadata] = useState<MetadataArgs>()
+  const [subscribeModalMetadata, setSubscribeModalMetadata] =
+    useState<PushClientTypes.PushRequestEventArgs>()
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
@@ -177,8 +178,8 @@ export const useModals = () => {
       setIsProfileModalOpen(isOpen)
     })
     const subscribeSubscription = subscribeModalService.modalState.subscribe(state => {
-      setIsSubscribeModalOpen(state.isOpen)
       setSubscribeModalMetadata(state.metadata)
+      setIsSubscribeModalOpen(state.isOpen)
     })
     const signatureSubscription = signatureModalService.modalState.subscribe(isOpen => {
       setIsSignatureModalOpen(isOpen)
