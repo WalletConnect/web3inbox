@@ -5,6 +5,8 @@ import type { RefObject } from 'react'
 import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
+import type { MetadataArgs } from './store'
+// eslint-disable-next-line no-duplicate-imports
 import {
   appSearchService,
   chatSearchService,
@@ -14,6 +16,7 @@ import {
   pushSearchService,
   shareModalService,
   signatureModalService,
+  subscribeModalService,
   unsubscribeModalService
 } from './store'
 import { isMobile } from './ui'
@@ -70,7 +73,9 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       error1: 'hsla(5, 85%, 60%, 1)',
       icon1: 'hsla(180, 6%, 80%, 1)',
       qr1: '#e4e7e7',
-      brightness: '0.66'
+      brightness: '0.66',
+      shimmer1: 'rgba(255, 255, 255, 0.05)',
+      shimmer2: 'rgba(255, 255, 255, 0.1)'
     },
     light: {
       bg1: 'hsla(0, 0%, 100%, 1)',
@@ -93,7 +98,9 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       error1: 'hsla(5, 85%, 60%, 1)',
       icon1: 'hsla(180, 4%, 16%, 1)',
       qr1: '#141414',
-      brightness: '1.33'
+      brightness: '1.33',
+      shimmer1: 'rgba(0, 0, 0, 0.05)',
+      shimmer2: 'rgba(0, 0, 0, 0.1)'
     }
   }
 
@@ -118,7 +125,9 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--error-color-1': colors[specifiedMode].error1,
     '--icon-color-1': colors[specifiedMode].icon1,
     '--qr-color-1': colors[specifiedMode].qr1,
-    '--brightness-multiplier': colors[specifiedMode].brightness
+    '--brightness-multiplier': colors[specifiedMode].brightness,
+    '--shimmer-color-1': colors[specifiedMode].shimmer1,
+    '--shimmer-color-2': colors[specifiedMode].shimmer2
   }
 
   return colorModeVariables
@@ -153,17 +162,23 @@ export const useSearch = () => {
 
 export const useModals = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+  const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
+  const [subscribeModalMetadata, setSubscribeModalMetadata] = useState<MetadataArgs>()
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
     const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
       setIsProfileModalOpen(isOpen)
+    })
+    const subscribeSubscription = subscribeModalService.modalState.subscribe(state => {
+      setIsSubscribeModalOpen(state.isOpen)
+      setSubscribeModalMetadata(state.metadata)
     })
     const signatureSubscription = signatureModalService.modalState.subscribe(isOpen => {
       setIsSignatureModalOpen(isOpen)
@@ -190,6 +205,7 @@ export const useModals = () => {
       signatureSubscription.unsubscribe()
       preferencesSubscription.unsubscribe()
       unsubscribeSubscription.unsubscribe()
+      subscribeSubscription.unsubscribe()
     }
   }, [])
 
@@ -200,8 +216,10 @@ export const useModals = () => {
     isContactModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
+    isSubscribeModalOpen,
     preferencesModalAppId,
-    unsubscribeModalAppId
+    unsubscribeModalAppId,
+    subscribeModalMetadata
   }
 }
 
