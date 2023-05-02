@@ -14,6 +14,7 @@ import './ThreadWindow.scss'
 import { noop } from 'rxjs'
 import { AnimatePresence } from 'framer-motion'
 import ThreadDropdown from './ThreadDropdown'
+import { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -28,6 +29,8 @@ const ThreadWindow: React.FC = () => {
       '',
     [threads, search]
   )
+
+  const [pendingMessages, setPendingMessages] = useState<ReplayMessage[]>([])
 
   if (!topic) {
     return <Navigate to="/messages" />
@@ -109,6 +112,12 @@ const ThreadWindow: React.FC = () => {
       next: refreshMessages
     })
 
+    const unsentMessagesSub = chatClientProxy.observe('chat_message_attempt', {
+      next: () => {
+        setPendingMessages(chatClientProxy.getUnsentMessages())
+      }
+    })
+
     const inviteAcceptedSub = chatClientProxy.observe('chat_invite_accepted', {
       next: inviteAcceptedEvent => {
         console.log(
@@ -137,6 +146,7 @@ const ThreadWindow: React.FC = () => {
       inviteRejectedSub.unsubscribe()
       receivedMessageSub.unsubscribe()
       sentMessageSub.unsubscribe()
+      unsentMessagesSub.unsubscribe()
     }
   }, [chatClientProxy, refreshMessages, topic, nav, peer])
 

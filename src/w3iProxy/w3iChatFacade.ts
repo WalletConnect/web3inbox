@@ -17,7 +17,7 @@ import { ONE_DAY } from '@walletconnect/time'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import { hashMessage } from 'ethers/lib/utils.js'
 
-type ReplayMessage = ChatClientTypes.Message & {
+export type ReplayMessage = ChatClientTypes.Message & {
   id: string
   originalTimestamp: number
   status: 'failed' | 'pending' | 'sent'
@@ -64,6 +64,7 @@ class W3iChatFacade implements W3iChat {
             ...replayMessage,
             status: 'sent'
           })
+          this.emitter.emit('chat_message_attempt')
         },
         error: () => {
           if (replayMessage.count > this.messageReplayMaxCount) {
@@ -72,6 +73,7 @@ class W3iChatFacade implements W3iChat {
               status: 'failed',
               count: replayMessage.count + 1
             })
+            this.emitter.emit('chat_message_attempt')
           } else {
             const timeoutTime = replayMessage.count * this.messageSendTimeout
             setTimeout(() => {
@@ -79,6 +81,7 @@ class W3iChatFacade implements W3iChat {
                 ...replayMessage,
                 count: replayMessage.count + 1
               })
+              this.emitter.emit('chat_message_attempt')
             }, timeoutTime)
           }
         }
@@ -220,6 +223,7 @@ class W3iChatFacade implements W3iChat {
     }
 
     this.messageReplaySubject.next(replayMessage)
+    this.emitter.emit('chat_message_attempt')
 
     return Promise.resolve()
   }
