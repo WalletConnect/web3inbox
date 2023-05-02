@@ -109,7 +109,6 @@ class W3iChatFacade implements W3iChat {
       )
       .subscribe({
         next: messageMap => {
-          console.log('Filling messages >>>>>')
           const messages: ReplayMessage[] = []
           for (const message of messageMap.values()) {
             if (message.status !== 'sent') {
