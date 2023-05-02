@@ -64,7 +64,11 @@ export default class ExternalPushProvider implements W3iPushProvider {
   }
 
   public async approve(params: { id: number }) {
-    return this.postToExternalProvider('approve', params)
+    return this.postToExternalProvider('approve', {
+      ...params,
+      // Signing will be handled wallet-side.
+      onSign: async () => Promise.resolve('')
+    })
   }
 
   public async reject(params: { id: number; reason: string }) {
