@@ -1,7 +1,6 @@
 import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
 import { signMessage } from '@wagmi/core'
 import type { EventEmitter } from 'events'
-import { signMessage } from '@wagmi/core'
 import { appNotificationsMock, appsSubscriptionMock } from '../../utils/mocks'
 import type { W3iPushProvider } from './types'
 
@@ -22,6 +21,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     this.pushClient = pushClient
 
     this.pushClient.on('push_request', args => this.emitter.emit('push_request', args))
+    this.pushClient.on('push_subscription', args => this.emitter.emit('push_subscription', args))
     this.pushClient.on('push_message', args => this.emitter.emit('push_message', args))
   }
 
@@ -111,12 +111,11 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('getMessageHistory'))
     }
 
-    return Promise.resolve(appNotificationsMock(params))
+    const messages = this.pushClient.getMessageHistory(params)
 
-    /*
-     * TODO: Hookup actual push client
-     * return Promise.resolve(this.pushClient.getMessageHistory(params))
-     */
+    console.log('messages:', messages)
+
+    return Promise.resolve(messages)
   }
 
   public async deletePushMessage(params: { id: number }) {

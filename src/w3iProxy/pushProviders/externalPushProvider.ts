@@ -55,6 +55,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
     console.log({ request })
     switch (request.method) {
       case 'push_request':
+      case 'push_subscription':
       case 'push_message':
         this.emitter.emit(request.method, request.params)
         break
