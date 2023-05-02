@@ -14,7 +14,7 @@ import './ThreadWindow.scss'
 import { noop } from 'rxjs'
 import { AnimatePresence } from 'framer-motion'
 import ThreadDropdown from './ThreadDropdown'
-import { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'
+import type { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -70,7 +70,6 @@ const ThreadWindow: React.FC = () => {
         topic
       })
       .then(allChatMessages => {
-        console.log(`Retreived messages: ${allChatMessages.map(m => m.timestamp).join(',')} `)
         setMessages(allChatMessages)
       })
       .catch(() => {
@@ -120,11 +119,6 @@ const ThreadWindow: React.FC = () => {
 
     const inviteAcceptedSub = chatClientProxy.observe('chat_invite_accepted', {
       next: inviteAcceptedEvent => {
-        console.log(
-          `Accepted invite event, isInvite: ${
-            isInvite ? 'YES' : 'NO'
-          }, invite TEST2: ${JSON.stringify(inviteAcceptedEvent)}`
-        )
         const { inviteeAccount } = inviteAcceptedEvent.invite
         if (isInvite && inviteeAccount === peer) {
           nav(`/messages/chat/${inviteeAccount}?topic=${inviteAcceptedEvent.topic}`)
@@ -151,7 +145,6 @@ const ThreadWindow: React.FC = () => {
   }, [chatClientProxy, refreshMessages, topic, nav, peer])
 
   useEffect(() => {
-    console.log('Refresh messages useEffect')
     refreshMessages()
   }, [refreshMessages])
 
@@ -178,6 +171,18 @@ const ThreadWindow: React.FC = () => {
               messages={messages}
               nextMessageAccount={messages[i + 1]?.authorAccount}
               previousMessageAccount={messages[i - 1]?.authorAccount}
+            />
+          ))}
+          {pendingMessages.map((message, i) => (
+            <MessageItem
+              key={message.timestamp}
+              message={message}
+              index={i}
+              status={message.status}
+              peer={peer}
+              messages={pendingMessages}
+              nextMessageAccount={pendingMessages[i + 1]?.authorAccount}
+              previousMessageAccount={pendingMessages[i - 1]?.authorAccount}
             />
           ))}
         </AnimatePresence>

@@ -9,6 +9,7 @@ interface IMessageItemProps {
   message: ChatClientTypes.Message
   index: number
   peer?: string
+  status?: 'failed' | 'pending' | 'sent'
   previousMessageAccount?: string
   nextMessageAccount?: string
 }
@@ -19,6 +20,7 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
   message,
   index,
   peer,
+  status,
   previousMessageAccount,
   nextMessageAccount
 }) => {
@@ -49,6 +51,10 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
   }, [messages])
 
   const isDateTagDisplayed = useMemo(() => {
+    if (status) {
+      return false
+    }
+
     if (isFirstMessage) {
       return isFirstMessage
     }
@@ -60,7 +66,7 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
     const hasTwoHoursGap = differenceInHours(currentDate, prevDate) >= 2
 
     return isDifferentDay || hasTwoHoursGap
-  }, [index, messages, message.timestamp, isFirstMessage])
+  }, [index, status, messages, message.timestamp, isFirstMessage])
 
   return (
     <div
@@ -70,7 +76,11 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
       ref={isLastMessage ? messagesEndRef : null}
     >
       {isDateTagDisplayed && <MessageDateTag timestamp={message.timestamp} />}
-      <Message text={message.message} from={message.authorAccount === peer ? 'peer' : 'sender'} />
+      <Message
+        text={message.message}
+        status={status}
+        from={message.authorAccount === peer ? 'peer' : 'sender'}
+      />
     </div>
   )
 }

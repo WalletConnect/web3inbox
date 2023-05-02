@@ -11,7 +11,7 @@ import type {
 } from './chatProviders/types'
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
-import { filter, from, reduce, ReplaySubject } from 'rxjs'
+import { filter, from, reduce, ReplaySubject, scan, takeWhile } from 'rxjs'
 import { fromEvent } from 'rxjs'
 import { ONE_DAY } from '@walletconnect/time'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
@@ -42,6 +42,8 @@ class W3iChatFacade implements W3iChat {
   private readonly messageSendTimeout = 1000
   private account?: string
 
+  private unsentMessages: ReplayMessage[] = []
+
   public constructor(providerName: W3iChatFacade['providerName']) {
     this.providerName = providerName
     this.observables = new Map()
@@ -53,6 +55,7 @@ class W3iChatFacade implements W3iChat {
     // Discuss expiry of messages
     this.messageReplaySubject = new ReplaySubject(undefined, ONE_DAY / 2)
     this.handleMessagePublishing()
+    this.subscribeToUnsentMessages()
   }
 
   private handleMessagePublishing() {
@@ -89,16 +92,10 @@ class W3iChatFacade implements W3iChat {
     })
   }
 
-  /*
-   * Messages that are not in the chat client due to them not being
-   * successfully sent.
-   */
-  public getUnsentMessages() {
-    const messages: ReplayMessage[] = []
-
-    const sub = this.messageReplaySubject
+  private subscribeToUnsentMessages() {
+    this.messageReplaySubject
       .pipe(
-        reduce<ReplayMessage, Map<string, ReplayMessage>>((messageMap, message) => {
+        scan<ReplayMessage, Map<string, ReplayMessage>>((messageMap, message) => {
           const isNewMessage = !messageMap.has(message.id)
           const isNewerMessage =
             messageMap.has(message.id) && messageMap.get(message.id)?.status !== message.status
@@ -110,17 +107,26 @@ class W3iChatFacade implements W3iChat {
           return messageMap
         }, new Map())
       )
-      .subscribe(messageMap => {
-        for (const message of messageMap.values()) {
-          if (message.status !== 'sent') {
-            messages.push(message)
+      .subscribe({
+        next: messageMap => {
+          console.log('Filling messages >>>>>')
+          const messages: ReplayMessage[] = []
+          for (const message of messageMap.values()) {
+            if (message.status !== 'sent') {
+              messages.push(message)
+            }
           }
+          this.unsentMessages = messages
         }
       })
+  }
 
-    sub.unsubscribe()
-
-    return messages
+  /*
+   * Messages that are not in the chat client due to them not being
+   * successfully sent.
+   */
+  public getUnsentMessages() {
+    return this.unsentMessages
   }
 
   public async initInternalProvider(chatClient: ChatClient) {
