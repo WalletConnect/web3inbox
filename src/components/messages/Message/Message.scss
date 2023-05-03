@@ -22,6 +22,10 @@
       #{$parent}__from-sender #{$parent}__bubble {
         border-radius: 16px 6px 16px 16px;
       }
+
+      display: flex;
+      gap: 0.33em;
+      flex-direction: column;
     }
     &--same {
       #{$parent}__from-peer #{$parent}__bubble {
@@ -63,5 +67,20 @@
     box-shadow: inset 1px 1px 4px #99cbff, inset -1px -1px 4px #1464b8;
     background: #3396ff;
     color: #ffffff;
+  }
+
+  &__pending {
+    opacity: 90%;
+  }
+
+  &__status {
+    div {
+      align-items: center;
+      font-size: 0.75em;
+      color: var(--fg-color-2);
+      display: flex;
+      gap: 0.5em;
+      justify-content: flex-end;
+    }
   }
 }

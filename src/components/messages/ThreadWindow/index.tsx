@@ -14,6 +14,7 @@ import './ThreadWindow.scss'
 import { noop } from 'rxjs'
 import { AnimatePresence } from 'framer-motion'
 import ThreadDropdown from './ThreadDropdown'
+import type { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -28,6 +29,8 @@ const ThreadWindow: React.FC = () => {
       '',
     [threads, search]
   )
+
+  const [pendingMessages, setPendingMessages] = useState<ReplayMessage[]>([])
 
   if (!topic) {
     return <Navigate to="/messages" />
@@ -67,7 +70,6 @@ const ThreadWindow: React.FC = () => {
         topic
       })
       .then(allChatMessages => {
-        console.log(`Retreived messages: ${allChatMessages.map(m => m.timestamp).join(',')} `)
         setMessages(allChatMessages)
       })
       .catch(() => {
@@ -109,13 +111,14 @@ const ThreadWindow: React.FC = () => {
       next: refreshMessages
     })
 
+    const unsentMessagesSub = chatClientProxy.observe('chat_message_attempt', {
+      next: () => {
+        setPendingMessages(chatClientProxy.getUnsentMessages())
+      }
+    })
+
     const inviteAcceptedSub = chatClientProxy.observe('chat_invite_accepted', {
       next: inviteAcceptedEvent => {
-        console.log(
-          `Accepted invite event, isInvite: ${
-            isInvite ? 'YES' : 'NO'
-          }, invite TEST2: ${JSON.stringify(inviteAcceptedEvent)}`
-        )
         const { inviteeAccount } = inviteAcceptedEvent.invite
         if (isInvite && inviteeAccount === peer) {
           nav(`/messages/chat/${inviteeAccount}?topic=${inviteAcceptedEvent.topic}`)
@@ -137,11 +140,11 @@ const ThreadWindow: React.FC = () => {
       inviteRejectedSub.unsubscribe()
       receivedMessageSub.unsubscribe()
       sentMessageSub.unsubscribe()
+      unsentMessagesSub.unsubscribe()
     }
   }, [chatClientProxy, refreshMessages, topic, nav, peer])
 
   useEffect(() => {
-    console.log('Refresh messages useEffect')
     refreshMessages()
   }, [refreshMessages])
 
@@ -164,10 +167,23 @@ const ThreadWindow: React.FC = () => {
               key={message.timestamp}
               message={message}
               index={i}
+              status={message.authorAccount === peer ? undefined : 'sent'}
               peer={peer}
               messages={messages}
               nextMessageAccount={messages[i + 1]?.authorAccount}
               previousMessageAccount={messages[i - 1]?.authorAccount}
+            />
+          ))}
+          {pendingMessages.map((message, i) => (
+            <MessageItem
+              key={message.timestamp}
+              message={message}
+              index={i}
+              status={message.status}
+              peer={peer}
+              messages={pendingMessages}
+              nextMessageAccount={pendingMessages[i + 1]?.authorAccount}
+              previousMessageAccount={pendingMessages[i - 1]?.authorAccount}
             />
           ))}
         </AnimatePresence>
