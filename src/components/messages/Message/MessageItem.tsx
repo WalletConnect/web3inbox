@@ -3,6 +3,7 @@ import { differenceInHours } from 'date-fns'
 import { useEffect, useMemo, useRef } from 'react'
 import Message from '.'
 import MessageDateTag from './MessageDateTag'
+import MessageStatus from './MessageStatus'
 
 interface IMessageItemProps {
   messages: ChatClientTypes.Message[]
@@ -81,6 +82,7 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
         status={status}
         from={message.authorAccount === peer ? 'peer' : 'sender'}
       />
+      {status && <MessageStatus isLastMessage={isLastMessage} status={status} />}
     </div>
   )
 }

@@ -167,6 +167,7 @@ const ThreadWindow: React.FC = () => {
               key={message.timestamp}
               message={message}
               index={i}
+              status={message.authorAccount === peer ? undefined : 'sent'}
               peer={peer}
               messages={messages}
               nextMessageAccount={messages[i + 1]?.authorAccount}

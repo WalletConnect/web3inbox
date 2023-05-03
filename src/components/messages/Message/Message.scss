@@ -22,6 +22,10 @@
       #{$parent}__from-sender #{$parent}__bubble {
         border-radius: 16px 6px 16px 16px;
       }
+
+      display: flex;
+      gap: 0.33em;
+      flex-direction: column;
     }
     &--same {
       #{$parent}__from-peer #{$parent}__bubble {
@@ -66,6 +70,17 @@
   }
 
   &__pending {
-    opacity: 50%;
+    opacity: 90%;
+  }
+
+  &__status {
+    div {
+      align-items: center;
+      font-size: 0.75em;
+      color: var(--fg-color-2);
+      display: flex;
+      gap: 0.5em;
+      justify-content: flex-end;
+    }
   }
 }

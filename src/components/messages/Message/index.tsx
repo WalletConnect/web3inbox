@@ -1,6 +1,7 @@
 import React from 'react'
 import './Message.scss'
 import { m, LazyMotion, domAnimation } from 'framer-motion'
+import MessageStatus from './MessageStatus'
 
 interface MessageProps {
   text: string
