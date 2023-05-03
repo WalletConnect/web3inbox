@@ -1,7 +1,7 @@
 import ChatClient from '@walletconnect/chat-client'
 import { Core } from '@walletconnect/core'
 import { WalletClient as PushWalletClient } from '@walletconnect/push-client'
-import { UiEnabled } from '../contexts/W3iContext/context'
+import type { UiEnabled } from '../contexts/W3iContext/context'
 import W3iChatFacade from './w3iChatFacade'
 import W3iPushFacade from './w3iPushFacade'
 

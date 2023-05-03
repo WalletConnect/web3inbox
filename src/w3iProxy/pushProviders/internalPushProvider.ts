@@ -1,6 +1,7 @@
 import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
 import type { EventEmitter } from 'events'
-import { appNotificationsMock } from '../../utils/mocks'
+import { signMessage } from '@wagmi/core'
+import { appNotificationsMock, appsSubscriptionMock } from '../../utils/mocks'
 import type { W3iPushProvider } from './types'
 
 export default class InternalPushProvider implements W3iPushProvider {
@@ -44,7 +45,15 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
-    return this.pushClient.approve(params)
+    return this.pushClient.approve({
+      ...params,
+      onSign: async message =>
+        signMessage({ message }).then(signature => {
+          console.log('PushClient.approve > onSign > signature', signature)
+
+          return signature
+        })
+    })
   }
 
   public async reject(params: { id: number; reason: string }) {
@@ -79,9 +88,12 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
 
-    const activeSubscriptions = this.pushClient.getActiveSubscriptions()
+    return Promise.resolve(appsSubscriptionMock)
 
-    return Promise.resolve(activeSubscriptions)
+    /*
+     * TODO: Hookup actual push client
+     * return Promise.resolve(this.pushClient.getActiveSubscriptions())
+     */
   }
 
   public async getMessageHistory(params: { topic: string }) {
