@@ -2630,10 +2630,10 @@
     pino "7.11.0"
     tslib "1.14.1"
 
-"@walletconnect/push-client@0.7.3-6dd3f08":
-  version "0.7.3-6dd3f08"
-  resolved "https://registry.yarnpkg.com/@walletconnect/push-client/-/push-client-0.7.3-6dd3f08.tgz#a6cb406d009972c676333072d0bd688e720ea121"
-  integrity sha512-39qfg0pBZLs43hbsQLqnrwz1Cr32RKUvyDDl3ifLtCjGzHOaNUTs+xoA7psj38vBYHv2fbrrvBOmUYFdkIReBA==
+"@walletconnect/push-client@^0.7.4":
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/@walletconnect/push-client/-/push-client-0.7.4.tgz#d4528ea9f5fd1b42793deac1802f71718e4ee251"
+  integrity sha512-5ctr2/ioB7ZeH8u1DvZvkd/Hk7uW33W0rnC/WleHHxU0t6eaO4DG027V7en4IunboWwGQfccnZ9u2F4ZjTSvGQ==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
