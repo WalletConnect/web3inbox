@@ -1,11 +1,14 @@
 .AppNotificationDropdown {
   &__actions {
-    display: grid;
-    justify-content: center;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     font-size: 1em;
+    width: 100%;
     button {
       display: grid;
+      width: 100%;
       grid-template-columns: 10% 90%;
       align-items: center;
       height: 2.625em;

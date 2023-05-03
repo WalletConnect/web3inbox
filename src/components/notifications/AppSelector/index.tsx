@@ -7,6 +7,7 @@ import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { useIsMobile, useSearch } from '../../../utils/hooks'
 import { pushSearchService } from '../../../utils/store'
+import AppNotificationDropdown from '../AppNotifications/AppNotificationDropdown'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
 import Search from '../../general/Search'
@@ -20,7 +21,7 @@ const AppSelector: React.FC = () => {
   const { isPushSearchOpen } = useSearch()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<PushClientTypes.PushSubscription[]>([])
-  const { activeSubscriptions } = useContext(W3iContext)
+  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
 
   const filterApps = useCallback(
     debounce((searchQuery: string) => {
@@ -101,13 +102,14 @@ const AppSelector: React.FC = () => {
               />
               <span>{app.metadata.name}</span>
             </div>
-            {/* DropdownToShow !== app.id &&
-                app.notifications?.length &&
-                app.notifications.filter(notif => notif.isRead).length !== 0 && (
-                  <CircleBadge>
-                    {app.notifications.filter(notif => notif.isRead).length}
-                  </CircleBadge>
-                )*/}
+            {dropdownToShow === app.topic && (
+              <AppNotificationDropdown
+                closeDropdown={() => setDropdownToShow(undefined)}
+                h="1.5em"
+                w="2em"
+                notificationId={app.topic}
+              />
+            )}
           </div>
         </NavLink>
       ))}
