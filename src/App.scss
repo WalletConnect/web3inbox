@@ -38,6 +38,7 @@
     grid-area: main;
     max-width: 100vw;
     height: 100vh;
+    overflow-x: hidden;
 
     display: var(--main-display);
   }
