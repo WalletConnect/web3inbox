@@ -30,3 +30,14 @@ video {
   display: block;
   max-width: 100%;
 }
+
+::-webkit-scrollbar {
+  border-radius: 10px;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 10px;
+  background: var(--fg-color-2);
+}
