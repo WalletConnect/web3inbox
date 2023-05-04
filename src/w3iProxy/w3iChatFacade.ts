@@ -11,16 +11,7 @@ import type {
 } from './chatProviders/types'
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
-import {
-  filter,
-  from,
-  ReplaySubject,
-  scan,
-  takeLast,
-  throwError,
-  timeout,
-  TimeoutError
-} from 'rxjs'
+import { filter, from, ReplaySubject, scan, throwError, timeout } from 'rxjs'
 import { fromEvent } from 'rxjs'
 import { ONE_DAY } from '@walletconnect/time'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
@@ -83,7 +74,6 @@ class W3iChatFacade implements W3iChat {
         )
         .subscribe({
           next: () => {
-            console.log('Message succeeded', replayMessage.message)
             this.emitter.emit('chat_message_sent')
             this.messageReplaySubject.next({
               ...replayMessage,
@@ -91,17 +81,8 @@ class W3iChatFacade implements W3iChat {
             })
             this.emitter.emit('chat_message_attempt')
           },
-          error: err => {
-            console.log(
-              'Sending message',
-              replayMessage.message,
-              'errored',
-              replayMessage.count,
-              'times. With error',
-              err
-            )
+          error: () => {
             if (replayMessage.count > this.messageReplayMaxCount) {
-              console.log('Setting message', replayMessage.message, 'to failed')
               this.messageReplaySubject.next({
                 ...replayMessage,
                 status: 'failed',
@@ -110,7 +91,6 @@ class W3iChatFacade implements W3iChat {
               this.emitter.emit('chat_message_attempt')
             } else {
               const timeoutTime = replayMessage.count * this.messageSendTimeout
-              console.log('Retrying message', replayMessage.message)
               setTimeout(() => {
                 this.messageReplaySubject.next({
                   ...replayMessage,
@@ -161,7 +141,6 @@ class W3iChatFacade implements W3iChat {
   }
 
   public retryMessage(params: ChatClientTypes.Message) {
-    console.log('Retrying message retryMessage')
     const replayMessage: ReplayMessage = {
       ...params,
       originalTimestamp: Date.now(),
