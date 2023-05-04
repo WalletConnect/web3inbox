@@ -1,17 +1,25 @@
-import React from 'react'
+import type { ChatClientTypes } from '@walletconnect/chat-client'
+import React, { useCallback, useContext } from 'react'
+import W3iContext from '../../../contexts/W3iContext/context'
 import type { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'
 import CheckIcon from '../../general/Icon/CheckIcon'
+import RetryIcon from '../../general/Icon/RetryIcon'
 import Spinner from '../../general/Spinner'
 
 interface MessageStatusProps {
   status: ReplayMessage['status']
+  message: ChatClientTypes.Message
   isLastMessage: boolean
 }
 
-const getMessageStatusText = (status: ReplayMessage['status']) => {
+const getMessageStatusText = (status: ReplayMessage['status'], onRetry: () => void) => {
   switch (status) {
     case 'failed':
-      return <div>Failed to send</div>
+      return (
+        <div className="Message__retry" onClick={onRetry}>
+          Failed to send <RetryIcon />
+        </div>
+      )
     case 'sent':
       return (
         <div>
@@ -29,14 +37,19 @@ const getMessageStatusText = (status: ReplayMessage['status']) => {
   }
 }
 
-const MessageStatus: React.FC<MessageStatusProps> = ({ status, isLastMessage }) => {
+const MessageStatus: React.FC<MessageStatusProps> = ({ status, message, isLastMessage }) => {
   const shouldShowMessageStatus = status !== 'sent' || isLastMessage
+  const { chatClientProxy } = useContext(W3iContext)
 
   if (!shouldShowMessageStatus) {
     return null
   }
 
-  return <div className="Message__status">{getMessageStatusText(status)}</div>
+  const onRetry = useCallback(() => {
+    chatClientProxy?.retryMessage(message)
+  }, [message, chatClientProxy])
+
+  return <div className="Message__status">{getMessageStatusText(status, onRetry)}</div>
 }
 
 export default MessageStatus

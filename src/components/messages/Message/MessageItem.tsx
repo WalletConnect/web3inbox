@@ -52,10 +52,6 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
   }, [messages])
 
   const isDateTagDisplayed = useMemo(() => {
-    if (status) {
-      return false
-    }
-
     if (isFirstMessage) {
       return isFirstMessage
     }
@@ -67,7 +63,7 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
     const hasTwoHoursGap = differenceInHours(currentDate, prevDate) >= 2
 
     return isDifferentDay || hasTwoHoursGap
-  }, [index, status, messages, message.timestamp, isFirstMessage])
+  }, [index, messages, message.timestamp, isFirstMessage])
 
   return (
     <div
@@ -82,7 +78,7 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
         status={status}
         from={message.authorAccount === peer ? 'peer' : 'sender'}
       />
-      {status && <MessageStatus isLastMessage={isLastMessage} status={status} />}
+      {status && <MessageStatus message={message} isLastMessage={isLastMessage} status={status} />}
     </div>
   )
 }
