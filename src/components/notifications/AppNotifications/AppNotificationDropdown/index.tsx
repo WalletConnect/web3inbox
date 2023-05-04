@@ -1,4 +1,5 @@
-import { useCallback } from 'react'
+import { useCallback, useContext } from 'react'
+import W3iContext from '../../../../contexts/W3iContext/context'
 import Dropdown from '../../../general/Dropdown/Dropdown'
 import CheckIcon from '../../../general/Icon/CheckIcon'
 import NotificationMuteIcon from '../../../general/Icon/NotificationMuteIcon'
@@ -20,36 +21,24 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
   h,
   closeDropdown
 }) => {
-  const handleMarkAsRead = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    console.log({ notificationId })
-    closeDropdown()
-  }, [])
+  const { pushClientProxy } = useContext(W3iContext)
 
-  const handleClear = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    closeDropdown()
-  }, [])
+  // TODO: Trigger notification modal
+  const handleUnsubscribe = useCallback(() => {
+    pushClientProxy?.deleteSubscription({ topic: notificationId }).then(closeDropdown)
+  }, [notificationId, closeDropdown, pushClientProxy])
 
-  const handleMute = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  // TODO: Trigger notification preferences modal
+  const handleOpenNotificationPreferencesModal = useCallback(() => {
     closeDropdown()
-  }, [])
+  }, [closeDropdown])
 
   return (
     <Dropdown btnShape="square" h={h} w={w} dropdownPlacement={dropdownPlacement}>
       <div className="AppNotificationDropdown__actions">
-        <button onClick={handleMarkAsRead}>
-          <CheckIcon />
-          <span>Mark as read</span>
-        </button>
-        <button onClick={handleClear}>
-          <TrashIcon />
-          <span>Clear</span>
-        </button>
-        <button onClick={handleMute}>
+        <button onClick={handleUnsubscribe}>
           <NotificationMuteIcon />
-          <span>Stop Offer Notifications</span>
+          <span>Unsubscribe</span>
         </button>
       </div>
     </Dropdown>

@@ -23,6 +23,7 @@
   "rules": {
     "sort-imports": "off",
     "no-duplicate-imports": "off",
+    "no-warning-comments": "off",
     "no-console": "off",
     "one-var": "off",
     "sort-keys": "off",
