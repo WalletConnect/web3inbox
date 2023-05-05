@@ -11,7 +11,7 @@ import type {
 } from './chatProviders/types'
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
-import { filter, from, reduce, ReplaySubject, scan, takeWhile } from 'rxjs'
+import { filter, from, ReplaySubject, scan, throwError, timeout } from 'rxjs'
 import { fromEvent } from 'rxjs'
 import { ONE_DAY } from '@walletconnect/time'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
@@ -22,6 +22,10 @@ export type ReplayMessage = ChatClientTypes.Message & {
   originalTimestamp: number
   status: 'failed' | 'pending' | 'sent'
   count: number
+}
+
+export const getMessageId = (params: ChatClientTypes.Message) => {
+  return hashMessage(`${params.message}${params.timestamp}${params.authorAccount}`)
 }
 
 class W3iChatFacade implements W3iChat {
@@ -54,41 +58,49 @@ class W3iChatFacade implements W3iChat {
 
     // Discuss expiry of messages
     this.messageReplaySubject = new ReplaySubject(undefined, ONE_DAY / 2)
+    this.messageSendTimeout = 1000
     this.handleMessagePublishing()
     this.subscribeToUnsentMessages()
   }
 
   private handleMessagePublishing() {
     this.messageReplaySubject.pipe(filter(m => m.status === 'pending')).subscribe(replayMessage => {
-      from(this.provider.message(replayMessage)).subscribe({
-        next: () => {
-          this.emitter.emit('chat_message_sent')
-          this.messageReplaySubject.next({
-            ...replayMessage,
-            status: 'sent'
+      from(this.provider.message(replayMessage))
+        .pipe(
+          timeout({
+            each: this.messageSendTimeout + replayMessage.count * this.messageSendTimeout,
+            with: info => throwError(() => new Error(JSON.stringify(info)))
           })
-          this.emitter.emit('chat_message_attempt')
-        },
-        error: () => {
-          if (replayMessage.count > this.messageReplayMaxCount) {
+        )
+        .subscribe({
+          next: () => {
+            this.emitter.emit('chat_message_sent')
             this.messageReplaySubject.next({
               ...replayMessage,
-              status: 'failed',
-              count: replayMessage.count + 1
+              status: 'sent'
             })
             this.emitter.emit('chat_message_attempt')
-          } else {
-            const timeoutTime = replayMessage.count * this.messageSendTimeout
-            setTimeout(() => {
+          },
+          error: () => {
+            if (replayMessage.count > this.messageReplayMaxCount) {
               this.messageReplaySubject.next({
                 ...replayMessage,
+                status: 'failed',
                 count: replayMessage.count + 1
               })
               this.emitter.emit('chat_message_attempt')
-            }, timeoutTime)
+            } else {
+              const timeoutTime = replayMessage.count * this.messageSendTimeout
+              setTimeout(() => {
+                this.messageReplaySubject.next({
+                  ...replayMessage,
+                  count: replayMessage.count + 1
+                })
+                this.emitter.emit('chat_message_attempt')
+              }, timeoutTime)
+            }
           }
-        }
-      })
+        })
     })
   }
 
@@ -126,6 +138,20 @@ class W3iChatFacade implements W3iChat {
    */
   public getUnsentMessages() {
     return this.unsentMessages
+  }
+
+  public retryMessage(params: ChatClientTypes.Message) {
+    const replayMessage: ReplayMessage = {
+      ...params,
+      originalTimestamp: Date.now(),
+      timestamp: Date.now(),
+      id: getMessageId(params),
+      status: 'pending',
+      count: 0
+    }
+
+    this.messageReplaySubject.next(replayMessage)
+    this.emitter.emit('chat_message_attempt')
   }
 
   public async initInternalProvider(chatClient: ChatClient) {
@@ -222,7 +248,7 @@ class W3iChatFacade implements W3iChat {
     const replayMessage: ReplayMessage = {
       ...params,
       originalTimestamp: params.timestamp,
-      id: hashMessage(`${params.message}${params.timestamp}${params.authorAccount}`),
+      id: getMessageId(params),
       status: 'pending',
       count: 0
     }
