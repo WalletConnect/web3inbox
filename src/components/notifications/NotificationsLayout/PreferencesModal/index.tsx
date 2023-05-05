@@ -49,7 +49,7 @@ export const PreferencesModal: React.FC = () => {
           <div className="PreferencesModal__content">
             <div className="PreferencesModal__content__setting">
               <div>
-                <h4>{title}</h4>
+                <h4 style={{ textTransform: 'capitalize' }}>{title} Notifications</h4>
                 <div className="PreferencesModal__content__setting__helper-text">
                   {scope.description}
                 </div>
