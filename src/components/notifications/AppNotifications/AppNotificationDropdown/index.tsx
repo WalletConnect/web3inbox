@@ -1,9 +1,9 @@
 import { useCallback, useContext } from 'react'
 import W3iContext from '../../../../contexts/W3iContext/context'
+import { preferencesModalService } from '../../../../utils/store'
 import Dropdown from '../../../general/Dropdown/Dropdown'
-import CheckIcon from '../../../general/Icon/CheckIcon'
 import NotificationMuteIcon from '../../../general/Icon/NotificationMuteIcon'
-import TrashIcon from '../../../general/Icon/TrashIcon'
+import SettingIcon from '../../../general/Icon/SettingIcon'
 import './AppNotificationDropdown.scss'
 
 interface IAppNotificationDropdownProps {
@@ -30,6 +30,7 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
 
   // TODO: Trigger notification preferences modal
   const handleOpenNotificationPreferencesModal = useCallback(() => {
+    preferencesModalService.toggleModal(notificationId)
     closeDropdown()
   }, [closeDropdown])
 
@@ -39,6 +40,10 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
         <button onClick={handleUnsubscribe}>
           <NotificationMuteIcon />
           <span>Unsubscribe</span>
+        </button>
+        <button onClick={handleOpenNotificationPreferencesModal}>
+          <SettingIcon />
+          <span>Preferences</span>
         </button>
       </div>
     </Dropdown>
