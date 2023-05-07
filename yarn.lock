@@ -2370,10 +2370,10 @@
     lodash.isequal "4.5.0"
     uint8arrays "^3.1.0"
 
-"@walletconnect/core@2.7.2-e0cf52bf":
-  version "2.7.2-e0cf52bf"
-  resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-2.7.2-e0cf52bf.tgz#1b4e4fdf9bebfe8aa6e3d001ef05ffd2cc1f598d"
-  integrity sha512-4aiXS8xleDaLVctzaJeA7S44lrBPcG43La29zPZ4ymIfPYv0y7NbnwrBQaM4MAguS8k6m+1vddCuOS+T3atDHg==
+"@walletconnect/core@2.7.2", "@walletconnect/core@^2.7.1":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-2.7.2.tgz#698eb6178eaa17c804ca0ad3176035188b9db86b"
+  integrity sha512-gInSwh3uLpTEkDGArfOFoOVgiXW+zkZJpGqfARVi5fhSxsnL1jYNpqO2k8KAXUPfB4MIzLyaGruiaywncLAczA==
   dependencies:
     "@walletconnect/heartbeat" "1.2.1"
     "@walletconnect/jsonrpc-provider" "^1.0.12"
@@ -2408,27 +2408,6 @@
     "@walletconnect/time" "^1.0.2"
     "@walletconnect/types" "2.7.0"
     "@walletconnect/utils" "2.7.0"
-    events "^3.3.0"
-    lodash.isequal "4.5.0"
-    uint8arrays "^3.1.0"
-
-"@walletconnect/core@^2.7.1":
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-2.7.2.tgz#698eb6178eaa17c804ca0ad3176035188b9db86b"
-  integrity sha512-gInSwh3uLpTEkDGArfOFoOVgiXW+zkZJpGqfARVi5fhSxsnL1jYNpqO2k8KAXUPfB4MIzLyaGruiaywncLAczA==
-  dependencies:
-    "@walletconnect/heartbeat" "1.2.1"
-    "@walletconnect/jsonrpc-provider" "^1.0.12"
-    "@walletconnect/jsonrpc-utils" "^1.0.7"
-    "@walletconnect/jsonrpc-ws-connection" "^1.0.11"
-    "@walletconnect/keyvaluestorage" "^1.0.2"
-    "@walletconnect/logger" "^2.0.1"
-    "@walletconnect/relay-api" "^1.0.9"
-    "@walletconnect/relay-auth" "^1.0.4"
-    "@walletconnect/safe-json" "^1.0.2"
-    "@walletconnect/time" "^1.0.2"
-    "@walletconnect/types" "2.7.2"
-    "@walletconnect/utils" "2.7.2"
     events "^3.3.0"
     lodash.isequal "4.5.0"
     uint8arrays "^3.1.0"
@@ -2651,14 +2630,14 @@
     pino "7.11.0"
     tslib "1.14.1"
 
-"@walletconnect/push-client@0.7.4-6ddae84":
-  version "0.7.4-6ddae84"
-  resolved "https://registry.yarnpkg.com/@walletconnect/push-client/-/push-client-0.7.4-6ddae84.tgz#c962fab5f4e1ef65e6b9f186ee0ee4206200fa5c"
-  integrity sha512-8zYvjlYSyW2RSYAHuHNAXMq8IlbgemD7XqjkkbazFl4iWbZ3zducglgbf2DMEkckRWdEyeP7kkl8QvolzTsMDg==
+"@walletconnect/push-client@0.7.4-ceabb11":
+  version "0.7.4-ceabb11"
+  resolved "https://registry.yarnpkg.com/@walletconnect/push-client/-/push-client-0.7.4-ceabb11.tgz#e9b836204346811b520721ad5c17bcc8ad4cf471"
+  integrity sha512-yJEoanvs8ad03xkXJirLVAg4cuwmv3kfXwrjTGtOZxss7AFFLV+HmwEl6zb1g2SQ48aqQ82YvB4FSXG0HRxn8Q==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
-    "@walletconnect/core" "2.7.2-e0cf52bf"
+    "@walletconnect/core" "2.7.2"
     "@walletconnect/did-jwt" "2.0.1"
     "@walletconnect/identity-keys" "0.1.4"
     "@walletconnect/jsonrpc-utils" "1.0.7"
