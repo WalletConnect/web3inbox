@@ -45,12 +45,12 @@ const AppSelector: React.FC = () => {
         }
       })
     }, 50),
-    []
+    [activeSubscriptions]
   )
 
   useEffect(() => {
     filterApps(search)
-  }, [search, filterApps])
+  }, [search, filterApps, activeSubscriptions])
 
   return (
     <div className="AppSelector">
