@@ -38,7 +38,6 @@ export default class InternalAuthProvider {
   public async initState() {
     this.account = getAccount().address
     if (this.account) {
-      console.log('Emitting account')
       this.emitter.emit('auth_set_account', { account: this.account })
     }
 

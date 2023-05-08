@@ -14,8 +14,6 @@ const ScanQrCode: React.FC = () => {
       return
     }
 
-    console.log({ scanResult })
-
     const web3inboxRegex = new RegExp(`${window.location.origin}/messages/invite/.*`, 'u')
 
     if (web3inboxRegex.test(scanResult)) {

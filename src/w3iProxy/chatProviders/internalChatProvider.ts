@@ -233,8 +233,6 @@ export default class InternalChatProvider implements W3iChatProvider {
 
     const isConnected = this.chatClient.core.relayer.provider.connection.connected
 
-    console.log({ isConnected })
-
     try {
       await this.chatClient.message(params)
     } catch {

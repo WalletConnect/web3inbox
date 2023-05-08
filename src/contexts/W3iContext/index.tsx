@@ -89,7 +89,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
   useEffect(() => {
     if (authClient) {
-      console.log('Setting account since client is init', authClient.getAccount())
       setUserPubkey(authClient.getAccount())
     }
   }, [authClient, setUserPubkey])
