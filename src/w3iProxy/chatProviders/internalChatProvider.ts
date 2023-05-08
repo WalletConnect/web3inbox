@@ -1,4 +1,4 @@
-import { getAccount, watchAccount } from '@wagmi/core'
+import { getAccount } from '@wagmi/core'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 // eslint-disable-next-line no-duplicate-imports
@@ -45,22 +45,6 @@ export default class InternalChatProvider implements W3iChatProvider {
         this.chatClient.ping({ topic: '' })
       }
     })
-
-    watchAccount(account => {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!account.address || !window.web3inbox.chat) {
-        return
-      }
-
-      window.web3inbox.chat.postMessage({
-        id: Date.now(),
-        jsonrpc: '2.0',
-        method: 'setAccount',
-        params: {
-          account: account.address
-        }
-      })
-    })
   }
 
   /*
@@ -70,18 +54,6 @@ export default class InternalChatProvider implements W3iChatProvider {
   public async initState(chatClient: ChatClient) {
     this.chatClient = chatClient
     this.projectId = this.chatClient.projectId
-
-    const address: string | undefined = getAccount().address
-    if (address) {
-      window.web3inbox.chat.postMessage({
-        id: Date.now(),
-        jsonrpc: '2.0',
-        method: 'setAccount',
-        params: {
-          account: address
-        }
-      })
-    }
 
     await this.mutedContacts.init()
 
