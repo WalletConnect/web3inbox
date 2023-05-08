@@ -116,6 +116,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
     pushClient.getActiveSubscriptions().then(subscriptions => {
       setActiveSubscriptions(Object.values(subscriptions))
+      console.log('Active subscriptions set to', Object.values(subscriptions))
     })
   }, [pushClient, userPubkey])
 
@@ -186,9 +187,16 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         refreshPushState()
       }
     })
+    const pushSubscriptionSub = pushClient.observe('push_subscription', {
+      next: subscriptionResult => {
+        console.log('subscriptionResult', subscriptionResult)
+        refreshPushState()
+      }
+    })
 
     return () => {
       pushRequestSub.unsubscribe()
+      pushSubscriptionSub.unsubscribe()
     }
   }, [pushClient, refreshPushState])
 
