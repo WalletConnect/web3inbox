@@ -48,10 +48,20 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
   // AUTH STATE
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
+  console.log({ userPubkey })
   const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(null)
+  const [accountQueryParam, setAccountQueryParam] = useState('')
   const [authProvider] = useState(
     authProviderQuery ? (authProviderQuery as Web3InboxProxy['authProvider']) : 'internal'
   )
+
+  useEffect(() => {
+    const account = new URLSearchParams(search).get('account')
+
+    if (account) {
+      setAccountQueryParam(account)
+    }
+  }, [search])
 
   const disconnect = useCallback(() => {
     setUserPubkey(undefined)
@@ -80,12 +90,11 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }
 
   useEffect(() => {
-    const account = new URLSearchParams(search).get('account')
-
-    if (account) {
-      authClient?.setAccount(account)
+    console.log({ settingQueryParamAccount: accountQueryParam, authClient: Boolean(authClient) })
+    if (accountQueryParam && authClient) {
+      authClient.setAccount(accountQueryParam)
     }
-  }, [search, setUserPubkey, authClient])
+  }, [accountQueryParam, setUserPubkey, authClient])
 
   useEffect(() => {
     if (authClient) {
