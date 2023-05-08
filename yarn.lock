@@ -2651,10 +2651,10 @@
     pino "7.11.0"
     tslib "1.14.1"
 
-"@walletconnect/push-client@0.7.4-de1da5e":
-  version "0.7.4-de1da5e"
-  resolved "https://registry.yarnpkg.com/@walletconnect/push-client/-/push-client-0.7.4-de1da5e.tgz#f35f8d5959ce3ff64ca74e203579b155476aaf62"
-  integrity sha512-F+Rh0sdcyNoIx+NT5lXO/vE2HaNB5uc2MY7Fu8JIzgcyp0oDCBNQvIZjVuiD5eJxKj2mH7S6VA+vzlzYsBiEmw==
+"@walletconnect/push-client@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@walletconnect/push-client/-/push-client-0.8.1.tgz#4929870e151160f31502335dfc8b3a78e5b5f519"
+  integrity sha512-TKA9EEcgarsWcN8ho1FPMYXCPbAzOZxKS2eyZ/w7LUV4f5+tV4uspj9RKgiH9yJ0UYDFQIqRldYZCYX1l7qIwA==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
@@ -2664,6 +2664,7 @@
     "@walletconnect/jsonrpc-utils" "1.0.7"
     "@walletconnect/time" "1.0.2"
     "@walletconnect/utils" "2.7.1"
+    axios "^1.4.0"
     jsonwebtoken "^9.0.0"
 
 "@walletconnect/randombytes@^1.0.3":
@@ -3243,7 +3244,7 @@ axios@^0.27.2:
     follow-redirects "^1.14.9"
     form-data "^4.0.0"
 
-axios@^1.3.5:
+axios@^1.3.5, axios@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.4.0.tgz#38a7bf1224cd308de271146038b551d725f0be1f"
   integrity sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==
