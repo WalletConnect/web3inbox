@@ -58,7 +58,7 @@ class Web3InboxProxy {
 
   public async init() {
     const core = new Core({
-      logger: 'debug',
+      logger: 'info',
       relayUrl: this.relayUrl,
       projectId: this.projectId
     })

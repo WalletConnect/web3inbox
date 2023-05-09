@@ -1,24 +1,33 @@
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import { useSearch } from '../../../utils/hooks'
 import BackButton from '../../general/BackButton'
 import AppCard from './AppCard'
 import './AppExplorer.scss'
 import AppExplorerHeader from './AppExplorerHeader'
 import usePushProjects from '../../../utils/hooks/usePushProjects'
+import W3iContext from '../../../contexts/W3iContext/context'
 
 const AppExplorer = () => {
   const { appSearchTerm } = useSearch()
   const projects = usePushProjects()
+  const { activeSubscriptions } = useContext(W3iContext)
+
   const filteredApps = useMemo(
     () =>
-      projects.filter(app =>
-        appSearchTerm
-          ? app.name.includes(appSearchTerm) ||
+      projects.filter(app => {
+        if (appSearchTerm) {
+          return (
+            app.name.includes(appSearchTerm) ||
             app.description.includes(appSearchTerm) ||
             app.url.includes(appSearchTerm)
-          : projects
-      ),
-    [appSearchTerm, projects]
+          )
+        }
+
+        const activeSubscriptionAppNames = activeSubscriptions.map(sub => sub.metadata.name)
+
+        return !activeSubscriptionAppNames.includes(app.name)
+      }),
+    [appSearchTerm, projects, activeSubscriptions]
   )
 
   return (
