@@ -20,17 +20,13 @@ interface AppCardProps {
 
 const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
   const { mode } = useContext(SettingsContext)
-  const { pushClientProxy, userPubkey, activeSubscriptions } = useContext(W3iContext)
+  const { pushClientProxy, userPubkey } = useContext(W3iContext)
   const cardBgColor = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     const specifiedMode = mode === 'system' ? systemTheme : mode
 
     return specifiedMode === 'dark' ? bgColor.dark : bgColor.light
   }, [mode, bgColor])
-
-  const isSubscribed = useMemo(() => {
-    return activeSubscriptions.some(sub => sub.metadata.name === name)
-  }, [activeSubscriptions, name])
 
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -94,12 +90,8 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         <h2 className="AppCard__body__name">{name}</h2>
         <div className="AppCard__body__description">{description}</div>
         <div className="AppCard__body__url">{url}</div>
-        <Button
-          className="AppCard__body__subscribe"
-          onClick={async e => handleSubscription(e)}
-          disabled={isSubscribed}
-        >
-          {isSubscribed ? 'Subscribed' : 'Subscribe'}
+        <Button className="AppCard__body__subscribe" onClick={async e => handleSubscription(e)}>
+          Subscribe
         </Button>
       </div>
     </a>
