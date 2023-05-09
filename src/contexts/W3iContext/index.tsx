@@ -189,10 +189,18 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     const pushSubscriptionSub = pushClient.observe('push_subscription', {
       next: refreshPushState
     })
+    const pushDeleteSub = pushClient.observe('push_delete', {
+      next: refreshPushState
+    })
+    const pushUpdateSub = pushClient.observe('push_update', {
+      next: refreshPushState
+    })
 
     return () => {
       pushRequestSub.unsubscribe()
       pushSubscriptionSub.unsubscribe()
+      pushUpdateSub.unsubscribe()
+      pushDeleteSub.unsubscribe()
     }
   }, [pushClient, refreshPushState])
 
