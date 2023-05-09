@@ -1,5 +1,6 @@
 import type { PushClientTypes } from '@walletconnect/push-client'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import W3iContext from '../../../../contexts/W3iContext/context'
 import { useColorModeValue, useModals } from '../../../../utils/hooks'
@@ -39,14 +40,35 @@ export const PreferencesModal: React.FC = () => {
     setScopes(app.scope)
   }, [preferencesModalAppId, setScopes, activeSubscriptions])
 
-  const handleUpdatePreferences = useCallback(() => {
+  const handleUpdatePreferences = useCallback(async () => {
     preferencesModalService.closeModal()
     if (preferencesModalAppId) {
       const topic = preferencesModalAppId
-      pushClientProxy?.update({
-        topic,
-        scope: getEnabledScopes(scopes)
-      })
+
+      try {
+        await pushClientProxy?.update({
+          topic,
+          scope: getEnabledScopes(scopes)
+        })
+        toast(`Successfully updated preferences`, {
+          type: 'success',
+          position: 'bottom-right',
+          autoClose: 5000,
+          style: {
+            borderRadius: '1em'
+          }
+        })
+      } catch (error) {
+        console.error(error)
+        toast(`Failed to updated preferences`, {
+          type: 'error',
+          position: 'bottom-right',
+          autoClose: 5000,
+          style: {
+            borderRadius: '1em'
+          }
+        })
+      }
     }
   }, [preferencesModalAppId, pushClientProxy, scopes])
 
