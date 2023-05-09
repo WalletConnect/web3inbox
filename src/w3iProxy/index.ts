@@ -78,6 +78,7 @@ class Web3InboxProxy {
 
     if (this.pushProvider === 'internal' && this.uiEnabled.push) {
       this.pushClient = await PushWalletClient.init({
+        logger: 'info',
         core
       })
 

@@ -12,11 +12,23 @@ import Toggle from '../../../general/Toggle'
 import './PreferencesModal.scss'
 
 export const PreferencesModal: React.FC = () => {
-  const { activeSubscriptions } = useContext(W3iContext)
+  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
   const { preferencesModalAppId } = useModals()
   const [scopes, setScopes] = useState<PushClientTypes.PushSubscription['scope']>({})
+
+  // Reduces the scopes mapping to only an array of enabled scopes
+  const getEnabledScopes = (scopesMap: PushClientTypes.PushSubscription['scope']) => {
+    const enabledScopeKeys: string[] = []
+    Object.entries(scopesMap).forEach(([key, scope]) => {
+      if (scope.enabled) {
+        enabledScopeKeys.push(key)
+      }
+    })
+
+    return enabledScopeKeys
+  }
 
   useEffect(() => {
     const app = activeSubscriptions.find(sub => sub.topic === preferencesModalAppId)
@@ -29,7 +41,14 @@ export const PreferencesModal: React.FC = () => {
 
   const handleUpdatePreferences = useCallback(() => {
     preferencesModalService.closeModal()
-  }, [])
+    if (preferencesModalAppId) {
+      const topic = preferencesModalAppId
+      pushClientProxy?.update({
+        topic,
+        scope: getEnabledScopes(scopes)
+      })
+    }
+  }, [preferencesModalAppId, pushClientProxy, scopes])
 
   return (
     <Modal onToggleModal={preferencesModalService.toggleModal}>
@@ -46,7 +65,7 @@ export const PreferencesModal: React.FC = () => {
         </div>
         <Divider />
         {Object.entries(scopes).map(([title, scope]) => (
-          <div className="PreferencesModal__content">
+          <div key={title} className="PreferencesModal__content">
             <div className="PreferencesModal__content__setting">
               <div>
                 <h4 style={{ textTransform: 'capitalize' }}>{title} Notifications</h4>
