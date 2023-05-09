@@ -57,6 +57,8 @@ export default class ExternalPushProvider implements W3iPushProvider {
       case 'push_request':
       case 'push_subscription':
       case 'push_message':
+      case 'push_update':
+      case 'push_delete':
         this.emitter.emit(request.method, request.params)
         break
       default:
@@ -82,6 +84,10 @@ export default class ExternalPushProvider implements W3iPushProvider {
       // Signing will be handled wallet-side.
       onSign: async () => Promise.resolve('')
     })
+  }
+
+  public async update(params: { topic: string; scope: string[] }) {
+    return this.postToExternalProvider('update', params)
   }
 
   public async deleteSubscription(params: { topic: string }) {
