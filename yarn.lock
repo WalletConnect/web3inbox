@@ -2304,10 +2304,10 @@
     "@ethersproject/transactions" "^5.7.0"
     isomorphic-unfetch "^3.1.0"
 
-"@walletconnect/chat-client@^0.6.4":
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.6.4.tgz#1e1a6f514a64e69722c74f458a771fbe7e2ec930"
-  integrity sha512-4Aqn7YDTywct1m68Jkb9q0XzvtOisDK0SJyqOAtv8Xf/NXW9PZsotJ82qGvCKs1aCV4uOS4pPTqCPc1sRZK1VQ==
+"@walletconnect/chat-client@^0.6.5":
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.6.5.tgz#d1f507de383e8d77405c9a02eabdcd67477ecc63"
+  integrity sha512-NsjKI8D0BwI86EDBTX9Rx94se+mhw4P2NmWWqdzLPEKOrh1vuvJY9PjEO7y3BdEzfEhLrzBznkMT8bW0XIkV5w==
   dependencies:
     "@noble/ed25519" "^1.7.1"
     "@walletconnect/cacao" "^1.0.2"
