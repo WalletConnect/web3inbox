@@ -24,5 +24,6 @@ export interface PushFacadeEvents {
   push_response: PushClientTypes.EventArguments['push_response']
   push_message: PushClientTypes.EventArguments['push_message']
   push_subscription: PushClientTypes.EventArguments['push_subscription']
+  push_update: PushClientTypes.EventArguments['push_update']
   push_delete: PushClientTypes.EventArguments['push_delete']
 }

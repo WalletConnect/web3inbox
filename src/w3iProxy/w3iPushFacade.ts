@@ -64,6 +64,10 @@ class W3iPushFacade implements W3iPush {
     return this.provider.subscribe(params)
   }
 
+  public async update(params: { topic: string; scope: string[] }) {
+    return this.provider.update(params)
+  }
+
   public async deleteSubscription(params: { topic: string }) {
     return this.provider.deleteSubscription(params)
   }
