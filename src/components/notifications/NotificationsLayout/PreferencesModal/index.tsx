@@ -1,5 +1,8 @@
-import React, { useCallback, useContext } from 'react'
+import type { PushClientTypes } from '@walletconnect/push-client'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
+import W3iContext from '../../../../contexts/W3iContext/context'
 import { useColorModeValue, useModals } from '../../../../utils/hooks'
 import { preferencesModalService } from '../../../../utils/store'
 import Button from '../../../general/Button'
@@ -10,13 +13,64 @@ import Toggle from '../../../general/Toggle'
 import './PreferencesModal.scss'
 
 export const PreferencesModal: React.FC = () => {
+  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
   const { preferencesModalAppId } = useModals()
+  const [scopes, setScopes] = useState<PushClientTypes.PushSubscription['scope']>({})
 
-  const handleUpdatePreferences = useCallback(() => {
-    console.log({ handleUpdatePreferencesAppId: preferencesModalAppId })
-  }, [preferencesModalAppId])
+  // Reduces the scopes mapping to only an array of enabled scopes
+  const getEnabledScopes = (scopesMap: PushClientTypes.PushSubscription['scope']) => {
+    const enabledScopeKeys: string[] = []
+    Object.entries(scopesMap).forEach(([key, scope]) => {
+      if (scope.enabled) {
+        enabledScopeKeys.push(key)
+      }
+    })
+
+    return enabledScopeKeys
+  }
+
+  useEffect(() => {
+    const app = activeSubscriptions.find(sub => sub.topic === preferencesModalAppId)
+    if (!app) {
+      return
+    }
+
+    setScopes(app.scope)
+  }, [preferencesModalAppId, setScopes, activeSubscriptions])
+
+  const handleUpdatePreferences = useCallback(async () => {
+    preferencesModalService.closeModal()
+    if (preferencesModalAppId) {
+      const topic = preferencesModalAppId
+
+      try {
+        await pushClientProxy?.update({
+          topic,
+          scope: getEnabledScopes(scopes)
+        })
+        toast(`Successfully updated preferences`, {
+          type: 'success',
+          position: 'bottom-right',
+          autoClose: 5000,
+          style: {
+            borderRadius: '1em'
+          }
+        })
+      } catch (error) {
+        console.error(error)
+        toast(`Failed to updated preferences`, {
+          type: 'error',
+          position: 'bottom-right',
+          autoClose: 5000,
+          style: {
+            borderRadius: '1em'
+          }
+        })
+      }
+    }
+  }, [preferencesModalAppId, pushClientProxy, scopes])
 
   return (
     <Modal onToggleModal={preferencesModalService.toggleModal}>
@@ -32,49 +86,34 @@ export const PreferencesModal: React.FC = () => {
           </Button>
         </div>
         <Divider />
-        <div className="PreferencesModal__content">
-          <div className="PreferencesModal__content__setting">
-            <div>
-              <h4>Auction Notifications</h4>
-              <div className="PreferencesModal__content__setting__helper-text">
-                Receive notifications when your bids are confirmed, when you have been outbid, and
-                when an auction has ended.
+        {Object.entries(scopes).map(([title, scope]) => (
+          <div key={title} className="PreferencesModal__content">
+            <div className="PreferencesModal__content__setting">
+              <div>
+                <h4 style={{ textTransform: 'capitalize' }}>{title} Notifications</h4>
+                <div className="PreferencesModal__content__setting__helper-text">
+                  {scope.description}
+                </div>
               </div>
+              <Toggle
+                checked={scope.enabled}
+                setChecked={enabled => {
+                  setScopes(oldScopes => {
+                    return {
+                      ...oldScopes,
+                      [title]: {
+                        ...oldScopes[title],
+                        enabled
+                      }
+                    }
+                  })
+                }}
+                name={title}
+                id={title}
+              />
             </div>
-            <Toggle name="auction" id="auction" />
           </div>
-
-          <div className="PreferencesModal__content__setting">
-            <div>
-              <h4>Buy Now Notifications</h4>
-              <div className="PreferencesModal__content__setting__helper-text">
-                Receive notifications when someone buys your NFT
-              </div>
-            </div>
-            <Toggle name="buy-now" id="buy-now" />
-          </div>
-
-          <div className="PreferencesModal__content__setting">
-            <div>
-              <h4>Offer Notifications</h4>
-              <div className="PreferencesModal__content__setting__helper-text">
-                Receive notifications when someone sends you an offer, and when someone accepts your
-                offer.
-              </div>
-            </div>
-            <Toggle name="offer" id="offer" />
-          </div>
-          <div className="PreferencesModal__content__setting">
-            <div>
-              <h4>For Sale Notifications</h4>
-              <div className="PreferencesModal__content__setting__helper-text">
-                Receive notifications when profiles that you follow list a new NFT for auction and
-                set a Buy Now price
-              </div>
-            </div>
-            <Toggle name="for-sale" id="for-sale" />
-          </div>
-        </div>
+        ))}
         <Divider />
         <div className="PreferencesModal__action">
           <Button className="PreferencesModal__action__btn" onClick={handleUpdatePreferences}>
