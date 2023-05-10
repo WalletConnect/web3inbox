@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { subscribeModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Subscribe.scss'
@@ -36,55 +36,45 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
 
   const { pushClientProxy } = useContext(W3iContext)
 
-  const onAllow = () => {
-    setAllowing(true)
-    if (!appDetails) {
-      setTimeout(() => {
-        setAllowing(false)
-      }, 1000)
+  const onAllow = useCallback(
+    (app: PushClientTypes.PushRequestEventArgs) => {
+      setAllowing(true)
+      pushClientProxy
+        ?.approve({ id: app.id })
+        .then(() => {
+          console.log(`Allowed push_request for ${app.metadata.name} with id ${app.id}`)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+        .finally(() => {
+          setTimeout(() => {
+            setAllowing(false)
+          }, 1000)
+        })
+    },
+    [pushClientProxy, setAllowing]
+  )
 
-      return
-    }
-    pushClientProxy
-      ?.approve({ id: appDetails.id })
-      .then(() => {
-        console.log(`Allowed push_request for ${appDetails.metadata.name} with id ${appDetails.id}`)
-      })
-      .catch(err => {
-        console.error(err)
-      })
-      .finally(() => {
-        setTimeout(() => {
-          setAllowing(false)
-        }, 1000)
-      })
-  }
-
-  const onDecline = () => {
-    setDeclining(true)
-    if (!appDetails) {
-      setTimeout(() => {
-        setDeclining(false)
-      }, 1000)
-
-      return
-    }
-    pushClientProxy
-      ?.reject({ id: appDetails.id, reason: 'Rejected by user from modal' })
-      .then(() => {
-        console.log(
-          `Rejected push_request for ${appDetails.metadata.name} with id ${appDetails.id}`
-        )
-      })
-      .catch(err => {
-        console.error(err)
-      })
-      .finally(() => {
-        setTimeout(() => {
-          setDeclining(false)
-        }, 1000)
-      })
-  }
+  const onDecline = useCallback(
+    (app: PushClientTypes.PushRequestEventArgs) => {
+      setDeclining(true)
+      pushClientProxy
+        ?.reject({ id: app.id, reason: 'Rejected by user from modal' })
+        .then(() => {
+          console.log(`Rejected push_request for ${app.metadata.name} with id ${app.id}`)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+        .finally(() => {
+          setTimeout(() => {
+            setDeclining(false)
+          }, 1000)
+        })
+    },
+    [pushClientProxy, setDeclining]
+  )
 
   return (
     <m.div
