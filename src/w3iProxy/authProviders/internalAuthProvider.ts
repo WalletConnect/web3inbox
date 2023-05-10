@@ -16,7 +16,7 @@ export default class InternalAuthProvider {
         return
       }
 
-      this.emitter.emit('auth_set_account', { account })
+      this.emitter.emit('auth_set_account', { account: account.address })
     })
   }
 
