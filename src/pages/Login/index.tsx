@@ -37,8 +37,6 @@ const Login: React.FC = () => {
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
 
-  console.log({ userPubkey, uiEnabled })
-
   useEffect(() => {
     const path = next ? decodeURIComponent(next) : '/'
     // If chat is not enabled, there is no need to register right away.

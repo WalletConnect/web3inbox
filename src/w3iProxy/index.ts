@@ -2,6 +2,7 @@ import ChatClient from '@walletconnect/chat-client'
 import { Core } from '@walletconnect/core'
 import { WalletClient as PushWalletClient } from '@walletconnect/push-client'
 import type { UiEnabled } from '../contexts/W3iContext/context'
+import W3iAuthFacade from './w3iAuthFacade'
 import W3iChatFacade from './w3iChatFacade'
 import W3iPushFacade from './w3iPushFacade'
 
@@ -21,6 +22,8 @@ class Web3InboxProxy {
   private readonly pushFacade: W3iPushFacade
   private readonly pushProvider: W3iPushFacade['providerName']
   private pushClient?: PushWalletClient
+  private readonly authFacade: W3iAuthFacade
+  private readonly authProvider: W3iAuthFacade['providerName']
   private readonly relayUrl?: string
   private readonly projectId: string
   private readonly uiEnabled: UiEnabled
@@ -31,6 +34,7 @@ class Web3InboxProxy {
   public constructor(
     chatProvider: Web3InboxProxy['chatProvider'],
     pushProvider: Web3InboxProxy['pushProvider'],
+    authProvider: Web3InboxProxy['authProvider'],
     projectId: string,
     relayUrl: string,
     uiEnabled: UiEnabled
@@ -41,6 +45,9 @@ class Web3InboxProxy {
     // Bind Push properties
     this.pushProvider = pushProvider
     this.pushFacade = new W3iPushFacade(this.pushProvider)
+    // Bind Auth Properties
+    this.authProvider = authProvider
+    this.authFacade = new W3iAuthFacade(this.authProvider)
     // Bind other configuration properties
     this.relayUrl = relayUrl
     this.projectId = projectId
@@ -54,6 +61,10 @@ class Web3InboxProxy {
 
   public get push(): W3iPushFacade {
     return this.pushFacade
+  }
+
+  public get auth(): W3iAuthFacade {
+    return this.authFacade
   }
 
   public async init() {
@@ -83,6 +94,10 @@ class Web3InboxProxy {
       })
 
       this.pushFacade.initInternalProvider(this.pushClient)
+    }
+
+    if (this.authProvider === 'internal') {
+      this.authFacade.initInternalProvider()
     }
   }
 }

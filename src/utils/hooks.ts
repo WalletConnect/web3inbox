@@ -258,7 +258,6 @@ export const useMobileResponsiveGrid = () => {
       return
     }
 
-    console.log('Setting entries to none')
     Object.entries(displays).forEach(([cssKey]) => {
       ref.current?.style.setProperty(cssKey, 'none')
     })

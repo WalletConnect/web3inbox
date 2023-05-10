@@ -9,6 +9,7 @@ import type { PushClientTypes } from '@walletconnect/push-client'
 import { useLocation } from 'react-router-dom'
 import { useDisconnect } from 'wagmi'
 import { subscribeModalService } from '../../utils/store'
+import type W3iAuthFacade from '../../w3iProxy/w3iAuthFacade'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -22,6 +23,9 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   const query = new URLSearchParams(window.location.search)
   const chatProviderQuery = query.get('chatProvider')
   const pushProviderQuery = query.get('pushProvider')
+  const authProviderQuery = query.get('authProvider')
+
+  const { search } = useLocation()
 
   // CHAT STATE
   const [chatProvider] = useState(
@@ -36,14 +40,28 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     PushClientTypes.PushSubscription[]
   >([])
 
-  const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
-  const { search } = useLocation()
-
   // PUSH STATE
   const [pushClient, setPushClient] = useState<W3iPushClient | null>(null)
   const [pushProvider] = useState(
     pushProviderQuery ? (pushProviderQuery as Web3InboxProxy['pushProvider']) : 'internal'
   )
+
+  // AUTH STATE
+  const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
+  console.log({ userPubkey })
+  const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(null)
+  const [accountQueryParam, setAccountQueryParam] = useState('')
+  const [authProvider] = useState(
+    authProviderQuery ? (authProviderQuery as Web3InboxProxy['authProvider']) : 'internal'
+  )
+
+  useEffect(() => {
+    const account = new URLSearchParams(search).get('account')
+
+    if (account) {
+      setAccountQueryParam(account)
+    }
+  }, [search])
 
   const disconnect = useCallback(() => {
     setUserPubkey(undefined)
@@ -72,42 +90,55 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }
 
   useEffect(() => {
-    const account = new URLSearchParams(search).get('account')
-
-    if (account) {
-      setUserPubkey(account)
-      setRegistered(null)
+    console.log({ settingQueryParamAccount: accountQueryParam, authClient: Boolean(authClient) })
+    if (accountQueryParam && authClient) {
+      authClient.setAccount(accountQueryParam)
     }
-  }, [search, setUserPubkey])
+  }, [accountQueryParam, setUserPubkey, authClient])
 
   useEffect(() => {
-    const sub = chatClient?.observe('chat_account_change', {
+    if (authClient) {
+      setUserPubkey(authClient.getAccount())
+    }
+  }, [authClient, setUserPubkey])
+
+  useEffect(() => {
+    const sub = authClient?.observe('auth_set_account', {
       next: ({ account }) => {
+        console.log('Got set account')
         setUserPubkey(account)
         setRegistered(null)
       }
     })
 
     return () => sub?.unsubscribe()
-  }, [chatClient])
+  }, [authClient, setUserPubkey, setRegistered])
 
   useEffect(() => {
-    if (chatClient && pushClient) {
+    if (chatClient && pushClient && authClient) {
       return
     }
 
-    const w3iProxy = new Web3InboxProxy(chatProvider, pushProvider, projectId, relayUrl, uiEnabled)
+    const w3iProxy = new Web3InboxProxy(
+      chatProvider,
+      pushProvider,
+      authProvider,
+      projectId,
+      relayUrl,
+      uiEnabled
+    )
     w3iProxy
       .init()
       .then(() => setChatClient(w3iProxy.chat))
+      .then(() => setAuthClient(w3iProxy.auth))
+      .then(() => setPushClient(w3iProxy.push))
       .then(() => {
-        const account = w3iProxy.chat.getAccount()
+        const account = authClient?.getAccount()
         if (account) {
           setUserPubkey(account)
         }
       })
-      .then(() => setPushClient(w3iProxy.push))
-  }, [setChatClient, chatClient, setUserPubkey, setPushClient, pushClient])
+  }, [setChatClient, chatClient, setUserPubkey, setPushClient, pushClient, setAuthClient])
 
   const refreshPushState = useCallback(() => {
     if (!pushClient || !userPubkey) {

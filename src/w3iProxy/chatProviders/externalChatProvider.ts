@@ -17,8 +17,7 @@ export default class ExternalChatProvider implements W3iChatProvider {
     'chat_invite_accepted',
     'chat_invite_rejected',
     'chat_left',
-    'chat_ping',
-    'chat_set_account'
+    'chat_ping'
   ]
   public providerName = 'ExternalChatProvider'
 

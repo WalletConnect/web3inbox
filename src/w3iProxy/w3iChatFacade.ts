@@ -44,7 +44,6 @@ class W3iChatFacade implements W3iChat {
   private readonly observables: ObservableMap
   private readonly provider: ExternalChatProvider | InternalChatProvider
   private readonly messageSendTimeout = 1000
-  private account?: string
 
   private unsentMessages: ReplayMessage[] = []
 
@@ -162,20 +161,9 @@ class W3iChatFacade implements W3iChat {
   // Method to be used by external providers. Not internal use.
   public postMessage(messageData: JsonRpcRequest<unknown>) {
     this.emitter.emit(messageData.id.toString(), messageData)
-    switch (messageData.method) {
-      case 'setAccount':
-        this.account = (messageData.params as { account: string }).account
-        this.emitter.emit('chat_account_change', messageData.params)
-        break
-      default:
-        if (this.provider.isListeningToMethodFromPostMessage(messageData.method)) {
-          this.provider.handleMessage(messageData)
-        }
+    if (this.provider.isListeningToMethodFromPostMessage(messageData.method)) {
+      this.provider.handleMessage(messageData)
     }
-  }
-
-  public getAccount() {
-    return this.account
   }
 
   public on(methodName: string, listener: (data: unknown) => void) {
@@ -211,7 +199,7 @@ class W3iChatFacade implements W3iChat {
   }
 
   public async getSentInvites(params?: { account: string }) {
-    const account = params?.account ?? this.account
+    const account = params?.account ?? window.web3inbox.auth.getAccount()
     if (!account) {
       throw new Error(
         "An account param must be provided, or an account must've been set for getSentInvites"
@@ -222,7 +210,7 @@ class W3iChatFacade implements W3iChat {
   }
 
   public async getReceivedInvites(params?: { account: string }) {
-    const account = params?.account ?? this.account
+    const account = params?.account ?? window.web3inbox.auth.getAccount()
     if (!account) {
       throw new Error(
         "An account param must be provided, or an account must've been set for getReceivedInvites"
