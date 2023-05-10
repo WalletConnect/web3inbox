@@ -221,54 +221,58 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
           </div>
         </m.div>
       </AnimatePresence>
-      <div className="Subscribe__content">
-        <Button className="Subscribe__content--decline" onClick={onDecline}>
-          <AnimatePresence mode="wait">
-            {declining ? (
-              <m.div
-                key="SpinnerDecline"
-                initial={{ opacity: 0, y: '0.25em' }}
-                animate={{ opacity: 1, y: '0em' }}
-                exit={{ opacity: 0, y: '0.25em' }}
-              >
-                <Spinner width="1.25em" />
-              </m.div>
-            ) : (
-              <m.p
-                initial={{ opacity: 0, y: '0.25em' }}
-                animate={{ opacity: 1, y: '0em' }}
-                exit={{ opacity: 0, y: '0.25em' }}
-                key="Decline"
-              >
-                Decline
-              </m.p>
-            )}
-          </AnimatePresence>
-        </Button>
-        <Button className="Subscribe__content--allow" onClick={onAllow}>
-          <AnimatePresence mode="wait">
-            {allowing ? (
-              <m.div
-                key="SpinnerAllow"
-                initial={{ opacity: 0, y: '0.25em' }}
-                animate={{ opacity: 1, y: '0em' }}
-                exit={{ opacity: 0, y: '0.25em' }}
-              >
-                <Spinner width="1.25em" />
-              </m.div>
-            ) : (
-              <m.p
-                initial={{ opacity: 0, y: '0.25em' }}
-                animate={{ opacity: 1, y: '0em' }}
-                exit={{ opacity: 0, y: '0.25em' }}
-                key="Allow"
-              >
-                Allow
-              </m.p>
-            )}
-          </AnimatePresence>
-        </Button>
-      </div>
+      {appDetails ? (
+        <div className="Subscribe__content">
+          <Button className="Subscribe__content--decline" onClick={() => onDecline(appDetails)}>
+            <AnimatePresence mode="wait">
+              {declining ? (
+                <m.div
+                  key="SpinnerDecline"
+                  initial={{ opacity: 0, y: '0.25em' }}
+                  animate={{ opacity: 1, y: '0em' }}
+                  exit={{ opacity: 0, y: '0.25em' }}
+                >
+                  <Spinner width="1.25em" />
+                </m.div>
+              ) : (
+                <m.p
+                  initial={{ opacity: 0, y: '0.25em' }}
+                  animate={{ opacity: 1, y: '0em' }}
+                  exit={{ opacity: 0, y: '0.25em' }}
+                  key="Decline"
+                >
+                  Decline
+                </m.p>
+              )}
+            </AnimatePresence>
+          </Button>
+          <Button className="Subscribe__content--allow" onClick={() => onAllow(appDetails)}>
+            <AnimatePresence mode="wait">
+              {allowing ? (
+                <m.div
+                  key="SpinnerAllow"
+                  initial={{ opacity: 0, y: '0.25em' }}
+                  animate={{ opacity: 1, y: '0em' }}
+                  exit={{ opacity: 0, y: '0.25em' }}
+                >
+                  <Spinner width="1.25em" />
+                </m.div>
+              ) : (
+                <m.p
+                  initial={{ opacity: 0, y: '0.25em' }}
+                  animate={{ opacity: 1, y: '0em' }}
+                  exit={{ opacity: 0, y: '0.25em' }}
+                  key="Allow"
+                >
+                  Allow
+                </m.p>
+              )}
+            </AnimatePresence>
+          </Button>
+        </div>
+      ) : (
+        <div className="Subscribe__shimmer"></div>
+      )}
     </m.div>
   )
 }
