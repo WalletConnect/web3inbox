@@ -11,17 +11,21 @@ import './UnsubscribeModal.scss'
 export const UnsubscribeModal: React.FC = () => {
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
-  const { activeSubscriptions } = useContext(W3iContext)
+  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const { unsubscribeModalAppId } = useModals()
 
   const app = useMemo(
-    () => activeSubscriptions.find(mockApp => mockApp.topic === unsubscribeModalAppId),
+    () => activeSubscriptions.find(activeApp => activeApp.topic === unsubscribeModalAppId),
     [unsubscribeModalAppId]
   )
 
   const handleUnsubscribe = useCallback(() => {
-    unsubscribeModalService.closeModal()
-  }, [])
+    if (pushClientProxy && unsubscribeModalAppId) {
+      pushClientProxy
+        .deleteSubscription({ topic: unsubscribeModalAppId })
+        .then(() => unsubscribeModalService.closeModal())
+    }
+  }, [pushClientProxy, unsubscribeModalAppId])
 
   if (!app) {
     return null

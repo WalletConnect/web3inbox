@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react'
 import W3iContext from '../../../../contexts/W3iContext/context'
-import { preferencesModalService } from '../../../../utils/store'
+import { preferencesModalService, unsubscribeModalService } from '../../../../utils/store'
 import Dropdown from '../../../general/Dropdown/Dropdown'
 import NotificationMuteIcon from '../../../general/Icon/NotificationMuteIcon'
 import SettingIcon from '../../../general/Icon/SettingIcon'
@@ -23,12 +23,11 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
 }) => {
   const { pushClientProxy } = useContext(W3iContext)
 
-  // TODO: Trigger notification modal
   const handleUnsubscribe = useCallback(() => {
-    pushClientProxy?.deleteSubscription({ topic: notificationId }).then(closeDropdown)
-  }, [notificationId, closeDropdown, pushClientProxy])
+    closeDropdown()
+    unsubscribeModalService.toggleModal(notificationId)
+  }, [notificationId, closeDropdown, unsubscribeModalService, pushClientProxy])
 
-  // TODO: Trigger notification preferences modal
   const handleOpenNotificationPreferencesModal = useCallback(() => {
     preferencesModalService.toggleModal(notificationId)
     closeDropdown()
