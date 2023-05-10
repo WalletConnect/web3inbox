@@ -1,6 +1,6 @@
 import type { PushClientTypes } from '@walletconnect/push-client'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { noop } from 'rxjs'
 import W3iContext from '../../../contexts/W3iContext/context'
 import AppNotificationItem from './AppNotificationItem'
@@ -92,7 +92,7 @@ const AppNotifications = () => {
       </div>
     </AppNotificationDragContext.Provider>
   ) : (
-    <div>404</div>
+    <Navigate to="/notifications" />
   )
 }
 
