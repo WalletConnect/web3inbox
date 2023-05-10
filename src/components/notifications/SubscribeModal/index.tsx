@@ -48,9 +48,8 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
           console.error(err)
         })
         .finally(() => {
-          setTimeout(() => {
-            setAllowing(false)
-          }, 1000)
+          setAllowing(false)
+          modalService.closeModal()
         })
     },
     [pushClientProxy, setAllowing]
@@ -68,9 +67,8 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
           console.error(err)
         })
         .finally(() => {
-          setTimeout(() => {
-            setDeclining(false)
-          }, 1000)
+          setDeclining(false)
+          modalService.closeModal()
         })
     },
     [pushClientProxy, setDeclining]
