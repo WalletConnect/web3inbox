@@ -213,7 +213,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
     const pushRequestSub = pushClient.observe('push_request', {
       next: pushRequest => {
-        subscribeModalService.toggleModal(pushRequest.params)
+        subscribeModalService.toggleModal(pushRequest)
         refreshPushState()
       }
     })
