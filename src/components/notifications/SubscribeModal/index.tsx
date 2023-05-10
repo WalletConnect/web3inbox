@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { subscribeModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Subscribe.scss'
@@ -36,55 +36,43 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
 
   const { pushClientProxy } = useContext(W3iContext)
 
-  const onAllow = () => {
-    setAllowing(true)
-    if (!appDetails) {
-      setTimeout(() => {
-        setAllowing(false)
-      }, 1000)
-
-      return
-    }
-    pushClientProxy
-      ?.approve({ id: appDetails.id })
-      .then(() => {
-        console.log(`Allowed push_request for ${appDetails.metadata.name} with id ${appDetails.id}`)
-      })
-      .catch(err => {
-        console.error(err)
-      })
-      .finally(() => {
-        setTimeout(() => {
+  const onAllow = useCallback(
+    (app: PushClientTypes.PushRequestEventArgs) => {
+      setAllowing(true)
+      pushClientProxy
+        ?.approve({ id: app.id })
+        .then(() => {
+          console.log(`Allowed push_request for ${app.metadata.name} with id ${app.id}`)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+        .finally(() => {
           setAllowing(false)
-        }, 1000)
-      })
-  }
+          modalService.closeModal()
+        })
+    },
+    [pushClientProxy, setAllowing]
+  )
 
-  const onDecline = () => {
-    setDeclining(true)
-    if (!appDetails) {
-      setTimeout(() => {
-        setDeclining(false)
-      }, 1000)
-
-      return
-    }
-    pushClientProxy
-      ?.reject({ id: appDetails.id, reason: 'Rejected by user from modal' })
-      .then(() => {
-        console.log(
-          `Rejected push_request for ${appDetails.metadata.name} with id ${appDetails.id}`
-        )
-      })
-      .catch(err => {
-        console.error(err)
-      })
-      .finally(() => {
-        setTimeout(() => {
+  const onDecline = useCallback(
+    (app: PushClientTypes.PushRequestEventArgs) => {
+      setDeclining(true)
+      pushClientProxy
+        ?.reject({ id: app.id, reason: 'Rejected by user from modal' })
+        .then(() => {
+          console.log(`Rejected push_request for ${app.metadata.name} with id ${app.id}`)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+        .finally(() => {
           setDeclining(false)
-        }, 1000)
-      })
-  }
+          modalService.closeModal()
+        })
+    },
+    [pushClientProxy, setDeclining]
+  )
 
   return (
     <m.div
@@ -231,54 +219,58 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
           </div>
         </m.div>
       </AnimatePresence>
-      <div className="Subscribe__content">
-        <Button className="Subscribe__content--decline" onClick={onDecline}>
-          <AnimatePresence mode="wait">
-            {declining ? (
-              <m.div
-                key="SpinnerDecline"
-                initial={{ opacity: 0, y: '0.25em' }}
-                animate={{ opacity: 1, y: '0em' }}
-                exit={{ opacity: 0, y: '0.25em' }}
-              >
-                <Spinner width="1.25em" />
-              </m.div>
-            ) : (
-              <m.p
-                initial={{ opacity: 0, y: '0.25em' }}
-                animate={{ opacity: 1, y: '0em' }}
-                exit={{ opacity: 0, y: '0.25em' }}
-                key="Decline"
-              >
-                Decline
-              </m.p>
-            )}
-          </AnimatePresence>
-        </Button>
-        <Button className="Subscribe__content--allow" onClick={onAllow}>
-          <AnimatePresence mode="wait">
-            {allowing ? (
-              <m.div
-                key="SpinnerAllow"
-                initial={{ opacity: 0, y: '0.25em' }}
-                animate={{ opacity: 1, y: '0em' }}
-                exit={{ opacity: 0, y: '0.25em' }}
-              >
-                <Spinner width="1.25em" />
-              </m.div>
-            ) : (
-              <m.p
-                initial={{ opacity: 0, y: '0.25em' }}
-                animate={{ opacity: 1, y: '0em' }}
-                exit={{ opacity: 0, y: '0.25em' }}
-                key="Allow"
-              >
-                Allow
-              </m.p>
-            )}
-          </AnimatePresence>
-        </Button>
-      </div>
+      {appDetails ? (
+        <div className="Subscribe__content">
+          <Button className="Subscribe__content--decline" onClick={() => onDecline(appDetails)}>
+            <AnimatePresence mode="wait">
+              {declining ? (
+                <m.div
+                  key="SpinnerDecline"
+                  initial={{ opacity: 0, y: '0.25em' }}
+                  animate={{ opacity: 1, y: '0em' }}
+                  exit={{ opacity: 0, y: '0.25em' }}
+                >
+                  <Spinner width="1.25em" />
+                </m.div>
+              ) : (
+                <m.p
+                  initial={{ opacity: 0, y: '0.25em' }}
+                  animate={{ opacity: 1, y: '0em' }}
+                  exit={{ opacity: 0, y: '0.25em' }}
+                  key="Decline"
+                >
+                  Decline
+                </m.p>
+              )}
+            </AnimatePresence>
+          </Button>
+          <Button className="Subscribe__content--allow" onClick={() => onAllow(appDetails)}>
+            <AnimatePresence mode="wait">
+              {allowing ? (
+                <m.div
+                  key="SpinnerAllow"
+                  initial={{ opacity: 0, y: '0.25em' }}
+                  animate={{ opacity: 1, y: '0em' }}
+                  exit={{ opacity: 0, y: '0.25em' }}
+                >
+                  <Spinner width="1.25em" />
+                </m.div>
+              ) : (
+                <m.p
+                  initial={{ opacity: 0, y: '0.25em' }}
+                  animate={{ opacity: 1, y: '0em' }}
+                  exit={{ opacity: 0, y: '0.25em' }}
+                  key="Allow"
+                >
+                  Allow
+                </m.p>
+              )}
+            </AnimatePresence>
+          </Button>
+        </div>
+      ) : (
+        <div className="Subscribe__shimmer"></div>
+      )}
     </m.div>
   )
 }

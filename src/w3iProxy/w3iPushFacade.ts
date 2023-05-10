@@ -69,7 +69,9 @@ class W3iPushFacade implements W3iPush {
   }
 
   public async deleteSubscription(params: { topic: string }) {
-    return this.provider.deleteSubscription(params)
+    return this.provider.deleteSubscription(params).then(() => {
+      this.emitter.emit('push_delete', {})
+    })
   }
 
   public async getActiveSubscriptions() {

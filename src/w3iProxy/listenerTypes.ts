@@ -20,7 +20,7 @@ export interface ChatFacadeEvents {
 }
 
 export interface PushFacadeEvents {
-  push_request: PushClientTypes.EventArguments['push_request']
+  push_request: PushClientTypes.EventArguments['push_request']['params']
   push_response: PushClientTypes.EventArguments['push_response']
   push_message: PushClientTypes.EventArguments['push_message']
   push_subscription: PushClientTypes.EventArguments['push_subscription']
