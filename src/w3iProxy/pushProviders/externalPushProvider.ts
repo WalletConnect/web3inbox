@@ -10,7 +10,13 @@ import { ReactNativeCommunicator } from '../externalCommunicators/reactNativeCom
 
 export default class ExternalPushProvider implements W3iPushProvider {
   protected readonly emitter: EventEmitter
-  private readonly methodsListenedTo = ['push_request', 'push_message']
+  private readonly methodsListenedTo = [
+    'push_request',
+    'push_subscription',
+    'push_message',
+    'push_update',
+    'push_delete'
+  ]
   public providerName = 'ExternalPushProvider'
   protected readonly communicator: ExternalCommunicator
 
