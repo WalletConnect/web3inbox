@@ -79,6 +79,7 @@ class Web3InboxProxy {
      * currently manages account
      */
     if (this.chatProvider === 'internal') {
+      console.log('Init chat')
       this.chatClient = await ChatClient.init({
         projectId: this.projectId,
         core,
@@ -88,6 +89,7 @@ class Web3InboxProxy {
     }
 
     if (this.pushProvider === 'internal' && this.uiEnabled.push) {
+      console.log('Init push')
       this.pushClient = await PushWalletClient.init({
         logger: 'info',
         core

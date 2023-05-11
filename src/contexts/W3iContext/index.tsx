@@ -115,7 +115,12 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [authClient, setUserPubkey, setRegistered])
 
   useEffect(() => {
-    if (chatClient && pushClient && authClient) {
+    if (chatClient || pushClient || authClient) {
+      return
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (window.web3inbox) {
       return
     }
 
@@ -133,7 +138,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
       .then(() => setAuthClient(w3iProxy.auth))
       .then(() => setPushClient(w3iProxy.push))
       .then(() => {
-        const account = authClient?.getAccount()
+        const account = w3iProxy.auth.getAccount()
         if (account) {
           setUserPubkey(account)
         }

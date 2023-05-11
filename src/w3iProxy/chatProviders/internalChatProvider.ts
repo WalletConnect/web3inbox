@@ -35,16 +35,6 @@ export default class InternalChatProvider implements W3iChatProvider {
       'web3inbox',
       ({ topic }: { topic: string }) => topic
     )
-    interval(2000).subscribe(() => {
-      if (!this.chatClient) {
-        return
-      }
-
-      if (!this.chatClient.core.relayer.connected) {
-        // Ping empty topic to trigger reconnection mechanism
-        this.chatClient.ping({ topic: '' })
-      }
-    })
   }
 
   /*
