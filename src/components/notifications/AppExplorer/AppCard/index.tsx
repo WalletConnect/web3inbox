@@ -34,17 +34,28 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       if (!userPubkey) {
         return
       }
-      const hasSubscribed = await pushClientProxy?.subscribe({
-        account: `eip155:1:${userPubkey}`,
-        metadata: {
-          name,
-          description,
-          icons: [logo],
-          url
-        }
-      })
 
-      if (!hasSubscribed) {
+      try {
+        pushClientProxy?.once('push_subscription', () => {
+          toast(`Successfully subscribed to ${name}`, {
+            type: 'success',
+            position: 'bottom-right',
+            autoClose: 5000,
+            style: {
+              borderRadius: '1em'
+            }
+          })
+        })
+        await pushClientProxy?.subscribe({
+          account: `eip155:1:${userPubkey}`,
+          metadata: {
+            name,
+            description,
+            icons: [logo],
+            url
+          }
+        })
+      } catch (error) {
         toast(`Failed to subscribe to ${name}`, {
           type: 'error',
           position: 'bottom-right',
@@ -53,18 +64,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
             borderRadius: '1em'
           }
         })
-
-        return
       }
-
-      toast(`Successfully subscribed to ${name}`, {
-        type: 'success',
-        position: 'bottom-right',
-        autoClose: 5000,
-        style: {
-          borderRadius: '1em'
-        }
-      })
     },
     [userPubkey, name, description, logo, bgColor, url]
   )

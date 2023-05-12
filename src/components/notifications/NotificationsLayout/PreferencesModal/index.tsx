@@ -41,22 +41,24 @@ export const PreferencesModal: React.FC = () => {
   }, [preferencesModalAppId, setScopes, activeSubscriptions])
 
   const handleUpdatePreferences = useCallback(async () => {
-    preferencesModalService.closeModal()
     if (preferencesModalAppId) {
       const topic = preferencesModalAppId
 
       try {
+        pushClientProxy?.once('push_update', () => {
+          preferencesModalService.closeModal()
+          toast(`Successfully updated preferences`, {
+            type: 'success',
+            position: 'bottom-right',
+            autoClose: 5000,
+            style: {
+              borderRadius: '1em'
+            }
+          })
+        })
         await pushClientProxy?.update({
           topic,
           scope: getEnabledScopes(scopes)
-        })
-        toast(`Successfully updated preferences`, {
-          type: 'success',
-          position: 'bottom-right',
-          autoClose: 5000,
-          style: {
-            borderRadius: '1em'
-          }
         })
       } catch (error) {
         console.error(error)
