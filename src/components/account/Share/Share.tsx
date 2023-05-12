@@ -6,11 +6,11 @@ import './Share.scss'
 import CopyIcon from '../../general/Icon/CopyIcon'
 import { W3mQrCode } from '@web3modal/react'
 import SettingsContext from '../../../contexts/SettingsContext/context'
-import { toast } from 'react-toastify'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
 import { useEnsAvatar, useEnsName } from 'wagmi'
 import { AnimatePresence, m } from 'framer-motion'
+import { showErrorMessageToast, showSuccessMessageToast } from '../../../utils/toasts'
 
 interface ModalContentProps {
   modalService: typeof shareModalService
@@ -40,26 +40,10 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
     window.navigator.clipboard
       .writeText(address ?? '')
       .then(() => {
-        toast('Copied address to clipboard', {
-          type: 'success',
-          position: 'bottom-right',
-          autoClose: 5000,
-          theme: toastTheme,
-          style: {
-            borderRadius: '1em'
-          }
-        })
+        showSuccessMessageToast('Copied address to clipboard')
       })
       .catch(() => {
-        toast('Failed to copy address', {
-          type: 'error',
-          position: 'bottom-right',
-          autoClose: 5000,
-          theme: toastTheme,
-          style: {
-            borderRadius: '1em'
-          }
-        })
+        showErrorMessageToast('Failed to copy address to clipboard')
       })
   }
 

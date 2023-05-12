@@ -28,7 +28,6 @@ const App = () => {
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
     isSignatureModalOpen,
-    isContactModalOpen,
     isSubscribeModalOpen
   } = useModals()
 

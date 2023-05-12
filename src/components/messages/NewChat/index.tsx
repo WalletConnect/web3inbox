@@ -1,6 +1,5 @@
 import { fetchEnsAddress } from '@wagmi/core'
 import React, { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { toast } from 'react-toastify'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { isValidAddressOrEnsDomain, isValidEnsDomain } from '../../../utils/address'
@@ -16,6 +15,7 @@ import './NewChat.scss'
 import { truncate } from '../../../utils/string'
 import QrIcon from '../../../assets/QrCodeScan.svg'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { showErrorMessageToast } from '../../../utils/toasts'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)
@@ -106,15 +106,7 @@ const NewChat: React.FC = () => {
         navigate(`/messages/chat/${resolvedAddress}?topic=invite:pending:${resolvedAddress}`)
       } catch (error) {
         if (error instanceof Error) {
-          toast(error.message, {
-            type: 'error',
-            position: 'bottom-right',
-            autoClose: 5000,
-            theme: toastTheme,
-            style: {
-              borderRadius: '1em'
-            }
-          })
+          showErrorMessageToast(error.message)
         }
       } finally {
         setQuery('')
