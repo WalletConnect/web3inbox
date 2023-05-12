@@ -166,10 +166,6 @@ class W3iChatFacade implements W3iChat {
     }
   }
 
-  public on(methodName: string, listener: (data: unknown) => void) {
-    this.emitter.on(methodName, listener)
-  }
-
   public async leave(params: { topic: string }) {
     return this.provider.leave(params)
   }
@@ -281,6 +277,24 @@ class W3iChatFacade implements W3iChat {
     const subscription = eventObservable.subscribe(observer)
 
     return subscription
+  }
+
+  // ------------------ Event Forwarding ------------------
+
+  public on(eventName: string, listener: (data: unknown) => void) {
+    this.emitter.on(eventName, listener)
+  }
+
+  public once(eventName: string, listener: (data: unknown) => void) {
+    this.emitter.once(eventName, listener)
+  }
+
+  public removeListener(eventName: string, listener: (data: unknown) => void) {
+    this.emitter.removeListener(eventName, listener)
+  }
+
+  public removeAllListeners(eventName: string) {
+    this.emitter.removeAllListeners(eventName)
   }
 }
 

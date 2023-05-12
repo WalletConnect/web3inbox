@@ -48,9 +48,19 @@ class W3iPushFacade implements W3iPush {
     }
   }
 
-  public on(methodName: string, listener: (data: unknown) => void) {
-    this.emitter.on(methodName, listener)
+  public observe<K extends keyof PushFacadeEvents>(eventName: K, observer: PushEventObserver<K>) {
+    const observableExists = this.observables.has(eventName)
+    if (!observableExists) {
+      this.observables.set(eventName, fromEvent(this.emitter, eventName) as PushEventObservable<K>)
+    }
+    const eventObservable = this.observables.get(eventName) as PushEventObservable<K>
+
+    const subscription = eventObservable.subscribe(observer)
+
+    return subscription
   }
+
+  // ------------------ Push Client Forwarding ------------------
 
   public async approve(params: { id: number }) {
     return this.provider.approve(params)
@@ -86,16 +96,22 @@ class W3iPushFacade implements W3iPush {
     return this.provider.deletePushMessage(params)
   }
 
-  public observe<K extends keyof PushFacadeEvents>(eventName: K, observer: PushEventObserver<K>) {
-    const observableExists = this.observables.has(eventName)
-    if (!observableExists) {
-      this.observables.set(eventName, fromEvent(this.emitter, eventName) as PushEventObservable<K>)
-    }
-    const eventObservable = this.observables.get(eventName) as PushEventObservable<K>
+  // ------------------ Event Forwarding ------------------
 
-    const subscription = eventObservable.subscribe(observer)
+  public on(eventName: string, listener: (data: unknown) => void) {
+    this.emitter.on(eventName, listener)
+  }
 
-    return subscription
+  public once(eventName: string, listener: (data: unknown) => void) {
+    this.emitter.once(eventName, listener)
+  }
+
+  public removeListener(eventName: string, listener: (data: unknown) => void) {
+    this.emitter.removeListener(eventName, listener)
+  }
+
+  public removeAllListeners(eventName: string) {
+    this.emitter.removeAllListeners(eventName)
   }
 }
 
