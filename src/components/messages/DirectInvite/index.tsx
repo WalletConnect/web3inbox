@@ -6,6 +6,7 @@ import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
 import Spinner from '../../general/Spinner'
 import './DirectInvite.scss'
+import { showErrorMessageToast } from '../../../utils/toasts'
 
 const DirectInvite: React.FC = () => {
   const { account } = useParams<{ account: string }>()
@@ -30,9 +31,7 @@ const DirectInvite: React.FC = () => {
         })
         nav('/messages')
       } catch {
-        toast(`Failed to invite ${account}`, {
-          type: 'error'
-        })
+        showErrorMessageToast(`Failed to invite ${account}`)
         nav('/messages')
       }
     }

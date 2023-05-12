@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useMemo } from 'react'
-import { toast } from 'react-toastify'
 
 import externalLinkIcon from '../../../../assets/ExternalLink.svg'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import './AppCard.scss'
 import Button from '../../../general/Button'
 import W3iContext from '../../../../contexts/W3iContext/context'
+import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
 
 interface AppCardProps {
   name: string
@@ -37,14 +37,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
 
       try {
         pushClientProxy?.once('push_subscription', () => {
-          toast(`Successfully subscribed to ${name}`, {
-            type: 'success',
-            position: 'bottom-right',
-            autoClose: 5000,
-            style: {
-              borderRadius: '1em'
-            }
-          })
+          showSuccessMessageToast(`Subscribed to ${name}`)
         })
         await pushClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,
@@ -56,14 +49,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           }
         })
       } catch (error) {
-        toast(`Failed to subscribe to ${name}`, {
-          type: 'error',
-          position: 'bottom-right',
-          autoClose: 5000,
-          style: {
-            borderRadius: '1em'
-          }
-        })
+        showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
     [userPubkey, name, description, logo, bgColor, url]

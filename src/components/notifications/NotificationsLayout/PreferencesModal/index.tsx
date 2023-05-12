@@ -1,6 +1,5 @@
 import type { PushClientTypes } from '@walletconnect/push-client'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import W3iContext from '../../../../contexts/W3iContext/context'
 import { useColorModeValue, useModals } from '../../../../utils/hooks'
@@ -11,6 +10,7 @@ import CrossIcon from '../../../general/Icon/CrossIcon'
 import { Modal } from '../../../general/Modal/Modal'
 import Toggle from '../../../general/Toggle'
 import './PreferencesModal.scss'
+import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
 
 export const PreferencesModal: React.FC = () => {
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
@@ -47,14 +47,7 @@ export const PreferencesModal: React.FC = () => {
       try {
         pushClientProxy?.once('push_update', () => {
           preferencesModalService.closeModal()
-          toast(`Successfully updated preferences`, {
-            type: 'success',
-            position: 'bottom-right',
-            autoClose: 5000,
-            style: {
-              borderRadius: '1em'
-            }
-          })
+          showSuccessMessageToast('Preferences updated successfully')
         })
         await pushClientProxy?.update({
           topic,
@@ -62,14 +55,7 @@ export const PreferencesModal: React.FC = () => {
         })
       } catch (error) {
         console.error(error)
-        toast(`Failed to updated preferences`, {
-          type: 'error',
-          position: 'bottom-right',
-          autoClose: 5000,
-          style: {
-            borderRadius: '1em'
-          }
-        })
+        showErrorMessageToast('Failed to update preferences')
       }
     }
   }, [preferencesModalAppId, pushClientProxy, scopes])

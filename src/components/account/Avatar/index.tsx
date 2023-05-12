@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useBalance, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
-import { toast } from 'react-toastify'
 
 import DisconnectIcon from '../../general/Icon/DisconnectIcon'
 import ETH from '../../../assets/ETH.svg'
@@ -17,6 +16,7 @@ import SettingsContext from '../../../contexts/SettingsContext/context'
 import PersonIcon from '../../general/Icon/PersonIcon'
 import ShareIcon from '../../general/Icon/ShareIcon'
 import CopyIcon from '../../general/Icon/CopyIcon'
+import { showErrorMessageToast, showSuccessMessageToast } from '../../../utils/toasts'
 
 interface AvatarProps {
   address?: string
@@ -120,26 +120,10 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
                     window.navigator.clipboard
                       .writeText(address ? `${address}` : '')
                       .then(() => {
-                        toast('Copied address to clipboard', {
-                          type: 'success',
-                          position: 'bottom-right',
-                          autoClose: 5000,
-                          theme: toastTheme,
-                          style: {
-                            borderRadius: '1em'
-                          }
-                        })
+                        showSuccessMessageToast('Copied address to clipboard')
                       })
                       .catch(() => {
-                        toast('Failed to copy address', {
-                          type: 'error',
-                          position: 'bottom-right',
-                          autoClose: 5000,
-                          theme: toastTheme,
-                          style: {
-                            borderRadius: '1em'
-                          }
-                        })
+                        showErrorMessageToast('Failed to copy address to clipboard')
                       })
                   }}
                 >
