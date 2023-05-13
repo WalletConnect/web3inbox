@@ -24,7 +24,7 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
   const { userPubkey: address } = useContext(W3iContext)
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
-  const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
+  const { data: ensAvatar } = useEnsAvatar({ name: addressOrEnsDomain })
 
   const { mode } = useContext(SettingsContext)
   const uri = `${window.location.origin}/messages/invite/eip155:1:${address ?? ''}`

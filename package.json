@@ -31,7 +31,8 @@
     "react-select": "^5.7.0",
     "react-toastify": "^9.1.1",
     "rxjs": "^7.6.0",
-    "wagmi": "^0.12.6"
+    "viem": "0.3.19",
+    "wagmi": "1.0.1"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.7",

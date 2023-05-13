@@ -32,7 +32,7 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
   const navigate = useNavigate()
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
-  const { data: ensAvatar } = useEnsAvatar({ address: addressOrEnsDomain })
+  const { data: ensAvatar } = useEnsAvatar({ name: addressOrEnsDomain })
   const { data: balance } = useBalance({
     address: addressOrEnsDomain ? addressOrEnsDomain : undefined
   })

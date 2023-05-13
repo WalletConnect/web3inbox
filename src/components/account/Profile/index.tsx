@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { profileModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Profile.scss'
-import { useEnsName, useProvider } from 'wagmi'
+import { useEnsName, usePublicClient } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { generateAvatarColors } from '../../../utils/ui'
 import Avatar from '../../account/Avatar'
@@ -47,7 +47,7 @@ declare const localStorage: Storage | undefined
 const ProfileModalContent: React.FC<{
   handleShareClick: () => void
 }> = ({ handleShareClick }) => {
-  const provider = useProvider()
+  const provider = usePublicClient()
   const { userPubkey: address } = useContext(W3iContext)
   const locallyStoredData = localStorage?.getItem('ens-records')
   const [resolvedRecords, setResolvedRecords] = useState<ENSRecords | undefined>(
@@ -58,7 +58,7 @@ const ProfileModalContent: React.FC<{
 
   useEffect(() => {
     const getData = async () => {
-      const data = (await getENS({ provider })(ensName ?? '')) as ModifiedResolvedENS
+      const data = (await getENS({ provider: provider as any })(ensName ?? '')) as ModifiedResolvedENS
       setResolvedRecords(data.records)
       localStorage?.setItem('ens-records', JSON.stringify(data.records))
     }
