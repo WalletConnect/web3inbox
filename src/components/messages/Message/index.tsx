@@ -1,16 +1,18 @@
 import React from 'react'
 import './Message.scss'
 import { m, LazyMotion, domAnimation } from 'framer-motion'
+import MessageStatus from './MessageStatus'
 
 interface MessageProps {
   text: string
   from: 'peer' | 'sender'
+  status?: 'failed' | 'pending' | 'sent'
 }
 
-const Message: React.FC<MessageProps> = ({ text, from }) => {
+const Message: React.FC<MessageProps> = ({ text, from, status }) => {
   return (
     <LazyMotion features={domAnimation}>
-      <m.div className={`Message Message__from-${from}`}>
+      <m.div className={`Message Message__from-${from} ${status ? `Message__${status}` : ''}`}>
         <m.div
           initial={{
             opacity: 0,

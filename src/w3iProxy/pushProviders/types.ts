@@ -1,5 +1,5 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { WalletClient as PushWalletClient } from '@walletconnect/push-client'
+import type { WalletClient as PushWalletClient, PushClientTypes } from '@walletconnect/push-client'
 import type { NextObserver, Observable } from 'rxjs'
 import type { PushFacadeEvents } from '../listenerTypes'
 
@@ -12,7 +12,9 @@ type NonMethodPushClientKeys =
   | 'engine'
   | 'events'
   | 'history'
+  | 'identityKeys'
   | 'init'
+  | 'keyserverUrl'
   | 'logger'
   | 'messages'
   | 'name'

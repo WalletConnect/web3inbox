@@ -1,0 +1,136 @@
+.Profile {
+  &__Container {
+    padding: 1em;
+    margin-top: 2em;
+    &__spinner {
+      padding: 0.25em 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.5rem;
+      span {
+        color: var(--fg-color-4);
+        display: inline-block;
+        padding: 0.5em 0;
+        font-size: 0.875em;
+      }
+      img {
+        opacity: 0.66;
+      }
+    }
+    &__name {
+      font-weight: 700;
+      font-size: 1.1em;
+    }
+    &__bio {
+      margin-top: 0.5em;
+      font-size: 1em;
+      color: var(--fg-color-4);
+      a {
+        color: var(--accent-color-1);
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      &--default {
+        margin-top: 0.5em;
+        margin-bottom: 0.25em;
+      }
+    }
+    &__socials {
+      margin-top: 0.75em;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5em;
+      &--item {
+        text-decoration: none;
+        color: var(--fg-color-2);
+        border: 1px solid var(--border-color-2);
+        border-radius: 1000rem;
+        padding: 0.25em 0.625em;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        font-size: 1em;
+        svg {
+          width: 1em;
+          height: 1em;
+        }
+        &:hover {
+          background-color: var(--bg-color-2);
+          color: var(--fg-color-1);
+        }
+      }
+    }
+  }
+  &__icon {
+    position: absolute;
+    bottom: -2em;
+    left: 0;
+    margin-left: 1em;
+    box-shadow: 0px 4px 4px -2px #00000014, 0px 2px 4px -2px #0000001f;
+  }
+  &__TitleBar {
+    position: relative;
+    height: 100px;
+    padding: 0.75em;
+    &__buttons {
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      padding-top: 1em;
+      padding-right: 1em;
+      button {
+        cursor: pointer;
+        background-color: var(--bg-color-2);
+        height: 2em;
+        width: 2em;
+        border-radius: 1000rem;
+        border: 1px solid var(--border-color-2);
+        display: grid;
+        place-items: center;
+        color: var(--fg-color-1);
+        box-shadow: 0px 2px 4px -2px rgba(0, 0, 0, 0.12), 0px 4px 4px -2px rgba(0, 0, 0, 0.08);
+        svg {
+          width: 11px !important;
+        }
+      }
+    }
+    &__background {
+      --color-av-1: #fff;
+      --color-av-2: #fff;
+      --color-av-3: #fff;
+      --color-av-4: #fff;
+      --color-av-5: #fff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: var(--color-av-1);
+      background-image: radial-gradient(at 66% 77%, var(--color-av-2) 0px, transparent 50%),
+        radial-gradient(at 29% 97%, var(--color-av-3) 0px, transparent 50%),
+        radial-gradient(at 99% 86%, var(--color-av-4) 0px, transparent 50%),
+        radial-gradient(at 29% 88%, var(--color-av-5) 0px, transparent 50%);
+      filter: blur(30px) brightness(var(--brightness-multiplier));
+      transform: scale(1.2);
+      z-index: -1;
+      &__container {
+        z-index: -1;
+        position: absolute;
+        border-radius: 30px 30px 1.25rem 1.25rem;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+      }
+    }
+  }
+}

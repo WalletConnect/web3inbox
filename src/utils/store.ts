@@ -1,3 +1,4 @@
+import type { PushClientTypes } from '@walletconnect/push-client'
 import { BehaviorSubject } from 'rxjs'
 
 interface IPreferencesModalState {
@@ -13,6 +14,11 @@ interface IAppSearchState {
   isOpen: boolean
 }
 
+interface ISubscribeModalState {
+  metadata?: PushClientTypes.PushRequestEventArgs
+  isOpen: boolean
+}
+
 const chatSearchSubject = new BehaviorSubject(false)
 const pushSearchSubject = new BehaviorSubject(false)
 const appSearchSubject = new BehaviorSubject<IAppSearchState>({
@@ -24,6 +30,10 @@ const profileModalSubject = new BehaviorSubject(false)
 const shareModalSubject = new BehaviorSubject(false)
 const signatureModalSubject = new BehaviorSubject(false)
 const contactsModalSubject = new BehaviorSubject(false)
+const subscribeModalSubject = new BehaviorSubject<ISubscribeModalState>({
+  metadata: undefined,
+  isOpen: false
+})
 const preferencesModalSubject = new BehaviorSubject<IPreferencesModalState>({
   preferencesModalAppId: undefined,
   isOpen: false
@@ -102,6 +112,26 @@ export const preferencesModalService = {
       isOpen: false
     }),
   modalState: preferencesModalSubject.asObservable()
+}
+
+export const subscribeModalService = {
+  toggleModal: (metadata: PushClientTypes.PushRequestEventArgs) => {
+    subscribeModalSubject.next({
+      metadata,
+      isOpen: !subscribeModalSubject.value.isOpen
+    })
+  },
+  openModal: (metadata: PushClientTypes.PushRequestEventArgs) =>
+    subscribeModalSubject.next({
+      metadata,
+      isOpen: true
+    }),
+  closeModal: () =>
+    subscribeModalSubject.next({
+      metadata: undefined,
+      isOpen: false
+    }),
+  modalState: subscribeModalSubject.asObservable()
 }
 
 export const unsubscribeModalService = {

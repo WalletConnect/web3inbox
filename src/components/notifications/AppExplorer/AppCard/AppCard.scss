@@ -3,6 +3,7 @@
   border-radius: 1.875em;
   text-decoration: none;
   height: fit-content;
+  cursor: alias;
 
   &__header {
     display: flex;
@@ -41,6 +42,9 @@
       font-size: 0.75em;
       line-height: 0.875em;
       color: var(--fg-color-2);
+    }
+    &__subscribe {
+      cursor: pointer;
     }
   }
 }

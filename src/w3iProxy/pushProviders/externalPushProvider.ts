@@ -1,14 +1,22 @@
 import type { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import type { PushClientTypes } from '@walletconnect/push-client'
 import type { PushClientFunctions, W3iPushProvider } from './types'
 import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
 import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
+import { ReactNativeCommunicator } from '../externalCommunicators/reactNativeCommunicator'
 
 export default class ExternalPushProvider implements W3iPushProvider {
   protected readonly emitter: EventEmitter
-  private readonly methodsListenedTo = ['push_request', 'push_message']
+  private readonly methodsListenedTo = [
+    'push_request',
+    'push_subscription',
+    'push_message',
+    'push_update',
+    'push_delete'
+  ]
   public providerName = 'ExternalPushProvider'
   protected readonly communicator: ExternalCommunicator
 
@@ -25,6 +33,9 @@ export default class ExternalPushProvider implements W3iPushProvider {
       case 'ios':
         this.communicator = new IOSCommunicator(this.emitter)
         break
+      case 'reactnative':
+        this.communicator = new ReactNativeCommunicator(this.emitter)
+        break
       default:
         this.communicator = new JsCommunicator(this.emitter)
         break
@@ -37,7 +48,8 @@ export default class ExternalPushProvider implements W3iPushProvider {
   ) {
     return this.communicator.postToExternalProvider<ReturnType<PushClientFunctions[MName]>>(
       methodName,
-      params[0]
+      params[0],
+      'push'
     )
   }
 
@@ -49,7 +61,10 @@ export default class ExternalPushProvider implements W3iPushProvider {
     console.log({ request })
     switch (request.method) {
       case 'push_request':
+      case 'push_subscription':
       case 'push_message':
+      case 'push_update':
+      case 'push_delete':
         this.emitter.emit(request.method, request.params)
         break
       default:
@@ -58,11 +73,27 @@ export default class ExternalPushProvider implements W3iPushProvider {
   }
 
   public async approve(params: { id: number }) {
-    return this.postToExternalProvider('approve', params)
+    return this.postToExternalProvider('approve', {
+      ...params,
+      // Signing will be handled wallet-side.
+      onSign: async () => Promise.resolve('')
+    })
   }
 
   public async reject(params: { id: number; reason: string }) {
     return this.postToExternalProvider('reject', params)
+  }
+
+  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
+    return this.postToExternalProvider('subscribe', {
+      ...params,
+      // Signing will be handled wallet-side.
+      onSign: async () => Promise.resolve('')
+    })
+  }
+
+  public async update(params: { topic: string; scope: string[] }) {
+    return this.postToExternalProvider('update', params)
   }
 
   public async deleteSubscription(params: { topic: string }) {

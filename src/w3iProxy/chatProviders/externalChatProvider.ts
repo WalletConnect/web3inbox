@@ -6,6 +6,7 @@ import type { ExternalCommunicator } from '../externalCommunicators/communicator
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
 import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
+import { ReactNativeCommunicator } from '../externalCommunicators/reactNativeCommunicator'
 
 export default class ExternalChatProvider implements W3iChatProvider {
   protected readonly emitter: EventEmitter
@@ -16,8 +17,7 @@ export default class ExternalChatProvider implements W3iChatProvider {
     'chat_invite_accepted',
     'chat_invite_rejected',
     'chat_left',
-    'chat_ping',
-    'chat_set_account'
+    'chat_ping'
   ]
   public providerName = 'ExternalChatProvider'
 
@@ -35,6 +35,9 @@ export default class ExternalChatProvider implements W3iChatProvider {
       case 'ios':
         this.communicator = new IOSCommunicator(this.emitter)
         break
+      case 'reactnative':
+        this.communicator = new ReactNativeCommunicator(this.emitter)
+        break
       default:
         this.communicator = new JsCommunicator(this.emitter)
         break
@@ -47,7 +50,8 @@ export default class ExternalChatProvider implements W3iChatProvider {
   ) {
     return this.communicator.postToExternalProvider<ReturnType<ChatClientFunctions[MName]>>(
       methodName,
-      params[0]
+      params[0],
+      'chat'
     )
   }
 
@@ -98,8 +102,12 @@ export default class ExternalChatProvider implements W3iChatProvider {
     return this.postToExternalProvider('getReceivedInvites', params)
   }
 
-  public async addContact(params: { account: string; publicKey: string }) {
-    return this.postToExternalProvider('addContact', params)
+  public async goPublic(params: { account: string }) {
+    return this.postToExternalProvider('goPublic', params)
+  }
+
+  public async goPrivate(params: { account: string }) {
+    return this.postToExternalProvider('goPrivate', params)
   }
 
   public async invite(params: ChatClientTypes.Invite) {
@@ -110,6 +118,10 @@ export default class ExternalChatProvider implements W3iChatProvider {
   }
   public async message(params: ChatClientTypes.Message) {
     return this.postToExternalProvider('message', params)
+  }
+
+  public async unregister(params: { account: string }) {
+    return this.postToExternalProvider('unregister', params)
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {

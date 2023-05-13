@@ -5,7 +5,7 @@
   top: 0;
   left: 0;
   background: var(--bg-color-3);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px) brightness(0.8);
   z-index: 1;
   width: 100vw;
   height: 100vh;
@@ -25,8 +25,14 @@
   background: var(--bg-color-1);
   border: 1px solid var(--border-color-2);
   box-shadow: 0px 8px 22px -6px rgba(0, 0, 0, 0.12), 0px 14px 64px -4px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  transition: height 0.15s;
   &__content {
     width: 100%;
     color: var(--fg-color-1);
+  }
+  &__container {
+    height: fit-content;
+    width: fit-content;
   }
 }

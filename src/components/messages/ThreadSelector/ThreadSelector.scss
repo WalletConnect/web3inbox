@@ -60,6 +60,7 @@
   &__link {
     display: flex;
     gap: 0.5em;
+    flex-shrink: 0;
 
     @media only screen and (max-width: 700px) {
       background: var(--accent-color-1);

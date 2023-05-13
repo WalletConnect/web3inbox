@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useRef, useState } from 'react'
+import React, { useCallback, useContext, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useBalance, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
 
-import Disconnect from '../../../assets/Disconnect.svg'
+import DisconnectIcon from '../../general/Icon/DisconnectIcon'
 import ETH from '../../../assets/ETH.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { useIsMobile, useOnClickOutside } from '../../../utils/hooks'
@@ -12,6 +12,11 @@ import { generateAvatarColors } from '../../../utils/ui'
 import Divider from '../../general/Divider'
 
 import './Avatar.scss'
+import SettingsContext from '../../../contexts/SettingsContext/context'
+import PersonIcon from '../../general/Icon/PersonIcon'
+import ShareIcon from '../../general/Icon/ShareIcon'
+import CopyIcon from '../../general/Icon/CopyIcon'
+import { showErrorMessageToast, showSuccessMessageToast } from '../../../utils/toasts'
 
 interface AvatarProps {
   address?: string
@@ -38,6 +43,15 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
   )
   useOnClickOutside(ref, handleToggleProfileDropdown)
   const isMobile = useIsMobile()
+
+  const { mode } = useContext(SettingsContext)
+
+  const toastTheme = useMemo(() => {
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    const specifiedMode = mode === 'system' ? systemTheme : mode
+
+    return specifiedMode
+  }, [mode])
 
   const handleDisconnect = useCallback(() => {
     disconnect()
@@ -98,13 +112,23 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
               >
                 {ensAvatar && <img className="Avatar__icon" src={ensAvatar} alt="Avatar" />}
               </div>
-              <div
-                className="Avatar__dropdown__block__username"
-                onClick={() => {
-                  window.navigator.clipboard.writeText(address ?? '')
-                }}
-              >
+              <div className="Avatar__dropdown__block__username">
                 {ensName ?? truncate(address ?? '', 4)}
+                <button
+                  className="Avatar__dropdown__button"
+                  onClick={() => {
+                    window.navigator.clipboard
+                      .writeText(address ? `${address}` : '')
+                      .then(() => {
+                        showSuccessMessageToast('Copied address to clipboard')
+                      })
+                      .catch(() => {
+                        showErrorMessageToast('Failed to copy address to clipboard')
+                      })
+                  }}
+                >
+                  <CopyIcon />
+                </button>
               </div>
             </div>
             <Divider />
@@ -117,21 +141,24 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
               </div>
             </div>
             <Divider />
-            <div className="Avatar__dropdown__block">
-              <div className="Avatar__dropdown__block__actions">
-                {/* <button onClick={handleViewProfile}>
+            <div className="Avatar__dropdown__block Avatar__dropdown__block__group">
+              <div className="Avatar__dropdown__block__actions ">
+                <button
+                  onClick={handleViewProfile}
+                  className="Avatar__dropdown__block__actions__button"
+                >
                   <PersonIcon />
                   <span>View Profile</span>
                 </button>
-                <button onClick={handleShare}>
+                <button onClick={handleShare} className="Avatar__dropdown__block__actions__button">
                   <ShareIcon />
                   <span>Share</span>
-                </button> */}
+                </button>
                 <button
-                  className="Avatar__dropdown__block__actions__disconnect"
+                  className="Avatar__dropdown__block__actions__button Avatar__dropdown__block__actions__disconnect"
                   onClick={handleDisconnect}
                 >
-                  <img alt="share-icon" src={Disconnect} />
+                  <DisconnectIcon />
                   <span>Disconnect</span>
                 </button>
               </div>

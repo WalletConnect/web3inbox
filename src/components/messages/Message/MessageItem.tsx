@@ -3,12 +3,14 @@ import { differenceInHours } from 'date-fns'
 import { useEffect, useMemo, useRef } from 'react'
 import Message from '.'
 import MessageDateTag from './MessageDateTag'
+import MessageStatus from './MessageStatus'
 
 interface IMessageItemProps {
   messages: ChatClientTypes.Message[]
   message: ChatClientTypes.Message
   index: number
   peer?: string
+  status?: 'failed' | 'pending' | 'sent'
   previousMessageAccount?: string
   nextMessageAccount?: string
 }
@@ -19,6 +21,7 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
   message,
   index,
   peer,
+  status,
   previousMessageAccount,
   nextMessageAccount
 }) => {
@@ -70,7 +73,12 @@ export const MessageItem: React.FC<IMessageItemProps> = ({
       ref={isLastMessage ? messagesEndRef : null}
     >
       {isDateTagDisplayed && <MessageDateTag timestamp={message.timestamp} />}
-      <Message text={message.message} from={message.authorAccount === peer ? 'peer' : 'sender'} />
+      <Message
+        text={message.message}
+        status={status}
+        from={message.authorAccount === peer ? 'peer' : 'sender'}
+      />
+      {status && <MessageStatus message={message} isLastMessage={isLastMessage} status={status} />}
     </div>
   )
 }

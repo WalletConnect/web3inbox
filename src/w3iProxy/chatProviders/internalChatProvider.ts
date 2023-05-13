@@ -1,4 +1,4 @@
-import { getAccount, watchAccount } from '@wagmi/core'
+import { getAccount } from '@wagmi/core'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { EventEmitter } from 'events'
 // eslint-disable-next-line no-duplicate-imports
@@ -21,6 +21,7 @@ export default class InternalChatProvider implements W3iChatProvider {
   private readonly logger: Logger
   private readonly mutedContacts: IStore<string, { topic: string }>
   private readonly methodsListenedTo = ['chat_signature_delivered']
+  public projectId = ''
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
@@ -34,32 +35,6 @@ export default class InternalChatProvider implements W3iChatProvider {
       'web3inbox',
       ({ topic }: { topic: string }) => topic
     )
-    interval(2000).subscribe(() => {
-      if (!this.chatClient) {
-        return
-      }
-
-      if (!this.chatClient.core.relayer.connected) {
-        // Ping empty topic to trigger reconnection mechanism
-        this.chatClient.ping({ topic: '' })
-      }
-    })
-
-    watchAccount(account => {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!account.address || !window.web3inbox.chat) {
-        return
-      }
-
-      window.web3inbox.chat.postMessage({
-        id: Date.now(),
-        jsonrpc: '2.0',
-        method: 'setAccount',
-        params: {
-          account: account.address
-        }
-      })
-    })
   }
 
   /*
@@ -68,18 +43,7 @@ export default class InternalChatProvider implements W3iChatProvider {
    */
   public async initState(chatClient: ChatClient) {
     this.chatClient = chatClient
-
-    const address: string | undefined = getAccount().address
-    if (address) {
-      window.web3inbox.chat.postMessage({
-        id: Date.now(),
-        jsonrpc: '2.0',
-        method: 'setAccount',
-        params: {
-          account: address
-        }
-      })
-    }
+    this.projectId = this.chatClient.projectId
 
     await this.mutedContacts.init()
 
@@ -88,13 +52,38 @@ export default class InternalChatProvider implements W3iChatProvider {
     this.chatClient.on('chat_invite_accepted', args =>
       this.emitter.emit('chat_invite_accepted', args)
     )
-    this.chatClient.on('chat_invite_rejected', args =>
+
+    this.chatClient.on('chat_left', args => {
+      this.emitter.emit('chat_left', args)
+    })
+
+    this.chatClient.on('chat_ping', args => {
+      this.emitter.emit('chat_ping', args)
+    })
+
+    this.chatClient.on('chat_message', args => {
+      this.emitter.emit('chat_message', args)
+    })
+
+    this.chatClient.on('chat_invite_rejected', args => {
       this.emitter.emit('chat_invite_rejected', args)
-    )
+    })
+
+    this.chatClient.on('chat_invite_accepted', args => {
+      this.emitter.emit('chat_invite_accepted', args)
+    })
+
     this.chatClient.on('chat_invite', args => {
       this.emitter.emit('chat_invite', args)
     })
-    this.chatClient.on('chat_left', args => this.emitter.emit('chat_left', args))
+
+    this.chatClient.chatThreads.core.on('sync_store_update', () => {
+      this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
+    })
+
+    this.chatClient.chatSentInvites.core.on('sync_store_update', () => {
+      this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
+    })
   }
 
   private getRequiredInternalAddress(): string {
@@ -106,20 +95,28 @@ export default class InternalChatProvider implements W3iChatProvider {
     return address
   }
 
+  public async goPublic(params: { account: string }): Promise<string> {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('chatMessages'))
+    }
+
+    return this.chatClient.goPublic(params)
+  }
+
+  public async goPrivate(params: { account: string }): Promise<void> {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('chatMessages'))
+    }
+
+    await this.chatClient.goPrivate(params)
+  }
+
   public get chatMessages() {
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('chatMessages'))
     }
 
     return this.chatClient.chatMessages
-  }
-
-  public addContact(params: { account: string; publicKey: string }) {
-    if (!this.chatClient) {
-      throw new Error(this.formatClientRelatedError('chatMessages'))
-    }
-
-    this.chatClient.addContact(params)
   }
 
   private formatClientRelatedError(method: string) {
@@ -226,8 +223,6 @@ export default class InternalChatProvider implements W3iChatProvider {
 
     const isConnected = this.chatClient.core.relayer.provider.connection.connected
 
-    console.log({ isConnected })
-
     try {
       await this.chatClient.message(params)
     } catch {
@@ -235,6 +230,14 @@ export default class InternalChatProvider implements W3iChatProvider {
     }
 
     return Promise.resolve()
+  }
+
+  public async unregister(params: { account: string }) {
+    if (!this.chatClient) {
+      throw new Error(this.formatClientRelatedError('register'))
+    }
+
+    await this.chatClient.unregister(params)
   }
 
   public async register(params: { account: string; private?: boolean | undefined }) {
@@ -248,8 +251,6 @@ export default class InternalChatProvider implements W3iChatProvider {
       ...params,
       onSign: async message => {
         this.emitter.emit('chat_signature_requested', { message })
-
-        console.log('Currently in the onSign method')
 
         return new Promise(resolve => {
           this.emitter.once('chat_signature_delivered', ({ signature }: { signature: string }) => {

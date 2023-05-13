@@ -16,16 +16,28 @@ const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 const Sidebar: React.FC = () => {
   const { pathname } = useLocation()
   const navigationPaths = useMemo(() => pathname.split('/'), [pathname])
-  const { userPubkey } = useContext(W3iContext)
+  const { userPubkey, uiEnabled } = useContext(W3iContext)
   const isMobile = useIsMobile()
-  const navItems = useMemo(
-    () => [
-      [<MessageIcon isFilled={pathname.includes('/messages')} />, 'messages'],
-      [<NotificationIcon isFilled={pathname.includes('/notifications')} />, 'notifications'],
-      [<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings']
-    ],
-    [pathname]
-  )
+  const navItems = useMemo(() => {
+    const items: [React.ReactNode, string][] = []
+
+    if (uiEnabled.chat) {
+      items.push([<MessageIcon isFilled={pathname.includes('/messages')} />, 'messages'])
+    }
+
+    if (uiEnabled.push) {
+      items.push([
+        <NotificationIcon isFilled={pathname.includes('/notifications')} />,
+        'notifications'
+      ])
+    }
+
+    if (uiEnabled.settings) {
+      items.push([<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings'])
+    }
+
+    return items
+  }, [pathname, uiEnabled])
 
   // If pathname matches .*/.*/.*
   // As per design, sidebar in mobile is hidden when on "Main" is viewed on messages
@@ -42,11 +54,7 @@ const Sidebar: React.FC = () => {
       <SidebarItem>
         <div className="Sidebar__Navigation">
           {navItems.map(([icon, itemName]) => (
-            <Link
-              className="Sidebar__Navigation__Link"
-              key={itemName as string}
-              to={`/${itemName as string}`}
-            >
+            <Link className="Sidebar__Navigation__Link" key={itemName} to={`/${itemName}`}>
               {icon}
             </Link>
           ))}

@@ -1,24 +1,33 @@
-import { useMemo, useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { useSearch } from '../../../utils/hooks'
-import W3iContext from '../../../contexts/W3iContext/context'
 import BackButton from '../../general/BackButton'
 import AppCard from './AppCard'
 import './AppExplorer.scss'
 import AppExplorerHeader from './AppExplorerHeader'
+import usePushProjects from '../../../utils/hooks/usePushProjects'
+import W3iContext from '../../../contexts/W3iContext/context'
 
 const AppExplorer = () => {
   const { appSearchTerm } = useSearch()
+  const projects = usePushProjects()
   const { activeSubscriptions } = useContext(W3iContext)
+
   const filteredApps = useMemo(
     () =>
-      activeSubscriptions.filter(app =>
-        appSearchTerm
-          ? app.metadata.name.includes(appSearchTerm) ||
-            app.metadata.description.includes(appSearchTerm) ||
-            app.metadata.url.includes(appSearchTerm)
-          : activeSubscriptions
-      ),
-    [appSearchTerm]
+      projects.filter(app => {
+        if (appSearchTerm) {
+          return (
+            app.name.includes(appSearchTerm) ||
+            app.description.includes(appSearchTerm) ||
+            app.url.includes(appSearchTerm)
+          )
+        }
+
+        const activeSubscriptionAppNames = activeSubscriptions.map(sub => sub.metadata.name)
+
+        return !activeSubscriptionAppNames.includes(app.name)
+      }),
+    [appSearchTerm, projects, activeSubscriptions]
   )
 
   return (
@@ -29,15 +38,18 @@ const AppExplorer = () => {
         <div className="AppExplorer__apps__column">
           {filteredApps
             .filter((_, i) => i % 2 === 0)
-            .filter(app => Boolean(app.metadata))
+            .filter(app => Boolean(app.name))
             .map(app => (
               <AppCard
-                key={app.topic}
-                name={app.metadata.name}
-                description={app.metadata.description}
-                bgColor={{ dark: '#000', light: '#fff' }}
-                logo={app.metadata.icons[0]}
-                url={app.metadata.url}
+                key={app.name}
+                name={app.name}
+                description={app.description}
+                bgColor={{
+                  dark: app.colors.primary ?? '#000',
+                  light: app.colors.primary ?? '#fff'
+                }}
+                logo={app.icons[0]}
+                url={app.url}
               />
             ))}
         </div>
@@ -46,12 +58,15 @@ const AppExplorer = () => {
             .filter((_, i) => i % 2 !== 0)
             .map(app => (
               <AppCard
-                key={app.topic}
-                name={app.metadata.name}
-                description={app.metadata.description}
-                bgColor={{ dark: '#000', light: '#fff' }}
-                logo={app.metadata.icons[0]}
-                url={app.metadata.url}
+                key={app.name}
+                name={app.name}
+                description={app.description}
+                bgColor={{
+                  dark: app.colors.primary ?? '#000',
+                  light: app.colors.primary ?? '#fff'
+                }}
+                logo={app.icons[0]}
+                url={app.url}
               />
             ))}
         </div>

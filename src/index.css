@@ -4,7 +4,14 @@ html {
 
 body {
   background: var(--bg-color-1);
-  font-family: ABC Diatype, sans-serif;
+  font-family: 'ABC Diatype', sans-serif;
+}
+
+button,
+div,
+p,
+span {
+  font-weight: 500;
 }
 
 *,
@@ -22,4 +29,15 @@ svg,
 video {
   display: block;
   max-width: 100%;
+}
+
+::-webkit-scrollbar {
+  border-radius: 10px;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 10px;
+  background: var(--fg-color-2);
 }

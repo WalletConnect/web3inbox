@@ -17,7 +17,9 @@ type NonFunctionChatClientKeys =
   | 'engine'
   | 'events'
   | 'history'
+  | 'identityKeys'
   | 'init'
+  | 'initSyncStores'
   | 'keyserverUrl'
   | 'logger'
   | 'name'
@@ -25,7 +27,9 @@ type NonFunctionChatClientKeys =
   | 'on'
   | 'once'
   | 'opts'
+  | 'projectId'
   | 'removeListener'
+  | 'syncClient'
 
 /*
  * These methods are not currently async in the chat client

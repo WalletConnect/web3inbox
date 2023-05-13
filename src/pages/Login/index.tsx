@@ -31,21 +31,27 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { userPubkey, chatProvider, registeredKey, registerMessage } = useContext(W3iContext)
+  const { userPubkey, chatProvider, uiEnabled, registeredKey, registerMessage } =
+    useContext(W3iContext)
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
 
   useEffect(() => {
+    const path = next ? decodeURIComponent(next) : '/'
+    // If chat is not enabled, there is no need to register right away.
+    if (userPubkey && !uiEnabled.chat) {
+      nav(path)
+    }
+
     if (userPubkey && registeredKey) {
-      const path = next ? decodeURIComponent(next) : '/'
       nav(path)
     }
 
     if (userPubkey && !registeredKey && registerMessage) {
       signatureModalService.openModal()
     }
-  }, [userPubkey, next, registeredKey, registerMessage])
+  }, [userPubkey, next, registeredKey, uiEnabled, registerMessage])
 
   if (chatProvider !== 'internal') {
     return (

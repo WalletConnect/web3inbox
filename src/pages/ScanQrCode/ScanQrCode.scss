@@ -1,0 +1,152 @@
+.ScanQrCode {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  padding: 0;
+  width: 100vw;
+  background: var(--bg-color-1);
+
+  &__header {
+    z-index: 100;
+    background: var(--bg-color-1);
+    color: var(--fg-color-1);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+
+    border-bottom: solid 2px var(--bg-color-2);
+
+    span {
+      padding: 1em;
+      font-size: 1.5em;
+      font-weight: 700;
+    }
+
+    .BackButton {
+      position: absolute;
+      top: 50%;
+      left: 2rem;
+      transform: translateY(-50%);
+    }
+  }
+
+  &__body {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    backdrop-filter: brightness(110%);
+  }
+
+  &__container {
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+
+    display: grid;
+    place-items: center;
+
+    section,
+    section div {
+      padding-top: 0 !important;
+      height: 100%;
+      width: 100%;
+    }
+
+    section > section > div {
+      display: none;
+    }
+  }
+
+  &__overlay_1 {
+    z-index: 1;
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    clip-path: polygon(
+      0% 0%,
+      0% 100%,
+      20% 100%,
+      20% 35%,
+      80% 35%,
+      80% 65%,
+      0% 65%,
+      25% 100%,
+      100% 100%,
+      100% 0%
+    );
+
+    backdrop-filter: brightness(50%);
+    top: 0;
+    left: 0;
+  }
+
+  &__overlay_2 {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    width: 61%;
+    height: 31%;
+
+    --corner-color: var(--accent-color-1);
+    --corner-width: 10px;
+
+    z-index: 2;
+    background: linear-gradient(
+          to right,
+          var(--corner-color) var(--corner-width),
+          transparent var(--corner-width)
+        )
+        0 0,
+      linear-gradient(
+          to right,
+          var(--corner-color) var(--corner-width),
+          transparent var(--corner-width)
+        )
+        0 100%,
+      linear-gradient(
+          to left,
+          var(--corner-color) var(--corner-width),
+          transparent var(--corner-width)
+        )
+        100% 0,
+      linear-gradient(
+          to left,
+          var(--corner-color) var(--corner-width),
+          transparent var(--corner-width)
+        )
+        100% 100%,
+      linear-gradient(
+          to bottom,
+          var(--corner-color) var(--corner-width),
+          transparent var(--corner-width)
+        )
+        0 0,
+      linear-gradient(
+          to bottom,
+          var(--corner-color) var(--corner-width),
+          transparent var(--corner-width)
+        )
+        100% 0,
+      linear-gradient(
+          to top,
+          var(--corner-color) var(--corner-width),
+          transparent var(--corner-width)
+        )
+        0 100%,
+      linear-gradient(
+          to top,
+          var(--corner-color) var(--corner-width),
+          transparent var(--corner-width)
+        )
+        100% 100%;
+
+    border-radius: 6px;
+    background-repeat: no-repeat;
+    background-size: 15% 15%;
+  }
+}

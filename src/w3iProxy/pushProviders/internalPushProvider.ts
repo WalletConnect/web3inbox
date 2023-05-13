@@ -1,12 +1,12 @@
+import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
+import { signMessage } from '@wagmi/core'
 import type { EventEmitter } from 'events'
 import type { W3iPushProvider } from './types'
-import type { WalletClient as PushWalletClient } from '@walletconnect/push-client'
-import { appNotificationsMock, myAppsMock } from '../../utils/mocks'
 
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: PushWalletClient | undefined
   private readonly emitter: EventEmitter
-  public providerName = 'InternalChatProvider'
+  public providerName = 'InternalPushProvider'
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
@@ -20,7 +20,10 @@ export default class InternalPushProvider implements W3iPushProvider {
     this.pushClient = pushClient
 
     this.pushClient.on('push_request', args => this.emitter.emit('push_request', args))
+    this.pushClient.on('push_subscription', args => this.emitter.emit('push_subscription', args))
     this.pushClient.on('push_message', args => this.emitter.emit('push_message', args))
+    this.pushClient.on('push_update', args => this.emitter.emit('push_update', args))
+    this.pushClient.on('push_delete', args => this.emitter.emit('push_delete', args))
   }
 
   // ------------------------ Provider-specific methods ------------------------
@@ -44,7 +47,15 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
-    return this.pushClient.approve(params)
+    return this.pushClient.approve({
+      ...params,
+      onSign: async message =>
+        signMessage({ message }).then(signature => {
+          console.log('PushClient.approve > onSign > signature', signature)
+
+          return signature
+        })
+    })
   }
 
   public async reject(params: { id: number; reason: string }) {
@@ -53,6 +64,36 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
 
     return this.pushClient.reject(params)
+  }
+
+  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
+    if (!this.pushClient) {
+      throw new Error(this.formatClientRelatedError('subscribe'))
+    }
+
+    console.log('InternalPushProvider > PushClient.subscribe > params', params)
+
+    const subscribed = await this.pushClient.subscribe({
+      ...params,
+      onSign: async message =>
+        signMessage({ message }).then(signature => {
+          console.log('PushClient.subscribe > onSign > signature', signature)
+
+          return signature
+        })
+    })
+
+    return subscribed
+  }
+
+  public async update(params: { topic: string; scope: string[] }) {
+    if (!this.pushClient) {
+      throw new Error(this.formatClientRelatedError('update'))
+    }
+
+    const updated = await this.pushClient.update(params)
+
+    return updated
   }
 
   public async deleteSubscription(params: { topic: string }) {
@@ -68,12 +109,14 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
 
-    return Promise.resolve(myAppsMock)
+    const subscriptions = this.pushClient.getActiveSubscriptions()
 
-    /*
-     * TODO: Hookup actual push client
-     * return Promise.resolve(this.pushClient.getActiveSubscriptions())
-     */
+    console.log(
+      'InternalPushProvider > PushClient.getActiveSubscriptions > subscriptions',
+      subscriptions
+    )
+
+    return Promise.resolve(this.pushClient.getActiveSubscriptions())
   }
 
   public async getMessageHistory(params: { topic: string }) {
@@ -81,12 +124,11 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('getMessageHistory'))
     }
 
-    return Promise.resolve(appNotificationsMock(params))
+    const messages = this.pushClient.getMessageHistory(params)
 
-    /*
-     * TODO: Hookup actual push client
-     * return Promise.resolve(this.pushClient.getMessageHistory(params))
-     */
+    console.log('InternalPushProvider > PushClient.getMessageHistory > messages', messages)
+
+    return Promise.resolve(messages)
   }
 
   public async deletePushMessage(params: { id: number }) {

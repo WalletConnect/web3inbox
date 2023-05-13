@@ -186,19 +186,23 @@ const ThreadSelector: React.FC = () => {
               />
             )
           })}
-          {!search &&
-            sentInvites
-              .filter(invite => invite.status !== 'approved')
-              .map(({ inviteeAccount, status }) => (
-                <Thread
-                  searchQuery={search}
-                  topic={`invite:${status}:${inviteeAccount}`}
-                  lastMessage={`Invite ${status}`}
-                  lastMessageTimestamp={Date.now()}
-                  threadPeer={inviteeAccount}
-                  key={inviteeAccount}
-                />
-              ))}
+          {sentInvites
+            .filter(
+              invite =>
+                invite.status !== 'approved' &&
+                !threads.some(thread => thread.peerAccount === invite.inviteeAccount)
+            )
+            .reverse()
+            .map(({ inviteeAccount, status }) => (
+              <Thread
+                searchQuery={search}
+                topic={`invite:${status}:${inviteeAccount}`}
+                lastMessage={`Invite ${status}`}
+                lastMessageTimestamp={Date.now()}
+                threadPeer={inviteeAccount}
+                key={inviteeAccount}
+              />
+            ))}
           {threads.length === 0 && search && (
             <span className="ThreadSelector__contact">No {search} found in your contacts</span>
           )}

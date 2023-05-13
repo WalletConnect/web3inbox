@@ -4,32 +4,16 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { from } from 'rxjs'
 import PlusIcon from '../../../assets/Plus.svg'
 import SearchIcon from '../../../assets/Search.svg'
-import SettingsContext from '../../../contexts/SettingsContext/context'
 import W3iContext from '../../../contexts/W3iContext/context'
-import { useColorModeValue, useIsMobile, useSearch } from '../../../utils/hooks'
+import { useIsMobile, useSearch } from '../../../utils/hooks'
 import { pushSearchService } from '../../../utils/store'
-import NotificationMuteIcon from '../../general/Icon/NotificationMuteIcon'
+import AppNotificationDropdown from '../AppNotifications/AppNotificationDropdown'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
 import Search from '../../general/Search'
 import MobileHeading from '../../layout/MobileHeading'
-import type { IAppNotification } from '../AppNotifications/AppNotificationItem'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
-
-interface PushApp {
-  id: string
-  name: string
-  description: string
-  color: {
-    dark: string
-    light: string
-  }
-  logo: string
-  url: string
-  isMuted: boolean
-  notifications?: IAppNotification[]
-}
 
 const AppSelector: React.FC = () => {
   const [search, setSearch] = useState('')
@@ -37,9 +21,7 @@ const AppSelector: React.FC = () => {
   const { isPushSearchOpen } = useSearch()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<PushClientTypes.PushSubscription[]>([])
-  const { mode } = useContext(SettingsContext)
-  const { activeSubscriptions } = useContext(W3iContext)
-  const themeColors = useColorModeValue(mode)
+  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
 
   const filterApps = useCallback(
     debounce((searchQuery: string) => {
@@ -63,12 +45,12 @@ const AppSelector: React.FC = () => {
         }
       })
     }, 50),
-    []
+    [activeSubscriptions]
   )
 
   useEffect(() => {
     filterApps(search)
-  }, [search, filterApps])
+  }, [search, filterApps, activeSubscriptions])
 
   return (
     <div className="AppSelector">
@@ -120,13 +102,14 @@ const AppSelector: React.FC = () => {
               />
               <span>{app.metadata.name}</span>
             </div>
-            {/* DropdownToShow !== app.id &&
-                app.notifications?.length &&
-                app.notifications.filter(notif => notif.isRead).length !== 0 && (
-                  <CircleBadge>
-                    {app.notifications.filter(notif => notif.isRead).length}
-                  </CircleBadge>
-                )*/}
+            {dropdownToShow === app.topic && (
+              <AppNotificationDropdown
+                closeDropdown={() => setDropdownToShow(undefined)}
+                h="1.5em"
+                w="2em"
+                notificationId={app.topic}
+              />
+            )}
           </div>
         </NavLink>
       ))}

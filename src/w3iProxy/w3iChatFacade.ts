@@ -11,16 +11,21 @@ import type {
 } from './chatProviders/types'
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
-import { distinct, filter, from, ReplaySubject, throwError, timeout } from 'rxjs'
-// eslint-disable-next-line no-duplicate-imports
+import { filter, from, ReplaySubject, scan, throwError, timeout } from 'rxjs'
 import { fromEvent } from 'rxjs'
 import { ONE_DAY } from '@walletconnect/time'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
+import { hashMessage } from 'ethers/lib/utils.js'
 
-type ReplayMessage = ChatClientTypes.Message & {
+export type ReplayMessage = ChatClientTypes.Message & {
   id: string
   originalTimestamp: number
+  status: 'failed' | 'pending' | 'sent'
   count: number
+}
+
+export const getMessageId = (params: ChatClientTypes.Message) => {
+  return hashMessage(`${params.message}${params.timestamp}${params.authorAccount}`)
 }
 
 class W3iChatFacade implements W3iChat {
@@ -28,15 +33,19 @@ class W3iChatFacade implements W3iChat {
     internal: InternalChatProvider,
     external: ExternalChatProvider,
     ios: ExternalChatProvider,
+    reactnative: ExternalChatProvider,
     android: ExternalChatProvider
   }
   private readonly providerName: keyof typeof this.providerMap
   private readonly messageReplaySubject: ReplaySubject<ReplayMessage>
+  private readonly messageReplayMaxCount = 3
+
   private readonly emitter: EventEmitter
   private readonly observables: ObservableMap
   private readonly provider: ExternalChatProvider | InternalChatProvider
-  private readonly messageSendTimeout = 5000
-  private account?: string
+  private readonly messageSendTimeout = 1000
+
+  private unsentMessages: ReplayMessage[] = []
 
   public constructor(providerName: W3iChatFacade['providerName']) {
     this.providerName = providerName
@@ -48,40 +57,78 @@ class W3iChatFacade implements W3iChat {
 
     // Discuss expiry of messages
     this.messageReplaySubject = new ReplaySubject(undefined, ONE_DAY / 2)
+    this.messageSendTimeout = 1000
     this.handleMessagePublishing()
+    this.subscribeToUnsentMessages()
   }
 
   private handleMessagePublishing() {
-    // Stop trying to resend the message after 3 tries.
-    this.messageReplaySubject.pipe(filter(params => params.count < 3)).subscribe(params => {
-      from(this.provider.message(params))
+    this.messageReplaySubject.pipe(filter(m => m.status === 'pending')).subscribe(replayMessage => {
+      from(this.provider.message(replayMessage))
         .pipe(
           timeout({
-            first: this.messageSendTimeout,
-            with: () => throwError(() => new Error())
+            each: this.messageSendTimeout + replayMessage.count * this.messageSendTimeout,
+            with: info => throwError(() => new Error(JSON.stringify(info)))
           })
         )
         .subscribe({
           next: () => {
-            this.emitter.emit('chat_message_sent', {
-              ...params
+            this.emitter.emit('chat_message_sent')
+            this.messageReplaySubject.next({
+              ...replayMessage,
+              status: 'sent'
             })
+            this.emitter.emit('chat_message_attempt')
           },
           error: () => {
-            /*
-             * Create arbitrary delay.
-             * The timestamp is updated to be the current time.
-             */
-            setTimeout(() => {
+            if (replayMessage.count > this.messageReplayMaxCount) {
               this.messageReplaySubject.next({
-                ...params,
-                count: params.count + 1,
-                timestamp: Date.now()
+                ...replayMessage,
+                status: 'failed',
+                count: replayMessage.count + 1
               })
-            }, this.messageSendTimeout * 1.25)
+              this.emitter.emit('chat_message_attempt')
+            } else {
+              const timeoutTime = replayMessage.count * this.messageSendTimeout
+              setTimeout(() => {
+                this.messageReplaySubject.next({
+                  ...replayMessage,
+                  count: replayMessage.count + 1
+                })
+                this.emitter.emit('chat_message_attempt')
+              }, timeoutTime)
+            }
           }
         })
     })
+  }
+
+  private subscribeToUnsentMessages() {
+    this.messageReplaySubject
+      .pipe(
+        scan<ReplayMessage, Map<string, ReplayMessage>>((messageMap, message) => {
+          const isNewMessage = !messageMap.has(message.id)
+          const isNewerMessage =
+            messageMap.has(message.id) && messageMap.get(message.id)?.status !== message.status
+
+          if (isNewMessage || isNewerMessage) {
+            messageMap.set(message.id, message)
+          }
+
+          return messageMap
+        }, new Map())
+      )
+      .subscribe({
+        next: messageMap => {
+          const messages: ReplayMessage[] = []
+          for (const message of messageMap.values()) {
+            if (message.status !== 'sent') {
+              messages.push(message)
+            }
+          }
+          this.unsentMessages = messages
+        }
+      })
   }
 
   /*
@@ -89,14 +136,21 @@ class W3iChatFacade implements W3iChat {
    * successfully sent.
    */
   public getUnsentMessages() {
-    const messages: ChatClientTypes.Message[] = []
-    const sub = this.messageReplaySubject
-      .pipe(distinct<ReplayMessage, string>(({ id }) => id))
-      .subscribe(messages.push)
+    return this.unsentMessages
+  }
 
-    sub.unsubscribe()
+  public retryMessage(params: ChatClientTypes.Message) {
+    const replayMessage: ReplayMessage = {
+      ...params,
+      originalTimestamp: Date.now(),
+      timestamp: Date.now(),
+      id: getMessageId(params),
+      status: 'pending',
+      count: 0
+    }
 
-    return messages
+    this.messageReplaySubject.next(replayMessage)
+    this.emitter.emit('chat_message_attempt')
   }
 
   public async initInternalProvider(chatClient: ChatClient) {
@@ -107,29 +161,15 @@ class W3iChatFacade implements W3iChat {
   // Method to be used by external providers. Not internal use.
   public postMessage(messageData: JsonRpcRequest<unknown>) {
     this.emitter.emit(messageData.id.toString(), messageData)
-    switch (messageData.method) {
-      case 'setAccount':
-        this.account = (messageData.params as { account: string }).account
-        this.emitter.emit('chat_account_change', messageData.params)
-        break
-      default:
-        if (this.provider.isListeningToMethodFromPostMessage(messageData.method)) {
-          this.provider.handleMessage(messageData)
-        }
+    if (this.provider.isListeningToMethodFromPostMessage(messageData.method)) {
+      this.provider.handleMessage(messageData)
     }
-  }
-
-  public getAccount() {
-    return this.account
-  }
-
-  public on(methodName: string, listener: (data: unknown) => void) {
-    this.emitter.on(methodName, listener)
   }
 
   public async leave(params: { topic: string }) {
     return this.provider.leave(params)
   }
+
   public async reject(params: { id: number }) {
     return this.provider.reject(params)
   }
@@ -137,12 +177,25 @@ class W3iChatFacade implements W3iChat {
   public async accept(params: { id: number }) {
     return this.provider.accept(params)
   }
+
+  public async unregister(params: { account: string }) {
+    return this.provider.unregister(params)
+  }
+
+  public async goPrivate(params: { account: string }) {
+    return this.provider.goPrivate(params)
+  }
+
+  public async goPublic(params: { account: string }) {
+    return this.provider.goPublic(params)
+  }
+
   public async getThreads(params?: { account: string }) {
     return this.provider.getThreads(params)
   }
 
   public async getSentInvites(params?: { account: string }) {
-    const account = params?.account ?? this.account
+    const account = params?.account ?? window.web3inbox.auth.getAccount()
     if (!account) {
       throw new Error(
         "An account param must be provided, or an account must've been set for getSentInvites"
@@ -153,7 +206,7 @@ class W3iChatFacade implements W3iChat {
   }
 
   public async getReceivedInvites(params?: { account: string }) {
-    const account = params?.account ?? this.account
+    const account = params?.account ?? window.web3inbox.auth.getAccount()
     if (!account) {
       throw new Error(
         "An account param must be provided, or an account must've been set for getReceivedInvites"
@@ -161,10 +214,6 @@ class W3iChatFacade implements W3iChat {
     }
 
     return this.provider.getReceivedInvites({ account })
-  }
-
-  public addContact(params: { account: string; publicKey: string }) {
-    return this.provider.addContact(params)
   }
 
   public async invite(params: ChatClientTypes.Invite) {
@@ -180,12 +229,16 @@ class W3iChatFacade implements W3iChat {
     return this.provider.ping(params)
   }
   public async message(params: ChatClientTypes.Message) {
-    this.messageReplaySubject.next({
+    const replayMessage: ReplayMessage = {
       ...params,
       originalTimestamp: params.timestamp,
-      id: `${params.message}${params.timestamp}${params.authorAccount}`,
+      id: getMessageId(params),
+      status: 'pending',
       count: 0
-    })
+    }
+
+    this.messageReplaySubject.next(replayMessage)
+    this.emitter.emit('chat_message_attempt')
 
     return Promise.resolve()
   }
@@ -224,6 +277,24 @@ class W3iChatFacade implements W3iChat {
     const subscription = eventObservable.subscribe(observer)
 
     return subscription
+  }
+
+  // ------------------ Event Forwarding ------------------
+
+  public on(eventName: string, listener: (data: unknown) => void) {
+    this.emitter.on(eventName, listener)
+  }
+
+  public once(eventName: string, listener: (data: unknown) => void) {
+    this.emitter.once(eventName, listener)
+  }
+
+  public removeListener(eventName: string, listener: (data: unknown) => void) {
+    this.emitter.removeListener(eventName, listener)
+  }
+
+  public removeAllListeners(eventName: string) {
+    this.emitter.removeAllListeners(eventName)
   }
 }
 

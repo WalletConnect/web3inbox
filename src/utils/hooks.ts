@@ -1,8 +1,12 @@
+import type { PushClientTypes } from '@walletconnect/push-client'
 import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import type { RefObject } from 'react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+
+// eslint-disable-next-line no-duplicate-imports
+import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
+// eslint-disable-next-line no-duplicate-imports
 import {
   appSearchService,
   chatSearchService,
@@ -12,6 +16,7 @@ import {
   pushSearchService,
   shareModalService,
   signatureModalService,
+  subscribeModalService,
   unsubscribeModalService
 } from './store'
 import { isMobile } from './ui'
@@ -66,7 +71,11 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       border2: 'hsla(0, 0%, 100%, 0.1)',
       accent1: 'hsla(211, 90%, 50%, 1)',
       error1: 'hsla(5, 85%, 60%, 1)',
-      icon1: 'hsla(180, 6%, 80%, 1)'
+      icon1: 'hsla(180, 6%, 80%, 1)',
+      qr1: '#e4e7e7',
+      brightness: '0.66',
+      shimmer1: 'rgba(255, 255, 255, 0.05)',
+      shimmer2: 'rgba(255, 255, 255, 0.1)'
     },
     light: {
       bg1: 'hsla(0, 0%, 100%, 1)',
@@ -87,7 +96,11 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       border2: 'hsla(0, 0%, 0%, 0.1)',
       accent1: 'hsla(211, 100%, 60%, 1)',
       error1: 'hsla(5, 85%, 60%, 1)',
-      icon1: 'hsla(180, 4%, 16%, 1)'
+      icon1: 'hsla(180, 4%, 16%, 1)',
+      qr1: '#141414',
+      brightness: '1.33',
+      shimmer1: 'rgba(0, 0, 0, 0.05)',
+      shimmer2: 'rgba(0, 0, 0, 0.1)'
     }
   }
 
@@ -110,7 +123,11 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--border-color-2': colors[specifiedMode].border2,
     '--accent-color-1': colors[specifiedMode].accent1,
     '--error-color-1': colors[specifiedMode].error1,
-    '--icon-color-1': colors[specifiedMode].icon1
+    '--icon-color-1': colors[specifiedMode].icon1,
+    '--qr-color-1': colors[specifiedMode].qr1,
+    '--brightness-multiplier': colors[specifiedMode].brightness,
+    '--shimmer-color-1': colors[specifiedMode].shimmer1,
+    '--shimmer-color-2': colors[specifiedMode].shimmer2
   }
 
   return colorModeVariables
@@ -145,17 +162,24 @@ export const useSearch = () => {
 
 export const useModals = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+  const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
+  const [subscribeModalMetadata, setSubscribeModalMetadata] =
+    useState<PushClientTypes.PushRequestEventArgs>()
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
     const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
       setIsProfileModalOpen(isOpen)
+    })
+    const subscribeSubscription = subscribeModalService.modalState.subscribe(state => {
+      setSubscribeModalMetadata(state.metadata)
+      setIsSubscribeModalOpen(state.isOpen)
     })
     const signatureSubscription = signatureModalService.modalState.subscribe(isOpen => {
       setIsSignatureModalOpen(isOpen)
@@ -182,6 +206,7 @@ export const useModals = () => {
       signatureSubscription.unsubscribe()
       preferencesSubscription.unsubscribe()
       unsubscribeSubscription.unsubscribe()
+      subscribeSubscription.unsubscribe()
     }
   }, [])
 
@@ -192,8 +217,10 @@ export const useModals = () => {
     isContactModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
+    isSubscribeModalOpen,
     preferencesModalAppId,
-    unsubscribeModalAppId
+    unsubscribeModalAppId,
+    subscribeModalMetadata
   }
 }
 
@@ -231,7 +258,6 @@ export const useMobileResponsiveGrid = () => {
       return
     }
 
-    console.log('Setting entries to none')
     Object.entries(displays).forEach(([cssKey]) => {
       ref.current?.style.setProperty(cssKey, 'none')
     })
@@ -274,4 +300,32 @@ export const useFormattedTime = (timestamp?: number) => {
   }, [timestamp])
 
   return formattedTime
+}
+
+// eslint-disable-next-line func-style
+export function useResizeObserver<T extends HTMLElement>(
+  callback: (target: T, entry: ResizeObserverEntry) => void
+) {
+  const ref = useRef<T>(null)
+
+  useLayoutEffect(() => {
+    const element = ref.current
+
+    if (!element) {
+      return
+    }
+
+    const observer = new ResizeObserver(entries => {
+      callback(element, entries[0])
+    })
+
+    observer.observe(element)
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      observer.disconnect()
+    }
+  }, [callback, ref])
+
+  return ref
 }

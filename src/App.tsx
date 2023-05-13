@@ -16,17 +16,19 @@ import { useMobileResponsiveGrid, useModals } from './utils/hooks'
 import { signatureModalService } from './utils/store'
 import { truncate } from './utils/string'
 import { SignatureModal } from './pages/Login/SignatureModal'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
+import Subscribe from './components/notifications/SubscribeModal'
 
 const App = () => {
-  const { chatClientProxy, userPubkey, registeredKey, registerMessage } = useContext(W3iContext)
+  const { chatClientProxy, userPubkey, uiEnabled, registeredKey, registerMessage } =
+    useContext(W3iContext)
   const {
     isProfileModalOpen,
     isShareModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
     isSignatureModalOpen,
-    isContactModalOpen
+    isSubscribeModalOpen
   } = useModals()
 
   const ref = useMobileResponsiveGrid()
@@ -82,16 +84,19 @@ const App = () => {
         >
           {chatClientProxy && (
             <Fragment>
-              <Sidebar />
+              {uiEnabled.sidebar ? <Sidebar /> : null}
               <Outlet />
               <ToastContainer />
-              {isProfileModalOpen && <Profile />}
-              {isShareModalOpen && <Share />}
-              {isPreferencesModalOpen && <PreferencesModal />}
-              {isUnsubscribeModalOpen && <UnsubscribeModal />}
-              {isSignatureModalOpen && registerMessage && (
-                <SignatureModal message={registerMessage} />
-              )}
+              <AnimatePresence mode="wait">
+                {isProfileModalOpen && <Profile />}
+                {isShareModalOpen && <Share />}
+                {isSubscribeModalOpen && <Subscribe />}
+                {isPreferencesModalOpen && <PreferencesModal />}
+                {isUnsubscribeModalOpen && <UnsubscribeModal />}
+                {isSignatureModalOpen && registerMessage && (
+                  <SignatureModal message={registerMessage} />
+                )}
+              </AnimatePresence>
             </Fragment>
           )}
         </m.div>

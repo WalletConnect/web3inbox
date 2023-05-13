@@ -1,8 +1,9 @@
-import { useCallback } from 'react'
+import { useCallback, useContext } from 'react'
+import W3iContext from '../../../../contexts/W3iContext/context'
+import { preferencesModalService, unsubscribeModalService } from '../../../../utils/store'
 import Dropdown from '../../../general/Dropdown/Dropdown'
-import CheckIcon from '../../../general/Icon/CheckIcon'
 import NotificationMuteIcon from '../../../general/Icon/NotificationMuteIcon'
-import TrashIcon from '../../../general/Icon/TrashIcon'
+import SettingIcon from '../../../general/Icon/SettingIcon'
 import './AppNotificationDropdown.scss'
 
 interface IAppNotificationDropdownProps {
@@ -20,36 +21,28 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
   h,
   closeDropdown
 }) => {
-  const handleMarkAsRead = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    console.log({ notificationId })
-    closeDropdown()
-  }, [])
+  const { pushClientProxy } = useContext(W3iContext)
 
-  const handleClear = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const handleUnsubscribe = useCallback(() => {
     closeDropdown()
-  }, [])
+    unsubscribeModalService.toggleModal(notificationId)
+  }, [notificationId, closeDropdown, unsubscribeModalService, pushClientProxy])
 
-  const handleMute = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const handleOpenNotificationPreferencesModal = useCallback(() => {
+    preferencesModalService.toggleModal(notificationId)
     closeDropdown()
-  }, [])
+  }, [closeDropdown])
 
   return (
     <Dropdown btnShape="square" h={h} w={w} dropdownPlacement={dropdownPlacement}>
       <div className="AppNotificationDropdown__actions">
-        <button onClick={handleMarkAsRead}>
-          <CheckIcon />
-          <span>Mark as read</span>
-        </button>
-        <button onClick={handleClear}>
-          <TrashIcon />
-          <span>Clear</span>
-        </button>
-        <button onClick={handleMute}>
+        <button onClick={handleUnsubscribe}>
           <NotificationMuteIcon />
-          <span>Stop Offer Notifications</span>
+          <span>Unsubscribe</span>
+        </button>
+        <button onClick={handleOpenNotificationPreferencesModal}>
+          <SettingIcon />
+          <span>Preferences</span>
         </button>
       </div>
     </Dropdown>
