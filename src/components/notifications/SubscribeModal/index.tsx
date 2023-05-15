@@ -27,7 +27,6 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
   const [appDetails, setAppDetails] = useState<PushClientTypes.PushRequestEventArgs>()
 
   useEffect(() => {
-    console.log({ subscribeModalMetadata })
     if (!subscribeModalMetadata) {
       return
     }
