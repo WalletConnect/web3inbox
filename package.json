@@ -13,7 +13,7 @@
     "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'"
   },
   "dependencies": {
-    "@walletconnect/chat-client": "^0.6.8",
+    "@walletconnect/chat-client": "^0.6.11",
     "@walletconnect/core": "^2.7.2",
     "@walletconnect/push-client": "0.9.0",
     "@web3modal/ethereum": "^2.3.1",
