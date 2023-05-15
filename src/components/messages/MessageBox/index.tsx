@@ -1,8 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import W3iContext from '../../../contexts/W3iContext/context'
 import Textarea from '../../general/Textarea'
 import './MessageBox.scss'
 import SendIcon from '../../general/Icon/SendIcon'
+import type { ChatClientTypes } from '@walletconnect/chat-client'
 
 interface MessageBoxProps {
   topic: string
@@ -12,6 +13,14 @@ interface MessageBoxProps {
 const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount }) => {
   const [messageText, setMessageText] = useState('')
   const { chatClientProxy } = useContext(W3iContext)
+
+  const isDisabled = useMemo(
+    () =>
+      (topic.includes('invite:')
+        ? (topic.split(':')[1] as ChatClientTypes.SentInvite['status'])
+        : 'approved') !== 'approved',
+    [topic]
+  )
 
   const onSend = useCallback(async () => {
     if (!chatClientProxy || !messageText) {
@@ -50,12 +59,13 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount }) => {
       <Textarea
         placeholder="Message..."
         value={messageText}
+        disabled={isDisabled}
         onChange={({ target }) => setMessageText(target.value)}
       />
       <button
         onClick={onSend}
         title={messageText === '' ? 'Message cannot be empty' : 'Send message'}
-        disabled={messageText === ''}
+        disabled={isDisabled || messageText === ''}
         className="MessageBox__send"
       >
         <SendIcon />
