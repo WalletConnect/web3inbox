@@ -90,15 +90,15 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }
 
   useEffect(() => {
-    console.log({ settingQueryParamAccount: accountQueryParam, authClient: Boolean(authClient) })
     if (accountQueryParam && authClient) {
       authClient.setAccount(accountQueryParam)
     }
   }, [accountQueryParam, setUserPubkey, authClient])
 
   useEffect(() => {
-    if (authClient) {
-      setUserPubkey(authClient.getAccount())
+    const account = authClient?.getAccount()
+    if (account) {
+      setUserPubkey(account)
     }
   }, [authClient, setUserPubkey])
 
