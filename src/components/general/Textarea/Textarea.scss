@@ -22,5 +22,11 @@
     &::placeholder {
       color: var(--fg-color-2);
     }
+    &:disabled {
+      &::placeholder {
+        cursor: not-allowed;
+        color: var(--fg-color-3);
+      }
+    }
   }
 }

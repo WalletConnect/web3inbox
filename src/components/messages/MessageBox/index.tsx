@@ -1,8 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import W3iContext from '../../../contexts/W3iContext/context'
 import Textarea from '../../general/Textarea'
 import './MessageBox.scss'
 import SendIcon from '../../general/Icon/SendIcon'
+import type { ChatClientTypes } from '@walletconnect/chat-client'
 
 interface MessageBoxProps {
   topic: string
@@ -12,6 +13,16 @@ interface MessageBoxProps {
 const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount }) => {
   const [messageText, setMessageText] = useState('')
   const { chatClientProxy } = useContext(W3iContext)
+
+  const inviteStatus = useMemo(() => {
+    if (topic.includes('invite:')) {
+      return topic.split(':')[1] as ChatClientTypes.SentInvite['status']
+    }
+
+    return 'approved'
+  }, [topic])
+
+  const isDisabled = useMemo(() => inviteStatus !== 'approved', [inviteStatus])
 
   const onSend = useCallback(async () => {
     if (!chatClientProxy || !messageText) {
@@ -47,19 +58,31 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount }) => {
 
   return (
     <div className="MessageBox">
-      <Textarea
-        placeholder="Message..."
-        value={messageText}
-        onChange={({ target }) => setMessageText(target.value)}
-      />
-      <button
-        onClick={onSend}
-        title={messageText === '' ? 'Message cannot be empty' : 'Send message'}
-        disabled={messageText === ''}
-        className="MessageBox__send"
-      >
-        <SendIcon />
-      </button>
+      {isDisabled ? (
+        <p className="MessageBox__status">
+          {inviteStatus === 'pending' ? (
+            <>Waiting to accept your invite…</>
+          ) : (
+            <>Your chat invite was declined</>
+          )}
+        </p>
+      ) : (
+        <>
+          <Textarea
+            placeholder="Message..."
+            value={messageText}
+            onChange={({ target }) => setMessageText(target.value)}
+          />
+          <button
+            onClick={onSend}
+            title={messageText === '' ? 'Message cannot be empty' : 'Send message'}
+            disabled={messageText === ''}
+            className="MessageBox__send"
+          >
+            <SendIcon />
+          </button>
+        </>
+      )}
     </div>
   )
 }
