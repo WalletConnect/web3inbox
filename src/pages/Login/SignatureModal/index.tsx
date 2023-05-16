@@ -1,5 +1,5 @@
 import { signMessage } from '@wagmi/core'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Button from '../../../components/general/Button'
 import { Modal } from '../../../components/general/Modal/Modal'
 import { signatureModalService } from '../../../utils/store'
@@ -38,9 +38,13 @@ export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
       window.web3inbox.chat.postMessage(
         formatJsonRpcRequest('chat_signature_delivered', { signature })
       )
-      setSigning(false)
     })
   }, [message, setStepProgress, setSigning])
+
+  // Modal is ready to sign when given a new purpose
+  useEffect(() => {
+    setSigning(false)
+  }, [purpose, setSigning])
 
   const purposeMessage =
     purpose === 'identity' ? 'Sign for your identity key.' : 'Sign for syncing capabilities'
