@@ -18,6 +18,32 @@
     }
   }
 
+  &__status {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    color: var(--fg-color-3);
+    margin: 1.5em 0;
+    &--btn {
+      display: flex;
+      align-items: center;
+      gap: 0.25em;
+      font-size: 0.875em;
+      cursor: pointer;
+      border-radius: 1000em;
+      padding: 0.25em 0.75em;
+      background: var(--bg-color-2);
+      border: 1px solid var(--border-color-2);
+      color: var(--fg-color-2);
+      &:hover {
+        background: var(--bg-color-1);
+        color: var(--fg-color-1);
+      }
+    }
+  }
+
   &__send {
     cursor: pointer;
     grid-area: send-button;

@@ -5,17 +5,10 @@ interface ITextareaProps {
   placeholder?: string
   icon?: string
   value?: string
-  disabled?: boolean
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
-const Textarea: React.FC<ITextareaProps> = ({
-  onChange,
-  value,
-  icon,
-  placeholder,
-  disabled = false
-}) => {
+const Textarea: React.FC<ITextareaProps> = ({ onChange, value, icon, placeholder }) => {
   const [inputHeight, setInputHeight] = useState(30)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -36,8 +29,7 @@ const Textarea: React.FC<ITextareaProps> = ({
         value={value}
         className="Textarea__textarea"
         onChange={onChange}
-        disabled={disabled}
-        placeholder={disabled ? `You cannot send a message yet!` : placeholder}
+        placeholder={placeholder}
         style={{ height: `${inputHeight}px`, maxHeight: '6em' }}
       />
     </div>
