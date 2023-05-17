@@ -2304,10 +2304,10 @@
     "@ethersproject/transactions" "^5.7.0"
     isomorphic-unfetch "^3.1.0"
 
-"@walletconnect/chat-client@^0.6.11":
-  version "0.6.11"
-  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.6.11.tgz#2997dee161dbc73b62cadc4a6fc41ba9b64de714"
-  integrity sha512-tcL9wvHR0mWDcyXvaspV7m1e/3IJE0EAdCvKUh1wYhRZ2nEN5TF2Wt/xpbbElDCtljGNjVl2YTOEin/FOkC3fQ==
+"@walletconnect/chat-client@^0.6.12":
+  version "0.6.12"
+  resolved "https://registry.yarnpkg.com/@walletconnect/chat-client/-/chat-client-0.6.12.tgz#e825ed5d1b19181482a19097389330b0536f1e97"
+  integrity sha512-ywghSxCoCNWEH04q92lNQaG2tTR9nQLMPQwPqCl7lG62nkwfE/Zlhb06gf0ztbbFIWsXe2SoO8r7IamEiuHGWg==
   dependencies:
     "@noble/ed25519" "^1.7.1"
     "@walletconnect/cacao" "^1.0.2"
@@ -2316,7 +2316,7 @@
     "@walletconnect/identity-keys" "^0.1.4"
     "@walletconnect/jsonrpc-utils" "^1.0.6"
     "@walletconnect/logger" "^2.0.1"
-    "@walletconnect/sync-client" "^0.3.2"
+    "@walletconnect/sync-client" "^0.3.3"
     "@walletconnect/time" "^1.0.2"
     "@walletconnect/utils" "^2.7.1"
     axios "^0.27.2"
@@ -2720,10 +2720,10 @@
     events "^3.3.0"
     pino "7.11.0"
 
-"@walletconnect/sync-client@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@walletconnect/sync-client/-/sync-client-0.3.2.tgz#64bf98ec316a7ef889346dd6ba6101b96ca7210c"
-  integrity sha512-PVPw/nNzcyya3uPkDFkSBte2sVMtD94zx2b3a+Q9N1j26Gcr09GAvuybED8j7fSpDCTfq6pf59YriIJX7mIy2A==
+"@walletconnect/sync-client@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@walletconnect/sync-client/-/sync-client-0.3.3.tgz#fadb6b5896957e7f5a10ba0a28a139485c219461"
+  integrity sha512-KwwY0LB6u4HwJZbHtGEOjbJIkrwIRRHZtTn25UmTqbuFsoO2xZoZwDjqAuuPuiC40moNu7xXMFu2JRa+P7gZDg==
   dependencies:
     "@ethersproject/wallet" "^5.7.0"
     "@walletconnect/core" "^2.5.2"
