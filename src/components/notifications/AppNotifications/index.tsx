@@ -78,8 +78,9 @@ const AppNotifications = () => {
             <AppNotificationItem
               key={notification.id}
               notification={{
-                timestamp: Date.now(),
-                isRead: false,
+                timestamp: notification.publishedAt,
+                // We do not manage read status for now.
+                isRead: true,
                 id: notification.id.toString(),
                 message: notification.message.body,
                 title: notification.message.title,
