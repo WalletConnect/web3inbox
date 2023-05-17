@@ -6,6 +6,7 @@ import './AppCard.scss'
 import Button from '../../../general/Button'
 import W3iContext from '../../../../contexts/W3iContext/context'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
+import { handleImageFallback } from '../../../../utils/ui'
 
 interface AppCardProps {
   name: string
@@ -55,6 +56,8 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
     [userPubkey, name, description, logo, bgColor, url]
   )
 
+  const imgRef = React.useRef(null)
+
   return (
     <a
       className="AppCard"
@@ -64,7 +67,13 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       rel="noopener noreferrer"
     >
       <div className="AppCard__header">
-        <img className="AppCard__header__logo" src={logo} alt={`${name} logo`} />
+        <img
+          className="AppCard__header__logo"
+          src={logo}
+          ref={imgRef}
+          alt={`${name} logo`}
+          onError={handleImageFallback}
+        />
         <img
           className="AppCard__header__link-icon"
           src={externalLinkIcon}

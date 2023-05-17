@@ -35,3 +35,9 @@ export const generateAvatarColors = (address: string) => {
 export const isMobile = () => {
   return window.innerWidth < 700
 }
+
+export const handleImageFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
+  const target = event.target as HTMLImageElement
+  target.onerror = null
+  target.src = '/fallback.svg'
+}
