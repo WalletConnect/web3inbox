@@ -82,8 +82,13 @@
       font-size: 0.75em;
       color: var(--fg-color-2);
       display: flex;
-      gap: 0.5em;
+      gap: 0.375em;
       justify-content: flex-end;
+    }
+    svg {
+      width: 0.875em;
+      height: 0.875em;
+      padding-bottom: 0.1em;
     }
   }
 

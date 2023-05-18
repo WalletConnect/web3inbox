@@ -154,7 +154,7 @@ const ThreadWindow: React.FC = () => {
         <div className="ThreadWindow__peer">
           <BackButton backTo="/messages" />
           <Avatar address={peerAddress} width="1.25em" height="1.25em" />
-          <span>{ensName ?? truncate(peer ?? '', 10)}</span>
+          <span>{ensName ?? truncate(peerAddress, 10)}</span>
         </div>
         <ThreadDropdown dropdownPlacement="bottomLeft" h="1em" w="2em" threadId={topic} />
       </div>
