@@ -11,7 +11,6 @@ import type { W3iChatProvider } from './types'
 // eslint-disable-next-line no-duplicate-imports
 import { getDefaultLoggerOptions } from '@walletconnect/logger'
 import pino from 'pino'
-import { interval } from 'rxjs'
 
 export default class InternalChatProvider implements W3iChatProvider {
   private chatClient: ChatClient | undefined
@@ -78,11 +77,11 @@ export default class InternalChatProvider implements W3iChatProvider {
     })
 
     this.chatClient.chatThreads.core.on('sync_store_update', () => {
-      this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
+      this.emitter.emit('sync_update', {})
     })
 
     this.chatClient.chatSentInvites.core.on('sync_store_update', () => {
-      this.emitter.emit('chat_ping', { id: Date.now(), topic: '' })
+      this.emitter.emit('sync_update', {})
     })
   }
 
@@ -220,8 +219,6 @@ export default class InternalChatProvider implements W3iChatProvider {
     if (!this.chatClient) {
       throw new Error(this.formatClientRelatedError('message'))
     }
-
-    const isConnected = this.chatClient.core.relayer.provider.connection.connected
 
     try {
       await this.chatClient.message(params)

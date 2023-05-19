@@ -189,6 +189,11 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     })
 
     const inviteSentSub = chatClient.observe('chat_invite_sent', { next: refreshChatState })
+    const syncSub = chatClient.observe('sync_update', {
+      next: () => {
+        refreshChatState()
+      }
+    })
     const pingSub = chatClient.observe('chat_ping', {
       next: () => {
         refreshChatState()
@@ -202,6 +207,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     return () => {
       inviteSub.unsubscribe()
       pingSub.unsubscribe()
+      syncSub.unsubscribe()
       signatureSub.unsubscribe()
       inviteSentSub.unsubscribe()
       inviteAcceptedSub.unsubscribe()
