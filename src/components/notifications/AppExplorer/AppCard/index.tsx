@@ -56,8 +56,6 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
     [userPubkey, name, description, logo, bgColor, url]
   )
 
-  const imgRef = React.useRef(null)
-
   return (
     <a
       className="AppCard"
@@ -70,7 +68,6 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         <img
           className="AppCard__header__logo"
           src={logo}
-          ref={imgRef}
           alt={`${name} logo`}
           onError={handleImageFallback}
         />
