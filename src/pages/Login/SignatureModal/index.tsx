@@ -86,7 +86,9 @@ export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
         </div>
         <div className="SignatureModal__message">{purposeMessage}</div>
         <div className="SignatureModal__content">
-          <Button onClick={onSign}>{signing ? <Spinner width="1em" /> : 'Sign Message'}</Button>
+          <Button disabled={signing} onClick={onSign}>
+            {signing ? <Spinner width="1em" /> : 'Sign Message'}
+          </Button>
         </div>
       </div>
     </Modal>
