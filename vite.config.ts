@@ -44,6 +44,9 @@ const pwaOptions: Partial<VitePWAOptions> = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    target: 'es2021'
+  },
   plugins: [
     react(),
     nodePolyfills({

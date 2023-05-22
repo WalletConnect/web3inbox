@@ -17,11 +17,10 @@
     "@walletconnect/core": "^2.7.6",
     "@walletconnect/push-client": "^0.9.4",
     "@walletconnect/sync-client": "^0.3.4",
-    "@web3modal/ethereum": "^2.3.1",
-    "@web3modal/react": "^2.3.1",
+    "@web3modal/ethereum": "^2.4.1",
+    "@web3modal/react": "^2.4.1",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
-    "ethers": "^5.7.2",
     "framer-motion": "^10.3.0",
     "get-ens": "^2.1.1",
     "lodash.debounce": "^4.0.8",
@@ -32,7 +31,8 @@
     "react-select": "^5.7.0",
     "react-toastify": "^9.1.1",
     "rxjs": "^7.6.0",
-    "wagmi": "^0.12.6"
+    "viem": "^0.3.33",
+    "wagmi": "^1.0.5"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.7",

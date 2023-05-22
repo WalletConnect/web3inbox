@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { profileModalService } from '../../../utils/store'
 import { Modal } from '../../general/Modal/Modal'
 import './Profile.scss'
-import { useEnsName, useProvider } from 'wagmi'
+import { useEnsName, usePublicClient } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { generateAvatarColors } from '../../../utils/ui'
 import Avatar from '../../account/Avatar'
@@ -14,12 +14,10 @@ import TwitterIcon from '../../general/Icon/TwitterIcon'
 import GithubIcon from '../../general/Icon/GithubIcon'
 import { ShareModalContent } from '../Share/Share'
 import { AnimatePresence, m } from 'framer-motion'
-import type { ENSRecords, ResolvedENS } from 'get-ens'
-// eslint-disable-next-line no-duplicate-imports
-import { getENS } from 'get-ens'
 import Spinner from '../../general/Spinner'
 import EmailIcon from '../../general/Icon/EmailIcon'
-import RedditIcon from '../../general/Icon/RedditIcon'
+import type { EnsRecords } from '../../../utils/ens'
+import { getEnsData } from '../../../utils/ens'
 
 const ProfileLink = ({
   title,
@@ -38,34 +36,22 @@ const ProfileLink = ({
   )
 }
 
-interface ModifiedResolvedENS extends ResolvedENS {
-  records: ENSRecords
-}
-
 declare const localStorage: Storage | undefined
 
 const ProfileModalContent: React.FC<{
   handleShareClick: () => void
 }> = ({ handleShareClick }) => {
-  const provider = useProvider()
   const { userPubkey: address } = useContext(W3iContext)
-  const locallyStoredData = localStorage?.getItem('ens-records')
-  const [resolvedRecords, setResolvedRecords] = useState<ENSRecords | undefined>(
-    locallyStoredData ? JSON.parse(locallyStoredData) : undefined
-  )
+  const [resolvedRecords, setResolvedRecords] = useState<EnsRecords | undefined>(undefined)
+  const publicClient = usePublicClient()
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
 
   useEffect(() => {
-    const getData = async () => {
-      const data = (await getENS({ provider })(ensName ?? '')) as ModifiedResolvedENS
-      setResolvedRecords(data.records)
-      localStorage?.setItem('ens-records', JSON.stringify(data.records))
+    if (ensName) {
+      getEnsData(ensName, publicClient).then(setResolvedRecords)
     }
-    if (!locallyStoredData) {
-      getData()
-    }
-  }, [])
+  }, [ensName, publicClient])
 
   return (
     <m.div
@@ -166,13 +152,6 @@ const ProfileModalContent: React.FC<{
                       title="Github"
                       url={`https://github.com/${resolvedRecords.github}`}
                       icon={<GithubIcon />}
-                    />
-                  )}
-                  {resolvedRecords.reddit && (
-                    <ProfileLink
-                      title="Reddit"
-                      url={`https://reddit.com/u/${resolvedRecords.reddit}`}
-                      icon={<RedditIcon />}
                     />
                   )}
                 </div>
