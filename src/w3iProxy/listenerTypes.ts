@@ -17,6 +17,7 @@ export interface ChatFacadeEvents {
   chat_message_attempt: never
   chat_signature_requested: { message: string }
   chat_account_change: { account: string }
+  sync_update: never
 }
 
 export interface PushFacadeEvents {
@@ -26,4 +27,5 @@ export interface PushFacadeEvents {
   push_subscription: PushClientTypes.EventArguments['push_subscription']
   push_update: PushClientTypes.EventArguments['push_update']
   push_delete: PushClientTypes.EventArguments['push_delete']
+  sync_update: never
 }

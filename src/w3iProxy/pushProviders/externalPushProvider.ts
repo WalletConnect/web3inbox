@@ -15,7 +15,8 @@ export default class ExternalPushProvider implements W3iPushProvider {
     'push_subscription',
     'push_message',
     'push_update',
-    'push_delete'
+    'push_delete',
+    'sync_update'
   ]
   public providerName = 'ExternalPushProvider'
   protected readonly communicator: ExternalCommunicator
