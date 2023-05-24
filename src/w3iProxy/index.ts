@@ -5,6 +5,8 @@ import type { UiEnabled } from '../contexts/W3iContext/context'
 import W3iAuthFacade from './w3iAuthFacade'
 import W3iChatFacade from './w3iChatFacade'
 import W3iPushFacade from './w3iPushFacade'
+import type { ISyncClient } from '@walletconnect/sync-client'
+import { SyncClient, SyncStore } from '@walletconnect/sync-client'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 export type W3iPushClient = Omit<W3iPushFacade, 'initState'>
@@ -27,6 +29,8 @@ class Web3InboxProxy {
   private readonly relayUrl?: string
   private readonly projectId: string
   private readonly uiEnabled: UiEnabled
+
+  private syncClient: ISyncClient | undefined
 
   /**
    *
@@ -69,8 +73,13 @@ class Web3InboxProxy {
 
   public async init() {
     const core = new Core({
-      logger: 'info',
+      logger: 'debug',
       relayUrl: this.relayUrl,
+      projectId: this.projectId
+    })
+
+    this.syncClient = await SyncClient.init({
+      core,
       projectId: this.projectId
     })
 
@@ -80,9 +89,12 @@ class Web3InboxProxy {
      */
     if (this.chatProvider === 'internal') {
       console.log('Init chat')
+
       this.chatClient = await ChatClient.init({
         projectId: this.projectId,
+        SyncStoreController: SyncStore,
         core,
+        syncClient: this.syncClient,
         keyserverUrl: 'https://keys.walletconnect.com'
       })
       await this.chatFacade.initInternalProvider(this.chatClient)
