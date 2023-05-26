@@ -16,6 +16,7 @@
     "@walletconnect/chat-client": "^0.7.0",
     "@walletconnect/core": "^2.7.6",
     "@walletconnect/push-client": "^0.9.4",
+    "@walletconnect/sync-client": "^0.3.4",
     "@web3modal/ethereum": "^2.3.1",
     "@web3modal/react": "^2.3.1",
     "classnames": "^2.3.2",
