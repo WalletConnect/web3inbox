@@ -131,7 +131,11 @@ const ProfileModalContent: React.FC<{
                 </div>
                 <div className="Profile__Container__socials">
                   {resolvedRecords.url && (
-                    <ProfileLink title="Website" url={resolvedRecords.url} icon={<WebsiteIcon />} />
+                    <ProfileLink
+                      title="Website"
+                      url={`https://${resolvedRecords.url}`}
+                      icon={<WebsiteIcon />}
+                    />
                   )}
                   {resolvedRecords.twitter && (
                     <ProfileLink
