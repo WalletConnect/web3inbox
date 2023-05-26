@@ -103,18 +103,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   }, [authClient, setUserPubkey])
 
   useEffect(() => {
-    const sub = authClient?.observe('auth_set_account', {
-      next: ({ account }) => {
-        console.log('Got set account')
-        setUserPubkey(account)
-        setRegistered(null)
-      }
-    })
-
-    return () => sub?.unsubscribe()
-  }, [authClient, setUserPubkey, setRegistered])
-
-  useEffect(() => {
     if (chatClient || pushClient || authClient) {
       return
     }
@@ -246,20 +234,36 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     }
   }, [pushClient, refreshPushState])
 
-  useEffect(() => {
-    const handleRegistration = async () => {
-      if (chatClient && userPubkey && uiEnabled.chat) {
+  const handleRegistration = useCallback(
+    async (key: string) => {
+      if (chatClient && key && uiEnabled.chat) {
         try {
-          const registeredKeyRes = await chatClient.register({ account: `eip155:1:${userPubkey}` })
+          const registeredKeyRes = await chatClient.register({ account: `eip155:1:${key}` })
           refreshChatState()
           setRegistered(registeredKeyRes)
         } catch (error) {
           setRegisterMessage(null)
         }
       }
+    },
+    [uiEnabled, chatClient, refreshChatState, setRegisterMessage]
+  )
+
+  useEffect(() => {
+    if (userPubkey) {
+      handleRegistration(userPubkey)
     }
-    handleRegistration()
   }, [chatClient, userPubkey])
+
+  useEffect(() => {
+    const sub = authClient?.observe('auth_set_account', {
+      next: ({ account }) => {
+        setUserPubkey(account)
+      }
+    })
+
+    return () => sub?.unsubscribe()
+  }, [authClient, setUserPubkey, setRegistered])
 
   useEffect(() => {
     refreshChatState()
