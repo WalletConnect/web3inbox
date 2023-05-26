@@ -9,6 +9,7 @@ type NonFunctionChatClientKeys =
   | 'chatKeys'
   | 'chatMessages'
   | 'chatReceivedInvites'
+  | 'chatReceivedInvitesStatus'
   | 'chatSentInvites'
   | 'chatThreads'
   | 'chatThreadsPending'
