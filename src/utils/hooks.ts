@@ -33,17 +33,25 @@ export const useOnClickOutside = (
 ) => {
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
+      console.log(ref.current)
+
       if (!ref.current || ref.current.contains(event.target as Node)) {
         return
       }
       handler(event)
     }
-    document.addEventListener('mousedown', listener)
-    document.addEventListener('touchstart', listener)
+    if (isMobile()) {
+      document.addEventListener('touchstart', listener)
+    } else {
+      document.addEventListener('mousedown', listener)
+    }
 
     return () => {
-      document.removeEventListener('mousedown', listener)
-      document.removeEventListener('touchstart', listener)
+      if (isMobile()) {
+        document.removeEventListener('touchstart', listener)
+      } else {
+        document.removeEventListener('mousedown', listener)
+      }
     }
   }, [ref, handler])
 }

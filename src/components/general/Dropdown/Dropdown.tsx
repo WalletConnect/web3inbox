@@ -28,12 +28,15 @@ const Dropdown: React.FC<IDropdown> = ({
 
   const handleToggleDropdown = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
+      console.log(`🔴TRIGGER ELEMENT`)
+      console.log(ref)
+
       e.preventDefault()
+      e.stopPropagation()
       setIsDropdownOpen(currentState => !currentState)
     },
     [setIsDropdownOpen]
   )
-
   useOnClickOutside(ref, () => setIsDropdownOpen(currentState => !currentState))
 
   const dropdownPosition = useMemo(() => {
@@ -68,11 +71,12 @@ const Dropdown: React.FC<IDropdown> = ({
       <Button
         className={`Dropdown__btn${btnShape === 'square' ? '__square' : ''}`}
         style={{ width: w, height: h }}
-        onClick={handleToggleDropdown}
         customType="action-icon"
+        onClick={handleToggleDropdown}
       >
         <DotsIcon />
       </Button>
+
       {isDropdownOpen && (
         <div ref={ref} className="Dropdown__dropdown" style={dropdownPosition}>
           <div className="Dropdown__dropdown__block">{children}</div>
