@@ -20,13 +20,14 @@ export const useUiState = () => {
         (pagesAvailable, pageEnabled) => (pageEnabled ? pagesAvailable + 1 : pagesAvailable),
         0
       )
+
       if (totalPagesEnabled) {
         return { ...oldUiEnabled, sidebar: true }
       }
 
       return oldUiEnabled
     })
-  }, [])
+  }, [setUiEnabled])
 
   return { uiEnabled }
 }
