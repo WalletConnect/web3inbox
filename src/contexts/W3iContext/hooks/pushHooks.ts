@@ -15,9 +15,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy) => {
   const [pushClient, setPushClient] = useState<W3iPushClient | null>(null)
 
   useEffect(() => {
-    w3iProxy.init().then(() => {
-      setPushClient(w3iProxy.push)
-    })
+    setPushClient(w3iProxy.push)
   }, [w3iProxy])
 
   const refreshPushState = useCallback(() => {

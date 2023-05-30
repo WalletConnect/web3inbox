@@ -19,9 +19,7 @@ export const useChatState = (w3iProxy: Web3InboxProxy) => {
   const { uiEnabled } = useUiState()
 
   useEffect(() => {
-    w3iProxy.init().then(() => {
-      setChatClient(w3iProxy.chat)
-    })
+    setChatClient(w3iProxy.chat)
   }, [setChatClient])
 
   const refreshChatState = useCallback(() => {

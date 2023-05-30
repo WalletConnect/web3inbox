@@ -10,9 +10,7 @@ export const useAuthState = (w3iProxy: Web3InboxProxy) => {
   const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(null)
 
   useEffect(() => {
-    w3iProxy.init().then(() => {
-      setAuthClient(w3iProxy.auth)
-    })
+    setAuthClient(w3iProxy.auth)
   }, [w3iProxy])
 
   const { search } = useLocation()

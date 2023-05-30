@@ -33,7 +33,7 @@ class Web3InboxProxy {
   private syncClient: ISyncClient | undefined
   private readonly core: ICore
 
-  private isInitialized: boolean = false
+  private isInitialized = false
 
   /**
    *
