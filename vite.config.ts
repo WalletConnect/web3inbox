@@ -15,7 +15,6 @@ const pwaOptions: Partial<VitePWAOptions> = {
   manifest: {
     name: 'Web3Inbox',
     short_name: 'Web3Inbox',
-    theme_color: '#ffffff',
     icons: [
       {
         src: 'pwa-192x192.png',
