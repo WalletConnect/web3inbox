@@ -28,11 +28,7 @@ const Dropdown: React.FC<IDropdown> = ({
 
   const handleToggleDropdown = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-      console.log(`🔴TRIGGER ELEMENT`)
-      console.log(ref)
-
       e.preventDefault()
-      e.stopPropagation()
       setIsDropdownOpen(currentState => !currentState)
     },
     [setIsDropdownOpen]
