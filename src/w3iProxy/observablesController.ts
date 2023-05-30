@@ -3,8 +3,6 @@ import type { NextObserver, Observable } from 'rxjs'
 import { take } from 'rxjs'
 import { fromEvent } from 'rxjs'
 
-type StringKey<K> = Exclude<K, number | symbol>
-
 export class ObservablesController<Events> {
   private readonly observables: Map<keyof Events, Observable<Events[keyof Events]>>
   private readonly emitter: EventEmitter
@@ -14,7 +12,7 @@ export class ObservablesController<Events> {
     this.observables = new Map()
   }
 
-  private getObservable<K extends keyof Events>(eventName: StringKey<K>) {
+  private getObservable<K extends string & keyof Events>(eventName: K) {
     const observableExists = this.observables.has(eventName)
     if (!observableExists) {
       this.observables.set(eventName, fromEvent(this.emitter, eventName) as Observable<Events[K]>)
@@ -23,10 +21,7 @@ export class ObservablesController<Events> {
     return this.observables.get(eventName) as Observable<Events[K]>
   }
 
-  public observe<K extends keyof Events>(
-    eventName: StringKey<K>,
-    observer: NextObserver<Events[K]>
-  ) {
+  public observe<K extends string & keyof Events>(eventName: K, observer: NextObserver<Events[K]>) {
     const eventObservable = this.getObservable(eventName)
 
     const subscription = eventObservable.subscribe(observer)
@@ -34,8 +29,8 @@ export class ObservablesController<Events> {
     return subscription
   }
 
-  public observeOne<K extends keyof Events>(
-    eventName: StringKey<K>,
+  public observeOne<K extends string & keyof Events>(
+    eventName: K,
     observer: NextObserver<Events[K]>
   ) {
     const eventObservable = this.getObservable(eventName)
