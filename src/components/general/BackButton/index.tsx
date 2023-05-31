@@ -41,7 +41,7 @@ const BackButton: React.FC<BackButtonProps> = ({ backTo, children, force }) => {
           fill="#3396FF"
         />
       </svg>
-      {children}
+      {children && <p className="BackButton__Title">{children}</p>}
     </div>
   ) : null
 }
