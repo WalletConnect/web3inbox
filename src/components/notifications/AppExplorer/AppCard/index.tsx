@@ -37,8 +37,10 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       }
 
       try {
-        pushClientProxy?.once('push_subscription', () => {
-          showSuccessMessageToast(`Subscribed to ${name}`)
+        pushClientProxy?.observeOne('push_subscription', {
+          next: () => {
+            showSuccessMessageToast(`Subscribed to ${name}`)
+          }
         })
         await pushClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,

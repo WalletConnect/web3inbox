@@ -22,8 +22,10 @@ export const UnsubscribeModal: React.FC = () => {
   const handleUnsubscribe = useCallback(async () => {
     if (pushClientProxy && unsubscribeModalAppId) {
       try {
-        pushClientProxy.once('push_delete', () => {
-          unsubscribeModalService.closeModal()
+        pushClientProxy.observeOne('push_delete', {
+          next: () => {
+            unsubscribeModalService.closeModal()
+          }
         })
         await pushClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
       } catch (error) {

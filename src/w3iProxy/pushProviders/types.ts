@@ -43,14 +43,6 @@ interface ModifiedPushClientFunctions {
   ) => Promise<ReturnType<PushWalletClient['getMessageHistory']>>
 }
 
-export type PushObservableMap = Map<
-  keyof PushFacadeEvents,
-  Observable<PushFacadeEvents[keyof PushFacadeEvents]>
->
-
-export type PushEventObserver<K extends keyof PushFacadeEvents> = NextObserver<PushFacadeEvents[K]>
-export type PushEventObservable<K extends keyof PushFacadeEvents> = Observable<PushFacadeEvents[K]>
-
 export type PushClientFunctions = Omit<PushWalletClient, NonMethodPushClientKeys>
 export type W3iPush = ModifiedPushClientFunctions &
   Omit<PushClientFunctions, keyof ModifiedPushClientFunctions>

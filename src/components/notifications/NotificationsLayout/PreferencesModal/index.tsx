@@ -45,9 +45,11 @@ export const PreferencesModal: React.FC = () => {
       const topic = preferencesModalAppId
 
       try {
-        pushClientProxy?.once('push_update', () => {
-          preferencesModalService.closeModal()
-          showSuccessMessageToast('Preferences updated successfully')
+        pushClientProxy?.observeOne('push_update', {
+          next: () => {
+            preferencesModalService.closeModal()
+            showSuccessMessageToast('Preferences updated successfully')
+          }
         })
         await pushClientProxy?.update({
           topic,

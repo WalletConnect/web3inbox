@@ -1,7 +1,5 @@
 import type ChatClient from '@walletconnect/chat-client'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { NextObserver, Observable } from 'rxjs'
-import type { ChatFacadeEvents } from '../listenerTypes'
 
 // Omitting chat client management keys
 type NonFunctionChatClientKeys =
@@ -54,14 +52,6 @@ interface ModifiedChatClientFunctions {
   muteContact: (params: { topic: string }) => Promise<void>
   unmuteContact: (params: { topic: string }) => Promise<void>
 }
-
-export type ObservableMap = Map<
-  keyof ChatFacadeEvents,
-  Observable<ChatFacadeEvents[keyof ChatFacadeEvents]>
->
-
-export type ChatEventObserver<K extends keyof ChatFacadeEvents> = NextObserver<ChatFacadeEvents[K]>
-export type ChatEventObservable<K extends keyof ChatFacadeEvents> = Observable<ChatFacadeEvents[K]>
 
 export type ChatClientFunctions = ModifiedChatClientFunctions &
   Omit<ChatClient, NonFunctionChatClientKeys>

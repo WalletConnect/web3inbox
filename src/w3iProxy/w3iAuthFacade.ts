@@ -2,13 +2,8 @@ import { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import ExternalAuthProvider from './authProviders/externalAuthProvider'
 import InternalAuthProvider from './authProviders/internalAuthProvider'
-import type {
-  AuthEventObservable,
-  AuthEventObserver,
-  AuthFacadeEvents,
-  ObservableMap
-} from './authProviders/types'
-import { fromEvent } from 'rxjs'
+import type { AuthFacadeEvents } from './authProviders/types'
+import { ObservablesController } from './observablesController'
 
 class W3iAuthFacade {
   private readonly providerMap = {
@@ -19,14 +14,14 @@ class W3iAuthFacade {
     android: ExternalAuthProvider
   }
   private readonly providerName: keyof typeof this.providerMap
-  private readonly observables: ObservableMap
   private readonly emitter: EventEmitter
+  private readonly observablesController: ObservablesController<AuthFacadeEvents>
   private readonly provider: ExternalAuthProvider | InternalAuthProvider
 
   public constructor(providerName: W3iAuthFacade['providerName']) {
     this.providerName = providerName
-    this.observables = new Map()
     this.emitter = new EventEmitter()
+    this.observablesController = new ObservablesController(this.emitter)
     const ProviderClass = this.providerMap[this.providerName]
     this.provider = new ProviderClass(this.emitter, providerName)
   }
@@ -57,16 +52,12 @@ class W3iAuthFacade {
     this.emitter.emit('auth_set_account', { account })
   }
 
-  public observe<K extends keyof AuthFacadeEvents>(eventName: K, observer: AuthEventObserver<K>) {
-    const observableExists = this.observables.has(eventName)
-    if (!observableExists) {
-      this.observables.set(eventName, fromEvent(this.emitter, eventName) as AuthEventObservable<K>)
-    }
-    const eventObservable = this.observables.get(eventName) as AuthEventObservable<K>
+  public get observe() {
+    return this.observablesController.observe
+  }
 
-    const subscription = eventObservable.subscribe(observer)
-
-    return subscription
+  public get observeOne() {
+    return this.observablesController.observeOne
   }
 }
 
