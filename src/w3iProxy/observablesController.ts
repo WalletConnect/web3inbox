@@ -10,6 +10,8 @@ export class ObservablesController<Events> {
   public constructor(emitter: EventEmitter) {
     this.emitter = emitter
     this.observables = new Map()
+    this.observe = this.observe.bind(this)
+    this.observeOne = this.observeOne.bind(this)
   }
 
   private getObservable<K extends string & keyof Events>(eventName: K) {
