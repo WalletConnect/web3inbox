@@ -41,9 +41,12 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
     const currentNotificationItem = notificationsDrag?.find(
       n => n.id.toString() === notification.id
     )
+
     if (!currentNotificationItem?.isDragged) {
-      dragControls.start('hidden')
-      actionControls.start('hidden')
+      if (currentNotificationItem) {
+        dragControls.start('hidden')
+        actionControls.start('hidden')
+      }
     }
   }, [notificationsDrag])
 
@@ -95,10 +98,9 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
         onDragEnd={handleDragEnd}
         onDrag={handleDrag}
         onDragStart={handleDragStart}
-        dragElastic={0.05}
+        dragElastic={false}
         whileHover={{ scale: isMobile ? 1.01 : 1 }}
-        dragTransition={{ bounceStiffness: 600, bounceDamping: 30 }}
-        whileDrag={{ scale: 1.02 }}
+        whileDrag={{ scale: 1.01 }}
         initial="hidden"
         variants={{
           hidden: { x: 0 },
@@ -139,7 +141,7 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
         <div key={notification.id} className="AppNotifications__item__content">
           <div className="AppNotifications__item__header">
             <h4 className="AppNotifications__item__title">{notification.title}</h4>
-            {formattedTime && dropdownToShow !== notification.id ? (
+            {formattedTime ? (
               <span className="AppNotifications__item__time">{formattedTime}</span>
             ) : null}
           </div>

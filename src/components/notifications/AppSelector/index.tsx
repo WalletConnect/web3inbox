@@ -102,13 +102,27 @@ const AppSelector: React.FC = () => {
               />
               <span>{app.metadata.name}</span>
             </div>
-            {dropdownToShow === app.topic && (
-              <AppNotificationDropdown
-                closeDropdown={() => setDropdownToShow(undefined)}
-                h="1.5em"
-                w="2em"
-                notificationId={app.topic}
-              />
+            {isMobile ? (
+              <>
+                <AppNotificationDropdown
+                  closeDropdown={() => setDropdownToShow(undefined)}
+                  h="1.5em"
+                  w="2em"
+                  notificationId={app.topic}
+                  dropdownPlacement="bottomLeft"
+                />
+              </>
+            ) : (
+              <>
+                {dropdownToShow === app.topic && (
+                  <AppNotificationDropdown
+                    closeDropdown={() => setDropdownToShow(undefined)}
+                    h="1.5em"
+                    w="2em"
+                    notificationId={app.topic}
+                  />
+                )}
+              </>
             )}
           </div>
         </NavLink>

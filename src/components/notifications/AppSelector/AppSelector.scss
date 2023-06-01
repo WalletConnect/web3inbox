@@ -53,7 +53,9 @@
     cursor: pointer;
     background: transparent;
     &:hover {
-      background: var(--active-link-gradient);
+      @media (hover: hover) {
+        background: var(--active-link-gradient);
+      }
     }
   }
 
@@ -62,7 +64,9 @@
     &-item {
       // on hover when link is not active
       &:not(.NavLink-active):hover {
-        background: var(--bg-color-2);
+        @media (hover: hover) {
+          background: var(--bg-color-2);
+        }
       }
     }
 

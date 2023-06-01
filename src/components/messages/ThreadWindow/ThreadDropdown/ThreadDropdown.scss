@@ -22,7 +22,9 @@
     transition: background 200ms ease;
 
     &:hover {
-      background-color: var(--bg-color-4);
+      @media (hover: hover) {
+        background-color: var(--bg-color-4);
+      }
     }
     svg {
       max-width: none;
