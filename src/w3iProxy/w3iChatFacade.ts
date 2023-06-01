@@ -3,19 +3,14 @@ import type ChatClient from '@walletconnect/chat-client'
 // eslint-disable-next-line no-duplicate-imports
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import type { ChatFacadeEvents } from './listenerTypes'
-import type {
-  ChatEventObservable,
-  ChatEventObserver,
-  ObservableMap,
-  W3iChat
-} from './chatProviders/types'
+import type { W3iChat } from './chatProviders/types'
 import InternalChatProvider from './chatProviders/internalChatProvider'
 import ExternalChatProvider from './chatProviders/externalChatProvider'
 import { filter, from, ReplaySubject, scan, throwError, timeout } from 'rxjs'
-import { fromEvent } from 'rxjs'
 import { ONE_DAY } from '@walletconnect/time'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import { hashMessage } from 'ethers/lib/utils.js'
+import { ObservablesController } from './observablesController'
 
 export type ReplayMessage = ChatClientTypes.Message & {
   id: string
@@ -41,7 +36,7 @@ class W3iChatFacade implements W3iChat {
   private readonly messageReplayMaxCount = 3
 
   private readonly emitter: EventEmitter
-  private readonly observables: ObservableMap
+  private readonly observablesController: ObservablesController<ChatFacadeEvents>
   private readonly provider: ExternalChatProvider | InternalChatProvider
   private readonly messageSendTimeout = 1000
 
@@ -49,8 +44,8 @@ class W3iChatFacade implements W3iChat {
 
   public constructor(providerName: W3iChatFacade['providerName']) {
     this.providerName = providerName
-    this.observables = new Map()
     this.emitter = new EventEmitter()
+    this.observablesController = new ObservablesController(this.emitter)
 
     const ProviderClass = this.providerMap[this.providerName]
     this.provider = new ProviderClass(this.emitter, providerName)
@@ -267,34 +262,11 @@ class W3iChatFacade implements W3iChat {
     return this.provider.getMutedContacts()
   }
 
-  public observe<K extends keyof ChatFacadeEvents>(eventName: K, observer: ChatEventObserver<K>) {
-    const observableExists = this.observables.has(eventName)
-    if (!observableExists) {
-      this.observables.set(eventName, fromEvent(this.emitter, eventName) as ChatEventObservable<K>)
-    }
-    const eventObservable = this.observables.get(eventName) as ChatEventObservable<K>
-
-    const subscription = eventObservable.subscribe(observer)
-
-    return subscription
+  public get observe() {
+    return this.observablesController.observe
   }
-
-  // ------------------ Event Forwarding ------------------
-
-  public on(eventName: string, listener: (data: unknown) => void) {
-    this.emitter.on(eventName, listener)
-  }
-
-  public once(eventName: string, listener: (data: unknown) => void) {
-    this.emitter.once(eventName, listener)
-  }
-
-  public removeListener(eventName: string, listener: (data: unknown) => void) {
-    this.emitter.removeListener(eventName, listener)
-  }
-
-  public removeAllListeners(eventName: string) {
-    this.emitter.removeAllListeners(eventName)
+  public get observeOne() {
+    return this.observablesController.observeOne
   }
 }
 
