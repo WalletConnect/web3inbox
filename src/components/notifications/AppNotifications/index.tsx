@@ -5,7 +5,9 @@ import { noop } from 'rxjs'
 import W3iContext from '../../../contexts/W3iContext/context'
 import AppNotificationItem from './AppNotificationItem'
 import './AppNotifications.scss'
+import IconWrapper from '../../general/Icon/IconWrapper/IconWrapper'
 import AppNotificationsHeader from './AppNotificationsHeader'
+import AppNotificationsEmpty from './AppNotificationsEmpty'
 
 export interface AppNotificationsDragProps {
   id: number
@@ -73,23 +75,29 @@ const AppNotifications = () => {
           name={app.metadata.name}
           logo={app.metadata.icons[0]}
         />
-        <div className="AppNotifications__list">
-          {notifications.map(notification => (
-            <AppNotificationItem
-              key={notification.id}
-              notification={{
-                timestamp: notification.publishedAt,
-                // We do not manage read status for now.
-                isRead: true,
-                id: notification.id.toString(),
-                message: notification.message.body,
-                title: notification.message.title,
-                image: notification.message.icon
-              }}
-              appLogo={app.metadata.icons[0]}
-            />
-          ))}
-        </div>
+        {notifications.length > 0 ? (
+          <div className="AppNotifications__list">
+            <>
+              {notifications.map(notification => (
+                <AppNotificationItem
+                  key={notification.id}
+                  notification={{
+                    timestamp: notification.publishedAt,
+                    // We do not manage read status for now.
+                    isRead: true,
+                    id: notification.id.toString(),
+                    message: notification.message.body,
+                    title: notification.message.title,
+                    image: notification.message.icon
+                  }}
+                  appLogo={app.metadata.icons[0]}
+                />
+              ))}
+            </>
+          </div>
+        ) : (
+          <AppNotificationsEmpty />
+        )}
       </div>
     </AppNotificationDragContext.Provider>
   ) : (
