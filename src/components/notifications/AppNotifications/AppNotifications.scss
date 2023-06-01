@@ -49,9 +49,11 @@
     }
     &__unread {
       background-color: hsl(211, 100%, 60%);
+      color: hsla(180, 6%, 90%, 1);
     }
     &__clear {
       background-color: hsl(211, 80%, 40%);
+      color: hsla(180, 6%, 90%, 1);
     }
   }
 
