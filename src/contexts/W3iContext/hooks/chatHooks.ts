@@ -6,7 +6,7 @@ import type Web3InboxProxy from '../../../w3iProxy'
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
 
-export const useChatState = (w3iProxy: Web3InboxProxy) => {
+export const useChatState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [chatClient, setChatClient] = useState<W3iChatClient | null>(null)
   const [invites, setInvites] = useState<ChatClientTypes.ReceivedInvite[]>([])
   const [threads, setThreads] = useState<ChatClientTypes.Thread[]>([])
@@ -15,12 +15,14 @@ export const useChatState = (w3iProxy: Web3InboxProxy) => {
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
 
-  const { userPubkey } = useAuthState(w3iProxy)
+  const { userPubkey } = useAuthState(w3iProxy, proxyReady)
   const { uiEnabled } = useUiState()
 
   useEffect(() => {
-    setChatClient(w3iProxy.chat)
-  }, [setChatClient])
+    if (proxyReady) {
+      setChatClient(w3iProxy.chat)
+    }
+  }, [setChatClient, proxyReady])
 
   const refreshChatState = useCallback(() => {
     if (!chatClient || !userPubkey || !registeredKey) {

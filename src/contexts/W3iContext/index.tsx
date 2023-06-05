@@ -14,9 +14,9 @@ interface W3iContextProviderProps {
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
   const { uiEnabled } = useUiState()
   const { chatProvider, pushProvider } = useProviderQueries()
-  const w3iProxy = useW3iProxy()
+  const [w3iProxy, isW3iProxyReady] = useW3iProxy()
 
-  const { userPubkey, setUserPubkey, disconnect } = useAuthState(w3iProxy)
+  const { userPubkey, setUserPubkey, disconnect } = useAuthState(w3iProxy, isW3iProxyReady)
 
   const {
     chatClient,
@@ -26,9 +26,9 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     invites,
     registeredKey,
     registerMessage
-  } = useChatState(w3iProxy)
+  } = useChatState(w3iProxy, isW3iProxyReady)
 
-  const { pushClient, activeSubscriptions } = usePushState(w3iProxy)
+  const { pushClient, activeSubscriptions } = usePushState(w3iProxy, isW3iProxyReady)
 
   return (
     <W3iContext.Provider
