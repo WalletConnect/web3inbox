@@ -1,4 +1,5 @@
 import './AppNotificationsEmpty.scss'
+import Alarm from '../../../../assets/Alarm.png'
 
 const AppNotificationsEmpty: React.FC = () => {
   return (
@@ -6,7 +7,7 @@ const AppNotificationsEmpty: React.FC = () => {
       <div className="AppNotificationsEmpty__wrapper">
         <img
           className="AppNotificationsEmpty__icon"
-          src="/src/assets/Alarm.png"
+          src={Alarm}
           alt="Notifications Icon"
           loading="lazy"
         />
