@@ -101,6 +101,24 @@ class Web3InboxProxy {
     return this.authFacade
   }
 
+  public getInitComplete() {
+    if (!this.isInitialized) {
+      return false
+    }
+    if (this.chatProvider === 'internal') {
+      if (!this.chatClient) {
+        return false
+      }
+    }
+    if (this.pushProvider === 'internal') {
+      if (!this.pushClient) {
+        return false
+      }
+    }
+
+    return true
+  }
+
   public async init() {
     if (this.isInitialized) {
       return

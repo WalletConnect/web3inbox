@@ -4,14 +4,16 @@ import { useDisconnect } from 'wagmi'
 import type Web3InboxProxy from '../../../w3iProxy'
 import type W3iAuthFacade from '../../../w3iProxy/w3iAuthFacade'
 
-export const useAuthState = (w3iProxy: Web3InboxProxy) => {
+export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [accountQueryParam, setAccountQueryParam] = useState('')
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
   const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(null)
 
   useEffect(() => {
-    setAuthClient(w3iProxy.auth)
-  }, [w3iProxy])
+    if (proxyReady) {
+      setAuthClient(w3iProxy.auth)
+    }
+  }, [w3iProxy, proxyReady])
 
   const { search } = useLocation()
 

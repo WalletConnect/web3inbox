@@ -6,17 +6,19 @@ import type { W3iPushClient } from '../../../w3iProxy'
 import type Web3InboxProxy from '../../../w3iProxy'
 import { useAuthState } from './authHooks'
 
-export const usePushState = (w3iProxy: Web3InboxProxy) => {
+export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
     PushClientTypes.PushSubscription[]
   >([])
 
-  const { userPubkey } = useAuthState(w3iProxy)
+  const { userPubkey } = useAuthState(w3iProxy, proxyReady)
   const [pushClient, setPushClient] = useState<W3iPushClient | null>(null)
 
   useEffect(() => {
-    setPushClient(w3iProxy.push)
-  }, [w3iProxy])
+    if (proxyReady) {
+      setPushClient(w3iProxy.push)
+    }
+  }, [w3iProxy, proxyReady])
 
   const refreshPushState = useCallback(() => {
     if (!pushClient || !userPubkey) {

@@ -8,6 +8,7 @@ export const useW3iProxy = () => {
   const projectId = import.meta.env.VITE_PROJECT_ID
 
   const { uiEnabled } = useUiState()
+  const [ready, setReady] = useState(false)
   const { chatProvider, pushProvider, authProvider } = useProviderQueries()
 
   const [w3iProxy] = useState(
@@ -22,8 +23,8 @@ export const useW3iProxy = () => {
   )
 
   useEffect(() => {
-    w3iProxy.init()
-  }, [w3iProxy])
+    w3iProxy.init().then(() => setReady(true))
+  }, [w3iProxy, setReady])
 
-  return w3iProxy
+  return [w3iProxy, ready] as [Web3InboxProxy, boolean]
 }
