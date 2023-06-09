@@ -23,6 +23,7 @@ type NonMethodPushClientKeys =
   | 'once'
   | 'opts'
   | 'pairing'
+  | 'proposals'
   | 'protocol'
   | 'removeListener'
   | 'requests'

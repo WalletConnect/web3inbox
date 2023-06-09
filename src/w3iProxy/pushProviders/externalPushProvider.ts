@@ -11,7 +11,7 @@ import type { PushClientFunctions, W3iPushProvider } from './types'
 export default class ExternalPushProvider implements W3iPushProvider {
   protected readonly emitter: EventEmitter
   private readonly methodsListenedTo = [
-    'push_request',
+    'push_proposal',
     'push_subscription',
     'push_message',
     'push_update',
