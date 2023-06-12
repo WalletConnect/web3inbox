@@ -5,7 +5,6 @@ import { noop } from 'rxjs'
 import W3iContext from '../../../contexts/W3iContext/context'
 import AppNotificationItem from './AppNotificationItem'
 import './AppNotifications.scss'
-import IconWrapper from '../../general/Icon/IconWrapper/IconWrapper'
 import AppNotificationsHeader from './AppNotificationsHeader'
 import AppNotificationsEmpty from './AppNotificationsEmpty'
 

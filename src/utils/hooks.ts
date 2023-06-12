@@ -293,10 +293,10 @@ export const useFormattedTime = (timestamp?: number) => {
       return `Yesterday ${format(messageDate, 'HH:mm')}`
     }
     if (isSameWeek(today, messageDate)) {
-      return format(messageDate, 'iiii')
+      return format(messageDate, 'MMMM dd HH:mm')
     }
 
-    return format(messageDate, 'MMMM dd')
+    return format(messageDate, 'MMMM dd HH:mm')
   }, [timestamp])
 
   return formattedTime
