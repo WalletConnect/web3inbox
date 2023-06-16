@@ -1,7 +1,7 @@
-import type { ExternalCommunicator } from './communicatorType'
-import type { EventEmitter } from 'events'
 import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import type { EventEmitter } from 'events'
+import type { ExternalCommunicator, TTargetClient } from './communicatorType'
 
 declare global {
   interface Window {
@@ -13,9 +13,11 @@ declare global {
 
 export class ReactNativeCommunicator implements ExternalCommunicator {
   private readonly emitter: EventEmitter
+  private readonly targetClient: TTargetClient
 
-  public constructor(emitter: EventEmitter) {
+  public constructor(emitter: EventEmitter, targetClient: TTargetClient) {
     this.emitter = emitter
+    this.targetClient = targetClient
   }
 
   public async postToExternalProvider<TReturn>(methodName: string, params: unknown) {
@@ -27,7 +29,9 @@ export class ReactNativeCommunicator implements ExternalCommunicator {
       }
       this.emitter.once(message.id.toString(), messageListener)
       if (window.ReactNativeWebView) {
-        window.ReactNativeWebView.postMessage(JSON.stringify(message))
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({ ...message, targetClient: this.targetClient })
+        )
       }
     })
   }

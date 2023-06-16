@@ -1,10 +1,10 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
+import type { EventEmitter } from 'events'
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
+import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
 import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
 import { ReactNativeCommunicator } from '../externalCommunicators/reactNativeCommunicator'
-import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
-import type { EventEmitter } from 'events'
 
 export default class ExternalAuthProvider {
   protected readonly emitter: EventEmitter
@@ -26,7 +26,7 @@ export default class ExternalAuthProvider {
         this.communicator = new IOSCommunicator(this.emitter)
         break
       case 'reactnative':
-        this.communicator = new ReactNativeCommunicator(this.emitter)
+        this.communicator = new ReactNativeCommunicator(this.emitter, 'auth')
         break
       default:
         this.communicator = new JsCommunicator(this.emitter)
