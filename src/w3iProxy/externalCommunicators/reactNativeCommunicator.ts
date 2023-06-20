@@ -20,13 +20,24 @@ export class ReactNativeCommunicator implements ExternalCommunicator {
     this.targetClient = targetClient
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private reviver(key: string, value: any) {
+    if (typeof value === 'object' && value !== null) {
+      if (value.dataType === 'Map') {
+        return new Map(value.value)
+      }
+    }
+
+    return value
+  }
+
   public async postToExternalProvider<TReturn>(methodName: string, params: unknown) {
     return new Promise<TReturn>(resolve => {
       const message = formatJsonRpcRequest(methodName, params)
 
-      const messageListener = (messageResponse: string) => {
-        const messageRes = JSON.parse(messageResponse) as JsonRpcResult<TReturn>
-        resolve(messageRes.result)
+      const messageListener = (messageResponse: JsonRpcResult<TReturn>) => {
+        const messageResult = JSON.parse(messageResponse.result as string, this.reviver)
+        resolve(messageResult)
       }
       this.emitter.once(message.id.toString(), messageListener)
       if (window.ReactNativeWebView) {
