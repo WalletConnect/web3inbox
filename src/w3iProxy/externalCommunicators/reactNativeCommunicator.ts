@@ -24,8 +24,9 @@ export class ReactNativeCommunicator implements ExternalCommunicator {
     return new Promise<TReturn>(resolve => {
       const message = formatJsonRpcRequest(methodName, params)
 
-      const messageListener = (messageResponse: JsonRpcResult<TReturn>) => {
-        resolve(messageResponse.result)
+      const messageListener = (messageResponse: string) => {
+        const messageRes = JSON.parse(messageResponse) as JsonRpcResult<TReturn>
+        resolve(messageRes.result)
       }
       this.emitter.once(message.id.toString(), messageListener)
       if (window.ReactNativeWebView) {
