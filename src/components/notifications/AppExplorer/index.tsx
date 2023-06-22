@@ -23,9 +23,9 @@ const AppExplorer = () => {
           )
         }
 
-        const activeSubscriptionAppNames = activeSubscriptions.map(sub => sub.metadata.name)
+        const activeSubscriptionAppNames = activeSubscriptions.map(sub => sub.metadata.url)
 
-        return !activeSubscriptionAppNames.includes(app.name)
+        return !activeSubscriptionAppNames.includes(app.url)
       }),
     [appSearchTerm, projects, activeSubscriptions]
   )
