@@ -21,7 +21,7 @@ export const storeWagmiInfoInCookie = (metadata?: Record<string, unknown>) => {
 }
 
 export const recoverWagmiInfoFromCookie = () => {
-  console.log('Attempting to recover')
+  console.log('Attempting to recover', document.cookie)
   const wagmiRestoreRaw = readCookie(WAGMI_INFO)
   if (wagmiRestoreRaw) {
     const wagmiRestore = JSON.parse(wagmiRestoreRaw) as Record<string, string>
