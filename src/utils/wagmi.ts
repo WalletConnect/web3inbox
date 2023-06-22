@@ -2,7 +2,7 @@ import { deleteCookie, ONE_MONTH, readCookie, setCookie } from './cookies'
 
 const WAGMI_INFO = 'wagmiInfo'
 
-export const storeWagmiInfoInCookie = () => {
+export const storeWagmiInfoInCookie = (metadata?: Record<string, unknown>) => {
   const wagmiKeys = [
     'wagmi.store',
     'wagmi.injected.shimDisconnect',
@@ -16,7 +16,7 @@ export const storeWagmiInfoInCookie = () => {
     key: WAGMI_INFO,
     maxAgeSeconds: ONE_MONTH,
     samesite: 'None',
-    value: JSON.stringify(wagmiInfo)
+    value: JSON.stringify({ ...wagmiInfo, metadata })
   })
 }
 
