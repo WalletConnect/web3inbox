@@ -1,7 +1,7 @@
 import { getAccount, watchAccount } from '@wagmi/core'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import type { EventEmitter } from 'events'
-import { ONE_MONTH, readCookie, setCookie } from '../../components/utils/cookies'
+import { recoverWagmiInfoFromCookie, storeWagmiInfoInCookie } from '../../utils/wagmi'
 
 export default class InternalAuthProvider {
   private readonly methodsListenedTo = ['auth_set_account']
@@ -15,31 +15,12 @@ export default class InternalAuthProvider {
     watchAccount(account => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!account.address) {
-        const wagmiRestoreRaw = readCookie('wagmiRestore')
-        if (wagmiRestoreRaw) {
-          const wagmiRestore = JSON.parse(wagmiRestoreRaw) as Record<string, string>
-          Object.entries(wagmiRestore).forEach(([key, value]) => {
-            localStorage.setItem(key, value)
-          })
-          document.location.reload()
-        }
+        recoverWagmiInfoFromCookie()
 
         return
       }
 
-      const wagmiInfo = {
-        'wagmi.store': localStorage.getItem('wagmi.store'),
-        'wagmi.injected.shimDisconnect': localStorage.getItem('wagmi.injected.shimDisconnect'),
-        'wagmi.wallet': localStorage.getItem('wagmi.wallet'),
-        'wagmi.connected': localStorage.getItem('wagmi.connected')
-      }
-
-      setCookie({
-        key: 'wagmiRestore',
-        maxAgeSeconds: ONE_MONTH,
-        samesite: 'None',
-        value: JSON.stringify(wagmiInfo)
-      })
+      storeWagmiInfoInCookie()
 
       this.emitter.emit('auth_set_account', { account: account.address })
     })
