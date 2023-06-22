@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export const useUiState = () => {
   const query = new URLSearchParams(window.location.search)
@@ -7,27 +7,17 @@ export const useUiState = () => {
   const chatEnabledQuery = query.get('chatEnabled')
   const settingsEnabledQuery = query.get('settingsEnabled')
 
-  const [uiEnabled, setUiEnabled] = useState({
-    push: pushEnabledQuery ? JSON.parse(pushEnabledQuery) : true,
-    settings: settingsEnabledQuery ? JSON.parse(settingsEnabledQuery) : true,
-    chat: chatEnabledQuery ? JSON.parse(chatEnabledQuery) : true,
-    sidebar: false
+  const push: boolean = pushEnabledQuery ? JSON.parse(pushEnabledQuery) : true
+  const settings: boolean = settingsEnabledQuery ? JSON.parse(settingsEnabledQuery) : true
+  const chat: boolean = chatEnabledQuery ? JSON.parse(chatEnabledQuery) : true
+
+  const totalPagesEnabled = Number(push) + Number(settings) + Number(chat)
+  const [uiEnabled] = useState({
+    push,
+    settings,
+    chat,
+    sidebar: totalPagesEnabled > 1
   })
-
-  useEffect(() => {
-    setUiEnabled(oldUiEnabled => {
-      const totalPagesEnabled = Object.values(oldUiEnabled).reduce<number>(
-        (pagesAvailable, pageEnabled) => (pageEnabled ? pagesAvailable + 1 : pagesAvailable),
-        0
-      )
-
-      if (totalPagesEnabled) {
-        return { ...oldUiEnabled, sidebar: true }
-      }
-
-      return oldUiEnabled
-    })
-  }, [setUiEnabled])
 
   return { uiEnabled }
 }
