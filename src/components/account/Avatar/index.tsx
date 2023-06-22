@@ -17,6 +17,7 @@ import PersonIcon from '../../general/Icon/PersonIcon'
 import ShareIcon from '../../general/Icon/ShareIcon'
 import CopyIcon from '../../general/Icon/CopyIcon'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../utils/toasts'
+import { deleteWagmiInfoFromCookies } from '../../../utils/wagmi'
 
 interface AvatarProps {
   address?: string
@@ -53,6 +54,7 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
   }, [mode])
 
   const handleDisconnect = useCallback(() => {
+    deleteWagmiInfoFromCookies()
     disconnect()
     setUserPubkey(undefined)
     navigate('/login')

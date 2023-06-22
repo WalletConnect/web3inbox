@@ -1,15 +1,19 @@
-import { ONE_MONTH, readCookie, setCookie } from './cookies'
+import { deleteCookie, ONE_MONTH, readCookie, setCookie } from './cookies'
+
+const WAGMI_INFO = 'wagmiInfo'
 
 export const storeWagmiInfoInCookie = () => {
-  const wagmiInfo = {
-    'wagmi.store': localStorage.getItem('wagmi.store'),
-    'wagmi.injected.shimDisconnect': localStorage.getItem('wagmi.injected.shimDisconnect'),
-    'wagmi.wallet': localStorage.getItem('wagmi.wallet'),
-    'wagmi.connected': localStorage.getItem('wagmi.connected')
-  }
+  const wagmiKeys = [
+    'wagmi.store',
+    'wagmi.injected.shimDisconnect',
+    'wagmi.wallet',
+    'wagmi.connected'
+  ]
+
+  const wagmiInfo = Object.fromEntries(wagmiKeys.map(key => [key, localStorage.getItem(key)]))
 
   setCookie({
-    key: 'wagmiRestore',
+    key: WAGMI_INFO,
     maxAgeSeconds: ONE_MONTH,
     samesite: 'None',
     value: JSON.stringify(wagmiInfo)
@@ -17,7 +21,7 @@ export const storeWagmiInfoInCookie = () => {
 }
 
 export const recoverWagmiInfoFromCookie = () => {
-  const wagmiRestoreRaw = readCookie('wagmiRestore')
+  const wagmiRestoreRaw = readCookie(WAGMI_INFO)
   if (wagmiRestoreRaw) {
     const wagmiRestore = JSON.parse(wagmiRestoreRaw) as Record<string, string>
     Object.entries(wagmiRestore).forEach(([key, value]) => {
@@ -25,4 +29,8 @@ export const recoverWagmiInfoFromCookie = () => {
     })
     document.location.reload()
   }
+}
+
+export const deleteWagmiInfoFromCookies = () => {
+  deleteCookie(WAGMI_INFO)
 }
