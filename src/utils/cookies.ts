@@ -13,7 +13,7 @@ export const setCookie = (cookie: Cookie) => {
   const base = `${encodeURIComponent(key)}=${value}`
   const sameSitePolicy = `SameSite=${samesite}`
   const maxAge = `max-age=${maxAgeSeconds}`
-  const domain = `Domain=${window.location.origin}`
+  const domain = `Domain=${window.location.host}`
   const secure = `Secure`
   const path = `path=/`
 
@@ -42,7 +42,7 @@ export const deleteCookie = (cookieKey: string) => {
   const base = `${encodeURIComponent(cookieKey)}=`
   const expires = `expires=Thu, 01 Jan 1970 00:00:00 GMT`
   const secure = `Secure`
-  const domain = `Domain=${window.location.origin}`
+  const domain = `Domain=${window.location.host}`
   const path = `path=/`
   const cookieString = `${base}; ${expires}; ${secure}; ${domain}; ${path};`
   document.cookie = cookieString
