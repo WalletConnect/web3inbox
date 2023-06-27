@@ -16,7 +16,7 @@ export const storeWagmiInfoInCookie = (metadata?: Record<string, unknown>) => {
     key: WAGMI_INFO,
     maxAgeSeconds: ONE_MONTH,
     samesite: 'None',
-    value: JSON.stringify({ ...wagmiInfo, metadata })
+    value: JSON.stringify({ ...wagmiInfo, metadata: JSON.stringify(metadata) })
   })
 }
 
