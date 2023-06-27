@@ -32,5 +32,5 @@ export const readCookie = (cookieKey: string) => {
 }
 
 export const deleteCookie = (cookieKey: string) => {
-  document.cookie = `${encodeURIComponent(cookieKey)}=0;max-age=0;`
+  document.cookie = `${encodeURIComponent(cookieKey)}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;`
 }
