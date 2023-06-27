@@ -12,7 +12,7 @@ export const setCookie = (cookie: Cookie) => {
 
   const baseCookie = `${encodeURIComponent(key)}=${value}`
 
-  const cookieString = `${baseCookie}; SameSite=${samesite}; max-age=${maxAgeSeconds}; Secure;`
+  const cookieString = `${baseCookie}; SameSite=${samesite}; max-age=${maxAgeSeconds}; Secure; path=/;`
 
   console.log('1Cookie1 Setting, ', cookieString)
 
@@ -36,6 +36,6 @@ export const deleteCookie = (cookieKey: string) => {
   console.log('1Cookie1 Deleting', cookieKey)
   document.cookie = `${encodeURIComponent(
     cookieKey
-  )}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;`
+  )}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; path=/;`
   console.log('1Cookie1 Aftermath', document.cookie)
 }
