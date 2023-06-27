@@ -34,6 +34,8 @@ export const readCookie = (cookieKey: string) => {
 
 export const deleteCookie = (cookieKey: string) => {
   console.log('1Cookie1 Deleting', cookieKey)
-  document.cookie = `${encodeURIComponent(cookieKey)}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;`
+  document.cookie = `${encodeURIComponent(
+    cookieKey
+  )}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;`
   console.log('1Cookie1 Aftermath', document.cookie)
 }

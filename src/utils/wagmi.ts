@@ -12,6 +12,17 @@ export const storeWagmiInfoInCookie = (metadata?: Record<string, unknown>) => {
 
   const wagmiInfo = Object.fromEntries(wagmiKeys.map(key => [key, localStorage.getItem(key)]))
 
+  const storeInfoRaw = wagmiInfo['wagmi.store']
+  if (!storeInfoRaw) {
+    return
+  }
+
+  const storeInfo = JSON.parse(storeInfoRaw)
+
+  if (!storeInfo.state?.data?.account) {
+    return
+  }
+
   setCookie({
     key: WAGMI_INFO,
     maxAgeSeconds: ONE_MONTH,

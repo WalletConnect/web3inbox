@@ -54,8 +54,8 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
   }, [mode])
 
   const handleDisconnect = useCallback(() => {
-    deleteWagmiInfoFromCookies()
     disconnect()
+    deleteWagmiInfoFromCookies()
     setUserPubkey(undefined)
     navigate('/login')
   }, [disconnect, navigate, setUserPubkey])
