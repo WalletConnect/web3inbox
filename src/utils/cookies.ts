@@ -10,9 +10,14 @@ export const ONE_MONTH = 60 * 60 * 24 * 30
 export const setCookie = (cookie: Cookie) => {
   const { key, value, samesite, maxAgeSeconds } = cookie
 
-  const baseCookie = `${encodeURIComponent(key)}=${value}`
+  const base = `${encodeURIComponent(key)}=${value}`
+  const sameSitePolicy = `SameSite=${samesite}`
+  const maxAge = `max-age=${maxAgeSeconds}`
+  const domain = `Domain=${window.location.origin}`
+  const secure = `Secure`
+  const path = `path=/`
 
-  const cookieString = `${baseCookie}; SameSite=${samesite}; max-age=${maxAgeSeconds}; Secure; path=/;`
+  const cookieString = `${base}; ${sameSitePolicy}; ${maxAge}; ${secure}; ${domain}; ${path};`
 
   console.log('1Cookie1 Setting, ', cookieString)
 
@@ -34,8 +39,13 @@ export const readCookie = (cookieKey: string) => {
 
 export const deleteCookie = (cookieKey: string) => {
   console.log('1Cookie1 Deleting', cookieKey)
-  document.cookie = `${encodeURIComponent(
-    cookieKey
-  )}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; path=/;`
+  const base = `${encodeURIComponent(cookieKey)}=`
+  const expires = `expires=Thu, 01 Jan 1970 00:00:00 GMT`
+  const secure = `Secure`
+  const domain = `Domain=${window.location.origin}`
+  const path = `path=/`
+  const cookieString = `${base}; ${expires}; ${secure}; ${domain}; ${path};`
+  document.cookie = cookieString
+  console.log('1Cookie1 Delete string', cookieString)
   console.log('1Cookie1 Aftermath', document.cookie)
 }
