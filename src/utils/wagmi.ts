@@ -19,7 +19,7 @@ export const storeWagmiInfoInCookie = (metadata?: Record<string, unknown>) => {
 
   const storeInfo = JSON.parse(storeInfoRaw)
 
-  if (!storeInfo.state?.data?.account) {
+  if (!storeInfo.state?.data?.account || !storeInfo.data?.account) {
     return
   }
 
