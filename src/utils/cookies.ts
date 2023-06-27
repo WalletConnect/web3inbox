@@ -14,12 +14,13 @@ export const setCookie = (cookie: Cookie) => {
 
   const cookieString = `${baseCookie}; SameSite=${samesite}; max-age=${maxAgeSeconds}; Secure;`
 
-  console.log('Setting, ', cookieString)
+  console.log('1Cookie1 Setting, ', cookieString)
 
   document.cookie = cookieString
 }
 
 export const readCookie = (cookieKey: string) => {
+  console.log('1Cookie1 Reading from', cookieKey)
   const cookies = document.cookie.split(';')
   const foundCookie = cookies.find(value => {
     return value.startsWith(`${encodeURIComponent(cookieKey)}=`)
@@ -32,6 +33,7 @@ export const readCookie = (cookieKey: string) => {
 }
 
 export const deleteCookie = (cookieKey: string) => {
-  console.log('Deleting', cookieKey)
+  console.log('1Cookie1 Deleting', cookieKey)
   document.cookie = `${encodeURIComponent(cookieKey)}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;`
+  console.log('1Cookie1 Aftermath', cookieKey)
 }
