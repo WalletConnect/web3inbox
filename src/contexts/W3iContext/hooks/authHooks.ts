@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useDisconnect } from 'wagmi'
+import { disconnect as wagmiDisconnect } from '@wagmi/core'
 import type Web3InboxProxy from '../../../w3iProxy'
 import type W3iAuthFacade from '../../../w3iProxy/w3iAuthFacade'
 
@@ -17,12 +17,10 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
   const { search } = useLocation()
 
-  const { disconnect: wagmiDisconnect } = useDisconnect()
-
   const disconnect = useCallback(() => {
     setUserPubkey(undefined)
     wagmiDisconnect()
-  }, [wagmiDisconnect])
+  }, [setUserPubkey])
 
   useEffect(() => {
     const account = new URLSearchParams(search).get('account')

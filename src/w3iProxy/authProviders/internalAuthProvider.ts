@@ -13,6 +13,8 @@ export default class InternalAuthProvider {
     watchAccount(account => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!account.address || !window.web3inbox.chat) {
+        this.emitter.emit('auth_set_account', { account: null })
+
         return
       }
 

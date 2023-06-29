@@ -9,7 +9,7 @@ import ExternalChatProvider from './chatProviders/externalChatProvider'
 import { filter, from, ReplaySubject, scan, throwError, timeout } from 'rxjs'
 import { ONE_DAY } from '@walletconnect/time'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
-import { hashMessage } from 'ethers/lib/utils.js'
+import { hashMessage } from 'viem'
 import { ObservablesController } from './observablesController'
 
 export type ReplayMessage = ChatClientTypes.Message & {

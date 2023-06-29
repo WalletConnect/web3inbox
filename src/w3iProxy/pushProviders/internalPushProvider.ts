@@ -19,7 +19,7 @@ export default class InternalPushProvider implements W3iPushProvider {
   public initState(pushClient: PushWalletClient) {
     this.pushClient = pushClient
 
-    this.pushClient.on('push_request', args => this.emitter.emit('push_request', args))
+    this.pushClient.on('push_proposal', args => this.emitter.emit('push_request', args))
     this.pushClient.on('push_subscription', args => this.emitter.emit('push_subscription', args))
     this.pushClient.on('push_message', args => this.emitter.emit('push_message', args))
     this.pushClient.on('push_update', args => this.emitter.emit('push_update', args))

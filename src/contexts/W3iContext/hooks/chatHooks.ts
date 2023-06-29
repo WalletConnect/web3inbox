@@ -62,6 +62,9 @@ export const useChatState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   useEffect(() => {
     if (userPubkey) {
       handleRegistration(userPubkey)
+    } else {
+      setRegistered(null)
+      setRegisterMessage(null)
     }
   }, [chatClient, userPubkey])
 
