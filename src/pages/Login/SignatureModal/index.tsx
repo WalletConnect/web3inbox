@@ -11,7 +11,7 @@ import CrossIcon from '../../../components/general/Icon/CrossIcon'
 import W3iContext from '../../../contexts/W3iContext/context'
 
 export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
-  const { disconnect } = useContext(W3iContext)
+  const { disconnect, userPubkey } = useContext(W3iContext)
   const purpose: 'identity' | 'sync' = message.includes('did:key') ? 'identity' : 'sync'
   /*
    * If identity was already signed, and sync was requested then we are in the
@@ -43,7 +43,9 @@ export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
 
   // Modal is ready to sign when given a new purpose
   useEffect(() => {
-    setSigning(false)
+    setTimeout(() => {
+      setSigning(false)
+    }, 0)
   }, [purpose, setSigning])
 
   const purposeMessage =

@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useBalance, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
+import { useBalance, useEnsAvatar, useEnsName } from 'wagmi'
 
 import DisconnectIcon from '../../general/Icon/DisconnectIcon'
 import ETH from '../../../assets/ETH.svg'
@@ -27,7 +27,7 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropdown = false }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const { setUserPubkey } = useContext(W3iContext)
+  const { setUserPubkey, disconnect } = useContext(W3iContext)
   const ref = useRef(null)
   const navigate = useNavigate()
   const addressOrEnsDomain = address as `0x${string}` | undefined
@@ -36,7 +36,6 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
   const { data: balance } = useBalance({
     address: addressOrEnsDomain
   })
-  const { disconnect } = useDisconnect()
   const handleToggleProfileDropdown = useCallback(
     () => hasProfileDropdown && setIsDropdownOpen(currentState => !currentState),
     [setIsDropdownOpen, hasProfileDropdown]
