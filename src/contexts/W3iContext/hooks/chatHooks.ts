@@ -49,7 +49,6 @@ export const useChatState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
       if (chatClient && key && uiEnabled.chat) {
         try {
           const registeredKeyRes = await chatClient.register({ account: `eip155:1:${key}` })
-          console.log({ registeredKeyRes })
           refreshChatState()
           setRegistered(registeredKeyRes)
         } catch (error) {
