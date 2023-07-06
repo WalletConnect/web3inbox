@@ -38,8 +38,6 @@ export const SignatureModal: React.FC<{
     setSigning(true)
     signMessage({ message }).then(signature => {
       setStepProgress(pv => pv + 1)
-
-      console.log('Sig', { sender })
       switch (sender) {
         case 'chat':
           window.web3inbox.chat.postMessage(
