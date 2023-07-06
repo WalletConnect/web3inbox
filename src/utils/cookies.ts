@@ -1,7 +1,7 @@
 export interface Cookie {
   key: string
   value: string
-  samesite: 'Lax' | 'None'
+  samesite: 'Lax' | 'none'
   maxAgeSeconds: number
 }
 
@@ -17,7 +17,9 @@ export const setCookie = (cookie: Cookie) => {
   const secure = `Secure`
   const path = `path=/`
 
-  const cookieString = `${base}; ${sameSitePolicy}; ${maxAge}; ${secure}; ${domain}; ${path};`
+  const includedStrings = [base, maxAge, domain, path, sameSitePolicy, secure]
+
+  const cookieString = `${includedStrings.join(';')};`
 
   console.log('1Cookie1 Setting, ', cookieString)
 
@@ -25,8 +27,9 @@ export const setCookie = (cookie: Cookie) => {
 }
 
 export const readCookie = (cookieKey: string) => {
-  console.log('1Cookie1 Reading from', cookieKey)
+  console.log('1Cookie1 Reading from', cookieKey, 'Full cookie', document.cookie)
   const cookies = document.cookie.split(';')
+  console.log('1Cookie1', cookies)
   const foundCookie = cookies.find(value => {
     return value.startsWith(`${encodeURIComponent(cookieKey)}=`)
   })

@@ -7,6 +7,7 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains'
 import SettingsContextProvider from './contexts/SettingsContext'
 import W3iContextProvider from './contexts/W3iContext'
+import { InjectedConnector } from '@wagmi/core/connectors/injected'
 import './index.css'
 import './styles/fonts.css'
 import { AnimatePresence } from 'framer-motion'
@@ -18,7 +19,7 @@ const chains = [mainnet, polygon, optimism, arbitrum]
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
+  connectors: [...w3mConnectors({ projectId, chains }), new InjectedConnector()],
   publicClient
 })
 

@@ -20,7 +20,8 @@ export default class InternalAuthProvider {
         return
       }
 
-      storeWagmiInfoInCookie({ address: account.address, origin: document.location.origin })
+      // storeWagmiInfoInCookie({ address: account.address, origin: document.location.origin })
+      storeWagmiInfoInCookie({})
 
       this.emitter.emit('auth_set_account', { account: account.address })
     })
