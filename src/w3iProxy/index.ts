@@ -31,7 +31,7 @@ class Web3InboxProxy {
   private readonly projectId: string
   private readonly uiEnabled: UiEnabled
   private syncClient: ISyncClient | undefined
-  private readonly core: ICore
+  private readonly core: ICore | undefined
 
   private isInitialized = false
 
@@ -59,11 +59,13 @@ class Web3InboxProxy {
     this.relayUrl = relayUrl
     this.projectId = projectId
     this.uiEnabled = uiEnabled
-    this.core = new Core({
-      logger: 'debug',
-      relayUrl: this.relayUrl,
-      projectId: this.projectId
-    })
+    if (this.chatProvider === 'internal' || this.pushProvider === 'internal') {
+      this.core = new Core({
+        logger: 'debug',
+        relayUrl: this.relayUrl,
+        projectId: this.projectId
+      })
+    }
   }
 
   public static getProxy(
@@ -124,7 +126,8 @@ class Web3InboxProxy {
       return
     }
 
-    if (!this.syncClient) {
+    // If core is initialized, we should init sync because some SDK needs it
+    if (!this.syncClient && this.core) {
       this.syncClient = await SyncClient.init({
         core: this.core,
         projectId: this.projectId
@@ -136,7 +139,8 @@ class Web3InboxProxy {
         projectId: this.projectId,
         SyncStoreController: SyncStore,
         core: this.core,
-        syncClient: this.syncClient,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        syncClient: this.syncClient!,
         keyserverUrl: 'https://keys.walletconnect.com'
       })
       await this.chatFacade.initInternalProvider(this.chatClient)
