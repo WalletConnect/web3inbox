@@ -14,6 +14,7 @@ type NonMethodPushClientKeys =
   | 'history'
   | 'identityKeys'
   | 'init'
+  | 'initSyncStores'
   | 'keyserverUrl'
   | 'logger'
   | 'messages'
@@ -28,6 +29,8 @@ type NonMethodPushClientKeys =
   | 'removeListener'
   | 'requests'
   | 'subscriptions'
+  | 'syncClient'
+  | 'SyncStoreController'
   | 'version'
 
 /*

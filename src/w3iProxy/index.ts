@@ -138,9 +138,9 @@ class Web3InboxProxy {
       this.chatClient = await ChatClient.init({
         projectId: this.projectId,
         SyncStoreController: SyncStore,
-        core: this.core,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         syncClient: this.syncClient!,
+        core: this.core,
         keyserverUrl: 'https://keys.walletconnect.com'
       })
       await this.chatFacade.initInternalProvider(this.chatClient)
@@ -149,6 +149,9 @@ class Web3InboxProxy {
     if (this.pushProvider === 'internal' && this.uiEnabled.push && !this.pushClient) {
       this.pushClient = await PushWalletClient.init({
         logger: 'info',
+        SyncStoreController: SyncStore,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        syncClient: this.syncClient!,
         core: this.core
       })
 
