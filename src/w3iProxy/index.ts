@@ -31,7 +31,7 @@ class Web3InboxProxy {
   private readonly projectId: string
   private readonly uiEnabled: UiEnabled
   private syncClient: ISyncClient | undefined
-  private readonly core: ICore
+  private readonly core: ICore | undefined
 
   private isInitialized = false
 
@@ -126,10 +126,8 @@ class Web3InboxProxy {
       return
     }
 
-    if (
-      !this.syncClient &&
-      (this.chatProvider === 'internal' || this.pushProvider === 'internal')
-    ) {
+    // If core is initialized, we should init sync because some SDK needs it
+    if (!this.syncClient && this.core) {
       this.syncClient = await SyncClient.init({
         core: this.core,
         projectId: this.projectId
