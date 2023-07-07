@@ -20,8 +20,14 @@ import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import Subscribe from './components/notifications/SubscribeModal'
 
 const App = () => {
-  const { chatClientProxy, userPubkey, uiEnabled, registeredKey, registerMessage } =
-    useContext(W3iContext)
+  const {
+    chatClientProxy,
+    userPubkey,
+    uiEnabled,
+    registeredKey,
+    chatRegisterMessage,
+    pushRegisterMessage
+  } = useContext(W3iContext)
   const {
     isProfileModalOpen,
     isShareModalOpen,
@@ -64,12 +70,15 @@ const App = () => {
   }, [chatClientProxy])
 
   useEffect(() => {
-    if (userPubkey && !registeredKey && registerMessage) {
+    const chatSignatureRequired = !registeredKey && chatRegisterMessage
+    const pushSignatureRequired = Boolean(pushRegisterMessage)
+    console.log({ chatSignatureRequired, pushSignatureRequired })
+    if (userPubkey && (chatSignatureRequired || pushSignatureRequired)) {
       signatureModalService.openModal()
     } else {
       signatureModalService.closeModal()
     }
-  }, [userPubkey, registeredKey, registerMessage])
+  }, [userPubkey, registeredKey, chatRegisterMessage, pushRegisterMessage])
 
   return (
     <AuthProtectedPage>
@@ -93,8 +102,11 @@ const App = () => {
                 {isSubscribeModalOpen && <Subscribe />}
                 {isPreferencesModalOpen && <PreferencesModal />}
                 {isUnsubscribeModalOpen && <UnsubscribeModal />}
-                {isSignatureModalOpen && registerMessage && (
-                  <SignatureModal message={registerMessage} />
+                {isSignatureModalOpen && (
+                  <SignatureModal
+                    message={chatRegisterMessage ?? pushRegisterMessage ?? ''}
+                    sender={chatRegisterMessage ? 'chat' : 'push'}
+                  />
                 )}
               </AnimatePresence>
             </Fragment>

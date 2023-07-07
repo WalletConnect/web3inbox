@@ -25,10 +25,14 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     threads,
     invites,
     registeredKey,
-    registerMessage
+    registerMessage: chatRegisterMessage
   } = useChatState(w3iProxy, isW3iProxyReady)
 
-  const { pushClient, activeSubscriptions } = usePushState(w3iProxy, isW3iProxyReady)
+  const {
+    pushClient,
+    activeSubscriptions,
+    registerMessage: pushRegisterMessage
+  } = usePushState(w3iProxy, isW3iProxyReady)
 
   return (
     <W3iContext.Provider
@@ -46,7 +50,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         disconnect,
         registeredKey,
         setUserPubkey,
-        registerMessage,
+        chatRegisterMessage,
+        pushRegisterMessage,
         pushClientProxy: pushClient
       }}
     >

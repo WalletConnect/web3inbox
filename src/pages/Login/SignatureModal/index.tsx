@@ -10,8 +10,11 @@ import Spinner from '../../../components/general/Spinner'
 import CrossIcon from '../../../components/general/Icon/CrossIcon'
 import W3iContext from '../../../contexts/W3iContext/context'
 
-export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
-  const { disconnect, userPubkey } = useContext(W3iContext)
+export const SignatureModal: React.FC<{
+  message: string
+  sender: 'chat' | 'push'
+}> = ({ message, sender }) => {
+  const { disconnect } = useContext(W3iContext)
   const purpose: 'identity' | 'sync' = message.includes('did:key') ? 'identity' : 'sync'
   /*
    * If identity was already signed, and sync was requested then we are in the
@@ -35,11 +38,22 @@ export const SignatureModal: React.FC<{ message: string }> = ({ message }) => {
     setSigning(true)
     signMessage({ message }).then(signature => {
       setStepProgress(pv => pv + 1)
-      window.web3inbox.chat.postMessage(
-        formatJsonRpcRequest('chat_signature_delivered', { signature })
-      )
+      switch (sender) {
+        case 'chat':
+          window.web3inbox.chat.postMessage(
+            formatJsonRpcRequest('chat_signature_delivered', { signature })
+          )
+          break
+        case 'push':
+          window.web3inbox.push.postMessage(
+            formatJsonRpcRequest('push_signature_delivered', { signature })
+          )
+          break
+        default:
+          console.error('No correct sender for signature modal')
+      }
     })
-  }, [message, setStepProgress, setSigning])
+  }, [message, sender, setStepProgress, setSigning])
 
   // Modal is ready to sign when given a new purpose
   useEffect(() => {

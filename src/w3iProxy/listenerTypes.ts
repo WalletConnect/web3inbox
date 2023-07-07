@@ -27,5 +27,7 @@ export interface PushFacadeEvents {
   push_subscription: PushClientTypes.EventArguments['push_subscription']
   push_update: PushClientTypes.EventArguments['push_update']
   push_delete: PushClientTypes.EventArguments['push_delete']
+  push_signature_requested: { message: string }
+  push_signature_request_cancelled: never
   sync_update: never
 }
