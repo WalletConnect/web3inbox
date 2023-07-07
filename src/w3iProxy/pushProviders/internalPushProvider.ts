@@ -65,13 +65,14 @@ export default class InternalPushProvider implements W3iPushProvider {
         this.emitter.emit('push_signature_requested', { message })
 
         return new Promise(resolve => {
-          setInterval(() => {
+          const intervalId = setInterval(() => {
             const signatureForAccountExists = this.pushClient?.syncClient.signatures.getAll({
               account: params.account
             })?.length
             if (this.pushClient && signatureForAccountExists) {
               const { signature } = this.pushClient.syncClient.signatures.get(params.account)
               this.emitter.emit('push_signature_request_cancelled', {})
+              clearInterval(intervalId)
               resolve(signature)
             }
           }, 100)
