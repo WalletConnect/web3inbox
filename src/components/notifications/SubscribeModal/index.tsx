@@ -16,11 +16,11 @@ import { useModals } from '../../../utils/hooks'
 import type { PushClientTypes } from '@walletconnect/push-client'
 
 interface ModalContentProps {
-  modalService: typeof subscribeModalService
+  onCompletion: () => void
   handleBack?: () => void
 }
 
-export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalService }) => {
+export const SubscribeModalContent: React.FC<ModalContentProps> = ({ onCompletion }) => {
   const [allowing, setAllowing] = useState(false)
   const [declining, setDeclining] = useState(false)
   const { subscribeModalMetadata } = useModals()
@@ -48,7 +48,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
         })
         .finally(() => {
           setAllowing(false)
-          modalService.closeModal()
+          onCompletion()
         })
     },
     [pushClientProxy, setAllowing]
@@ -67,7 +67,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
         })
         .finally(() => {
           setDeclining(false)
-          modalService.closeModal()
+          onCompletion()
         })
     },
     [pushClientProxy, setDeclining]
@@ -97,7 +97,7 @@ export const SubscribeModalContent: React.FC<ModalContentProps> = ({ modalServic
         <button
           className="Subscribe__header--close"
           onClick={() => {
-            modalService.closeModal()
+            onCompletion()
             localStorage.removeItem('ens-records')
           }}
         >
@@ -280,7 +280,7 @@ const Subscribe: React.FC = () => {
       <AnimatePresence mode="wait" initial={false}>
         <SubscribeModalContent
           key="Subscribe"
-          modalService={subscribeModalService}
+          onCompletion={() => subscribeModalService.closeModal()}
           handleBack={subscribeModalService.closeModal}
         />
       </AnimatePresence>
