@@ -16,6 +16,7 @@ interface W3iContextState {
   chatClientProxy: W3iChatClient | null
   registeredKey: string | null
   refreshThreadsAndInvites: () => void
+  refreshNotifications: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
   activeSubscriptions: PushClientTypes.PushSubscription[]
   sentInvites: ChatClientTypes.SentInvite[]
@@ -36,6 +37,8 @@ const W3iContext = createContext<W3iContextState>({
   registeredKey: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   refreshThreadsAndInvites: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  refreshNotifications: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   disconnect: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function

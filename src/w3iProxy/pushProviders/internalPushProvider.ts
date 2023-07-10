@@ -151,12 +151,12 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.deleteSubscription(params)
   }
 
-  public async getActiveSubscriptions() {
+  public async getActiveSubscriptions(params?: { account: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
 
-    const subscriptions = this.pushClient.getActiveSubscriptions()
+    const subscriptions = this.pushClient.getActiveSubscriptions(params)
 
     console.log(
       'InternalPushProvider > PushClient.getActiveSubscriptions > subscriptions',
