@@ -80,7 +80,7 @@ const AppNotifications = () => {
               {notifications.map(notification => (
                 <AppNotificationItem
                   key={notification.id}
-                  onClear={refreshNotifications}
+                  onClear={updateMessages}
                   notification={{
                     timestamp: notification.publishedAt,
                     // We do not manage read status for now.
