@@ -20,14 +20,19 @@ export interface IAppNotification {
 }
 interface IAppNotificationProps {
   notification: IAppNotification
+  onClear: () => void
   appLogo: string
 }
 
 const DRAG_OFFSET = 150
 
-const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, appLogo }) => {
+const AppNotificationItem: React.FC<IAppNotificationProps> = ({
+  notification,
+  appLogo,
+  onClear
+}) => {
   const formattedTime = useFormattedTime(notification.timestamp)
-  const { pushClientProxy, refreshNotifications } = useContext(W3iContext)
+  const { pushClientProxy } = useContext(W3iContext)
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
 
   const [notificationsDrag, setNotificationsDrag] = useContext<AppNotificationsDragContext>(
@@ -54,9 +59,9 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
 
   const handleClearClick = useCallback(() => {
     dragControls.start('hidden')
-    pushClientProxy?.deletePushMessage({ id: Number(notification.id) }).then(refreshNotifications)
+    pushClientProxy?.deletePushMessage({ id: Number(notification.id) }).then(onClear)
     actionControls.start('hidden')
-  }, [pushClientProxy, refreshNotifications])
+  }, [pushClientProxy, onClear])
 
   const handleUnreadClick = () => {
     dragControls.start('hidden')
