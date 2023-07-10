@@ -27,6 +27,10 @@ export default class InternalPushProvider implements W3iPushProvider {
     this.pushClient.on('push_update', args => this.emitter.emit('push_update', args))
     this.pushClient.on('push_delete', args => this.emitter.emit('push_delete', args))
 
+    this.pushClient.syncClient.on('sync_update', () => {
+      this.emitter.emit('sync_update', {})
+    })
+
     this.pushClient.subscriptions.core.on('sync_store_update', () => {
       this.emitter.emit('sync_update', {})
     })

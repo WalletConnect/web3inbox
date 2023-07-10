@@ -35,6 +35,7 @@ const AppNotifications = () => {
   useEffect(() => {
     if (pushClientProxy && topic) {
       pushClientProxy.getMessageHistory({ topic }).then(messageHistory => {
+        console.log('>>> getting history', messageHistory)
         setNotifications(Object.values(messageHistory))
         setNotificationsDrag(
           Object.values(messageHistory).map(notification => {
@@ -55,6 +56,7 @@ const AppNotifications = () => {
 
     const pushMessageSentSub = pushClientProxy.observe('push_message', {
       next: () => {
+        console.log('got push message')
         pushClientProxy
           .getMessageHistory({ topic })
           .then(messageHistory => setNotifications(Object.values(messageHistory)))

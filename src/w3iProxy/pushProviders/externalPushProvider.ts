@@ -66,6 +66,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
       case 'push_message':
       case 'push_update':
       case 'push_delete':
+      case 'sync_update':
         this.emitter.emit(request.method, request.params)
         break
       default:
