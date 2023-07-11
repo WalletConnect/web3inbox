@@ -31,6 +31,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   const {
     pushClient,
     activeSubscriptions,
+    refreshPushState,
     registerMessage: pushRegisterMessage
   } = usePushState(w3iProxy, isW3iProxyReady)
 
@@ -43,6 +44,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         userPubkey,
         uiEnabled,
         refreshThreadsAndInvites: refreshChatState,
+        refreshNotifications: refreshPushState,
         sentInvites,
         threads,
         activeSubscriptions,

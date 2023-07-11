@@ -27,6 +27,10 @@ export default class InternalPushProvider implements W3iPushProvider {
     this.pushClient.on('push_update', args => this.emitter.emit('push_update', args))
     this.pushClient.on('push_delete', args => this.emitter.emit('push_delete', args))
 
+    this.pushClient.syncClient.on('sync_update', () => {
+      this.emitter.emit('sync_update', {})
+    })
+
     this.pushClient.subscriptions.core.on('sync_store_update', () => {
       this.emitter.emit('sync_update', {})
     })
@@ -147,12 +151,12 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.deleteSubscription(params)
   }
 
-  public async getActiveSubscriptions() {
+  public async getActiveSubscriptions(params?: { account: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
 
-    const subscriptions = this.pushClient.getActiveSubscriptions()
+    const subscriptions = this.pushClient.getActiveSubscriptions(params)
 
     console.log(
       'InternalPushProvider > PushClient.getActiveSubscriptions > subscriptions',

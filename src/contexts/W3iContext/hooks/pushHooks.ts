@@ -94,9 +94,14 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
       next: refreshPushState
     })
 
+    const syncUpdateSub = pushClient.observe('sync_update', {
+      next: refreshPushState
+    })
+
     return () => {
       pushRequestSub.unsubscribe()
       pushSubscriptionSub.unsubscribe()
+      syncUpdateSub.unsubscribe()
       pushUpdateSub.unsubscribe()
       pushDeleteSub.unsubscribe()
       pushSignatureRequestedSub.unsubscribe()

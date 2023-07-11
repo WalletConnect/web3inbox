@@ -1,5 +1,5 @@
 import type { PushClientTypes } from '@walletconnect/push-client'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { noop } from 'rxjs'
 import W3iContext from '../../../contexts/W3iContext/context'
@@ -25,14 +25,14 @@ export const AppNotificationDragContext = createContext<AppNotificationsDragCont
 
 const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
-  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
+  const { activeSubscriptions, pushClientProxy, refreshNotifications } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const [notifications, setNotifications] = useState<PushClientTypes.PushMessageRecord[]>([])
   const [notificationsDrag, setNotificationsDrag] = useState<
     AppNotificationsDragProps[] | undefined
   >()
 
-  useEffect(() => {
+  const updateMessages = useCallback(() => {
     if (pushClientProxy && topic) {
       pushClientProxy.getMessageHistory({ topic }).then(messageHistory => {
         setNotifications(Object.values(messageHistory))
@@ -49,16 +49,16 @@ const AppNotifications = () => {
   }, [setNotifications, pushClientProxy, topic])
 
   useEffect(() => {
+    updateMessages()
+  }, [updateMessages])
+
+  useEffect(() => {
     if (!(pushClientProxy && topic)) {
       return noop
     }
 
     const pushMessageSentSub = pushClientProxy.observe('push_message', {
-      next: () => {
-        pushClientProxy
-          .getMessageHistory({ topic })
-          .then(messageHistory => setNotifications(Object.values(messageHistory)))
-      }
+      next: updateMessages
     })
 
     return () => {
@@ -80,6 +80,7 @@ const AppNotifications = () => {
               {notifications.map(notification => (
                 <AppNotificationItem
                   key={notification.id}
+                  onClear={updateMessages}
                   notification={{
                     timestamp: notification.publishedAt,
                     // We do not manage read status for now.

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useFormattedTime, useIsMobile } from '../../../utils/hooks'
 import CircleIcon from '../../general/Icon/CircleIcon'
 import './AppNotifications.scss'
@@ -8,6 +8,7 @@ import type { AppNotificationsDragContext } from '.'
 import { AppNotificationDragContext } from '.'
 import ClearIcon from '../../../assets/ClearIcon.png'
 import UnreadIcon from '../../../assets/UnreadIcon.png'
+import W3iContext from '../../../contexts/W3iContext/context'
 
 export interface IAppNotification {
   id: string
@@ -19,13 +20,19 @@ export interface IAppNotification {
 }
 interface IAppNotificationProps {
   notification: IAppNotification
+  onClear: () => void
   appLogo: string
 }
 
 const DRAG_OFFSET = 150
 
-const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, appLogo }) => {
+const AppNotificationItem: React.FC<IAppNotificationProps> = ({
+  notification,
+  appLogo,
+  onClear
+}) => {
   const formattedTime = useFormattedTime(notification.timestamp)
+  const { pushClientProxy } = useContext(W3iContext)
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
 
   const [notificationsDrag, setNotificationsDrag] = useContext<AppNotificationsDragContext>(
@@ -50,10 +57,11 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
     }
   }, [notificationsDrag])
 
-  const handleClearClick = () => {
+  const handleClearClick = useCallback(() => {
     dragControls.start('hidden')
+    pushClientProxy?.deletePushMessage({ id: Number(notification.id) }).then(onClear)
     actionControls.start('hidden')
-  }
+  }, [pushClientProxy, onClear])
 
   const handleUnreadClick = () => {
     dragControls.start('hidden')
