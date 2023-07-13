@@ -8,6 +8,9 @@ import W3iPushFacade from './w3iPushFacade'
 import type { ISyncClient } from '@walletconnect/sync-client'
 import { SyncClient, SyncStore } from '@walletconnect/sync-client'
 import type { ICore } from '@walletconnect/types'
+import { signMessage } from '@wagmi/core'
+import { EventEmitter } from 'events'
+import { JsCommunicator } from './externalCommunicators/jsCommunicator'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 export type W3iPushClient = Omit<W3iPushFacade, 'initState'>
@@ -32,6 +35,11 @@ class Web3InboxProxy {
   private readonly uiEnabled: UiEnabled
   private syncClient: ISyncClient | undefined
   private readonly core: ICore | undefined
+  private readonly emitter: EventEmitter
+
+  public readonly dappContext: string
+
+  public readonly signMessage: (message: string) => Promise<string>
 
   private isInitialized = false
 
@@ -42,6 +50,8 @@ class Web3InboxProxy {
     chatProvider: Web3InboxProxy['chatProvider'],
     pushProvider: Web3InboxProxy['pushProvider'],
     authProvider: Web3InboxProxy['authProvider'],
+    signingMode: 'external' | 'internal',
+    dappContext: string,
     projectId: string,
     relayUrl: string,
     uiEnabled: UiEnabled
@@ -59,6 +69,7 @@ class Web3InboxProxy {
     this.relayUrl = relayUrl
     this.projectId = projectId
     this.uiEnabled = uiEnabled
+    this.emitter = new EventEmitter()
     if (this.chatProvider === 'internal' || this.pushProvider === 'internal') {
       this.core = new Core({
         logger: 'debug',
@@ -66,12 +77,32 @@ class Web3InboxProxy {
         projectId: this.projectId
       })
     }
+
+    this.dappContext = dappContext
+
+    console.log('Initting with dappContext', dappContext)
+
+    if (this.dappContext) {
+      this.signMessage = async message => {
+        const jsCommunicator = new JsCommunicator(this.emitter)
+
+        return jsCommunicator.postToExternalProvider('external_sign_message', { message }, 'chat')
+      }
+    } else {
+      this.signMessage = async (message: string) => {
+        console.log('Unfortunately, sadness has overtaken the land')
+
+        return signMessage({ message })
+      }
+    }
   }
 
   public static getProxy(
     chatProvider: Web3InboxProxy['chatProvider'],
     pushProvider: Web3InboxProxy['pushProvider'],
     authProvider: Web3InboxProxy['authProvider'],
+    signingMode: 'external' | 'internal',
+    dappContext: string,
     projectId: string,
     relayUrl: string,
     uiEnabled: UiEnabled
@@ -82,6 +113,8 @@ class Web3InboxProxy {
         chatProvider,
         pushProvider,
         authProvider,
+        signingMode,
+        dappContext,
         projectId,
         relayUrl,
         uiEnabled

@@ -1,5 +1,4 @@
 import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
-import { signMessage } from '@wagmi/core'
 import type { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { W3iPushProvider } from './types'
@@ -97,7 +96,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.approve({
       ...params,
       onSign: async message =>
-        signMessage({ message }).then(signature => {
+        window.web3inbox.signMessage(message).then(signature => {
           console.log('PushClient.approve > onSign > signature', signature)
 
           return signature
@@ -123,7 +122,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     const subscribed = await this.pushClient.subscribe({
       ...params,
       onSign: async message =>
-        signMessage({ message }).then(signature => {
+        window.web3inbox.signMessage(message).then(signature => {
           console.log('PushClient.subscribe > onSign > signature', signature)
 
           return signature

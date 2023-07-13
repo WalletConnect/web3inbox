@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import Web3InboxProxy from '../../../w3iProxy'
 import { useProviderQueries } from './providerQueryHooks'
@@ -9,6 +11,7 @@ export const useW3iProxy = () => {
 
   const { uiEnabled } = useUiState()
   const [ready, setReady] = useState(false)
+  const { dappContext } = useUiState()
   const { chatProvider, pushProvider, authProvider } = useProviderQueries()
 
   const [w3iProxy] = useState(
@@ -16,6 +19,8 @@ export const useW3iProxy = () => {
       chatProvider,
       pushProvider,
       authProvider,
+      dappContext ? 'external' : 'internal',
+      dappContext,
       projectId,
       relayUrl,
       uiEnabled

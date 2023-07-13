@@ -13,7 +13,7 @@ interface W3iContextProviderProps {
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
   const { uiEnabled, dappContext } = useUiState()
-  const { chatProvider, pushProvider } = useProviderQueries()
+  const { chatProvider, pushProvider, authProvider } = useProviderQueries()
   const [w3iProxy, isW3iProxyReady] = useW3iProxy()
 
   const { userPubkey, setUserPubkey, disconnect } = useAuthState(w3iProxy, isW3iProxyReady)
@@ -41,6 +41,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         chatClientProxy: chatClient,
         chatProvider,
         pushProvider,
+        authProvider,
         userPubkey,
         uiEnabled,
         dappContext,

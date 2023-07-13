@@ -19,9 +19,9 @@ export const useUiState = () => {
     sidebar: totalPagesEnabled > 1
   })
 
-  const uiDappContextQuery = query.get('dappContextUrl')
+  const uiDappContextQuery = query.get('dappContext')
 
-  const [dappContext, setDappContext] = useState<string | null>(null)
+  const [dappContext, setDappContext] = useState<string>(uiDappContextQuery ?? '')
 
   useEffect(() => {
     if (uiDappContextQuery) {

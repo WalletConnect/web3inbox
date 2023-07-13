@@ -29,6 +29,7 @@ interface W3iContextState {
   pushRegisterMessage: string | null
   chatProvider: string
   pushProvider: string
+  authProvider: string
   uiEnabled: UiEnabled
   dappContext: string | null
 }
@@ -54,6 +55,7 @@ const W3iContext = createContext<W3iContextState>({
   pushRegisterMessage: null,
   chatProvider: '',
   pushProvider: '',
+  authProvider: '',
   dappContext: null
 })
 
