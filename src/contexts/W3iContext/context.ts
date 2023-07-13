@@ -30,6 +30,7 @@ interface W3iContextState {
   chatProvider: string
   pushProvider: string
   uiEnabled: UiEnabled
+  dappContext: string | null
 }
 
 const W3iContext = createContext<W3iContextState>({
@@ -52,7 +53,8 @@ const W3iContext = createContext<W3iContextState>({
   chatRegisterMessage: null,
   pushRegisterMessage: null,
   chatProvider: '',
-  pushProvider: ''
+  pushProvider: '',
+  dappContext: null
 })
 
 export default W3iContext

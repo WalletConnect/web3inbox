@@ -14,6 +14,7 @@ import Search from '../../general/Search'
 import MobileHeading from '../../layout/MobileHeading'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
+import { useNavigate } from 'react-router-dom'
 
 const AppSelector: React.FC = () => {
   const [search, setSearch] = useState('')
@@ -21,7 +22,8 @@ const AppSelector: React.FC = () => {
   const { isPushSearchOpen } = useSearch()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<PushClientTypes.PushSubscription[]>([])
-  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
+  const { activeSubscriptions, dappContext } = useContext(W3iContext)
+  const nav = useNavigate()
 
   const filterApps = useCallback(
     debounce((searchQuery: string) => {
@@ -51,6 +53,16 @@ const AppSelector: React.FC = () => {
   useEffect(() => {
     filterApps(search)
   }, [search, filterApps, activeSubscriptions])
+
+  useEffect(() => {
+    if (dappContext) {
+      const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappContext)
+
+      if (dappSub) {
+        nav(`/notifications/${dappSub.topic}`)
+      }
+    }
+  }, [dappContext, nav, activeSubscriptions])
 
   return (
     <div className="AppSelector">

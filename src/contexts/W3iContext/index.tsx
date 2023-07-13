@@ -12,7 +12,7 @@ interface W3iContextProviderProps {
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
-  const { uiEnabled } = useUiState()
+  const { uiEnabled, dappContext } = useUiState()
   const { chatProvider, pushProvider } = useProviderQueries()
   const [w3iProxy, isW3iProxyReady] = useW3iProxy()
 
@@ -43,6 +43,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         pushProvider,
         userPubkey,
         uiEnabled,
+        dappContext,
         refreshThreadsAndInvites: refreshChatState,
         refreshNotifications: refreshPushState,
         sentInvites,

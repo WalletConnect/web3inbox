@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+import W3iContext from '../../../../contexts/W3iContext/context'
 import { useIsMobile } from '../../../../utils/hooks'
 import BackButton from '../../../general/BackButton'
 import Button from '../../../general/Button'
@@ -11,12 +13,13 @@ interface IAppNotificationsHeaderProps {
 }
 const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, name }) => {
   const isMobile = useIsMobile()
+  const { dappContext } = useContext(W3iContext)
 
   return (
     <div className="AppNotificationsHeader">
       <div className="AppNotificationsHeader__content">
         <div className="AppNotificationsHeader__app">
-          <BackButton backTo="/notifications" />
+          {!dappContext && <BackButton backTo="/notifications" />}
           <img
             className="AppNotificationsHeader__app__logo"
             src={logo}
