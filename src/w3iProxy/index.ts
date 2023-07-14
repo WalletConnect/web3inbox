@@ -90,7 +90,6 @@ class Web3InboxProxy {
       }
     } else {
       this.signMessage = async (message: string) => {
-        console.log('Unfortunately, sadness has overtaken the land')
 
         return signMessage({ message })
       }
