@@ -80,7 +80,7 @@ class Web3InboxProxy {
 
     this.dappContext = dappContext
 
-    console.log('Initting with dappContext', dappContext)
+    console.log('dappContext:', dappContext)
 
     if (this.dappContext) {
       this.signMessage = async message => {
