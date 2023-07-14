@@ -25,7 +25,7 @@ export const AppNotificationDragContext = createContext<AppNotificationsDragCont
 
 const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
-  const { activeSubscriptions, pushClientProxy, dappContext } = useContext(W3iContext)
+  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const [notifications, setNotifications] = useState<PushClientTypes.PushMessageRecord[]>([])
   const [notificationsDrag, setNotificationsDrag] = useState<
