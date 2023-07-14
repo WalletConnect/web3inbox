@@ -25,7 +25,6 @@ export class JsCommunicator implements ExternalCommunicator {
       this.emitter.once(message.id.toString(), messageListener)
 
       const externalMessageListener = (messageEvent: MessageEvent) => {
-        console.log('GOT MESSAGE LAW IT', messageEvent.data)
         if (messageEvent.data.id === message.id || messageEvent.data.id === message.id.toString()) {
           if (messageEvent.data.result) {
             window.removeEventListener('message', externalMessageListener)
