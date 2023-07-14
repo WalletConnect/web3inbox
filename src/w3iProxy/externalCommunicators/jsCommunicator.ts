@@ -35,7 +35,7 @@ export class JsCommunicator implements ExternalCommunicator {
 
       window.addEventListener('message', externalMessageListener)
 
-      // Emit all three to allow for debugging and widget usage
+      // Emit both to allow for debugging and widget usage
       window.parent.postMessage(message, window.web3inbox.dappContext)
       this.emitter.emit(methodName, message)
     })
