@@ -12,6 +12,7 @@ type NonMethodPushClientKeys =
   | 'engine'
   | 'events'
   | 'history'
+  | 'historyClient'
   | 'identityKeys'
   | 'init'
   | 'initSyncStores'
