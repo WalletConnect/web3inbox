@@ -1,4 +1,3 @@
-import { signMessage } from '@wagmi/core'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Button from '../../../components/general/Button'
 import { Modal } from '../../../components/general/Modal/Modal'
@@ -36,7 +35,7 @@ export const SignatureModal: React.FC<{
 
   const onSign = useCallback(() => {
     setSigning(true)
-    signMessage({ message }).then(signature => {
+    window.web3inbox.signMessage(message).then(signature => {
       setStepProgress(pv => pv + 1)
       switch (sender) {
         case 'chat':
