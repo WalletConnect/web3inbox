@@ -22,7 +22,7 @@ const AppSelector: React.FC = () => {
   const { isPushSearchOpen } = useSearch()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<PushClientTypes.PushSubscription[]>([])
-  const { activeSubscriptions, dappContext } = useContext(W3iContext)
+  const { activeSubscriptions, dappContext, pushRegisterMessage } = useContext(W3iContext)
   const nav = useNavigate()
 
   const filterApps = useCallback(
@@ -55,14 +55,16 @@ const AppSelector: React.FC = () => {
   }, [search, filterApps, activeSubscriptions])
 
   useEffect(() => {
-    if (dappContext) {
+    if (dappContext && !pushRegisterMessage) {
       const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappContext)
 
       if (dappSub) {
         nav(`/notifications/${dappSub.topic}`)
+      } else {
+        nav(`/widget/subscribe`)
       }
     }
-  }, [dappContext, nav, activeSubscriptions])
+  }, [dappContext, nav, activeSubscriptions, pushRegisterMessage])
 
   return (
     <div className="AppSelector">

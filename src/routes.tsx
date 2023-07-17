@@ -15,6 +15,7 @@ import DirectInvite from './components/messages/DirectInvite'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useContext } from 'react'
 import W3iContext from './contexts/W3iContext/context'
+import WidgetSubscribe from './pages/widget/Subscribe'
 
 const ConfiguredRoutes: React.FC = () => {
   const { uiEnabled } = useContext(W3iContext)
@@ -57,6 +58,8 @@ const ConfiguredRoutes: React.FC = () => {
       </Route>
 
       <Route index element={<Navigate to={defaultPage} />} />
+
+      <Route path="/widget/subscribe" element={<WidgetSubscribe />} />
     </Routes>
   )
 }

@@ -1,5 +1,6 @@
 import type { PushClientTypes } from '@walletconnect/push-client'
 import { useCallback, useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { noop } from 'rxjs'
 import { subscribeModalService } from '../../../utils/store'
 import type { W3iPushClient } from '../../../w3iProxy'
@@ -11,6 +12,8 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
     PushClientTypes.PushSubscription[]
   >([])
+
+  const { path } = useLocation()
 
   const { userPubkey } = useAuthState(w3iProxy, proxyReady)
   const { uiEnabled } = useUiState()
@@ -51,7 +54,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
         }
       }
     },
-    [uiEnabled, pushClient, refreshPushState, setRegisterMessage]
+    [uiEnabled, path, pushClient, refreshPushState, setRegisterMessage]
   )
 
   useEffect(() => {

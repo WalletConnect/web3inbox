@@ -6,13 +6,15 @@ import { useAuthState } from './hooks/authHooks'
 import { useChatState } from './hooks/chatHooks'
 import { usePushState } from './hooks/pushHooks'
 import { useW3iProxy } from './hooks/w3iProxyHooks'
+import { useDappContext } from './hooks/dappContext'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
-  const { uiEnabled, dappContext } = useUiState()
+  const { uiEnabled } = useUiState()
+  const { dappContext, dappIcon, dappName, dappNotificationDescription } = useDappContext()
   const { chatProvider, pushProvider, authProvider } = useProviderQueries()
   const [w3iProxy, isW3iProxyReady] = useW3iProxy()
 
@@ -45,6 +47,9 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         userPubkey,
         uiEnabled,
         dappContext,
+        dappName,
+        dappNotificationDescription,
+        dappIcon,
         refreshThreadsAndInvites: refreshChatState,
         refreshNotifications: refreshPushState,
         sentInvites,
