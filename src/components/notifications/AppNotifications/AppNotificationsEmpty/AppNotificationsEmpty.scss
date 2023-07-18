@@ -1,12 +1,9 @@
 .AppNotificationsEmpty {
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  &__wrapper {
-    transform: translateY(-100%);
-  }
+  margin-top: 25%;
 
   &__title {
     font-style: normal;
