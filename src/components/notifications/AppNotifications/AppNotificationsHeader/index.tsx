@@ -18,7 +18,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, 
   const HeaderContent = useMemo(
     () =>
       dappContext ? (
-        <h2 className="AppNotificationsHeader__app__name">Notifications</h2>
+        <h2 className="AppNotificationsHeader__plain">Notifications</h2>
       ) : (
         <div className="AppNotificationsHeader__app">
           <BackButton backTo="/notifications" />

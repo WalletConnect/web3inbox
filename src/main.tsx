@@ -11,6 +11,7 @@ import './index.css'
 import './styles/fonts.css'
 import { AnimatePresence } from 'framer-motion'
 import ConfiguredRoutes from './routes'
+import { Modals } from './Modals'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <W3iContextProvider>
             <AnimatePresence mode="wait"></AnimatePresence>
             <ConfiguredRoutes />
+            <Modals />
           </W3iContextProvider>
         </BrowserRouter>
       </SettingsContextProvider>

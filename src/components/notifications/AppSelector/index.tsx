@@ -55,7 +55,7 @@ const AppSelector: React.FC = () => {
   }, [search, filterApps, activeSubscriptions])
 
   useEffect(() => {
-    if (dappContext && !pushRegisterMessage) {
+    if (dappContext) {
       const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappContext)
 
       if (dappSub) {

@@ -13,7 +13,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
     PushClientTypes.PushSubscription[]
   >([])
 
-  const { path } = useLocation()
+  const { pathname } = useLocation()
 
   const { userPubkey } = useAuthState(w3iProxy, proxyReady)
   const { uiEnabled } = useUiState()
@@ -54,7 +54,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
         }
       }
     },
-    [uiEnabled, path, pushClient, refreshPushState, setRegisterMessage]
+    [uiEnabled, pathname, pushClient, refreshPushState, setRegisterMessage]
   )
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
     const pushRequestSub = pushClient.observe('push_request', {
       next: pushRequest => {
-        subscribeModalService.toggleModal(pushRequest)
+        subscribeModalService.openModal(pushRequest)
         refreshPushState()
       }
     })

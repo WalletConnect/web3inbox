@@ -1,0 +1,24 @@
+.WidgetSubscribe {
+  display: grid;
+  place-items: center;
+
+  height: 100vh;
+  width: 100vw;
+
+  &__icon {
+    display: grid;
+    place-items: center;
+  }
+
+  &__container {
+    display: flex;
+    padding: 2em;
+    gap: 2em;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 2em;
+  }
+}
