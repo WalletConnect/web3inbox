@@ -62,6 +62,14 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
+    const alreadySynced = this.pushClient.syncClient.signatures.getAll({
+      account: params.account
+    }).length
+
+    if (alreadySynced) {
+      return Promise.resolve()
+    }
+
     return this.pushClient.enableSync({
       ...params,
       onSign: async message => {
