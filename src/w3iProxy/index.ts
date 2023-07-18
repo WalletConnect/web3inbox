@@ -37,7 +37,7 @@ class Web3InboxProxy {
   private readonly core: ICore | undefined
   private readonly emitter: EventEmitter
 
-  public readonly dappContext: string
+  public readonly dappOrigin: string
 
   public readonly signMessage: (message: string) => Promise<string>
 
@@ -50,8 +50,7 @@ class Web3InboxProxy {
     chatProvider: Web3InboxProxy['chatProvider'],
     pushProvider: Web3InboxProxy['pushProvider'],
     authProvider: Web3InboxProxy['authProvider'],
-    signingMode: 'external' | 'internal',
-    dappContext: string,
+    dappOrigin: string,
     projectId: string,
     relayUrl: string,
     uiEnabled: UiEnabled
@@ -78,11 +77,12 @@ class Web3InboxProxy {
       })
     }
 
-    this.dappContext = dappContext
+    this.dappOrigin = dappOrigin
 
-    console.log('dappContext:', dappContext)
+    console.log('dappOrigin:', dappOrigin)
 
-    if (this.dappContext) {
+    // If dappOrigin is provided, it is assumed that web3inbox is currently operating as a widget
+    if (this.dappOrigin) {
       this.signMessage = async message => {
         const jsCommunicator = new JsCommunicator(this.emitter)
 
@@ -90,7 +90,6 @@ class Web3InboxProxy {
       }
     } else {
       this.signMessage = async (message: string) => {
-
         return signMessage({ message })
       }
     }
@@ -100,8 +99,7 @@ class Web3InboxProxy {
     chatProvider: Web3InboxProxy['chatProvider'],
     pushProvider: Web3InboxProxy['pushProvider'],
     authProvider: Web3InboxProxy['authProvider'],
-    signingMode: 'external' | 'internal',
-    dappContext: string,
+    dappOrigin: string,
     projectId: string,
     relayUrl: string,
     uiEnabled: UiEnabled
@@ -112,8 +110,7 @@ class Web3InboxProxy {
         chatProvider,
         pushProvider,
         authProvider,
-        signingMode,
-        dappContext,
+        dappOrigin,
         projectId,
         relayUrl,
         uiEnabled

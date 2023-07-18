@@ -5,37 +5,15 @@ import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
 import './App.scss'
-import { Profile } from './components/account/Profile'
-import { Share } from './components/account/Share/Share'
 import Sidebar from './components/layout/Sidebar'
-import { PreferencesModal } from './components/notifications/NotificationsLayout/PreferencesModal'
-import { UnsubscribeModal } from './components/notifications/NotificationsLayout/UnsubscribeModal'
 import AuthProtectedPage from './components/utils/AuthProtectedPage'
 import W3iContext from './contexts/W3iContext/context'
-import { useMobileResponsiveGrid, useModals } from './utils/hooks'
-import { signatureModalService } from './utils/store'
+import { useMobileResponsiveGrid } from './utils/hooks'
 import { truncate } from './utils/string'
-import { SignatureModal } from './pages/Login/SignatureModal'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
-import Subscribe from './components/notifications/SubscribeModal'
 
 const App = () => {
-  const {
-    chatClientProxy,
-    userPubkey,
-    uiEnabled,
-    registeredKey,
-    chatRegisterMessage,
-    pushRegisterMessage
-  } = useContext(W3iContext)
-  const {
-    isProfileModalOpen,
-    isShareModalOpen,
-    isPreferencesModalOpen,
-    isUnsubscribeModalOpen,
-    isSignatureModalOpen,
-    isSubscribeModalOpen
-  } = useModals()
+  const { chatClientProxy, uiEnabled } = useContext(W3iContext)
 
   const ref = useMobileResponsiveGrid()
 
@@ -69,17 +47,6 @@ const App = () => {
     }
   }, [chatClientProxy])
 
-  useEffect(() => {
-    const chatSignatureRequired = !registeredKey && chatRegisterMessage
-    const pushSignatureRequired = Boolean(pushRegisterMessage)
-    console.log({ chatSignatureRequired, pushSignatureRequired })
-    if (userPubkey && (chatSignatureRequired || pushSignatureRequired)) {
-      signatureModalService.openModal()
-    } else {
-      signatureModalService.closeModal()
-    }
-  }, [userPubkey, registeredKey, chatRegisterMessage, pushRegisterMessage])
-
   return (
     <AuthProtectedPage>
       <LazyMotion features={domAnimation}>
@@ -96,19 +63,7 @@ const App = () => {
               {uiEnabled.sidebar ? <Sidebar /> : null}
               <Outlet />
               <ToastContainer />
-              <AnimatePresence mode="wait">
-                {isProfileModalOpen && <Profile />}
-                {isShareModalOpen && <Share />}
-                {isSubscribeModalOpen && <Subscribe />}
-                {isPreferencesModalOpen && <PreferencesModal />}
-                {isUnsubscribeModalOpen && <UnsubscribeModal />}
-                {isSignatureModalOpen && (
-                  <SignatureModal
-                    message={chatRegisterMessage ?? pushRegisterMessage ?? ''}
-                    sender={chatRegisterMessage ? 'chat' : 'push'}
-                  />
-                )}
-              </AnimatePresence>
+              <AnimatePresence mode="wait"></AnimatePresence>
             </Fragment>
           )}
         </m.div>

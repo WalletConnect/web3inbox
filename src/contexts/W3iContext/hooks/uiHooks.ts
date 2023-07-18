@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export const useUiState = () => {
   const query = new URLSearchParams(window.location.search)
@@ -19,15 +19,5 @@ export const useUiState = () => {
     sidebar: totalPagesEnabled > 1
   })
 
-  const uiDappContextQuery = query.get('dappContext')
-
-  const [dappContext, setDappContext] = useState<string>(uiDappContextQuery ?? '')
-
-  useEffect(() => {
-    if (uiDappContextQuery) {
-      setDappContext(uiDappContextQuery)
-    }
-  }, [uiDappContextQuery, setDappContext])
-
-  return { uiEnabled, dappContext }
+  return { uiEnabled }
 }

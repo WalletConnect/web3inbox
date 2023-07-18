@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import W3iContext from '../../../../contexts/W3iContext/context'
 import { useIsMobile } from '../../../../utils/hooks'
 import BackButton from '../../../general/BackButton'
@@ -13,13 +13,15 @@ interface IAppNotificationsHeaderProps {
 }
 const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, name }) => {
   const isMobile = useIsMobile()
-  const { dappContext } = useContext(W3iContext)
+  const { dappOrigin } = useContext(W3iContext)
 
-  return (
-    <div className="AppNotificationsHeader">
-      <div className="AppNotificationsHeader__content">
+  const HeaderContent = useMemo(
+    () =>
+      dappOrigin ? (
+        <h2 className="AppNotificationsHeader__plain">Notifications</h2>
+      ) : (
         <div className="AppNotificationsHeader__app">
-          {!dappContext && <BackButton backTo="/notifications" />}
+          <BackButton backTo="/notifications" />
           <img
             className="AppNotificationsHeader__app__logo"
             src={logo}
@@ -28,7 +30,13 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, 
           />
           <h2 className="AppNotificationsHeader__app__name">{name}</h2>
         </div>
-      </div>
+      ),
+    [dappOrigin]
+  )
+
+  return (
+    <div className="AppNotificationsHeader">
+      <div className="AppNotificationsHeader__content">{HeaderContent}</div>
 
       {isMobile && (
         <div className="AppNotificationsHeader__secondary__actions">

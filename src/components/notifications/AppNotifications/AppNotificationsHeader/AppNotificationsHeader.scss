@@ -6,6 +6,14 @@
     flex-direction: column;
   }
 
+  &__plain {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-weight: 700;
+    text-align: center;
+  }
+
   &__content {
     display: flex;
     align-items: center;
