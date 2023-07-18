@@ -13,11 +13,11 @@ interface IAppNotificationsHeaderProps {
 }
 const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, name }) => {
   const isMobile = useIsMobile()
-  const { dappContext } = useContext(W3iContext)
+  const { dappOrigin } = useContext(W3iContext)
 
   const HeaderContent = useMemo(
     () =>
-      dappContext ? (
+      dappOrigin ? (
         <h2 className="AppNotificationsHeader__plain">Notifications</h2>
       ) : (
         <div className="AppNotificationsHeader__app">
@@ -31,7 +31,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, 
           <h2 className="AppNotificationsHeader__app__name">{name}</h2>
         </div>
       ),
-    [dappContext]
+    [dappOrigin]
   )
 
   return (

@@ -9,7 +9,7 @@ const WidgetSubscribe: React.FC = () => {
   const {
     pushClientProxy,
     userPubkey,
-    dappContext,
+    dappOrigin,
     dappIcon,
     dappName,
     dappNotificationDescription,
@@ -29,13 +29,13 @@ const WidgetSubscribe: React.FC = () => {
         description: dappNotificationDescription,
         icons: [dappIcon],
         name: dappName,
-        url: dappContext
+        url: dappOrigin
       }
     })
-  }, [pushClientProxy, dappContext, dappIcon, dappName, dappNotificationDescription, userPubkey])
+  }, [pushClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
 
   useEffect(() => {
-    const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappContext)
+    const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
     console.log({ activeSubscriptions })
     if (dappSub) {
       setTimeout(() => {
