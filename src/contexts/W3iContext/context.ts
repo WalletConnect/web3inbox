@@ -31,7 +31,7 @@ interface W3iContextState {
   pushProvider: string
   authProvider: string
   uiEnabled: UiEnabled
-  dappContext: strinnullg
+  dappContext: string
   dappName: string
   dappIcon: string
   dappNotificationDescription: string
