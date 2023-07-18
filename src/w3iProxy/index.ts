@@ -82,17 +82,14 @@ class Web3InboxProxy {
 
     console.log('dappContext:', dappContext)
 
-    console.log('Setting sign func', this.dappContext ? 'External' : 'Internal')
     if (this.dappContext) {
       this.signMessage = async message => {
-        console.log('Using external sign')
         const jsCommunicator = new JsCommunicator(this.emitter)
 
         return jsCommunicator.postToExternalProvider('external_sign_message', { message }, 'chat')
       }
     } else {
       this.signMessage = async (message: string) => {
-        console.log('Using internal sign')
 
         return signMessage({ message })
       }
