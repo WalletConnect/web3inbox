@@ -87,7 +87,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       <div className="AppCard__body">
         <h2 className="AppCard__body__name">{name}</h2>
         <div className="AppCard__body__description">{description}</div>
-        <div className="AppCard__body__url">{url}</div>
+        <div className="AppCard__body__url">{url.replace('https://', '')}</div>
         <Button
           disabled={subscribing}
           className="AppCard__body__subscribe"
