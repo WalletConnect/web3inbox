@@ -20,7 +20,6 @@ export const useW3iProxy = () => {
       chatProvider,
       pushProvider,
       authProvider,
-      dappContext ? 'external' : 'internal',
       dappContext,
       projectId,
       relayUrl,

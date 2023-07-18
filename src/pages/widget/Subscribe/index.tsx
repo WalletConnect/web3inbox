@@ -22,7 +22,6 @@ const WidgetSubscribe: React.FC = () => {
     if (!pushClientProxy || !userPubkey) {
       return
     }
-    console.log({ dappName, dappIcon, dappContext })
 
     pushClientProxy.subscribe({
       account: `eip155:1:${userPubkey}`,
@@ -41,7 +40,7 @@ const WidgetSubscribe: React.FC = () => {
     if (dappSub) {
       setTimeout(() => {
         nav(`/notifications/${dappSub.topic}`)
-      }, 200)
+      }, 0)
     }
   }, [activeSubscriptions, nav])
 

@@ -12,7 +12,5 @@ export const useDappContext = () => {
   const [dappIcon] = useState<string>(dappIconQuery ?? '')
   const [dappNotificationDescription] = useState<string>(dappNotificationDescriptionQuery ?? '')
 
-  console.log('>>>', { dappContext })
-
   return { dappContext, dappName, dappIcon, dappNotificationDescription }
 }
