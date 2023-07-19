@@ -16,6 +16,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { useContext } from 'react'
 import W3iContext from './contexts/W3iContext/context'
 import WidgetSubscribe from './pages/widget/Subscribe'
+import WidgetConnect from './pages/widget/Connect'
 
 const ConfiguredRoutes: React.FC = () => {
   const { uiEnabled } = useContext(W3iContext)
@@ -59,7 +60,10 @@ const ConfiguredRoutes: React.FC = () => {
 
       <Route index element={<Navigate to={defaultPage} />} />
 
-      <Route path="/widget/subscribe" element={<WidgetSubscribe />} />
+      <Route path="widget">
+        <Route path="/widget/subscribe" element={<WidgetSubscribe />} />
+        <Route path="/widget/connect" element={<WidgetConnect />} />
+      </Route>
     </Routes>
   )
 }

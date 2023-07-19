@@ -1,6 +1,6 @@
 import { Web3Button } from '@web3modal/react'
 import React, { useContext, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import ByWalletConnect from '../../assets/by_walletconnect.png'
 import ChatDisplay from '../../assets/chat.png'
 import Logo from '../../assets/Logo.svg'
@@ -31,7 +31,7 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { userPubkey, chatProvider, uiEnabled, registeredKey, chatRegisterMessage } =
+  const { userPubkey, dappOrigin, chatProvider, uiEnabled, registeredKey, chatRegisterMessage } =
     useContext(W3iContext)
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
@@ -60,6 +60,10 @@ const Login: React.FC = () => {
         <Spinner width="3em" />
       </div>
     )
+  }
+
+  if (dappOrigin) {
+    return <Navigate to="/widget/connect" />
   }
 
   return (
