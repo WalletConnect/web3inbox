@@ -79,8 +79,6 @@ class Web3InboxProxy {
 
     this.dappOrigin = dappOrigin
 
-    console.log('dappOrigin:', dappOrigin)
-
     // If dappOrigin is provided, it is assumed that web3inbox is currently operating as a widget
     if (this.dappOrigin) {
       this.signMessage = async message => {
