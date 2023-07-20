@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export const useDappOrigin = () => {
   const query = new URLSearchParams(window.location.search)
@@ -11,6 +11,21 @@ export const useDappOrigin = () => {
   const [dappName] = useState<string>(dappNameQuery ?? '')
   const [dappIcon] = useState<string>(dappIconQuery ?? '')
   const [dappNotificationDescription] = useState<string>(dappNotificationDescriptionQuery ?? '')
+
+  if (dappOrigin) {
+    const cssId = 'web3inbox-external-style'
+    const doc = document
+    const head = doc.getElementsByTagName('head')[0]
+    const link = doc.createElement('link')
+    link.id = cssId
+    link.rel = 'stylesheet'
+    link.type = 'text/css'
+
+    link.href = `${dappOrigin}/web3inbox.css`
+    link.media = 'all'
+    doc.documentElement.style.setProperty('--accent-color-1', 'red')
+    head.appendChild(link)
+  }
 
   return { dappOrigin, dappName, dappIcon, dappNotificationDescription }
 }
