@@ -1,3 +1,5 @@
+@import '../../../../styles/mixins.scss';
+
 .AppNotificationsHeader {
   display: flex;
   align-items: center;
@@ -8,10 +10,14 @@
 
   &__plain {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
-    font-weight: 700;
-    text-align: center;
+    font-weight: 800;
+    @include padding-x(1em);
+
+    h2 {
+      font-weight: 1.25em;
+    }
   }
 
   &__content {
