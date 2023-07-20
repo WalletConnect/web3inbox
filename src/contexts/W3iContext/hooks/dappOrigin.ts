@@ -24,7 +24,6 @@ export const useDappOrigin = () => {
 
     link.href = `${dappOrigin}/web3inbox.css`
     link.media = 'all'
-    doc.documentElement.style.setProperty('--accent-color-1', 'red')
     head.appendChild(link)
   }
 
