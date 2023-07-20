@@ -12,6 +12,7 @@ export const useDappOrigin = () => {
   const [dappIcon] = useState<string>(dappIconQuery ?? '')
   const [dappNotificationDescription] = useState<string>(dappNotificationDescriptionQuery ?? '')
 
+  // When initializing from a dapp/widget origin, we inject an external stylesheet to...
   if (dappOrigin) {
     const cssId = 'web3inbox-external-style'
     const doc = document
