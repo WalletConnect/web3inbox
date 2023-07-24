@@ -4,6 +4,7 @@
   gap: 12px;
   width: 100%;
   padding-top: 6px;
+  height: 100%;
 
   &Actions {
     position: absolute;
@@ -49,15 +50,18 @@
     }
     &__unread {
       background-color: hsl(211, 100%, 60%);
+      color: hsla(180, 6%, 90%, 1);
     }
     &__clear {
       background-color: hsl(211, 80%, 40%);
+      color: hsla(180, 6%, 90%, 1);
     }
   }
 
   &__list {
     padding: 0 calc(1.25em - 0.4em) 0 calc(0.75em - 0.4em);
   }
+
   &__item {
     position: relative;
     display: flex;

@@ -32,18 +32,18 @@ export const useOnClickOutside = (
   handler: (event: MouseEvent | TouchEvent) => void
 ) => {
   useEffect(() => {
+    const typeEvent = isMobile() ? `touchstart` : `mousedown`
     const listener = (event: MouseEvent | TouchEvent) => {
       if (!ref.current || ref.current.contains(event.target as Node)) {
         return
       }
       handler(event)
     }
-    document.addEventListener('mousedown', listener)
-    document.addEventListener('touchstart', listener)
+
+    document.addEventListener(typeEvent, listener)
 
     return () => {
-      document.removeEventListener('mousedown', listener)
-      document.removeEventListener('touchstart', listener)
+      document.removeEventListener(typeEvent, listener)
     }
   }, [ref, handler])
 }
@@ -293,10 +293,10 @@ export const useFormattedTime = (timestamp?: number) => {
       return `Yesterday ${format(messageDate, 'HH:mm')}`
     }
     if (isSameWeek(today, messageDate)) {
-      return format(messageDate, 'iiii')
+      return format(messageDate, 'MMMM dd HH:mm')
     }
 
-    return format(messageDate, 'MMMM dd')
+    return format(messageDate, 'MMMM dd HH:mm')
   }, [timestamp])
 
   return formattedTime

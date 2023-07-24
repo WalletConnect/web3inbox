@@ -1,12 +1,13 @@
 import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
-import { signMessage } from '@wagmi/core'
 import type { EventEmitter } from 'events'
+import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { W3iPushProvider } from './types'
 
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: PushWalletClient | undefined
   private readonly emitter: EventEmitter
   public providerName = 'InternalPushProvider'
+  private readonly methodsListenedTo = ['push_signature_delivered']
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
@@ -19,11 +20,19 @@ export default class InternalPushProvider implements W3iPushProvider {
   public initState(pushClient: PushWalletClient) {
     this.pushClient = pushClient
 
-    this.pushClient.on('push_request', args => this.emitter.emit('push_request', args))
+    this.pushClient.on('push_proposal', args => this.emitter.emit('push_request', args))
     this.pushClient.on('push_subscription', args => this.emitter.emit('push_subscription', args))
     this.pushClient.on('push_message', args => this.emitter.emit('push_message', args))
     this.pushClient.on('push_update', args => this.emitter.emit('push_update', args))
     this.pushClient.on('push_delete', args => this.emitter.emit('push_delete', args))
+
+    this.pushClient.syncClient.on('sync_update', () => {
+      this.emitter.emit('sync_update', {})
+    })
+
+    this.pushClient.subscriptions.core.on('sync_store_update', () => {
+      this.emitter.emit('sync_update', {})
+    })
   }
 
   // ------------------------ Provider-specific methods ------------------------
@@ -32,15 +41,60 @@ export default class InternalPushProvider implements W3iPushProvider {
     return `An initialized PushClient is required for method: [${method}].`
   }
 
-  public isListeningToMethodFromPostMessage() {
-    return false
+  public isListeningToMethodFromPostMessage(method: string) {
+    return this.methodsListenedTo.includes(method)
   }
 
-  public handleMessage() {
-    throw new Error(`${this.providerName} does not support listening to external messages`)
+  public handleMessage(request: JsonRpcRequest<unknown>) {
+    switch (request.method) {
+      case 'push_signature_delivered':
+        this.emitter.emit('push_signature_delivered', request.params)
+        break
+      default:
+        throw new Error(`Method ${request.method} unsupported by provider ${this.providerName}`)
+    }
   }
 
   // ------------------- Method-forwarding for PushWalletClient -------------------
+
+  public async enableSync(params: { account: string }) {
+    if (!this.pushClient) {
+      throw new Error(this.formatClientRelatedError('approve'))
+    }
+
+    const alreadySynced = this.pushClient.syncClient.signatures.getAll({
+      account: params.account
+    }).length
+
+    if (alreadySynced) {
+      return Promise.resolve()
+    }
+
+    return this.pushClient.enableSync({
+      ...params,
+      onSign: async message => {
+        this.emitter.emit('push_signature_requested', { message })
+
+        return new Promise(resolve => {
+          const intervalId = setInterval(() => {
+            const signatureForAccountExists = this.pushClient?.syncClient.signatures.getAll({
+              account: params.account
+            })?.length
+            if (this.pushClient && signatureForAccountExists) {
+              const { signature } = this.pushClient.syncClient.signatures.get(params.account)
+              this.emitter.emit('push_signature_request_cancelled', {})
+              clearInterval(intervalId)
+              resolve(signature)
+            }
+          }, 100)
+
+          this.emitter.on('push_signature_delivered', ({ signature }: { signature: string }) => {
+            resolve(signature)
+          })
+        })
+      }
+    })
+  }
 
   public async approve(params: { id: number }) {
     if (!this.pushClient) {
@@ -50,7 +104,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.approve({
       ...params,
       onSign: async message =>
-        signMessage({ message }).then(signature => {
+        window.web3inbox.signMessage(message).then(signature => {
           console.log('PushClient.approve > onSign > signature', signature)
 
           return signature
@@ -76,7 +130,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     const subscribed = await this.pushClient.subscribe({
       ...params,
       onSign: async message =>
-        signMessage({ message }).then(signature => {
+        window.web3inbox.signMessage(message).then(signature => {
           console.log('PushClient.subscribe > onSign > signature', signature)
 
           return signature
@@ -104,12 +158,12 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.deleteSubscription(params)
   }
 
-  public async getActiveSubscriptions() {
+  public async getActiveSubscriptions(params?: { account: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
 
-    const subscriptions = this.pushClient.getActiveSubscriptions()
+    const subscriptions = this.pushClient.getActiveSubscriptions(params)
 
     console.log(
       'InternalPushProvider > PushClient.getActiveSubscriptions > subscriptions',

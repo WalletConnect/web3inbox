@@ -1,12 +1,12 @@
-import type { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { PushClientTypes } from '@walletconnect/push-client'
-import type { PushClientFunctions, W3iPushProvider } from './types'
-import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
+import type { EventEmitter } from 'events'
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
+import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
 import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
 import { ReactNativeCommunicator } from '../externalCommunicators/reactNativeCommunicator'
+import type { PushClientFunctions, W3iPushProvider } from './types'
 
 export default class ExternalPushProvider implements W3iPushProvider {
   protected readonly emitter: EventEmitter
@@ -35,7 +35,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
         this.communicator = new IOSCommunicator(this.emitter)
         break
       case 'reactnative':
-        this.communicator = new ReactNativeCommunicator(this.emitter)
+        this.communicator = new ReactNativeCommunicator(this.emitter, 'push')
         break
       default:
         this.communicator = new JsCommunicator(this.emitter)
@@ -66,11 +66,20 @@ export default class ExternalPushProvider implements W3iPushProvider {
       case 'push_message':
       case 'push_update':
       case 'push_delete':
+      case 'sync_update':
         this.emitter.emit(request.method, request.params)
         break
       default:
         throw new Error(`Method ${request.method} unsupported by provider ${this.providerName}`)
     }
+  }
+
+  public async enableSync(params: { account: string }) {
+    return this.postToExternalProvider('enableSync', {
+      account: params.account,
+      // Signing will be handled wallet-side.
+      onSign: async () => Promise.resolve('')
+    })
   }
 
   public async approve(params: { id: number }) {

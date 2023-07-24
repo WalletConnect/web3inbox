@@ -18,7 +18,9 @@
 
   &:hover,
   &-active {
-    background: var(--active-link-gradient);
+    @media (hover: hover) {
+      background: var(--active-link-gradient);
+    }
   }
 
   &__text {

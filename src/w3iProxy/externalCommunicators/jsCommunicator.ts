@@ -21,7 +21,22 @@ export class JsCommunicator implements ExternalCommunicator {
       const messageListener = (messageResponse: JsonRpcResult<TReturn>) => {
         resolve(messageResponse.result)
       }
+
       this.emitter.once(message.id.toString(), messageListener)
+
+      const externalMessageListener = (messageEvent: MessageEvent) => {
+        if (messageEvent.data.id === message.id || messageEvent.data.id === message.id.toString()) {
+          if (messageEvent.data.result) {
+            window.removeEventListener('message', externalMessageListener)
+            resolve(messageEvent.data.result)
+          }
+        }
+      }
+
+      window.addEventListener('message', externalMessageListener)
+
+      // Emit both to allow for debugging and widget usage
+      window.parent.postMessage(message, window.web3inbox.dappOrigin)
       this.emitter.emit(methodName, message)
     })
   }

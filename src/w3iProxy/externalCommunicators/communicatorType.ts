@@ -1,3 +1,4 @@
+export type TTargetClient = 'auth' | 'chat' | 'push'
 export interface ExternalCommunicator {
   postToExternalProvider: <TReturn>(
     methodName: string,

@@ -16,6 +16,7 @@ interface W3iContextState {
   chatClientProxy: W3iChatClient | null
   registeredKey: string | null
   refreshThreadsAndInvites: () => void
+  refreshNotifications: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
   activeSubscriptions: PushClientTypes.PushSubscription[]
   sentInvites: ChatClientTypes.SentInvite[]
@@ -24,10 +25,16 @@ interface W3iContextState {
   userPubkey?: string
   disconnect: () => void
   pushClientProxy: W3iPushClient | null
-  registerMessage: string | null
+  chatRegisterMessage: string | null
+  pushRegisterMessage: string | null
   chatProvider: string
   pushProvider: string
+  authProvider: string
   uiEnabled: UiEnabled
+  dappOrigin: string
+  dappName: string
+  dappIcon: string
+  dappNotificationDescription: string
 }
 
 const W3iContext = createContext<W3iContextState>({
@@ -35,6 +42,8 @@ const W3iContext = createContext<W3iContextState>({
   registeredKey: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   refreshThreadsAndInvites: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  refreshNotifications: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   disconnect: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -45,9 +54,15 @@ const W3iContext = createContext<W3iContextState>({
   sentInvites: [],
   invites: [],
   pushClientProxy: null,
-  registerMessage: null,
+  chatRegisterMessage: null,
+  pushRegisterMessage: null,
   chatProvider: '',
-  pushProvider: ''
+  pushProvider: '',
+  authProvider: '',
+  dappOrigin: '',
+  dappIcon: '',
+  dappNotificationDescription: '',
+  dappName: ''
 })
 
 export default W3iContext

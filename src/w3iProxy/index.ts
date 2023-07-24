@@ -7,6 +7,10 @@ import W3iChatFacade from './w3iChatFacade'
 import W3iPushFacade from './w3iPushFacade'
 import type { ISyncClient } from '@walletconnect/sync-client'
 import { SyncClient, SyncStore } from '@walletconnect/sync-client'
+import type { ICore } from '@walletconnect/types'
+import { signMessage } from '@wagmi/core'
+import { EventEmitter } from 'events'
+import { JsCommunicator } from './externalCommunicators/jsCommunicator'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 export type W3iPushClient = Omit<W3iPushFacade, 'initState'>
@@ -29,16 +33,24 @@ class Web3InboxProxy {
   private readonly relayUrl?: string
   private readonly projectId: string
   private readonly uiEnabled: UiEnabled
-
   private syncClient: ISyncClient | undefined
+  private readonly core: ICore | undefined
+  private readonly emitter: EventEmitter
+
+  public readonly dappOrigin: string
+
+  public readonly signMessage: (message: string) => Promise<string>
+
+  private isInitialized = false
 
   /**
    *
    */
-  public constructor(
+  private constructor(
     chatProvider: Web3InboxProxy['chatProvider'],
     pushProvider: Web3InboxProxy['pushProvider'],
     authProvider: Web3InboxProxy['authProvider'],
+    dappOrigin: string,
     projectId: string,
     relayUrl: string,
     uiEnabled: UiEnabled
@@ -56,7 +68,54 @@ class Web3InboxProxy {
     this.relayUrl = relayUrl
     this.projectId = projectId
     this.uiEnabled = uiEnabled
-    window.web3inbox = this
+    this.emitter = new EventEmitter()
+    if (this.chatProvider === 'internal' || this.pushProvider === 'internal') {
+      this.core = new Core({
+        logger: 'debug',
+        relayUrl: this.relayUrl,
+        projectId: this.projectId
+      })
+    }
+
+    this.dappOrigin = dappOrigin
+
+    // If dappOrigin is provided, it is assumed that web3inbox is currently operating as a widget
+    if (this.dappOrigin) {
+      this.signMessage = async message => {
+        const jsCommunicator = new JsCommunicator(this.emitter)
+
+        return jsCommunicator.postToExternalProvider('external_sign_message', { message }, 'chat')
+      }
+    } else {
+      this.signMessage = async (message: string) => {
+        return signMessage({ message })
+      }
+    }
+  }
+
+  public static getProxy(
+    chatProvider: Web3InboxProxy['chatProvider'],
+    pushProvider: Web3InboxProxy['pushProvider'],
+    authProvider: Web3InboxProxy['authProvider'],
+    dappOrigin: string,
+    projectId: string,
+    relayUrl: string,
+    uiEnabled: UiEnabled
+  ) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!window.web3inbox) {
+      window.web3inbox = new Web3InboxProxy(
+        chatProvider,
+        pushProvider,
+        authProvider,
+        dappOrigin,
+        projectId,
+        relayUrl,
+        uiEnabled
+      )
+    }
+
+    return window.web3inbox
   }
 
   public get chat(): W3iChatClient {
@@ -71,40 +130,56 @@ class Web3InboxProxy {
     return this.authFacade
   }
 
-  public async init() {
-    const core = new Core({
-      logger: 'debug',
-      relayUrl: this.relayUrl,
-      projectId: this.projectId
-    })
-
-    this.syncClient = await SyncClient.init({
-      core,
-      projectId: this.projectId
-    })
-
-    /*
-     * Has to be init'd even if uiEnabled.chat is false due to the fact it
-     * currently manages account
-     */
+  public getInitComplete() {
+    if (!this.isInitialized) {
+      return false
+    }
     if (this.chatProvider === 'internal') {
-      console.log('Init chat')
+      if (!this.chatClient) {
+        return false
+      }
+    }
+    if (this.pushProvider === 'internal') {
+      if (!this.pushClient) {
+        return false
+      }
+    }
 
+    return true
+  }
+
+  public async init() {
+    if (this.isInitialized) {
+      return
+    }
+
+    // If core is initialized, we should init sync because some SDK needs it
+    if (!this.syncClient && this.core) {
+      this.syncClient = await SyncClient.init({
+        core: this.core,
+        projectId: this.projectId
+      })
+    }
+
+    if (this.chatProvider === 'internal' && this.uiEnabled.chat && !this.chatClient) {
       this.chatClient = await ChatClient.init({
         projectId: this.projectId,
         SyncStoreController: SyncStore,
-        core,
-        syncClient: this.syncClient,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        syncClient: this.syncClient!,
+        core: this.core,
         keyserverUrl: 'https://keys.walletconnect.com'
       })
       await this.chatFacade.initInternalProvider(this.chatClient)
     }
 
-    if (this.pushProvider === 'internal' && this.uiEnabled.push) {
-      console.log('Init push')
+    if (this.pushProvider === 'internal' && this.uiEnabled.push && !this.pushClient) {
       this.pushClient = await PushWalletClient.init({
         logger: 'info',
-        core
+        SyncStoreController: SyncStore,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        syncClient: this.syncClient!,
+        core: this.core
       })
 
       this.pushFacade.initInternalProvider(this.pushClient)
@@ -113,6 +188,8 @@ class Web3InboxProxy {
     if (this.authProvider === 'internal') {
       this.authFacade.initInternalProvider()
     }
+
+    this.isInitialized = true
   }
 }
 

@@ -1,0 +1,31 @@
+.AppNotificationsEmpty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 25%;
+
+  &__title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.125em;
+    line-height: 1.375em;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  &__subtitle {
+    font-weight: 500;
+    font-size: 0.875em;
+    line-height: 1.0625em;
+    color: var(--fg-color-3);
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+  }
+}

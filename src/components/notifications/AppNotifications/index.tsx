@@ -1,11 +1,12 @@
 import type { PushClientTypes } from '@walletconnect/push-client'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { noop } from 'rxjs'
 import W3iContext from '../../../contexts/W3iContext/context'
 import AppNotificationItem from './AppNotificationItem'
 import './AppNotifications.scss'
 import AppNotificationsHeader from './AppNotificationsHeader'
+import AppNotificationsEmpty from './AppNotificationsEmpty'
 
 export interface AppNotificationsDragProps {
   id: number
@@ -31,7 +32,7 @@ const AppNotifications = () => {
     AppNotificationsDragProps[] | undefined
   >()
 
-  useEffect(() => {
+  const updateMessages = useCallback(() => {
     if (pushClientProxy && topic) {
       pushClientProxy.getMessageHistory({ topic }).then(messageHistory => {
         setNotifications(Object.values(messageHistory))
@@ -48,16 +49,16 @@ const AppNotifications = () => {
   }, [setNotifications, pushClientProxy, topic])
 
   useEffect(() => {
+    updateMessages()
+  }, [updateMessages])
+
+  useEffect(() => {
     if (!(pushClientProxy && topic)) {
       return noop
     }
 
     const pushMessageSentSub = pushClientProxy.observe('push_message', {
-      next: () => {
-        pushClientProxy
-          .getMessageHistory({ topic })
-          .then(messageHistory => setNotifications(Object.values(messageHistory)))
-      }
+      next: updateMessages
     })
 
     return () => {
@@ -73,23 +74,30 @@ const AppNotifications = () => {
           name={app.metadata.name}
           logo={app.metadata.icons[0]}
         />
-        <div className="AppNotifications__list">
-          {notifications.map(notification => (
-            <AppNotificationItem
-              key={notification.id}
-              notification={{
-                timestamp: notification.publishedAt,
-                // We do not manage read status for now.
-                isRead: true,
-                id: notification.id.toString(),
-                message: notification.message.body,
-                title: notification.message.title,
-                image: notification.message.icon
-              }}
-              appLogo={app.metadata.icons[0]}
-            />
-          ))}
-        </div>
+        {notifications.length > 0 ? (
+          <div className="AppNotifications__list">
+            <>
+              {notifications.map(notification => (
+                <AppNotificationItem
+                  key={notification.id}
+                  onClear={updateMessages}
+                  notification={{
+                    timestamp: notification.publishedAt,
+                    // We do not manage read status for now.
+                    isRead: true,
+                    id: notification.id.toString(),
+                    message: notification.message.body,
+                    title: notification.message.title,
+                    image: notification.message.icon
+                  }}
+                  appLogo={app.metadata.icons[0]}
+                />
+              ))}
+            </>
+          </div>
+        ) : (
+          <AppNotificationsEmpty />
+        )}
       </div>
     </AppNotificationDragContext.Provider>
   ) : (

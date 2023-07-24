@@ -52,6 +52,10 @@ class W3iPushFacade implements W3iPush {
 
   // ------------------ Push Client Forwarding ------------------
 
+  public async enableSync(params: { account: string }) {
+    await this.provider.enableSync(params)
+  }
+
   public async approve(params: { id: number }) {
     return this.provider.approve(params)
   }
