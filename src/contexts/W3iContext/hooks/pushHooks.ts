@@ -119,19 +119,23 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   }, [pushClient, refreshPushState])
 
   useEffect(() => {
-    if (!pushClient) {
+    if (!pushClient || !dappOrigin) {
       return noop
     }
 
     const pushMessageSub = pushClient.observe('push_message', {
       next: message => {
+        /*
+         * Due to the fact that data is synced, push_message events can be triggered
+         * from subscriptions unrelated to the one related to the dappOrigin
+         */
         if (message.params.message.url !== dappOrigin) {
           return
         }
 
         const communicator = new JsCommunicator(emitter)
         communicator.postToExternalProvider(
-          'dappPushNotification',
+          'dapp_push_notification',
           {
             notification: message.params.message
           },
