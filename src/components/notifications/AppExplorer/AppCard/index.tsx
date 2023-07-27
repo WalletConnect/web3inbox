@@ -8,6 +8,7 @@ import W3iContext from '../../../../contexts/W3iContext/context'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
 import { handleImageFallback } from '../../../../utils/ui'
 import Spinner from '../../../general/Spinner'
+import Text from '../../../general/Text'
 
 interface AppCardProps {
   name: string
@@ -85,9 +86,11 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       </div>
 
       <div className="AppCard__body">
-        <h2 className="AppCard__body__name">{name}</h2>
-        <div className="AppCard__body__description">{description}</div>
-        <div className="AppCard__body__url">{url.replace('https://', '')}</div>
+        <Text variant="large-700">{name}</Text>
+        <Text variant="paragraph-500">{description}</Text>
+        <div className="AppCard__body__url">
+          <Text variant="small-400"> {url.replace('https://', '')}</Text>
+        </div>
         <Button
           disabled={subscribing}
           className="AppCard__body__subscribe"

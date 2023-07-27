@@ -27,7 +27,7 @@ const Search: React.FC<ISearchProps> = ({ setSearch, isSearchOpen, closeSearch, 
     <div className="Search">
       {!isSearchOpen && (
         <Button customType="action-icon" className="Search__btn" onClick={openSearch}>
-          <div style={{ width: '1em', height: '1em' }}>
+          <div style={{ width: '25em', height: '1em' }}>
             <SearchIcon />
           </div>
         </Button>

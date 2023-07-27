@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { useEnsName } from 'wagmi'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'

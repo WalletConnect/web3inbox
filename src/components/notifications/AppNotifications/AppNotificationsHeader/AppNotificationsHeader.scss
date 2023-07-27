@@ -4,8 +4,24 @@
   display: flex;
   align-items: center;
   gap: 11px;
+  align-self: flex-start;
+  width: 100%;
   @media only screen and (max-width: 700px) {
     flex-direction: column;
+
+    padding: 0px 1.25rem 0px 0rem;
+  }
+
+  &__wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__selector {
+    @media only screen and (max-width: 700px) {
+      display: none;
+    }
   }
 
   &__plain {
@@ -41,16 +57,18 @@
     align-items: center;
     gap: 0.5em;
     &__logo {
-      margin-left: 8px;
       border-radius: 50%;
       width: 36px;
       height: 36px;
     }
     &__name {
       color: var(--fg-color-1);
-      font-weight: 500;
+
       font-size: 16px;
-      line-height: 1.25em;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 130%;
+      letter-spacing: -0.32px;
     }
   }
   &__actions {

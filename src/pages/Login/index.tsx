@@ -3,7 +3,6 @@ import React, { useContext, useEffect } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import ByWalletConnect from '../../assets/by_walletconnect.png'
 import ChatDisplay from '../../assets/chat.png'
-import Logo from '../../assets/Logo.svg'
 import NotificationDisplay from '../../assets/notifs.png'
 import Web3InboxDisplay from '../../assets/web3inbox.png'
 import MessageIcon from '../../components/general/Icon/MessageIcon'
@@ -14,6 +13,7 @@ import { signatureModalService } from '../../utils/store'
 import './Login.scss'
 import { SignatureModal } from './SignatureModal'
 import TransitionDiv from '../../components/general/TransitionDiv'
+import WalletConnectIcon from '../../components/general/Icon/WalletConnectIcon'
 
 const Web3InboxFeatures = [
   {
@@ -104,7 +104,7 @@ const Login: React.FC = () => {
         </div>
       </div>
       <div className="Login__footer">
-        <img src={Logo} alt="WC Logo" />
+        <WalletConnectIcon />
         <img src={ByWalletConnect} alt="WC Logo" />
       </div>
     </TransitionDiv>

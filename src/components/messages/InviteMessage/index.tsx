@@ -1,6 +1,4 @@
 import React, { useCallback, useContext, useMemo } from 'react'
-import ChatInviteHandEmoji from '../../../assets/ChatInviteHand.svg'
-import HandStopEmoji from '../../../assets/HandStopEmoji.svg'
 import Spinner from '../../general/Spinner'
 import CrossIcon from '../../general/Icon/CrossIcon'
 import './InviteMessage.scss'
@@ -8,6 +6,7 @@ import { useColorModeValue } from '../../../utils/hooks'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import CheckIcon from '../../general/Icon/CheckIcon'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
+import Text from '../../general/Text'
 
 interface InviteMessageProps {
   status: ChatClientTypes.SentInvite['status']
@@ -56,9 +55,9 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
 
   const StatusEmojis = useMemo(
     () => ({
-      pending: ChatInviteHandEmoji,
-      rejected: HandStopEmoji,
-      approved: ChatInviteHandEmoji
+      pending: '👋',
+      rejected: '✋',
+      approved: '👋'
     }),
     []
   )
@@ -66,11 +65,15 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
   return (
     <div className="InviteMessage">
       <div className="InviteMessage__bubble">
-        <div className="InviteMessage__emoji">
-          <img src={StatusEmojis[status]} alt="emoji_wave_hand" />
+        <div>
+          <span className="InviteMessage__emoji">{StatusEmojis[status]}</span>
         </div>
-        <div className="InviteMessage__subtext">Chat Invite</div>
-        <div className="InviteMessage__status">{StatusComponents[status]}</div>
+        <div className="InviteMessage__subtext">
+          <Text variant="link-500">Chat Invite</Text>
+        </div>
+        <div className="InviteMessage__status">
+          <Text variant="link-500">{StatusComponents[status]}</Text>
+        </div>
       </div>
     </div>
   )

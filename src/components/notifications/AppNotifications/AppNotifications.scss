@@ -1,9 +1,9 @@
 .AppNotifications {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  // gap: 12px;
   width: 100%;
-  padding-top: 6px;
   height: 100%;
 
   &Actions {
@@ -58,8 +58,47 @@
     }
   }
 
+  &__border {
+    @media only screen and (min-width: 700px) {
+      position: absolute;
+      left: 0;
+      top: 4.25rem;
+      width: 100%;
+      background-color: var(--bg-color-2);
+      height: 1px;
+    }
+  }
+
   &__list {
+    width: 56%;
     padding: 0 calc(1.25em - 0.4em) 0 calc(0.75em - 0.4em);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @media only screen and (max-width: 1200px) {
+      width: 75%;
+    }
+
+    @media only screen and (max-width: 1000px) {
+      width: 100%;
+    }
+
+    @media only screen and (max-width: 700px) {
+      padding: 0 0.85em;
+    }
+  }
+
+  &__list:nth-child(3) {
+    margin-top: 44px;
+  }
+
+  &__list:nth-child(4) {
+    margin-top: 16px;
+  }
+
+  &__list:last-child {
+    padding-bottom: 24px;
   }
 
   &__item {
@@ -67,9 +106,14 @@
     display: flex;
     gap: 12px;
     width: 100%;
+    border: 1px solid var(--border-color-2);
     align-items: center;
-    padding: 0.625em 0.25em;
+    padding: 0.625em 0.75rem;
     border-radius: 20px;
+
+    &--blue {
+      background: rgba(51, 150, 255, 0.08);
+    }
 
     &:hover {
       border-radius: 20px;
@@ -78,44 +122,74 @@
 
     &__status {
       position: relative;
-      left: 4px;
+
       background: var(--bg-color-2);
     }
     img {
       width: 4em;
       height: 4em;
+      aspect-ratio: 1/1;
       border-radius: 10px;
+      object-fit: cover;
+      align-self: flex-start;
+
+      @media only screen and (max-width: 700px) {
+        width: 48px;
+        height: 48px;
+      }
     }
     &__content {
       display: flex;
       flex-direction: column;
       width: 100%;
+      align-self: flex-start;
+      margin-top: 5px;
     }
     &__header {
       display: flex;
-      align-items: flex-start;
       justify-content: space-between;
+      align-items: center;
+
+      &__wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        span {
+          color: var(--fg-color-3);
+        }
+      }
     }
     &__title {
       color: var(--fg-color-1);
-      font-weight: 700;
-      font-size: 18px;
-      line-height: 22px;
-      min-width: 28px;
-      min-height: 28px;
     }
     &__message {
       color: var(--fg-color-2);
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 22px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      max-height: 44px;
+      margin-top: 4px;
+
+      + .Anchor {
+        margin-top: 12px;
+      }
     }
-    &__time {
-      color: var(--fg-color-3);
-      font-weight: 500;
-      font-size: 12px;
-      line-height: 14px;
-      margin-right: 1em;
+    &__show {
+      color: #3396ff;
+
+      font-weight: 510;
+      font-size: 13px;
+      line-height: 22px;
+      letter-spacing: -0.13px;
+      display: inline-block;
+      margin-top: 2px;
+      cursor: pointer;
+
+      + .Anchor {
+        margin-top: 12px;
+      }
     }
   }
 }

@@ -19,11 +19,11 @@
     }
     &--last {
       #{$parent}__from-peer #{$parent}__bubble {
-        border-radius: 6px 16px 16px 16px;
+        border-radius: 16px 16px 16px 6px;
       }
 
       #{$parent}__from-sender #{$parent}__bubble {
-        border-radius: 16px 6px 16px 16px;
+        border-radius: 16px 16px 6px 16px;
       }
 
       display: flex;
@@ -32,11 +32,11 @@
     }
     &--same {
       #{$parent}__from-peer #{$parent}__bubble {
-        border-radius: 6px 16px 16px 6px;
+        border-radius: 16px 16px 16px 6px;
       }
 
       #{$parent}__from-sender #{$parent}__bubble {
-        border-radius: 16px 6px 6px 16px;
+        border-radius: 16px 16px 6px 16px;
       }
     }
   }
@@ -50,11 +50,14 @@
   }
 
   &__bubble {
+    span {
+      letter-spacing: 0px !important;
+    }
     overflow-wrap: break-word;
-    padding: 0.4em 0.8em;
+    padding: 0.5em 0.75em;
     will-change: border-radius;
     transition: border-radius ease 0.2s;
-    max-width: 80%;
+    max-width: 85%;
     @media only screen and (min-width: 700px) {
       max-width: 50%;
     }
@@ -62,13 +65,11 @@
 
   &__from-peer &__bubble {
     background: var(--sender-bubble-bg);
-    box-shadow: var(--sender-box-shadow);
     color: var(--fg-color-1);
   }
 
   &__from-sender &__bubble {
-    box-shadow: inset 1px 1px 4px #99cbff, inset -1px -1px 4px #1464b8;
-    background: #3396ff;
+    background: #47a1ff;
     color: #ffffff;
   }
 
@@ -79,7 +80,6 @@
   &__status {
     div {
       align-items: center;
-      font-size: 0.75em;
       color: var(--fg-color-2);
       display: flex;
       gap: 0.5em;

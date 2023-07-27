@@ -1,11 +1,16 @@
 .BackButton {
-  min-width: 0.75em;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.535em;
-  color: var(--accent-color-1);
-  padding: 15px 10px;
+  gap: 0.5rem;
+  color: #141414;
+  padding: 18px 10px;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    fill: #141414;
+  }
 
   &__Title {
     margin-top: 1px;

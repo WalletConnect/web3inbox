@@ -19,12 +19,13 @@
   &:hover,
   &-active {
     @media (hover: hover) {
-      background: var(--active-link-gradient);
+      background: rgba(51, 150, 255, 0.08);
     }
   }
 
   &__text {
-    font-family: ABC Diatype Bold, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+      Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     color: var(--fg-color-1);
     font-feature-settings: 'case' on, 'ss04' on, 'ss06' on;
     font-weight: 700;

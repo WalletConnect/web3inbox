@@ -19,7 +19,6 @@ interface IDropdown {
 const Dropdown: React.FC<IDropdown> = ({
   btnShape = 'circle',
   dropdownPlacement = 'bottomRight',
-  w,
   h,
   children
 }) => {
@@ -67,7 +66,6 @@ const Dropdown: React.FC<IDropdown> = ({
     <div ref={ref} className="Dropdown">
       <Button
         className={`Dropdown__btn${btnShape === 'square' ? '__square' : ''}`}
-        style={{ width: w, height: h }}
         customType="action-icon"
         onClick={handleToggleDropdown}
       >
@@ -76,7 +74,9 @@ const Dropdown: React.FC<IDropdown> = ({
 
       {isDropdownOpen && (
         <div className="Dropdown__dropdown" style={dropdownPosition}>
-          <div className="Dropdown__dropdown__block">{children}</div>
+          <div className="Dropdown__dropdown__block">
+            <div>{children}</div>
+          </div>
         </div>
       )}
     </div>

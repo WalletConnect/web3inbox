@@ -1,10 +1,11 @@
 import React from 'react'
 import { getEthChainAddress, isValidEnsDomain } from '../../../utils/address'
-import { useFormattedTime, useIsMobile } from '../../../utils/hooks'
+import { useIsMobile } from '../../../utils/hooks'
 import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import TextWithHighlight from '../../general/TextWithHighlight'
 import './PeerAndMessage.scss'
+import MessageDateTag from '../Message/MessageDateTag'
 
 interface PeerAndMessageProps {
   peer: string
@@ -23,27 +24,29 @@ const PeerAndMessage: React.FC<PeerAndMessageProps> = ({
 }) => {
   const isMobile = useIsMobile()
   const address = getEthChainAddress(peer)
-  const messageSentAt = useFormattedTime(timestamp)
 
   return (
     <div className="PeerAndMessage">
-      {withAvatar && <Avatar width={'2.25em'} address={address} height={'2.25em'} />}
+      {withAvatar && <Avatar width={'3rem'} address={address} height={'3rem'} />}
       <div className="PeerAndMessage__text">
         <div className={`PeerAndMessage__peer${isMobile ? '__mobile' : ''}`}>
           <TextWithHighlight
-            text={isValidEnsDomain(peer) ? peer : truncate(getEthChainAddress(peer), 7)}
+            text={isValidEnsDomain(peer) ? peer : truncate(getEthChainAddress(peer), 5)}
             highlightedText={highlightedText ?? ''}
           />
-          {isMobile && <span className="PeerAndMessage__message__timestamp">{messageSentAt}</span>}
+          {timestamp && (
+            <MessageDateTag
+              className="PeerAndMessage__message__timestamp"
+              noText={true}
+              timestamp={timestamp}
+            />
+          )}
         </div>
         {message && (
           <div className={'PeerAndMessage__message__details'}>
             <div className={'PeerAndMessage__message'}>
               <TextWithHighlight text={message} highlightedText={highlightedText ?? ''} />
             </div>
-            {!isMobile && (
-              <span className="PeerAndMessage__message__timestamp">{messageSentAt}</span>
-            )}
           </div>
         )}
       </div>

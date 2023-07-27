@@ -3,14 +3,22 @@
   justify-content: flex-end;
 
   &__bubble {
-    padding: 0.4em 0.8em;
-    box-shadow: inset 1px 1px 4px #99cbff, inset -1px -1px 4px #1464b8;
-    background: #3396ff;
-    border-radius: 16px 16px 6px 16px;
+    padding: 0.6rem 1.5rem 0.75rem 1.5rem;
+    background: #47a1ff;
+    border-radius: 16px 16px 4px 16px;
     display: flex;
     align-items: center;
     flex-direction: column;
     gap: 0.2em;
+  }
+
+  &__emoji {
+    font-feature-settings: 'ss04' on, 'case' on, 'calt' off;
+
+    font-size: 80px;
+    font-style: normal;
+    font-weight: 510;
+    line-height: normal;
   }
 
   &__subtext {
@@ -20,6 +28,6 @@
   &__pending {
     display: flex;
     align-items: center;
-    gap: 0.3em;
+    gap: 0.25em;
   }
 }
