@@ -5,8 +5,11 @@ import { noop } from 'rxjs'
 import { subscribeModalService } from '../../../utils/store'
 import type { W3iPushClient } from '../../../w3iProxy'
 import type Web3InboxProxy from '../../../w3iProxy'
+import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommunicator'
 import { useAuthState } from './authHooks'
+import { useDappOrigin } from './dappOrigin'
 import { useUiState } from './uiHooks'
+import { EventEmitter } from 'events'
 
 export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
@@ -14,9 +17,12 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   >([])
 
   const { pathname } = useLocation()
+  const [emitter] = useState(new EventEmitter())
 
   const { userPubkey } = useAuthState(w3iProxy, proxyReady)
   const { uiEnabled } = useUiState()
+
+  const { dappOrigin } = useDappOrigin()
 
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
 
@@ -111,6 +117,37 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
       pushSignatureRequestCancelledSub.unsubscribe()
     }
   }, [pushClient, refreshPushState])
+
+  useEffect(() => {
+    if (!pushClient || !dappOrigin) {
+      return noop
+    }
+
+    const pushMessageSub = pushClient.observe('push_message', {
+      next: message => {
+        /*
+         * Due to the fact that data is synced, push_message events can be triggered
+         * from subscriptions unrelated to the one related to the dappOrigin
+         */
+        if (message.params.message.url !== dappOrigin) {
+          return
+        }
+
+        const communicator = new JsCommunicator(emitter)
+        communicator.postToExternalProvider(
+          'dapp_push_notification',
+          {
+            notification: message.params.message
+          },
+          'push'
+        )
+      }
+    })
+
+    return () => {
+      pushMessageSub.unsubscribe()
+    }
+  }, [dappOrigin, pushClient, emitter])
 
   return { activeSubscriptions, registerMessage, pushClient, refreshPushState }
 }
