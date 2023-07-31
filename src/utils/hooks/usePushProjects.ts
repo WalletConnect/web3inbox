@@ -9,7 +9,7 @@ const usePushProjects = () => {
       const explorerApiBaseUrl: string = import.meta.env.VITE_EXPLORER_API_URL
       const projectId: string = import.meta.env.VITE_PROJECT_ID
 
-      const explorerUrl = `${explorerApiBaseUrl}/v3/dapps?projectId=${projectId}&is_push_enabled=true`
+      const explorerUrl = `${explorerApiBaseUrl}/v3/dapps?projectId=${projectId}&is_notify_enabled=true`
       const discoverableProjetsRawRes = await fetch(explorerUrl)
       const discoverableProjetsRes = await discoverableProjetsRawRes.json()
 
