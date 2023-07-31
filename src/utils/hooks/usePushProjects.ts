@@ -15,11 +15,12 @@ const usePushProjects = () => {
 
       const pushProjects: IPushProject[] = Object.values(discoverableProjetsRes.listings)
       const pushApps: IPushApp[] = pushProjects.map(
-        ({ id, name, description, homepage, image_url, metadata }: IPushProject) => ({
+        ({ id, name, description, homepage, image_url, metadata, app }: IPushProject) => ({
           id,
           name,
           description,
-          url: homepage,
+          // TODO: use only `homepage` here again once we have separate gm-dapp entries between Push and Notify.
+          url: app.browser || homepage,
           icons: [image_url.md],
           colors: metadata.colors
         })
