@@ -129,8 +129,16 @@ export default class InternalPushProvider implements W3iPushProvider {
     console.log('InternalPushProvider > PushClient.subscribe > params', params)
 
     await Notification.requestPermission()
-    const token = await getToken(messaging)
+
+    console.log('Got permission')
+
     const clientId = await this.pushClient.core.crypto.getClientId()
+
+    console.log('Got clientId', clientId)
+
+    const token = await getToken(messaging)
+
+    console.log('Got token', token)
 
     const subscribed = await this.pushClient.subscribe({
       ...params,
