@@ -164,22 +164,24 @@ export default class InternalPushProvider implements W3iPushProvider {
 
     console.log({ subscribed })
 
-    const sub = this.pushClient.subscriptions
-      .getAll()
-      .find(s => s.metadata.url === params.metadata.url)
+    const interval = setInterval(() => {
+      const sub = this.pushClient?.subscriptions
+        .getAll()
+        .find(s => s.metadata.url === params.metadata.url)
 
-    const symkey = sub?.symKey
-
-    console.log({ symkey, sub })
-
-    navigator.serviceWorker.ready.then(registration => {
-      registration.active?.postMessage({
-        type: 'INSTALL_SYMKEY_CLIENT',
-        clientId,
-        token,
-        symkey
-      })
-    })
+      if (sub) {
+        console.log('Calling service worker')
+        navigator.serviceWorker.ready.then(registration => {
+          registration.active?.postMessage({
+            type: 'INSTALL_SYMKEY_CLIENT',
+            clientId,
+            token,
+            symkey: sub.symKey
+          })
+        })
+        clearInterval(interval)
+      }
+    }, 100)
 
     return subscribed
   }
