@@ -164,13 +164,15 @@ export default class InternalPushProvider implements W3iPushProvider {
 
     console.log({ subscribed })
 
-    const symkey = this.pushClient.subscriptions
+    const sub = this.pushClient.subscriptions
       .getAll({
         account: params.account
       })
-      .find(sub => sub.metadata.url === params.metadata.url)?.symKey
+      .find(s => s.metadata.url === params.metadata.url)
 
-    console.log({ symkey })
+    const symkey = sub?.symKey
+
+    console.log({ symkey, sub })
 
     navigator.serviceWorker.ready.then(registration => {
       registration.active?.postMessage({
