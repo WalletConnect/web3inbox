@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && yarn buildMessager",
-		"buildMessager": "tsc src/firebase-messaging-sw.ts --outDir dist",
+		"buildMessager": "tsc src/firebase-messaging-sw.ts --lib esnext --outDir dist",
     "preview": "vite preview",
     "lint": "eslint .",
     "prepare": "husky install",
