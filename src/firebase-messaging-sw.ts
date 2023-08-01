@@ -4,12 +4,26 @@ import { decryptMessage } from '@walletconnect/push-message-decrypter'
 import { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import { onBackgroundMessage } from 'firebase/messaging/sw'
 import { openDB } from 'idb'
+import { initializeApp } from 'firebase/app'
 
 declare let self: ServiceWorkerGlobalScope
 
-const messaging = getMessaging()
-
 const SYMKEY_OBJ_STORE = 'symkey-store'
+
+const firebaseApp = initializeApp({
+  apiKey: 'api-key',
+  authDomain: 'project-id.firebaseapp.com',
+  databaseURL: 'https://project-id.firebaseio.com',
+  projectId: 'project-id',
+  storageBucket: 'project-id.appspot.com',
+  messagingSenderId: 'sender-id',
+  appId: 'app-id',
+  measurementId: 'G-measurement-id'
+})
+
+// Retrieve an instance of Firebase Messaging so that it can handle background
+// messages.
+const messaging = getMessaging(firebaseApp)
 
 const getDbSymkeyStore = async () => {
   const db = await openDB('w3i-sw-db', 3, {
