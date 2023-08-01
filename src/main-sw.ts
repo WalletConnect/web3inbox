@@ -26,14 +26,20 @@ const firebaseApp = initializeApp({
 
 const ECHO_URL = 'https://echo.walletconnect.com'
 
+const SYMKEY_OBJ_STORE = 'symkey-store'
+
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.
 const messaging = getMessaging(firebaseApp)
 
 const getDbSymkeyStore = async () => {
-  const db = await openDB('w3i-sw-db')
+  const db = await openDB('w3i-sw-db', undefined, {
+    upgrade(database) {
+      database.createObjectStore(SYMKEY_OBJ_STORE)
+    }
+  })
 
-  const store = db.transaction('symkey', 'readwrite').objectStore('symkey')
+  const store = db.transaction(SYMKEY_OBJ_STORE, 'readwrite').objectStore(SYMKEY_OBJ_STORE)
 
   return store
 }
