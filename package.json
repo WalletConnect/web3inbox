@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && yarn buildMessager",
-		"buildMessager": "tsc src/firebase-messaging-sw.ts --moduleResolution node --skipLibCheck true  --lib webworker --target es5 --outDir dist",
+		"buildMessager": "tsc src/firebase-messaging-sw.ts --skipLibCheck true  --lib webworker --target es5 --outDir dist && sed -i 's/.*exports.*//' dist/firebase-messaging-sw.js",
     "preview": "vite preview",
     "lint": "eslint .",
     "prepare": "husky install",
