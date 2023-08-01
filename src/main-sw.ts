@@ -33,7 +33,7 @@ const SYMKEY_OBJ_STORE = 'symkey-store'
 const messaging = getMessaging(firebaseApp)
 
 const getDbSymkeyStore = async () => {
-  const db = await openDB('w3i-sw-db', undefined, {
+  const db = await openDB('w3i-sw-db', 1, {
     upgrade(database) {
       database.createObjectStore(SYMKEY_OBJ_STORE)
     }
