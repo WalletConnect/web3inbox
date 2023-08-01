@@ -59,6 +59,7 @@ const getSymKey = async (topic: string) => {
 const initData = async (topic: string, symkey: string, clientId: string, token: string) => {
   const db = await getDbSymkeyStore()
 
+  console.log({ symkey, topic, clientId })
   await db.put(SYMKEY_OBJ_STORE, symkey, topic)
 
   fetch(`${ECHO_URL}/clients`, {

@@ -175,6 +175,7 @@ export default class InternalPushProvider implements W3iPushProvider {
           registration.active?.postMessage({
             type: 'INSTALL_SYMKEY_CLIENT',
             clientId,
+            topic: sub.topic,
             token,
             symkey: sub.symKey
           })
