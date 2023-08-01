@@ -59,7 +59,7 @@ const getSymKey = async (topic: string) => {
 const initData = async (topic: string, symkey: string, clientId: string, token: string) => {
   const db = await getDbSymkeyStore()
 
-  console.log({ symkey, topic, clientId })
+  console.log({ symkey, topic, clientId, token })
   await db.put(SYMKEY_OBJ_STORE, symkey, topic)
 
   fetch(`${ECHO_URL}/clients`, {
@@ -76,6 +76,8 @@ onBackgroundMessage(messaging, async firebaseMessage => {
   const { encoded, topic } = firebaseMessage.data!
 
   const symkey = await getSymKey(topic)
+
+  console.log('Got message!', symkey, topic)
 
   const m = (await decryptMessage({
     encoded,
