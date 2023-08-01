@@ -165,9 +165,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     console.log({ subscribed })
 
     const sub = this.pushClient.subscriptions
-      .getAll({
-        account: params.account
-      })
+      .getAll()
       .find(s => s.metadata.url === params.metadata.url)
 
     const symkey = sub?.symKey
