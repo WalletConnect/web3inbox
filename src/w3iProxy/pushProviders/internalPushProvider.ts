@@ -128,7 +128,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
     console.log('InternalPushProvider > PushClient.subscribe > params', params)
 
-    await Notification.requestPermission()
+    Notification.requestPermission()
 
     console.log('Got permission')
 
