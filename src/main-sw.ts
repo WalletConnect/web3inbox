@@ -38,16 +38,13 @@ const getDbSymkeyStore = async () => {
       database.createObjectStore(SYMKEY_OBJ_STORE)
     }
   })
-
-  const store = db.transaction(SYMKEY_OBJ_STORE, 'readwrite').objectStore(SYMKEY_OBJ_STORE)
-
-  return store
+  return db
 }
 
 const getSymKey = async (topic: string) => {
-  const store = await getDbSymkeyStore()
+  const db = await getDbSymkeyStore()
 
-  const result: string = await store.get(topic)
+  const result: string = await db.get(SYMKEY_OBJ_STORE, topic)
 
   if (result) {
     return result
@@ -59,9 +56,7 @@ const getSymKey = async (topic: string) => {
 const initData = async (topic: string, symkey: string, clientId: string, token: string) => {
   const db = await openDB('w3i-sw-db')
 
-  const store = db.transaction('symkey', 'readwrite').objectStore('symkey')
-
-  await store.add(symkey, topic)
+  await db.put(SYMKEY_OBJ_STORE, symkey, topic)
 
   fetch(`${ECHO_URL}/clients`, {
     method: 'POST',
