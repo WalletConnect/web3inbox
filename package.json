@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && yarn buildMessager",
-		"buildMessager": "tsc src/firebase-messaging-sw.ts --skipLibCheck true  --lib webworker --target es5 --outDir dist && sed -i 's/.*exports.*//' dist/firebase-messaging-sw.js",
+    "build": "tsc && vite build",
+    "buildMessager": "esbuild ./src/firebase-messaging-sw.ts --bundle --minify --outfile=./dist/firebase-messaging-sw.js",
     "preview": "vite preview",
     "lint": "eslint .",
     "prepare": "husky install",
@@ -47,6 +47,7 @@
     "@vitejs/plugin-react": "^2.2.0",
     "@walletconnect/types": "^2.7.6",
     "autoprefixer": "^10.4.14",
+    "esbuild": "^0.18.17",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.3",
