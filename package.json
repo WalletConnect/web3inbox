@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && touch dist/firebase-messaging-sw.js",
     "preview": "vite preview",
     "lint": "eslint .",
     "prepare": "husky install",
