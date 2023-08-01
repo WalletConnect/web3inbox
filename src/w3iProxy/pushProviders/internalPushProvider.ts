@@ -2,6 +2,8 @@ import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletc
 import type { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { W3iPushProvider } from './types'
+import { getToken } from 'firebase/messaging'
+import { messaging } from '../../utils/firebase'
 
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: PushWalletClient | undefined
@@ -124,8 +126,11 @@ export default class InternalPushProvider implements W3iPushProvider {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
-
     console.log('InternalPushProvider > PushClient.subscribe > params', params)
+
+    await Notification.requestPermission()
+    const token = await getToken(messaging)
+    const clientId = await this.pushClient.core.crypto.getClientId()
 
     const subscribed = await this.pushClient.subscribe({
       ...params,
@@ -135,6 +140,20 @@ export default class InternalPushProvider implements W3iPushProvider {
 
           return signature
         })
+    })
+    const symkey = this.pushClient.subscriptions
+      .getAll({
+        account: params.account
+      })
+      .find(sub => sub.metadata.url === params.metadata.url)?.symKey
+
+    navigator.serviceWorker.ready.then(registration => {
+      registration.active?.postMessage({
+        type: 'INSTALL_SYMKEY_CLIENT',
+        clientId,
+        token,
+        symkey
+      })
     })
 
     return subscribed
