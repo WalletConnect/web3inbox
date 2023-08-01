@@ -54,7 +54,7 @@ const getSymKey = async (topic: string) => {
 }
 
 const initData = async (topic: string, symkey: string, clientId: string, token: string) => {
-  const db = await openDB('w3i-sw-db')
+  const db = await getDbSymkeyStore()
 
   await db.put(SYMKEY_OBJ_STORE, symkey, topic)
 
