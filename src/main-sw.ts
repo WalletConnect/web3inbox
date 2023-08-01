@@ -1,8 +1,5 @@
 /// <reference lib="WebWorker" />
-import { initializeApp } from 'firebase/app'
 import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw'
-import { decryptMessage } from '@walletconnect/push-message-decrypter'
-import { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import { openDB } from 'idb'
 import {
   cleanupOutdatedCaches,
@@ -11,26 +8,13 @@ import {
 } from 'workbox-precaching'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 
-// Initialize the Firebase app in the service worker by passing in
-// your app's Firebase config object.
-// https://firebase.google.com/docs/web/setup#config-object
-const firebaseApp = initializeApp({
-  apiKey: 'AIzaSyAtOP2BXP4RNK0pN_AEBMkVjgmYqklUlKc',
-  authDomain: 'javascript-48655.firebaseapp.com',
-  projectId: 'javascript-48655',
-  storageBucket: 'javascript-48655.appspot.com',
-  messagingSenderId: '295861682652',
-  appId: '1:295861682652:web:60f4b1e4e1d8adca230f19',
-  measurementId: 'G-0BLLC7N3KW'
-})
-
 const ECHO_URL = 'https://echo.walletconnect.com'
 
 const SYMKEY_OBJ_STORE = 'symkey-store'
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.
-const messaging = getMessaging(firebaseApp)
+const messaging = getMessaging()
 
 const getDbSymkeyStore = async () => {
   const db = await openDB('w3i-sw-db', 3, {
@@ -71,24 +55,6 @@ const initData = async (topic: string, symkey: string, clientId: string, token: 
     })
   })
 }
-
-onBackgroundMessage(messaging, async firebaseMessage => {
-  const { encoded, topic } = firebaseMessage.data!
-
-  const symkey = await getSymKey(topic)
-
-  console.log('Got message!', symkey, topic)
-
-  const m = (await decryptMessage({
-    encoded,
-    symkey,
-    topic
-  })) as JsonRpcRequest<{ body: string; title: string }>
-
-  self.registration.showNotification(m.params.title, {
-    body: m.params.body
-  })
-})
 
 declare let self: ServiceWorkerGlobalScope
 
