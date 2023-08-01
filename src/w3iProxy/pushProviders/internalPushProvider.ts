@@ -136,7 +136,10 @@ export default class InternalPushProvider implements W3iPushProvider {
 
     console.log('Got clientId', clientId)
 
-    const token = await getToken(messaging)
+    const token = await getToken(messaging, {
+      vapidKey:
+        'BCnI0mkpH3LvHRF-dREPCdvBFk24oveWy4JBuINzWcu8JXhmCDkczDmHM9RubzsQrv60UKFk-MKozVjRRzvx1X4'
+    })
 
     console.log('Got token', token)
 
