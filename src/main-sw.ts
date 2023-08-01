@@ -35,7 +35,10 @@ const messaging = getMessaging(firebaseApp)
 const getDbSymkeyStore = async () => {
   const db = await openDB('w3i-sw-db', 3, {
     upgrade(database) {
-      database.createObjectStore(SYMKEY_OBJ_STORE)
+      const exists = database.objectStoreNames.contains(SYMKEY_OBJ_STORE)
+      if (!exists) {
+        database.createObjectStore(SYMKEY_OBJ_STORE)
+      }
     }
   })
   return db
