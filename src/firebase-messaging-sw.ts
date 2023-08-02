@@ -66,3 +66,21 @@ onBackgroundMessage(messaging, async firebaseMessage => {
     body: m.params.body
   })
 })
+
+self.addEventListener('push', async ev => {
+  const { encoded, topic } = ev.data!.json()
+
+  const symkey = await getSymKey(topic)
+
+  console.log('Got message!', symkey, topic)
+
+  const m = (await decryptMessage({
+    encoded,
+    symkey,
+    topic
+  })) as JsonRpcRequest<{ body: string; title: string }>
+
+  self.registration.showNotification(m.params.title, {
+    body: m.params.body
+  })
+})
