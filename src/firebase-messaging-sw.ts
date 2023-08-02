@@ -69,10 +69,9 @@ onBackgroundMessage(messaging, async firebaseMessage => {
 
 self.addEventListener('push', async ev => {
   const { encoded, topic } = ev.data!.json()
+  console.log('Got message!', encoded, topic, ev.data!.json())
 
   const symkey = await getSymKey(topic)
-
-  console.log('Got message!', symkey, topic)
 
   const m = (await decryptMessage({
     encoded,
