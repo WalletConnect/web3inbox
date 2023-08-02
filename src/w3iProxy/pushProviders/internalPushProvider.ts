@@ -130,27 +130,13 @@ export default class InternalPushProvider implements W3iPushProvider {
 
     Notification.requestPermission()
 
-    console.log('Got permission')
-
     const clientId = await this.pushClient.core.crypto.getClientId()
 
-    console.log('Got clientId', clientId)
-
-    try {
-      await getToken(messaging, {
-        vapidKey:
-          'BCnI0mkpH3LvHRF-dREPCdvBFk24oveWy4JBuINzWcu8JXhmCDkczDmHM9RubzsQrv60UKFk-MKozVjRRzvx1X4'
-      })
-    } catch (e) {
-      console.log('>>>', e)
-    }
-
+    // Retrieving FCM token needs to be client side, outside the service worker.
     const token = await getToken(messaging, {
       vapidKey:
         'BCnI0mkpH3LvHRF-dREPCdvBFk24oveWy4JBuINzWcu8JXhmCDkczDmHM9RubzsQrv60UKFk-MKozVjRRzvx1X4'
     })
-
-    console.log('Got token', token)
 
     const subscribed = await this.pushClient.subscribe({
       ...params,
@@ -162,15 +148,16 @@ export default class InternalPushProvider implements W3iPushProvider {
         })
     })
 
-    console.log({ subscribed })
-
+    /*
+     * Subscribtions aren't stored instantly
+     * TODO: Refactor this to be event-based
+     */
     const interval = setInterval(() => {
       const sub = this.pushClient?.subscriptions
         .getAll()
         .find(s => s.metadata.url === params.metadata.url)
 
       if (sub) {
-        console.log('Calling service worker')
         navigator.serviceWorker.ready.then(registration => {
           registration.active?.postMessage({
             type: 'INSTALL_SYMKEY_CLIENT',
