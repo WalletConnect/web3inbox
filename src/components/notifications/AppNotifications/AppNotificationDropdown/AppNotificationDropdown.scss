@@ -30,8 +30,14 @@
         height: 1em;
       }
       span {
-        text-align: start;
-        line-height: 1.0625em;
+        font-weight: 400;
+        line-height: 140%;
+        font-size: 0.875rem;
+      }
+
+      svg {
+        max-width: none;
+        width: 1rem;
       }
     }
     &__unsubscribe {

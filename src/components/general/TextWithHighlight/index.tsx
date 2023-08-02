@@ -1,5 +1,6 @@
 import React from 'react'
 import './TextWithHighlight.scss'
+import Text from '../Text'
 
 interface TextWithHighlightProps {
   text: string
@@ -8,7 +9,7 @@ interface TextWithHighlightProps {
 
 const TextWithHighlight: React.FC<TextWithHighlightProps> = ({ text, highlightedText }) => {
   if (!highlightedText || !text || !text.includes(highlightedText)) {
-    return <span>{text}</span>
+    return <Text variant="paragraph-500">{text}</Text>
   }
 
   const preHighlighted = text.substring(0, text.indexOf(highlightedText))

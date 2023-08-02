@@ -1,0 +1,18 @@
+.Anchor {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: #3396ff;
+  background: rgba(51, 150, 255, 0.15);
+  border-radius: 28px;
+  padding: 7px 0px;
+  cursor: pointer;
+  text-decoration: none;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}

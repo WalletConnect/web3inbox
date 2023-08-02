@@ -4,6 +4,8 @@ import Dropdown from '../../../general/Dropdown/Dropdown'
 import CrossIcon from '../../../general/Icon/CrossIcon'
 import NotificationMuteIcon from '../../../general/Icon/NotificationMuteIcon'
 import './ThreadDropdown.scss'
+import { useColorModeValue } from '../../../../utils/hooks'
+import SettingsContext from '../../../../contexts/SettingsContext/context'
 
 interface ThreadDropdownProps {
   threadId: string
@@ -16,6 +18,9 @@ interface ThreadDropdownProps {
 const ThreadDropdown: React.FC<ThreadDropdownProps> = ({ w, h, dropdownPlacement, threadId }) => {
   const { chatClientProxy, refreshThreadsAndInvites, threads } = useContext(W3iContext)
   const [isMuted, setIsMuted] = useState(false)
+
+  const { mode } = useContext(SettingsContext)
+  const themeColors = useColorModeValue(mode)
 
   const onClickLeave = useCallback(
     (thread: string) => {
@@ -63,7 +68,7 @@ const ThreadDropdown: React.FC<ThreadDropdownProps> = ({ w, h, dropdownPlacement
           className="ThreadDropdown__button ThreadDropdown__button--mute"
           onClick={async () => handleContactMuting(threadId)}
         >
-          <NotificationMuteIcon fillColor="white" />
+          <NotificationMuteIcon fillColor={themeColors['--fg-color-1']} />
           <span>{isMuted ? 'Unmute' : 'Mute'}</span>
         </button>
         <button

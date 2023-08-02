@@ -5,17 +5,17 @@
   border-radius: 50%;
   box-sizing: content-box;
   &__container {
-    --color-av-1: #fff;
-    --color-av-2: #fff;
-    --color-av-3: #fff;
-    --color-av-4: #fff;
-    --color-av-5: #fff;
     border-radius: 50%;
-    background-color: var(--color-av-1);
-    background-image: radial-gradient(at 66% 77%, var(--color-av-2) 0px, transparent 50%),
-      radial-gradient(at 29% 97%, var(--color-av-3) 0px, transparent 50%),
-      radial-gradient(at 99% 86%, var(--color-av-4) 0px, transparent 50%),
-      radial-gradient(at 29% 88%, var(--color-av-5) 0px, transparent 50%);
+    border: 1px solid var(--fg-color-3);
+    background: radial-gradient(
+      75.29% 75.29% at 64.96% 24.36%,
+      #fff 0.52%,
+      var(--local-color-5) 31.25%,
+      var(--local-color-3) 51.56%,
+      var(--local-color-2) 65.63%,
+      var(--local-color-1) 82.29%,
+      var(--local-color-4) 100%
+    );
   }
   &__icon {
     border-radius: 50%;
@@ -23,7 +23,7 @@
   &__dropdown {
     position: absolute;
     top: 0;
-    bottom: inherit;
+    transform: translateY(calc(-100% - 3em));
     margin-top: 0.5em;
     min-width: 10em;
     color: var(--fg-color-1);
@@ -55,7 +55,6 @@
 
     @media only screen and (max-width: 700px) {
       top: inherit;
-      bottom: 0;
     }
 
     &__block {
@@ -64,8 +63,6 @@
       flex-direction: row;
       justify-content: flex-start;
       padding: 0.75em;
-      font-weight: 700;
-      font-size: 0.875em;
 
       &__group {
         padding-left: 1em;
@@ -89,10 +86,8 @@
         align-items: center;
         gap: 0.5em;
         padding-left: 0.625em;
-        font-size: 1.1em;
       }
       &__balance {
-        font-size: 1.1em;
         padding-left: 0.625em;
       }
 

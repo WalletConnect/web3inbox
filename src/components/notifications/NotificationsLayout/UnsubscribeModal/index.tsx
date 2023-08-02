@@ -7,6 +7,7 @@ import Button from '../../../general/Button'
 import CrossIcon from '../../../general/Icon/CrossIcon'
 import { Modal } from '../../../general/Modal/Modal'
 import './UnsubscribeModal.scss'
+import Text from '../../../general/Text'
 
 export const UnsubscribeModal: React.FC = () => {
   const { mode } = useContext(SettingsContext)
@@ -42,7 +43,7 @@ export const UnsubscribeModal: React.FC = () => {
     <Modal onToggleModal={unsubscribeModalService.toggleModal}>
       <div className="UnsubscribeModal">
         <div className="UnsubscribeModal__header">
-          <h2>Unsubscribe</h2>
+          <Text variant="large-500">Unsubscribe</Text>
           <Button
             className="UnsubscribeModal__close"
             customType="action-icon"
@@ -56,13 +57,15 @@ export const UnsubscribeModal: React.FC = () => {
         </div>
         <div className="UnsubscribeModal__content">
           <div className="UnsubscribeModal__content__title">
-            Unsubscribe from {app.metadata.name}
+            <Text variant="paragraph-500">Unsubscribe from {app.metadata.name}</Text>
           </div>
           <div className="UnsubscribeModal__content__helper-text">
-            You will stop receiving all notifications from {app.metadata.name} on the web inbox and
-            in your wallet.
-            <br />
-            You can re-subscribe later
+            <Text variant="small-400">
+              You will stop receiving all notifications from {app.metadata.name} on the web inbox
+              and in your wallet.
+              <br />
+              You can re-subscribe later
+            </Text>
           </div>
         </div>
         <Button

@@ -1,11 +1,18 @@
 import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import { useMemo } from 'react'
 import './MessageDateTag.scss'
+import Text from '../../../general/Text'
 
 interface IMessageDateTagProps {
   timestamp: number
+  className?: string
+  noText?: boolean
 }
-const MessageDateTag: React.FC<IMessageDateTagProps> = ({ timestamp }: IMessageDateTagProps) => {
+const MessageDateTag: React.FC<IMessageDateTagProps> = ({
+  timestamp,
+  className,
+  noText
+}: IMessageDateTagProps) => {
   const dateToDisplay = useMemo(() => {
     if (!timestamp) {
       return null
@@ -14,9 +21,17 @@ const MessageDateTag: React.FC<IMessageDateTagProps> = ({ timestamp }: IMessageD
     const messageDate = new Date(timestamp)
 
     if (isToday(messageDate)) {
+      if (noText) {
+        return `${format(messageDate, 'HH:mm')}`
+      }
+
       return `Today ${format(messageDate, 'HH:mm')}`
     }
     if (isYesterday(messageDate)) {
+      if (noText) {
+        return `${format(messageDate, 'HH:mm')}`
+      }
+
       return `Yesterday ${format(messageDate, 'HH:mm')}`
     }
     if (isSameWeek(today, messageDate)) {
@@ -26,7 +41,11 @@ const MessageDateTag: React.FC<IMessageDateTagProps> = ({ timestamp }: IMessageD
     return format(messageDate, 'MMMM dd HH:mm')
   }, [timestamp])
 
-  return <div className="MessageDateTag">{dateToDisplay}</div>
+  return (
+    <div className={`MessageDateTag ${className ? className : ''}`}>
+      <Text variant="link-500">{dateToDisplay}</Text>
+    </div>
+  )
 }
 
 export default MessageDateTag

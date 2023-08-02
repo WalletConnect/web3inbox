@@ -1,24 +1,39 @@
 .Input {
   display: flex;
   align-items: center;
-  gap: 0.5em;
-  color: var(--fg-color-1);
-  border-radius: 28px;
-  padding: 0.5em;
-  height: 2.1875em;
-  outline: 1px solid var(--border-color-2);
-  &:focus-within {
-    outline: 1px solid var(--accent-color-1);
+  position: relative;
+
+  img {
+    position: absolute;
+    left: 14px;
+
+    + input {
+      padding: 0.625rem 1rem 0.625rem 2.75rem;
+    }
   }
 
   &__input {
     color: inherit;
+    padding: 0.625rem 1rem 0.625rem 1rem;
     border: none;
-    padding: 0.25em;
     width: 100%;
-    height: 2.1875em;
     background: transparent;
     outline: none;
+
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 510;
+    line-height: 20px;
+    letter-spacing: -0.3px;
+    background: var(--light-overlay-002, rgba(6, 43, 43, 0.02));
+    border: 1px solid var(--border-color-2);
+    border-radius: 16px;
+    color: var(--fg-color-1);
+
+    &:focus-within {
+      outline: 1px solid var(--accent-color-1);
+    }
+
     &::placeholder {
       color: var(--fg-color-2);
     }

@@ -1,32 +1,42 @@
+/* eslint-disable no-bitwise */
+
+const hexToRgb = (hex: string): [number, number, number] => {
+  const bigint = parseInt(hex, 16)
+
+  const r = (bigint >> 16) & 255
+  const g = (bigint >> 8) & 255
+  const b = bigint & 255
+
+  return [r, g, b]
+}
+
+const tintColor = (rgb: [number, number, number], tint: number): [number, number, number] => {
+  const [r, g, b] = rgb
+  const tintedR = Math.round(r + (255 - r) * tint)
+  const tintedG = Math.round(g + (255 - g) * tint)
+  const tintedB = Math.round(b + (255 - b) * tint)
+
+  return [tintedR, tintedG, tintedB]
+}
+
 export const generateAvatarColors = (address: string) => {
-  // eslint-disable-next-line require-unicode-regexp
-  const seedArr = address.match(/.{1,7}/g)?.splice(0, 5)
+  const hash = address.toLowerCase().replace(/^0x/iu, '')
+  const baseColor = hash.substring(0, 6)
+  const rgbColor = hexToRgb(baseColor)
+
   const colors: string[] = []
 
-  seedArr?.forEach(seed => {
-    let hash = 0
-    for (let i = 0; i < seed.length; i += 1) {
-      // eslint-disable-next-line no-bitwise
-      hash = seed.charCodeAt(i) + ((hash << 5) - hash)
-      // eslint-disable-next-line operator-assignment, no-bitwise
-      hash = hash & hash
-    }
-
-    const rgb = [0, 0, 0]
-    for (let i = 0; i < 3; i += 1) {
-      // eslint-disable-next-line no-bitwise
-      const value = (hash >> (i * 8)) & 255
-      rgb[i] = value
-    }
-    colors.push(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`)
-  })
+  for (let i = 0; i < 5; i += 1) {
+    const tintedColor = tintColor(rgbColor, 0.15 * i)
+    colors.push(`rgb(${tintedColor[0]}, ${tintedColor[1]}, ${tintedColor[2]})`)
+  }
 
   const variables = {
-    '--color-av-1': colors[0],
-    '--color-av-2': colors[1],
-    '--color-av-3': colors[2],
-    '--color-av-4': colors[3],
-    '--color-av-5': colors[4]
+    '--local-color-1': colors[0],
+    '--local-color-2': colors[1],
+    '--local-color-3': colors[2],
+    '--local-color-4': colors[3],
+    '--local-color-5': colors[4]
   }
 
   return variables

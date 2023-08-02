@@ -1,7 +1,6 @@
 import debounce from 'lodash.debounce'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { concatAll, from, takeLast, takeWhile } from 'rxjs'
-import PersonIcon from '../../../assets/Person.svg'
 import PlusIcon from '../../../assets/Plus.svg'
 import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
@@ -17,6 +16,9 @@ import MobileHeading from '../../layout/MobileHeading'
 import EmptyThreads from './EmptyThreads'
 import Thread from './Thread'
 import './ThreadSelector.scss'
+import TargetTitle from '../../general/TargetTitle'
+import PencilIcon from '../../general/Icon/PencilIcon'
+import Text from '../../general/Text'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
@@ -150,11 +152,15 @@ const ThreadSelector: React.FC = () => {
             placeholder="Search"
             icon={SearchIcon}
           />
-          <NavLink to="/messages/new-chat" className="ThreadSelector__link">
+          <TargetTitle className="ThreadSelector__target-title" to="/messages/new-chat">
+            <Text variant="large-700">Chat</Text>
+            <PencilIcon />
+          </TargetTitle>
+          {/* <NavLink to="/messages/new-chat" className="ThreadSelector__link">
             <img className="ThreadSelector__link-icon" src={PlusIcon} alt="NewChat" />
             <span>New Chat</span>
-          </NavLink>
-          <NavLink to="/messages/chat-invites" className="ThreadSelector__link">
+          </NavLink> */}
+          {/* <NavLink to="/messages/chat-invites" className="ThreadSelector__link">
             <div className="ThreadSelector__invites">
               <div className="ThreadSelector__invites-link">
                 <img className="ThreadSelector__link-icon" src={PersonIcon} alt="Invites" />
@@ -164,7 +170,7 @@ const ThreadSelector: React.FC = () => {
                 {invites.filter(invite => invite.status === 'pending').length}
               </CircleBadge>
             </div>
-          </NavLink>
+          </NavLink> */}
         </>
       )}
       {(filteredThreads.length > 0 || sentInvites.length > 0) && (

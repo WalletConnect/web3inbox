@@ -15,6 +15,8 @@ import { noop } from 'rxjs'
 import { AnimatePresence } from 'framer-motion'
 import ThreadDropdown from './ThreadDropdown'
 import type { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'
+import { getEthChainAddress } from '../../../utils/address'
+import Text from '../../general/Text'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -150,13 +152,16 @@ const ThreadWindow: React.FC = () => {
 
   return (
     <div className="ThreadWindow">
+      <div className="ThreadWindow__border"></div>
       <div className="ThreadWindow__header">
         <div className="ThreadWindow__peer">
           <BackButton backTo="/messages" />
-          <Avatar address={peerAddress} width="1.25em" height="1.25em" />
-          <span>{ensName ?? truncate(peer ?? '', 10)}</span>
+          <Avatar address={peerAddress} width="2.5rem" height="2.5rem" />
+          <Text variant="paragraph-500">
+            {peer ? truncate(getEthChainAddress(peer), 5) : ensName}
+          </Text>
         </div>
-        <ThreadDropdown dropdownPlacement="bottomLeft" h="1em" w="2em" threadId={topic} />
+        <ThreadDropdown dropdownPlacement="bottomLeft" h="2.5em" w="2.5em" threadId={topic} />
       </div>
       <div className="ThreadWindow__messages">
         <ConversationBeginning peerAddress={peerAddress} ensName={ensName} />

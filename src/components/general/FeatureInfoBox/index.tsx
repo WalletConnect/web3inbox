@@ -6,6 +6,7 @@ import Button from '../Button'
 import CrossIcon from '../Icon/CrossIcon'
 import IconWrapper from '../Icon/IconWrapper/IconWrapper'
 import './FeatureInfoBox.scss'
+import Text from '../Text'
 
 interface IFeatureInfoBoxProps {
   localStorageKey: string
@@ -49,7 +50,8 @@ const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
           alt={mainIcon.alt}
           loading="lazy"
         />
-        <div className="FeatureInfoBox__container__functionalities">{header}</div>
+        <Text variant="large-500">{header}</Text>
+
         {sections.map(section => (
           <div key={section.title} className="FeatureInfoBox__container__functionality">
             <div className="FeatureInfoBox__container__functionality__icons">
@@ -59,7 +61,7 @@ const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
                 </IconWrapper>
               ))}
             </div>
-            {section.title}
+            <Text variant="small-400">{section.title}</Text>
           </div>
         ))}
       </div>

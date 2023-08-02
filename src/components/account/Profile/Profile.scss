@@ -19,17 +19,15 @@
         opacity: 0.66;
       }
     }
-    &__name {
-      font-weight: 700;
-      font-size: 1.1em;
-    }
+
     &__bio {
       margin-top: 0.5em;
-      font-size: 1em;
       color: var(--fg-color-4);
       a {
         color: var(--accent-color-1);
         text-decoration: none;
+        display: block;
+        margin-top: 0.5em;
         &:hover {
           text-decoration: underline;
         }
@@ -71,6 +69,7 @@
     bottom: -2em;
     left: 0;
     margin-left: 1em;
+    border-radius: 50%;
     box-shadow: 0px 4px 4px -2px #00000014, 0px 2px 4px -2px #0000001f;
   }
   &__TitleBar {
@@ -113,13 +112,17 @@
       left: 0;
       height: 100%;
       width: 100%;
-      background-color: var(--color-av-1);
-      background-image: radial-gradient(at 66% 77%, var(--color-av-2) 0px, transparent 50%),
-        radial-gradient(at 29% 97%, var(--color-av-3) 0px, transparent 50%),
-        radial-gradient(at 99% 86%, var(--color-av-4) 0px, transparent 50%),
-        radial-gradient(at 29% 88%, var(--color-av-5) 0px, transparent 50%);
-      filter: blur(30px) brightness(var(--brightness-multiplier));
-      transform: scale(1.2);
+      background: radial-gradient(
+        75.29% 75.29% at 68.96% 24.36%,
+        #fff 0.52%,
+        var(--local-color-5) 31.25%,
+        var(--local-color-3) 51.56%,
+        var(--local-color-2) 65.63%,
+        var(--local-color-1) 82.29%,
+        var(--local-color-4) 100%
+      );
+      filter: blur(5px) brightness(var(--brightness-multiplier));
+      transform: scale(1.1);
       z-index: -1;
       &__container {
         z-index: -1;

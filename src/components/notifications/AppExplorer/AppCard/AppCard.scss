@@ -27,20 +27,8 @@
     flex-direction: column;
     gap: 0.25em;
     color: var(--fg-color-1);
-    &__name {
-      font-weight: 700;
-      font-size: 1.25em;
-      line-height: 1.5em;
-    }
-    &__description {
-      font-weight: 500;
-      font-size: 0.8125em;
-      line-height: 1em;
-    }
+
     &__url {
-      font-weight: 500;
-      font-size: 0.75em;
-      line-height: 0.875em;
       color: var(--fg-color-2);
     }
     &__subscribe {

@@ -7,12 +7,6 @@
     justify-content: center;
     align-items: center;
     padding: 1em 1em 0.5em 1em;
-
-    h2 {
-      font-weight: 700;
-      font-size: 20px;
-      line-height: 1.2em;
-    }
   }
   &__close {
     position: absolute;
@@ -30,18 +24,18 @@
       color: var(--fg-color-1);
       display: flex;
       align-items: center;
-      font-weight: 700;
+
       width: 100%;
       justify-content: space-between;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 1.25em;
+
+      span {
+        letter-spacing: 0px !important;
+      }
+
       &__helper-text {
         max-width: 15.625em;
         color: var(--fg-color-2);
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 1.0625em;
+        margin-top: 0.15em;
       }
     }
   }

@@ -1,25 +1,24 @@
 .PeerAndMessage {
   display: flex;
-  gap: 0.5em;
+  gap: 0.75rem;
   align-items: center;
-  width: 15em;
-  width: 100%;
   flex-grow: 1;
 
-  &__text,
+  &__text {
+    display: flex;
+    flex-direction: column;
+    font-feature-settings: 'case' on;
+    text-overflow: ellipsis;
+    width: 100%;
+    gap: 0.25rem;
+  }
+
   &__peer {
     display: flex;
     align-items: flex-start;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: space-between;
     width: 100%;
     max-width: none;
-  }
-
-  &__text {
-    @media screen and (min-width: 700px) {
-      max-width: 15em;
-    }
   }
 
   &__peer__mobile {
@@ -29,7 +28,6 @@
   }
   &__peer {
     color: var(--fg-color-1);
-    font-weight: 700;
   }
 
   &__message__details {
@@ -39,19 +37,21 @@
   }
 
   &__message {
-    font-size: 0.9em;
-    color: var(--fg-color-2);
-    width: 75%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    span {
+      color: var(--fg-color-2);
+      font-size: 14px !important;
+      font-style: normal !important;
+      font-weight: 400 !important;
+      line-height: 140%; /* 19.6px */
+      letter-spacing: -0.28px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
 
     &__timestamp {
-      padding-top: 2px;
-      color: var(--fg-color-3);
-      font-weight: 500;
-      font-size: 0.75em;
-      line-height: 0.875em;
+      padding: 0 0 0px 0 !important;
     }
   }
 }

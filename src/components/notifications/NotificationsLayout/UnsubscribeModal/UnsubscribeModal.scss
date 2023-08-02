@@ -7,12 +7,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    h2 {
-      color: var(--fg-color-1);
-      font-weight: 700;
-      font-size: 20px;
-      line-height: 1.2em;
-    }
   }
   &__close {
     position: absolute;
@@ -36,15 +30,9 @@
     gap: 0.4375em;
     &__title {
       color: var(--fg-color-1);
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 1.25em;
     }
     &__helper-text {
       color: var(--fg-color-2);
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 1.2143em;
       text-align: center;
     }
   }

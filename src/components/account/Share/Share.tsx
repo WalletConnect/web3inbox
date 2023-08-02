@@ -11,6 +11,7 @@ import { truncate } from '../../../utils/string'
 import { useEnsAvatar, useEnsName } from 'wagmi'
 import { AnimatePresence, m } from 'framer-motion'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../utils/toasts'
+import Text from '../../general/Text'
 
 interface ModalContentProps {
   modalService: typeof shareModalService
@@ -82,7 +83,9 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
             />
           </svg>
         </button>
-        <p className="Share__header--address">{ensName ?? truncate(address ?? '', 4)}</p>
+        <p className="Share__header--address">
+          <Text variant="large-500">{ensName ?? truncate(address ?? '', 4)}</Text>
+        </p>
         <button
           className="Share__header--close"
           onClick={() => {
@@ -97,9 +100,9 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
         <W3mQrCode size={318} imageUrl={ensAvatar ?? '/logo.svg'} uri={uri} />
       </div>
       <div className="Share__address">
-        <p className="Share__address--label">Address</p>
+        <Text variant="small-600">Address</Text>
         <div className="Share__address__content">
-          {truncate(address as `0x${string}`)}
+          <Text variant="small-500">{truncate(address as `0x${string}`)}</Text>
           <button className="Share__address__content--copy" onClick={handleCopyClick}>
             <CopyIcon />
           </button>
