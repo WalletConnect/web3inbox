@@ -29,8 +29,11 @@ const initData = async (topic: string, symkey: string, clientId: string, token: 
   console.log({ symkey, topic, clientId, token })
   await db.put(SYMKEY_OBJ_STORE, symkey, topic)
 
-  fetch(`${ECHO_URL}/clients`, {
+  fetch(`${ECHO_URL}/${process.env.VITE_PROJECT_ID}/clients`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
       client_id: clientId,
       type: 'FCM',
