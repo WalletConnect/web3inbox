@@ -10,19 +10,18 @@ declare let self: ServiceWorkerGlobalScope
 
 const SYMKEY_OBJ_STORE = 'symkey-store'
 
-const firebaseApp = initializeApp({
-  apiKey: 'api-key',
-  authDomain: 'project-id.firebaseapp.com',
-  databaseURL: 'https://project-id.firebaseio.com',
-  projectId: 'project-id',
-  storageBucket: 'project-id.appspot.com',
-  messagingSenderId: 'sender-id',
-  appId: 'app-id',
-  measurementId: 'G-measurement-id'
+export const firebaseApp = initializeApp({
+  apiKey: 'AIzaSyAtOP2BXP4RNK0pN_AEBMkVjgmYqklUlKc',
+  authDomain: 'javascript-48655.firebaseapp.com',
+  projectId: 'javascript-48655',
+  storageBucket: 'javascript-48655.appspot.com',
+  messagingSenderId: '295861682652',
+  appId: '1:295861682652:web:60f4b1e4e1d8adca230f19',
+  measurementId: 'G-0BLLC7N3KW'
 })
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
-// messages.
+// messages. Need to keep this alive
 const messaging = getMessaging(firebaseApp)
 
 const getDbSymkeyStore = async () => {
@@ -51,7 +50,6 @@ const getSymKey = async (topic: string) => {
 
 self.addEventListener('push', async ev => {
   const { blob: encoded, topic } = ev.data!.json().data
-  console.log('Got message!', encoded, topic, ev.data!.json().data)
 
   const symkey = await getSymKey(topic)
 
