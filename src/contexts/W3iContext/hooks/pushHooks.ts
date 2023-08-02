@@ -35,14 +35,14 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   }, [w3iProxy, proxyReady])
 
   const refreshPushState = useCallback(() => {
-    if (!pushClient || !userPubkey) {
+    if (!pushClient) {
       return
     }
 
     pushClient.getActiveSubscriptions().then(subscriptions => {
       setActiveSubscriptions(Object.values(subscriptions))
     })
-  }, [pushClient, userPubkey])
+  }, [pushClient])
 
   useEffect(() => {
     refreshPushState()
