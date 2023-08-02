@@ -49,27 +49,9 @@ const getSymKey = async (topic: string) => {
   throw new Error('No symkey exists for such topic')
 }
 
-onBackgroundMessage(messaging, async firebaseMessage => {
-  const { encoded, topic } = firebaseMessage.data!
-
-  const symkey = await getSymKey(topic)
-
-  console.log('Got message!', symkey, topic)
-
-  const m = (await decryptMessage({
-    encoded,
-    symkey,
-    topic
-  })) as JsonRpcRequest<{ body: string; title: string }>
-
-  self.registration.showNotification(m.params.title, {
-    body: m.params.body
-  })
-})
-
 self.addEventListener('push', async ev => {
-  const { encoded, topic } = ev.data!.json()
-  console.log('Got message!', encoded, topic, ev.data!.json())
+  const { blob: encoded, topic } = ev.data!.json().data
+  console.log('Got message!', encoded, topic, ev.data!.json().data)
 
   const symkey = await getSymKey(topic)
 
