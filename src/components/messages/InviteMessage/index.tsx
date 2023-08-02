@@ -4,6 +4,8 @@ import CrossIcon from '../../general/Icon/CrossIcon'
 import './InviteMessage.scss'
 import { useColorModeValue } from '../../../utils/hooks'
 import SettingsContext from '../../../contexts/SettingsContext/context'
+import ChatInviteHandEmoji from '../../../assets/ChatInviteHandEmoji.svg'
+import ChatRejectedHandEmoji from '../../../assets/ChatRejectedHandEmoji.svg'
 import CheckIcon from '../../general/Icon/CheckIcon'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import Text from '../../general/Text'
@@ -55,9 +57,9 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
 
   const StatusEmojis = useMemo(
     () => ({
-      pending: '👋',
-      rejected: '✋',
-      approved: '👋'
+      pending: ChatInviteHandEmoji,
+      rejected: ChatRejectedHandEmoji,
+      approved: ChatInviteHandEmoji
     }),
     []
   )
@@ -66,7 +68,7 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
     <div className="InviteMessage">
       <div className="InviteMessage__bubble">
         <div>
-          <span className="InviteMessage__emoji">{StatusEmojis[status]}</span>
+          <img src={StatusEmojis[status]} alt="emoji_wave_hand" />
         </div>
         <div className="InviteMessage__subtext">
           <Text variant="link-500">Chat Invite</Text>

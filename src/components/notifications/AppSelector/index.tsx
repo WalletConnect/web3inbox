@@ -103,7 +103,7 @@ const AppSelector: React.FC = () => {
       )}
 
       <div className="AppSelector__lists">
-        <div className="AppSelector__wrapper">
+        {/* <div className="AppSelector__wrapper">
           <Label color="main">Unread</Label>
           <ul className="AppSelector__list AppSelector__list__unread">
             {filteredApps.map(app => (
@@ -129,7 +129,7 @@ const AppSelector: React.FC = () => {
               </NavLink>
             ))}
           </ul>
-        </div>
+        </div> */}
         <div className="AppSelector__wrapper">
           <Label color="main">Subscribed</Label>
           <ul className="AppSelector__list">
@@ -156,7 +156,7 @@ const AppSelector: React.FC = () => {
             ))}
           </ul>
         </div>
-        <div className="AppSelector__wrapper">
+        {/* <div className="AppSelector__wrapper">
           <Label color="main">Muted</Label>
           <ul className="AppSelector__list AppSelector__list__muted">
             {filteredApps.map(app => (
@@ -181,7 +181,7 @@ const AppSelector: React.FC = () => {
               </NavLink>
             ))}
           </ul>
-        </div>
+        </div> */}
       </div>
 
       {/* FilteredApps.length > 0 && (

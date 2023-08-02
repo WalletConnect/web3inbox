@@ -78,7 +78,7 @@ const AppNotifications = () => {
         />
         {notifications.length > 0 ? (
           <>
-            <div className="AppNotifications__list">
+            {/* <div className="AppNotifications__list">
               <Label color="accent">Unread</Label>
               <>
                 {notifications.map(notification => (
@@ -99,7 +99,7 @@ const AppNotifications = () => {
                   />
                 ))}
               </>
-            </div>
+            </div> */}
 
             <div className="AppNotifications__list">
               <Label color="main">Latest</Label>

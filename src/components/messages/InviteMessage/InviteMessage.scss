@@ -12,13 +12,9 @@
     gap: 0.2em;
   }
 
-  &__emoji {
-    font-feature-settings: 'ss04' on, 'case' on, 'calt' off;
-
-    font-size: 80px;
-    font-style: normal;
-    font-weight: 510;
-    line-height: normal;
+  img {
+    width: 80px;
+    height: 80px;
   }
 
   &__subtext {

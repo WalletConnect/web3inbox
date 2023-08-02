@@ -169,11 +169,11 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      max-height: 44px;
-      margin-top: 4px;
+      max-height: 2.75rem;
+      margin-top: 0.25rem;
 
       + .Anchor {
-        margin-top: 12px;
+        margin-top: 0.75rem;
       }
     }
     &__show {
@@ -182,7 +182,7 @@
       font-weight: 510;
       font-size: 13px;
       line-height: 22px;
-      letter-spacing: -0.13px;
+      letter-spacing: -0.1rem;
       display: inline-block;
       margin-top: 2px;
       cursor: pointer;
