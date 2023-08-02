@@ -57,9 +57,10 @@ self.addEventListener('push', async ev => {
     encoded,
     symkey,
     topic
-  })) as JsonRpcRequest<{ body: string; title: string }>
+  })) as JsonRpcRequest<{ body: string; title: string; icon: string }>
 
   self.registration.showNotification(m.params.title, {
+    image: m.params.icon,
     body: m.params.body
   })
 })
