@@ -27,6 +27,11 @@ export const UnsubscribeModal: React.FC = () => {
             unsubscribeModalService.closeModal()
           }
         })
+        pushClientProxy.observeOne('notify_delete', {
+          next: () => {
+            unsubscribeModalService.closeModal()
+          }
+        })
         await pushClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
       } catch (error) {
         console.error(error)

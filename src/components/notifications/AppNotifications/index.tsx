@@ -60,9 +60,13 @@ const AppNotifications = () => {
     const pushMessageSentSub = pushClientProxy.observe('push_message', {
       next: updateMessages
     })
+    const notifyMessageSentSub = pushClientProxy.observe('notify_message', {
+      next: updateMessages
+    })
 
     return () => {
       pushMessageSentSub.unsubscribe()
+      notifyMessageSentSub.unsubscribe()
     }
   }, [pushClientProxy, setNotifications, topic])
 

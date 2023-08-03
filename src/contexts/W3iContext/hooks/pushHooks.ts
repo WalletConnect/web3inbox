@@ -93,13 +93,13 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
       }
     )
 
-    const pushSubscriptionSub = pushClient.observe('push_subscription', {
+    const pushSubscriptionSub = pushClient.observe('notify_subscription', {
       next: refreshPushState
     })
-    const pushDeleteSub = pushClient.observe('push_delete', {
+    const pushDeleteSub = pushClient.observe('notify_delete', {
       next: refreshPushState
     })
-    const pushUpdateSub = pushClient.observe('push_update', {
+    const pushUpdateSub = pushClient.observe('notify_update', {
       next: refreshPushState
     })
 
@@ -123,7 +123,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
       return noop
     }
 
-    const pushMessageSub = pushClient.observe('push_message', {
+    const pushMessageSub = pushClient.observe('notify_message', {
       next: message => {
         /*
          * Due to the fact that data is synced, push_message events can be triggered

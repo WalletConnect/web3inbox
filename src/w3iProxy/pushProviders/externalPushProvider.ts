@@ -11,11 +11,10 @@ import type { PushClientFunctions, W3iPushProvider } from './types'
 export default class ExternalPushProvider implements W3iPushProvider {
   protected readonly emitter: EventEmitter
   private readonly methodsListenedTo = [
-    'push_request',
-    'push_subscription',
-    'push_message',
-    'push_update',
-    'push_delete',
+    'notify_subscription',
+    'notify_message',
+    'notify_update',
+    'notify_delete',
     'sync_update'
   ]
   public providerName = 'ExternalPushProvider'
@@ -61,11 +60,10 @@ export default class ExternalPushProvider implements W3iPushProvider {
   public handleMessage(request: JsonRpcRequest<unknown>) {
     console.log({ request })
     switch (request.method) {
-      case 'push_request':
-      case 'push_subscription':
-      case 'push_message':
-      case 'push_update':
-      case 'push_delete':
+      case 'notify_subscription':
+      case 'notify_message':
+      case 'notify_update':
+      case 'notify_delete':
       case 'sync_update':
         this.emitter.emit(request.method, request.params)
         break
