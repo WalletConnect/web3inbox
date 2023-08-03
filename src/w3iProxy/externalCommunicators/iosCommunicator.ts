@@ -7,7 +7,7 @@ declare global {
   interface Window {
     webkit?: {
       messageHandlers?: {
-        web3inboxPush?: {
+        web3inboxNotify?: {
           postMessage: (message: unknown) => void
         }
         web3inboxChat?: {
@@ -44,8 +44,8 @@ export class IOSCommunicator implements ExternalCommunicator {
           }
           break
         case 'push':
-          if (window.webkit?.messageHandlers?.web3inboxPush) {
-            window.webkit.messageHandlers.web3inboxPush.postMessage(JSON.stringify(message))
+          if (window.webkit?.messageHandlers?.web3inboxNotify) {
+            window.webkit.messageHandlers.web3inboxNotify.postMessage(JSON.stringify(message))
           }
           break
         default:

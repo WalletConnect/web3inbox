@@ -3,7 +3,7 @@ import { useState } from 'react'
 export const useUiState = () => {
   const query = new URLSearchParams(window.location.search)
 
-  const pushEnabledQuery = query.get('pushEnabled')
+  const pushEnabledQuery = query.get('notifyEnabled')
   const chatEnabledQuery = query.get('chatEnabled')
   const settingsEnabledQuery = query.get('settingsEnabled')
 
