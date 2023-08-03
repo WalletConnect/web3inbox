@@ -126,6 +126,10 @@ class Web3InboxProxy {
     return this.pushFacade
   }
 
+  public get notify(): W3iPushFacade {
+    return this.pushFacade
+  }
+
   public get auth(): W3iAuthFacade {
     return this.authFacade
   }
@@ -175,7 +179,6 @@ class Web3InboxProxy {
 
     if (this.pushProvider === 'internal' && this.uiEnabled.push && !this.pushClient) {
       this.pushClient = await PushWalletClient.init({
-        logger: 'info',
         SyncStoreController: SyncStore,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         syncClient: this.syncClient!,
