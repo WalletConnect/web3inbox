@@ -3203,21 +3203,21 @@
     "@walletconnect/modal-core" "2.5.4"
     "@walletconnect/modal-ui" "2.5.4"
 
-"@walletconnect/push-client@^0.10.6":
-  version "0.10.6"
-  resolved "https://registry.yarnpkg.com/@walletconnect/push-client/-/push-client-0.10.6.tgz#823c2e2254b373b5c55090b8bc1c785d42dc7ba7"
-  integrity sha512-8buJer7QHzwMaRCXlMgJHB/v0ND6q/GzDE9OWLxwzP08hzPAkJ+q679XGUjp9vyNFKfqx+nNe1T0V15tCHf1EQ==
+"@walletconnect/notify-client@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-0.1.0.tgz#e4b4c642f8a22caba952f257a8b836d3a0fc9072"
+  integrity sha512-90EkWsTdcvAkTtd8tCmqeUcQP5vMmfVXUqYmVQ8E5HSkTkLpMgYgNhAVoTqjll7cExWdzEbYpI+RUpSO88k6Ew==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
-    "@walletconnect/core" "^2.8.0"
+    "@walletconnect/core" "^2.9.1"
     "@walletconnect/did-jwt" "2.0.1"
     "@walletconnect/history" "^1.0.4"
     "@walletconnect/identity-keys" "0.1.5"
     "@walletconnect/jsonrpc-utils" "1.0.7"
     "@walletconnect/sync-client" "^0.3.7"
     "@walletconnect/time" "1.0.2"
-    "@walletconnect/utils" "^2.8.0"
+    "@walletconnect/utils" "^2.9.1"
     axios "^1.4.0"
     jwt-decode "^3.1.2"
 

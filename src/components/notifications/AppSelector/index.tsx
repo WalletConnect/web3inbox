@@ -1,4 +1,4 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import debounce from 'lodash.debounce'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { from } from 'rxjs'
@@ -24,7 +24,7 @@ const AppSelector: React.FC = () => {
   const isMobile = useIsMobile()
   const { isPushSearchOpen } = useSearch()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
-  const [filteredApps, setFilteredApps] = useState<PushClientTypes.PushSubscription[]>([])
+  const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const { activeSubscriptions, dappOrigin, pushRegisterMessage } = useContext(W3iContext)
   const nav = useNavigate()
 
@@ -36,7 +36,7 @@ const AppSelector: React.FC = () => {
         return
       }
 
-      const newFilteredApps = [] as PushClientTypes.PushSubscription[]
+      const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
 
       from(activeSubscriptions).subscribe({
         next: app => {

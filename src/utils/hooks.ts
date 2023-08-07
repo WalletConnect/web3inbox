@@ -1,4 +1,3 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
 import type { RefObject } from 'react'
 
 // eslint-disable-next-line no-duplicate-imports
@@ -15,7 +14,6 @@ import {
   pushSearchService,
   shareModalService,
   signatureModalService,
-  subscribeModalService,
   unsubscribeModalService
 } from './store'
 import { isMobile } from './ui'
@@ -161,25 +159,29 @@ export const useSearch = () => {
 
 export const useModals = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
-  const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false)
+  // Const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
-  const [subscribeModalMetadata, setSubscribeModalMetadata] =
-    useState<PushClientTypes.PushRequestEventArgs>()
+  /*
+   * Const [subscribeModalMetadata, setSubscribeModalMetadata] =
+   *   useState<NotifyClientTypes.PushRequestEventArgs>()
+   */
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
     const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
       setIsProfileModalOpen(isOpen)
     })
-    const subscribeSubscription = subscribeModalService.modalState.subscribe(state => {
-      setSubscribeModalMetadata(state.metadata)
-      setIsSubscribeModalOpen(state.isOpen)
-    })
+    /*
+     * Const subscribeSubscription = subscribeModalService.modalState.subscribe(state => {
+     *   setSubscribeModalMetadata(state.metadata)
+     *   setIsSubscribeModalOpen(state.isOpen)
+     * })
+     */
     const signatureSubscription = signatureModalService.modalState.subscribe(isOpen => {
       setIsSignatureModalOpen(isOpen)
     })
@@ -205,7 +207,6 @@ export const useModals = () => {
       signatureSubscription.unsubscribe()
       preferencesSubscription.unsubscribe()
       unsubscribeSubscription.unsubscribe()
-      subscribeSubscription.unsubscribe()
     }
   }, [])
 
@@ -216,10 +217,8 @@ export const useModals = () => {
     isContactModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
-    isSubscribeModalOpen,
     preferencesModalAppId,
-    unsubscribeModalAppId,
-    subscribeModalMetadata
+    unsubscribeModalAppId
   }
 }
 

@@ -1,4 +1,4 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { noop } from 'rxjs'
@@ -28,7 +28,7 @@ const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
-  const [notifications, setNotifications] = useState<PushClientTypes.PushMessageRecord[]>([])
+  const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
   const [notificationsDrag, setNotificationsDrag] = useState<
     AppNotificationsDragProps[] | undefined
   >()
@@ -58,7 +58,7 @@ const AppNotifications = () => {
       return noop
     }
 
-    const pushMessageSentSub = pushClientProxy.observe('push_message', {
+    const pushMessageSentSub = pushClientProxy.observe('notify_message', {
       next: updateMessages
     })
     const notifyMessageSentSub = pushClientProxy.observe('notify_message', {

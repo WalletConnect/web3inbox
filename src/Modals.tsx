@@ -4,7 +4,6 @@ import { Share } from './components/account/Share/Share'
 import { PreferencesModal } from './components/notifications/NotificationsLayout/PreferencesModal'
 import { UnsubscribeModal } from './components/notifications/NotificationsLayout/UnsubscribeModal'
 import { SignatureModal } from './pages/Login/SignatureModal'
-import Subscribe from './components/notifications/SubscribeModal'
 import { useContext, useEffect } from 'react'
 import W3iContext from './contexts/W3iContext/context'
 import { signatureModalService } from './utils/store'
@@ -15,8 +14,7 @@ export const Modals = () => {
     isShareModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
-    isSignatureModalOpen,
-    isSubscribeModalOpen
+    isSignatureModalOpen
   } = useModals()
 
   const { chatRegisterMessage, pushRegisterMessage, registeredKey, userPubkey } =
@@ -37,7 +35,6 @@ export const Modals = () => {
     <>
       {isProfileModalOpen && <Profile />}
       {isShareModalOpen && <Share />}
-      {isSubscribeModalOpen && <Subscribe />}
       {isPreferencesModalOpen && <PreferencesModal />}
       {isUnsubscribeModalOpen && <UnsubscribeModal />}
       {isSignatureModalOpen && (

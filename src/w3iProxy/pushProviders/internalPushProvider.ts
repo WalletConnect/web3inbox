@@ -1,4 +1,4 @@
-import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
+import type { NotifyClientTypes, NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { W3iPushProvider } from './types'
@@ -6,7 +6,7 @@ import { getToken } from 'firebase/messaging'
 import { messaging } from '../../utils/firebase'
 
 export default class InternalPushProvider implements W3iPushProvider {
-  private pushClient: PushWalletClient | undefined
+  private pushClient: NotifyClient | undefined
   private readonly emitter: EventEmitter
   public providerName = 'InternalPushProvider'
   private readonly methodsListenedTo = ['push_signature_delivered']
@@ -19,14 +19,15 @@ export default class InternalPushProvider implements W3iPushProvider {
    * We need to re-register events from the chat client to the emitter
    * to allow the observers in the facade to work seamlessly.
    */
-  public initState(pushClient: PushWalletClient) {
+  public initState(pushClient: NotifyClient) {
     this.pushClient = pushClient
 
-    this.pushClient.on('push_proposal', args => this.emitter.emit('push_request', args))
-    this.pushClient.on('push_subscription', args => this.emitter.emit('push_subscription', args))
-    this.pushClient.on('push_message', args => this.emitter.emit('push_message', args))
-    this.pushClient.on('push_update', args => this.emitter.emit('push_update', args))
-    this.pushClient.on('push_delete', args => this.emitter.emit('push_delete', args))
+    this.pushClient.on('notify_subscription', args =>
+      this.emitter.emit('notify_subscription', args)
+    )
+    this.pushClient.on('notify_message', args => this.emitter.emit('notify_message', args))
+    this.pushClient.on('notify_update', args => this.emitter.emit('notify_update', args))
+    this.pushClient.on('notify_delete', args => this.emitter.emit('notify_delete', args))
 
     this.pushClient.syncClient.on('sync_update', () => {
       this.emitter.emit('sync_update', {})
@@ -57,7 +58,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
   }
 
-  // ------------------- Method-forwarding for PushWalletClient -------------------
+  // ------------------- Method-forwarding for NotifyClient -------------------
 
   public async enableSync(params: { account: string }) {
     if (!this.pushClient) {
@@ -98,31 +99,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     })
   }
 
-  public async approve(params: { id: number }) {
-    if (!this.pushClient) {
-      throw new Error(this.formatClientRelatedError('approve'))
-    }
-
-    return this.pushClient.approve({
-      ...params,
-      onSign: async message =>
-        window.web3inbox.signMessage(message).then(signature => {
-          console.log('PushClient.approve > onSign > signature', signature)
-
-          return signature
-        })
-    })
-  }
-
-  public async reject(params: { id: number; reason: string }) {
-    if (!this.pushClient) {
-      throw new Error(this.formatClientRelatedError('reject'))
-    }
-
-    return this.pushClient.reject(params)
-  }
-
-  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
+  public async subscribe(params: { metadata: NotifyClientTypes.Metadata; account: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
@@ -219,12 +196,12 @@ export default class InternalPushProvider implements W3iPushProvider {
     return Promise.resolve(messages)
   }
 
-  public async deletePushMessage(params: { id: number }) {
+  public async deleteNotifyMessage(params: { id: number }) {
     if (!this.pushClient) {
-      throw new Error(this.formatClientRelatedError('deletePushMessage'))
+      throw new Error(this.formatClientRelatedError('deleteNotifyMessage'))
     }
 
-    this.pushClient.deletePushMessage(params)
+    this.pushClient.deleteNotifyMessage(params)
 
     return Promise.resolve()
   }

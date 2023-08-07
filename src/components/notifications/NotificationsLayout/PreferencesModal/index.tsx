@@ -1,4 +1,4 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import W3iContext from '../../../../contexts/W3iContext/context'
@@ -18,10 +18,10 @@ export const PreferencesModal: React.FC = () => {
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
   const { preferencesModalAppId } = useModals()
-  const [scopes, setScopes] = useState<PushClientTypes.PushSubscription['scope']>({})
+  const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
 
   // Reduces the scopes mapping to only an array of enabled scopes
-  const getEnabledScopes = (scopesMap: PushClientTypes.PushSubscription['scope']) => {
+  const getEnabledScopes = (scopesMap: NotifyClientTypes.NotifySubscription['scope']) => {
     const enabledScopeKeys: string[] = []
     Object.entries(scopesMap).forEach(([key, scope]) => {
       if (scope.enabled) {
@@ -46,7 +46,7 @@ export const PreferencesModal: React.FC = () => {
       const topic = preferencesModalAppId
 
       try {
-        pushClientProxy?.observeOne('push_update', {
+        pushClientProxy?.observeOne('notify_update', {
           next: () => {
             preferencesModalService.closeModal()
             showSuccessMessageToast('Preferences updated successfully')
