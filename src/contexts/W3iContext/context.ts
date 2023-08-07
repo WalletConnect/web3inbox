@@ -1,5 +1,5 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import type { Dispatch, SetStateAction } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import { createContext } from 'react'
@@ -18,7 +18,7 @@ interface W3iContextState {
   refreshThreadsAndInvites: () => void
   refreshNotifications: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
-  activeSubscriptions: PushClientTypes.PushSubscription[]
+  activeSubscriptions: NotifyClientTypes.NotifySubscription[]
   sentInvites: ChatClientTypes.SentInvite[]
   threads: ChatClientTypes.Thread[]
   invites: ChatClientTypes.ReceivedInvite[]

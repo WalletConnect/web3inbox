@@ -1,4 +1,4 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { BehaviorSubject } from 'rxjs'
 
 interface IPreferencesModalState {
@@ -15,7 +15,7 @@ interface IAppSearchState {
 }
 
 interface ISubscribeModalState {
-  metadata?: PushClientTypes.PushRequestEventArgs
+  metadata?: NotifyClientTypes.Metadata
   isOpen: boolean
 }
 
@@ -115,13 +115,13 @@ export const preferencesModalService = {
 }
 
 export const subscribeModalService = {
-  toggleModal: (metadata: PushClientTypes.PushRequestEventArgs) => {
+  toggleModal: (metadata: NotifyClientTypes.Metadata) => {
     subscribeModalSubject.next({
       metadata,
       isOpen: !subscribeModalSubject.value.isOpen
     })
   },
-  openModal: (metadata: PushClientTypes.PushRequestEventArgs) =>
+  openModal: (metadata: NotifyClientTypes.Metadata) =>
     subscribeModalSubject.next({
       metadata,
       isOpen: true

@@ -1,4 +1,4 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 
 export interface ChatFacadeEvents {
@@ -21,16 +21,10 @@ export interface ChatFacadeEvents {
 }
 
 export interface PushFacadeEvents {
-  push_request: PushClientTypes.EventArguments['push_request']['params']
-  push_response: PushClientTypes.EventArguments['push_response']
-  push_message: PushClientTypes.EventArguments['push_message']
-  push_subscription: PushClientTypes.EventArguments['push_subscription']
-  push_update: PushClientTypes.EventArguments['push_update']
-  push_delete: PushClientTypes.EventArguments['push_delete']
-  notify_message: PushClientTypes.EventArguments['push_message']
-  notify_subscription: PushClientTypes.EventArguments['push_subscription']
-  notify_update: PushClientTypes.EventArguments['push_update']
-  notify_delete: PushClientTypes.EventArguments['push_delete']
+  notify_message: NotifyClientTypes.EventArguments['notify_message']
+  notify_subscription: NotifyClientTypes.EventArguments['notify_subscription']
+  notify_update: NotifyClientTypes.EventArguments['notify_update']
+  notify_delete: NotifyClientTypes.EventArguments['notify_delete']
   push_signature_requested: { message: string }
   push_signature_request_cancelled: never
   sync_update: never
