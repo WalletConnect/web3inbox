@@ -24,7 +24,7 @@ interface AppCardProps {
 const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
   const [subscribing, setSubscribing] = useState(false)
   const { mode } = useContext(SettingsContext)
-  const { pushClientProxy, userPubkey } = useContext(W3iContext)
+  const { pushClientProxy, userPubkey, pushProvider } = useContext(W3iContext)
   const cardBgColor = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     const specifiedMode = mode === 'system' ? systemTheme : mode
@@ -94,7 +94,17 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         <Button
           disabled={subscribing}
           className="AppCard__body__subscribe"
-          onClick={async e => handleSubscription(e)}
+          onClick={e => {
+            if (pushProvider === 'internal') {
+              /*
+               * It's better to have Notification.requestPermission directly after a click was
+               * fired, according to MDN best practices.
+               */
+              Notification.requestPermission().then(async () => handleSubscription(e))
+            } else {
+              handleSubscription(e)
+            }
+          }}
         >
           {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
         </Button>
