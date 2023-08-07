@@ -145,8 +145,8 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
     const pushSubscriptionSub = pushClient.observe('push_subscription', {
       next: message => {
         /*
-         * Due to the fact that data is synced, push_message events can be triggered
-         * from subscriptions unrelated to the one related to the dappOrigin
+         * Due to the fact that data is synced, push_subscription events can be triggered
+         * from dapps unrelated to the one owning the dappOrigin
          */
         if (message.params.subscription?.metadata.url !== dappOrigin) {
           return
