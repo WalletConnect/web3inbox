@@ -1,6 +1,6 @@
 /// <reference lib="WebWorker" />
 import { getMessaging } from 'firebase/messaging/sw'
-import { decryptMessage } from '@walletconnect/push-message-decrypter'
+import { decryptMessage } from '@walletconnect/notify-message-decrypter'
 import { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import { onBackgroundMessage } from 'firebase/messaging/sw'
 import { openDB } from 'idb'
@@ -53,14 +53,14 @@ self.addEventListener('push', async ev => {
 
   const symkey = await getSymKey(topic)
 
-  const m = (await decryptMessage({
+  const m = await decryptMessage({
     encoded,
     symkey,
     topic
-  })) as JsonRpcRequest<{ body: string; title: string; icon: string }>
+  })
 
-  self.registration.showNotification(m.params.title, {
-    image: m.params.icon,
-    body: m.params.body
+  self.registration.showNotification(m.title, {
+    image: m.icon,
+    body: m.body
   })
 })

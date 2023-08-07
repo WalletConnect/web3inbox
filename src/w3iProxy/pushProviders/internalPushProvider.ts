@@ -117,7 +117,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     })
 
     const subEvListener = (
-      subEv: PushClientTypes.BaseEventArgs<PushClientTypes.PushResponseEventArgs>
+      subEv: NotifyClientTypes.BaseEventArgs<NotifyClientTypes.NotifyResponseEventArgs>
     ) => {
       if (subEv.params.subscription?.metadata.url === params.metadata.url) {
         navigator.serviceWorker.ready.then(registration => {
@@ -130,11 +130,11 @@ export default class InternalPushProvider implements W3iPushProvider {
           })
         })
 
-        this.pushClient?.off('push_subscription', subEvListener)
+        this.pushClient?.off('notify_subscription', subEvListener)
       }
     }
 
-    this.pushClient.on('push_subscription', subEvListener)
+    this.pushClient.on('notify_subscription', subEvListener)
 
     const subscribed = await this.pushClient.subscribe({
       ...params,
