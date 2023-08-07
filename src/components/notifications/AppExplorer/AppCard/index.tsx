@@ -93,6 +93,10 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           className="AppCard__body__subscribe"
           onClick={e => {
             if (pushProvider === 'internal') {
+              /*
+               * It's better to have Notification.requestPermission directly after a click was
+               * fired, according to MDN best practices.
+               */
               Notification.requestPermission().then(async () => handleSubscription(e))
             } else {
               handleSubscription(e)

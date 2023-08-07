@@ -128,11 +128,9 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
     console.log('InternalPushProvider > PushClient.subscribe > params', params)
 
-    try {
-      Notification.requestPermission()
-    } catch (e) {
-      console.error('Failed to fetch permission for Notification')
-    }
+    Notification.requestPermission().catch(e =>
+      console.error('Failed to fetch permission for Notification', e)
+    )
 
     const clientId = await this.pushClient.core.crypto.getClientId()
 
