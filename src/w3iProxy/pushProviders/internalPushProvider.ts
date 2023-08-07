@@ -128,7 +128,11 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
     console.log('InternalPushProvider > PushClient.subscribe > params', params)
 
-    Notification.requestPermission()
+    try {
+      Notification.requestPermission()
+    } catch (e) {
+      console.error('Failed to fetch permission for Notification')
+    }
 
     const clientId = await this.pushClient.core.crypto.getClientId()
 
@@ -137,17 +141,25 @@ export default class InternalPushProvider implements W3iPushProvider {
       vapidKey: import.meta.env.VITE_VAPID_KEY
     })
 
-    this.pushClient.once('push_subscription', subEv => {
-      navigator.serviceWorker.ready.then(registration => {
-        registration.active?.postMessage({
-          type: 'INSTALL_SYMKEY_CLIENT',
-          clientId,
-          topic: subEv.topic,
-          token,
-          symkey: subEv.params.subscription?.symKey
+    const subEvListener = (
+      subEv: PushClientTypes.BaseEventArgs<PushClientTypes.PushResponseEventArgs>
+    ) => {
+      if (subEv.params.subscription?.metadata.url === params.metadata.url) {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.active?.postMessage({
+            type: 'INSTALL_SYMKEY_CLIENT',
+            clientId,
+            topic: subEv.topic,
+            token,
+            symkey: subEv.params.subscription?.symKey
+          })
         })
-      })
-    })
+
+        this.pushClient?.off('push_subscription', subEvListener)
+      }
+    }
+
+    this.pushClient.on('push_subscription', subEvListener)
 
     const subscribed = await this.pushClient.subscribe({
       ...params,
