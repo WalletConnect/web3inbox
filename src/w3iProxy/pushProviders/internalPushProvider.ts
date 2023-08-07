@@ -128,10 +128,6 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
     console.log('InternalPushProvider > PushClient.subscribe > params', params)
 
-    Notification.requestPermission().catch(e =>
-      console.error('Failed to fetch permission for Notification', e)
-    )
-
     /*
      * To prevent subscribing in local/dev environemntns failing,
      * no calls to the service worker or firebase messager worker
