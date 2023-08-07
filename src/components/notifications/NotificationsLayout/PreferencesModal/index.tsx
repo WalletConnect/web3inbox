@@ -11,6 +11,7 @@ import { Modal } from '../../../general/Modal/Modal'
 import Toggle from '../../../general/Toggle'
 import './PreferencesModal.scss'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
+import Text from '../../../general/Text'
 
 export const PreferencesModal: React.FC = () => {
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
@@ -66,7 +67,7 @@ export const PreferencesModal: React.FC = () => {
     <Modal onToggleModal={preferencesModalService.toggleModal}>
       <div className="PreferencesModal">
         <div className="PreferencesModal__header">
-          <h2>Preferences</h2>
+          <Text variant="large-500">Preferences</Text>
           <Button
             className="PreferencesModal__close"
             customType="action-icon"
@@ -80,9 +81,11 @@ export const PreferencesModal: React.FC = () => {
           <div key={title} className="PreferencesModal__content">
             <div className="PreferencesModal__content__setting">
               <div>
-                <h4 style={{ textTransform: 'capitalize' }}>{title} Notifications</h4>
+                <h4 style={{ textTransform: 'capitalize' }}>
+                  <Text variant="paragraph-500">{title} Notifications</Text>
+                </h4>
                 <div className="PreferencesModal__content__setting__helper-text">
-                  {scope.description}
+                  <Text variant="small-400"> {scope.description}</Text>
                 </div>
               </div>
               <Toggle

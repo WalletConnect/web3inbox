@@ -4,14 +4,8 @@ html {
 
 body {
   background: var(--bg-color-1);
-  font-family: 'ABC Diatype', sans-serif;
-}
-
-button,
-div,
-p,
-span {
-  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 *,

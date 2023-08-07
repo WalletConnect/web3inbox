@@ -17,7 +17,6 @@
       color: var(--accent-color-1);
     }
     &--address {
-      font-size: 1.1em;
       color: var(--fg-color-1);
     }
     &--close {
@@ -51,7 +50,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.875em;
     padding: 0.5em 1em;
     border: 1px solid var(--border-color-2);
     border-radius: 1em;

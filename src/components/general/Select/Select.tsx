@@ -47,7 +47,7 @@ const Select: React.FC<ISelectProps> = ({ name, id, options, onChange }) => {
       styles={{
         control: baseStyles => ({
           ...baseStyles,
-          minHeight: '2.25em',
+
           boxShadow: 'none'
         }),
         option: (baseStyles, state) => ({

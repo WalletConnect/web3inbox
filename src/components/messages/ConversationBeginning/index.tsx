@@ -2,6 +2,7 @@ import React from 'react'
 import { truncate } from '../../../utils/string'
 import Avatar from '../../account/Avatar'
 import './ConversationBeginning.scss'
+import Text from '../../general/Text'
 
 interface IConversationBeginningProps {
   peerAddress: `0x${string}`
@@ -11,9 +12,11 @@ const ConversationBeginning: React.FC<IConversationBeginningProps> = ({ peerAddr
   return (
     <div className="ConversationBeginning">
       <Avatar address={peerAddress} width="4em" height="4em" />
-      <div className="ConversationBeginning__peer">{ensName ?? truncate(peerAddress, 8)}</div>
+      <div className="ConversationBeginning__peer">
+        <Text variant="large-500"> {ensName ?? truncate(peerAddress, 5)}</Text>
+      </div>
       <span className="ConversationBeginning__beginning">
-        This is the beginning of your encrypted chat.
+        <Text variant="small-500"> This is the beginning of your encrypted chat.</Text>
       </span>
     </div>
   )

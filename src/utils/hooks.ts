@@ -1,5 +1,4 @@
 import type { PushClientTypes } from '@walletconnect/push-client'
-import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import type { RefObject } from 'react'
 
 // eslint-disable-next-line no-duplicate-imports
@@ -82,7 +81,7 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       bg2: 'hsla(0, 0%, 96%, 1)',
       bg3: 'hsla(0, 0%, 100%, 0.1)',
       bg4: 'hsla(0, 0%, 0%, 0.1)',
-      senderBubbleBg: '#F1F3F3',
+      senderBubbleBg: '#E1E9E9',
       senderBoxShadow: 'inset 1px 1px 4px #FFFFFF, inset -1px -1px 4px #9EA9A9',
       bgGradient1: 'linear-gradient(180deg, #f7f7f7 0%, rgba(255, 255, 255, 0) 29.96%)',
       bgGradient2: 'linear-gradient(91.31deg, #E8F2FC 0%, rgba(232, 242, 252, 0) 100%)',
@@ -283,20 +282,47 @@ export const useFormattedTime = (timestamp?: number) => {
     if (!timestamp) {
       return null
     }
+
     const today = new Date()
     const messageDate = new Date(timestamp)
+    const diffInMilliseconds: number = today.getTime() - messageDate.getTime()
 
-    if (isToday(messageDate)) {
-      return format(messageDate, 'HH:mm')
-    }
-    if (isYesterday(messageDate)) {
-      return `Yesterday ${format(messageDate, 'HH:mm')}`
-    }
-    if (isSameWeek(today, messageDate)) {
-      return format(messageDate, 'MMMM dd HH:mm')
+    const millisecondsPerMinute = 60 * 1000
+    const millisecondsPerHour = 60 * millisecondsPerMinute
+    const millisecondsPerDay = 24 * millisecondsPerHour
+    const millisecondsPerWeek = 7 * millisecondsPerDay
+    const millisecondsPerMonth = 30 * millisecondsPerDay
+    const millisecondsPerYear = 365 * millisecondsPerDay
+
+    if (diffInMilliseconds < millisecondsPerHour) {
+      const minutes = Math.floor(diffInMilliseconds / millisecondsPerMinute)
+
+      if (minutes === 0) {
+        return `now`
+      }
+
+      return `${minutes}m ago`
+    } else if (diffInMilliseconds < millisecondsPerDay) {
+      const hours = Math.floor(diffInMilliseconds / millisecondsPerHour)
+
+      return `${hours}h ago`
+    } else if (diffInMilliseconds < millisecondsPerWeek) {
+      const days = Math.floor(diffInMilliseconds / millisecondsPerDay)
+
+      return `${days}d ago`
+    } else if (diffInMilliseconds < millisecondsPerMonth) {
+      const weeks = Math.floor(diffInMilliseconds / millisecondsPerWeek)
+
+      return `${weeks}w ago`
+    } else if (diffInMilliseconds < millisecondsPerYear) {
+      const months = Math.floor(diffInMilliseconds / millisecondsPerMonth)
+
+      return `${months}mo ago`
     }
 
-    return format(messageDate, 'MMMM dd HH:mm')
+    const years = Math.floor(diffInMilliseconds / millisecondsPerYear)
+
+    return `${years}y`
   }, [timestamp])
 
   return formattedTime

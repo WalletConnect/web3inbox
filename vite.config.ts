@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 
 const pwaOptions: Partial<VitePWAOptions> = {
-  mode: 'development',
+  mode: 'production',
   base: '/',
   strategies: 'injectManifest',
   includeAssets: ['favicon.svg'],

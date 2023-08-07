@@ -2,6 +2,8 @@ import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletc
 import type { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { W3iPushProvider } from './types'
+import { getToken } from 'firebase/messaging'
+import { messaging } from '../../utils/firebase'
 
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: PushWalletClient | undefined
@@ -124,8 +126,38 @@ export default class InternalPushProvider implements W3iPushProvider {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
-
     console.log('InternalPushProvider > PushClient.subscribe > params', params)
+
+    Notification.requestPermission().catch(e =>
+      console.error('Failed to fetch permission for Notification', e)
+    )
+
+    const clientId = await this.pushClient.core.crypto.getClientId()
+
+    // Retrieving FCM token needs to be client side, outside the service worker.
+    const token = await getToken(messaging, {
+      vapidKey: import.meta.env.VITE_VAPID_KEY
+    })
+
+    const subEvListener = (
+      subEv: PushClientTypes.BaseEventArgs<PushClientTypes.PushResponseEventArgs>
+    ) => {
+      if (subEv.params.subscription?.metadata.url === params.metadata.url) {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.active?.postMessage({
+            type: 'INSTALL_SYMKEY_CLIENT',
+            clientId,
+            topic: subEv.topic,
+            token,
+            symkey: subEv.params.subscription?.symKey
+          })
+        })
+
+        this.pushClient?.off('push_subscription', subEvListener)
+      }
+    }
+
+    this.pushClient.on('push_subscription', subEvListener)
 
     const subscribed = await this.pushClient.subscribe({
       ...params,

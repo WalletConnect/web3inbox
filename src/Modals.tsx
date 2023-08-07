@@ -1,4 +1,4 @@
-import { useMobileResponsiveGrid, useModals } from './utils/hooks'
+import { useModals } from './utils/hooks'
 import { Profile } from './components/account/Profile'
 import { Share } from './components/account/Share/Share'
 import { PreferencesModal } from './components/notifications/NotificationsLayout/PreferencesModal'

@@ -18,6 +18,7 @@ import Spinner from '../../general/Spinner'
 import EmailIcon from '../../general/Icon/EmailIcon'
 import type { EnsRecords } from '../../../utils/ens'
 import { getEnsData } from '../../../utils/ens'
+import Text from '../../general/Text'
 
 const ProfileLink = ({
   title,
@@ -99,13 +100,17 @@ const ProfileModalContent: React.FC<{
         </div>
       </div>
       <div className="Profile__Container">
-        <div className="Profile__Container__name">{ensName ?? truncate(address ?? '', 4)}</div>
+        <Text variant="large-500">{ensName ?? truncate(address ?? '', 4)}</Text>
+
         <AnimatePresence mode="wait">
           {!ensName && (
             <div className="Profile__Container__bio Profile__Container__bio--default">
-              Give your profile a personality upgrade with your unique ENS name, bio, and more from{' '}
+              <Text variant="small-500">
+                Give your profile a personality upgrade with your unique ENS name, bio, and more
+              </Text>
+
               <a href="https://app.ens.domains?utm_source=web3inbox_profile&utm_medium=web&utm_campaign=web3inbox">
-                app.ens.domains
+                <Text variant="small-500">app.ens.domains</Text>
               </a>
             </div>
           )}

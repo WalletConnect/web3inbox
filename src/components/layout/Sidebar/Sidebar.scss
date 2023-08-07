@@ -1,7 +1,6 @@
 @import '../../../styles/mixins.scss';
 
 .Sidebar {
-  z-index: 1;
   position: fixed;
   bottom: 5%;
   left: 50%;
@@ -11,7 +10,7 @@
 
   @include padding-y(2em);
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
 
@@ -19,6 +18,11 @@
 
   &__Item {
     cursor: pointer;
+
+    .wc-icon {
+      width: 40px;
+      height: 28px;
+    }
   }
 
   &__Navigation {
@@ -35,6 +39,11 @@
       display: flex;
       justify-content: center;
     }
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 }
 
@@ -42,10 +51,10 @@
   .Sidebar {
     background-color: var(--bg-color-1);
     transform: unset;
-    border-right: solid 2px var(--bg-color-2);
+    position: relative;
+
     top: 0;
     left: 0;
-    width: 4em;
     height: 100vh;
     flex-direction: column;
 
@@ -56,6 +65,7 @@
       outline: unset;
       padding: unset;
       outline: unset;
+      gap: 2rem;
     }
   }
 }

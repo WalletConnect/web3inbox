@@ -7,11 +7,10 @@ import type { W3iPushClient } from '../../../w3iProxy'
 import type Web3InboxProxy from '../../../w3iProxy'
 import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommunicator'
 import { useAuthState } from './authHooks'
-import { useDappOrigin } from './dappOrigin'
 import { useUiState } from './uiHooks'
 import { EventEmitter } from 'events'
 
-export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
+export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dappOrigin: string) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
     PushClientTypes.PushSubscription[]
   >([])
@@ -21,8 +20,6 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
   const { userPubkey } = useAuthState(w3iProxy, proxyReady)
   const { uiEnabled } = useUiState()
-
-  const { dappOrigin } = useDappOrigin()
 
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
 
@@ -118,6 +115,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
     }
   }, [pushClient, refreshPushState])
 
+  // Events used exclusively when in an iframe/widget-mode
   useEffect(() => {
     if (!pushClient || !dappOrigin) {
       return noop
@@ -144,8 +142,24 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
       }
     })
 
+    const pushSubscriptionSub = pushClient.observe('push_subscription', {
+      next: message => {
+        /*
+         * Due to the fact that data is synced, push_subscription events can be triggered
+         * from dapps unrelated to the one owning the dappOrigin
+         */
+        if (message.params.subscription?.metadata.url !== dappOrigin) {
+          return
+        }
+
+        const communicator = new JsCommunicator(emitter)
+        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'push')
+      }
+    })
+
     return () => {
       pushMessageSub.unsubscribe()
+      pushSubscriptionSub.unsubscribe()
     }
   }, [dappOrigin, pushClient, emitter])
 

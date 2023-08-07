@@ -35,7 +35,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     activeSubscriptions,
     refreshPushState,
     registerMessage: pushRegisterMessage
-  } = usePushState(w3iProxy, isW3iProxyReady)
+  } = usePushState(w3iProxy, isW3iProxyReady, dappOrigin)
 
   return (
     <W3iContext.Provider
