@@ -149,7 +149,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     })
 
     /*
-     * Subscribtions aren't stored instantly
+     * Subscriptions aren't stored instantly
      * TODO: Refactor this to be event-based
      */
     const interval = setInterval(() => {
