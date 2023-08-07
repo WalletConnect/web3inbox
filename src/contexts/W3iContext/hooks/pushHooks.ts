@@ -115,6 +115,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
     }
   }, [pushClient, refreshPushState])
 
+  // Events used exclusively when in an iframe/widget-mode
   useEffect(() => {
     if (!pushClient || !dappOrigin) {
       return noop
@@ -141,8 +142,24 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
       }
     })
 
+    const pushSubscriptionSub = pushClient.observe('push_subscription', {
+      next: message => {
+        /*
+         * Due to the fact that data is synced, push_message events can be triggered
+         * from subscriptions unrelated to the one related to the dappOrigin
+         */
+        if (message.params.subscription?.metadata.url !== dappOrigin) {
+          return
+        }
+
+        const communicator = new JsCommunicator(emitter)
+        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'push')
+      }
+    })
+
     return () => {
       pushMessageSub.unsubscribe()
+      pushSubscriptionSub.unsubscribe()
     }
   }, [dappOrigin, pushClient, emitter])
 
