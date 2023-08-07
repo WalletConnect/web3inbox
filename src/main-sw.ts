@@ -48,9 +48,11 @@ self.addEventListener('message', event => {
   if (!event.data) return
 
   switch (event.data.type) {
+    // Event to install latest service worker when available
     case 'SKIP_WAITING':
       self.skipWaiting()
       break
+    // Event to download symkey into indexedDb and setup the store
     case 'INSTALL_SYMKEY_CLIENT':
       initData(event.data.topic, event.data.symkey, event.data.clientId, event.data.token)
       break

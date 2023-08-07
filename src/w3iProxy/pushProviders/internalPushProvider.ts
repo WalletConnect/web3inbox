@@ -134,8 +134,19 @@ export default class InternalPushProvider implements W3iPushProvider {
 
     // Retrieving FCM token needs to be client side, outside the service worker.
     const token = await getToken(messaging, {
-      vapidKey:
-        'BCnI0mkpH3LvHRF-dREPCdvBFk24oveWy4JBuINzWcu8JXhmCDkczDmHM9RubzsQrv60UKFk-MKozVjRRzvx1X4'
+      vapidKey: import.meta.env.VITE_VAPID_KEY
+    })
+
+    this.pushClient.once('push_subscription', subEv => {
+      navigator.serviceWorker.ready.then(registration => {
+        registration.active?.postMessage({
+          type: 'INSTALL_SYMKEY_CLIENT',
+          clientId,
+          topic: subEv.topic,
+          token,
+          symkey: subEv.params.subscription?.symKey
+        })
+      })
     })
 
     const subscribed = await this.pushClient.subscribe({
@@ -147,29 +158,6 @@ export default class InternalPushProvider implements W3iPushProvider {
           return signature
         })
     })
-
-    /*
-     * Subscriptions aren't stored instantly
-     * TODO: Refactor this to be event-based
-     */
-    const interval = setInterval(() => {
-      const sub = this.pushClient?.subscriptions
-        .getAll()
-        .find(s => s.metadata.url === params.metadata.url)
-
-      if (sub) {
-        navigator.serviceWorker.ready.then(registration => {
-          registration.active?.postMessage({
-            type: 'INSTALL_SYMKEY_CLIENT',
-            clientId,
-            topic: sub.topic,
-            token,
-            symkey: sub.symKey
-          })
-        })
-        clearInterval(interval)
-      }
-    }, 100)
 
     return subscribed
   }
