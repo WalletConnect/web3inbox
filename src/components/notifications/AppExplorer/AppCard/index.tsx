@@ -9,6 +9,7 @@ import { showErrorMessageToast, showSuccessMessageToast } from '../../../../util
 import { handleImageFallback } from '../../../../utils/ui'
 import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
+import { requestNotificationPermission } from '../../../../utils/notifications'
 
 interface AppCardProps {
   name: string
@@ -64,13 +65,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   )
 
   return (
-    <a
-      className="AppCard"
-      style={{ backgroundColor: cardBgColor }}
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <div className="AppCard" style={{ backgroundColor: cardBgColor }} rel="noopener noreferrer">
       <div className="AppCard__header">
         <img
           className="AppCard__header__logo"
@@ -100,7 +95,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
                * It's better to have Notification.requestPermission directly after a click was
                * fired, according to MDN best practices.
                */
-              Notification.requestPermission().then(async () => handleSubscription(e))
+              requestNotificationPermission().then(async () => handleSubscription(e))
             } else {
               handleSubscription(e)
             }
@@ -109,7 +104,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
         </Button>
       </div>
-    </a>
+    </div>
   )
 }
 

@@ -128,36 +128,38 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
     console.log('InternalPushProvider > PushClient.subscribe > params', params)
 
-    Notification.requestPermission().catch(e =>
-      console.error('Failed to fetch permission for Notification', e)
-    )
+    /*
+     * To prevent subscribing in local/dev environemntns failing,
+     * no calls to the service worker or firebase messager worker
+     * will be made.
+     */
+    if (window.location.protocol === 'https:') {
+      const clientId = await this.pushClient.core.crypto.getClientId()
+      // Retrieving FCM token needs to be client side, outside the service worker.
+      const token = await getToken(messaging, {
+        vapidKey: import.meta.env.VITE_VAPID_KEY
+      })
 
-    const clientId = await this.pushClient.core.crypto.getClientId()
-
-    // Retrieving FCM token needs to be client side, outside the service worker.
-    const token = await getToken(messaging, {
-      vapidKey: import.meta.env.VITE_VAPID_KEY
-    })
-
-    const subEvListener = (
-      subEv: PushClientTypes.BaseEventArgs<PushClientTypes.PushResponseEventArgs>
-    ) => {
-      if (subEv.params.subscription?.metadata.url === params.metadata.url) {
-        navigator.serviceWorker.ready.then(registration => {
-          registration.active?.postMessage({
-            type: 'INSTALL_SYMKEY_CLIENT',
-            clientId,
-            topic: subEv.topic,
-            token,
-            symkey: subEv.params.subscription?.symKey
+      const subEvListener = (
+        subEv: PushClientTypes.BaseEventArgs<PushClientTypes.PushResponseEventArgs>
+      ) => {
+        if (subEv.params.subscription?.metadata.url === params.metadata.url) {
+          navigator.serviceWorker.ready.then(registration => {
+            registration.active?.postMessage({
+              type: 'INSTALL_SYMKEY_CLIENT',
+              clientId,
+              topic: subEv.topic,
+              token,
+              symkey: subEv.params.subscription?.symKey
+            })
           })
-        })
 
-        this.pushClient?.off('push_subscription', subEvListener)
+          this.pushClient?.off('push_subscription', subEvListener)
+        }
       }
-    }
 
-    this.pushClient.on('push_subscription', subEvListener)
+      this.pushClient.on('push_subscription', subEvListener)
+    }
 
     const subscribed = await this.pushClient.subscribe({
       ...params,
