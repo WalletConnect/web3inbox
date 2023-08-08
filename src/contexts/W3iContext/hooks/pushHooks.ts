@@ -46,7 +46,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
 
   const handleRegistration = useCallback(
     async (key: string) => {
-      if (pushClient && key && uiEnabled.push) {
+      if (pushClient && key && uiEnabled.notify) {
         try {
           await pushClient.enableSync({ account: `eip155:1:${key}` })
           setRegisterMessage(null)

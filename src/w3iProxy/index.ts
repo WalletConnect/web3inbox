@@ -173,7 +173,7 @@ class Web3InboxProxy {
       await this.chatFacade.initInternalProvider(this.chatClient)
     }
 
-    if (this.pushProvider === 'internal' && this.uiEnabled.push && !this.pushClient) {
+    if (this.pushProvider === 'internal' && this.uiEnabled.notify && !this.pushClient) {
       this.pushClient = await NotifyClient.init({
         SyncStoreController: SyncStore,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

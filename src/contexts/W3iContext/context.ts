@@ -7,7 +7,7 @@ import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
 
 export interface UiEnabled {
   chat: boolean
-  push: boolean
+  notify: boolean
   settings: boolean
   sidebar: boolean
 }
@@ -49,7 +49,7 @@ const W3iContext = createContext<W3iContextState>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setUserPubkey: () => {},
   threads: [],
-  uiEnabled: { chat: true, push: true, settings: true, sidebar: true },
+  uiEnabled: { chat: true, notify: true, settings: true, sidebar: true },
   activeSubscriptions: [],
   sentInvites: [],
   invites: [],
