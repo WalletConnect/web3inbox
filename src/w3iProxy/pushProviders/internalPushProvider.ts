@@ -2,8 +2,7 @@ import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletc
 import type { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { W3iPushProvider } from './types'
-import { getToken } from 'firebase/messaging'
-import { messaging } from '../../utils/firebase'
+import { getFirebaseToken } from '../../utils/firebase'
 
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: PushWalletClient | undefined
@@ -136,9 +135,8 @@ export default class InternalPushProvider implements W3iPushProvider {
     if (window.location.protocol === 'https:') {
       const clientId = await this.pushClient.core.crypto.getClientId()
       // Retrieving FCM token needs to be client side, outside the service worker.
-      const token = await getToken(messaging, {
-        vapidKey: import.meta.env.VITE_VAPID_KEY
-      })
+
+      const token = await getFirebaseToken()
 
       const subEvListener = (
         subEv: PushClientTypes.BaseEventArgs<PushClientTypes.PushResponseEventArgs>
