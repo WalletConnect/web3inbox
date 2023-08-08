@@ -7,7 +7,7 @@ export const requestNotificationPermission = async () => {
     case 'granted':
       return Promise.resolve()
     case 'denied':
-      return Promise.reject(new Error('User does not want to recieve notification'))
+      return Promise.reject(new Error('User does not want to receive notifications'))
     default:
       return Notification.requestPermission()
   }
