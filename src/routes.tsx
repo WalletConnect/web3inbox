@@ -24,7 +24,7 @@ const ConfiguredRoutes: React.FC = () => {
   const defaultPage =
     Object.entries({
       '/messages': uiEnabled.chat,
-      '/notifications': uiEnabled.push,
+      '/notifications': uiEnabled.notify,
       '/settings': uiEnabled.settings
     }).find(([_, enabled]) => enabled)?.[0] ?? '/login'
 
@@ -35,7 +35,7 @@ const ConfiguredRoutes: React.FC = () => {
       <Route path="/qrcode-scan" element={<ScanQrCode />} />
 
       <Route path="/" element={<App />}>
-        {uiEnabled.push ? (
+        {uiEnabled.notify ? (
           <Route path="notifications" element={<NotificationsLayout />}>
             <Route index element={<Web3InboxPlaceholder />} />
             <Route path="/notifications/new-app" element={<AppExplorer />} />

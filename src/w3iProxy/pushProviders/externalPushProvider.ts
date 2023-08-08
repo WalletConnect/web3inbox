@@ -1,5 +1,5 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
 import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
@@ -34,7 +34,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
         this.communicator = new IOSCommunicator(this.emitter)
         break
       case 'reactnative':
-        this.communicator = new ReactNativeCommunicator(this.emitter, 'push')
+        this.communicator = new ReactNativeCommunicator(this.emitter, 'notify')
         break
       default:
         this.communicator = new JsCommunicator(this.emitter)
@@ -49,7 +49,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
     return this.communicator.postToExternalProvider<ReturnType<PushClientFunctions[MName]>>(
       methodName,
       params[0],
-      'push'
+      'notify'
     )
   }
 
@@ -80,19 +80,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
     })
   }
 
-  public async approve(params: { id: number }) {
-    return this.postToExternalProvider('approve', {
-      ...params,
-      // Signing will be handled wallet-side.
-      onSign: async () => Promise.resolve('')
-    })
-  }
-
-  public async reject(params: { id: number; reason: string }) {
-    return this.postToExternalProvider('reject', params)
-  }
-
-  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
+  public async subscribe(params: { metadata: NotifyClientTypes.Metadata; account: string }) {
     return this.postToExternalProvider('subscribe', {
       ...params,
       // Signing will be handled wallet-side.
@@ -116,7 +104,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
     return this.postToExternalProvider('getMessageHistory', params)
   }
 
-  public async deletePushMessage(params: { id: number }) {
-    return this.postToExternalProvider('deletePushMessage', params)
+  public async deleteNotifyMessage(params: { id: number }) {
+    return this.postToExternalProvider('deleteNotifyMessage', params)
   }
 }

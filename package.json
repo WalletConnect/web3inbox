@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@walletconnect/chat-client": "^0.7.1",
-    "@walletconnect/core": "^2.8.0",
-    "@walletconnect/push-client": "^0.10.6",
-    "@walletconnect/push-message-decrypter": "^0.10.6",
+    "@walletconnect/core": "^2.9.2",
+    "@walletconnect/notify-client": "^0.1.0",
+    "@walletconnect/notify-message-decrypter": "^0.1.0",
     "@walletconnect/sync-client": "^0.3.7",
     "@web3modal/ethereum": "^2.6.2",
     "@web3modal/react": "^2.6.2",

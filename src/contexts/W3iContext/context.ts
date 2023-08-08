@@ -1,5 +1,5 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import type { Dispatch, SetStateAction } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import { createContext } from 'react'
@@ -7,7 +7,7 @@ import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
 
 export interface UiEnabled {
   chat: boolean
-  push: boolean
+  notify: boolean
   settings: boolean
   sidebar: boolean
 }
@@ -18,7 +18,7 @@ interface W3iContextState {
   refreshThreadsAndInvites: () => void
   refreshNotifications: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
-  activeSubscriptions: PushClientTypes.PushSubscription[]
+  activeSubscriptions: NotifyClientTypes.NotifySubscription[]
   sentInvites: ChatClientTypes.SentInvite[]
   threads: ChatClientTypes.Thread[]
   invites: ChatClientTypes.ReceivedInvite[]
@@ -49,7 +49,7 @@ const W3iContext = createContext<W3iContextState>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setUserPubkey: () => {},
   threads: [],
-  uiEnabled: { chat: true, push: true, settings: true, sidebar: true },
+  uiEnabled: { chat: true, notify: true, settings: true, sidebar: true },
   activeSubscriptions: [],
   sentInvites: [],
   invites: [],

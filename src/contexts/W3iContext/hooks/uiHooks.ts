@@ -3,17 +3,17 @@ import { useState } from 'react'
 export const useUiState = () => {
   const query = new URLSearchParams(window.location.search)
 
-  const pushEnabledQuery = query.get('notifyEnabled')
+  const notifyEnabledQuery = query.get('notifyEnabled')
   const chatEnabledQuery = query.get('chatEnabled')
   const settingsEnabledQuery = query.get('settingsEnabled')
 
-  const push: boolean = pushEnabledQuery ? JSON.parse(pushEnabledQuery) : true
+  const notify: boolean = notifyEnabledQuery ? JSON.parse(notifyEnabledQuery) : true
   const settings: boolean = settingsEnabledQuery ? JSON.parse(settingsEnabledQuery) : true
   const chat: boolean = chatEnabledQuery ? JSON.parse(chatEnabledQuery) : true
 
-  const totalPagesEnabled = Number(push) + Number(settings) + Number(chat)
+  const totalPagesEnabled = Number(notify) + Number(settings) + Number(chat)
   const [uiEnabled] = useState({
-    push,
+    notify,
     settings,
     chat,
     sidebar: totalPagesEnabled > 1

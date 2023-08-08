@@ -76,7 +76,7 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
 
   const handleClearClick = useCallback(() => {
     dragControls.start('hidden')
-    pushClientProxy?.deletePushMessage({ id: Number(notification.id) }).then(onClear)
+    pushClientProxy?.deleteNotifyMessage({ id: Number(notification.id) }).then(onClear)
     actionControls.start('hidden')
   }, [pushClientProxy, onClear])
 

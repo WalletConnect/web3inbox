@@ -43,11 +43,6 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       setSubscribing(true)
 
       try {
-        pushClientProxy?.observeOne('push_subscription', {
-          next: () => {
-            showSuccessMessageToast(`Subscribed to ${name}`)
-          }
-        })
         pushClientProxy?.observeOne('notify_subscription', {
           next: () => {
             showSuccessMessageToast(`Subscribed to ${name}`)

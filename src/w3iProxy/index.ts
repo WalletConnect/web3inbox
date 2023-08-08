@@ -1,6 +1,6 @@
 import ChatClient from '@walletconnect/chat-client'
 import { Core } from '@walletconnect/core'
-import { WalletClient as PushWalletClient } from '@walletconnect/push-client'
+import { NotifyClient } from '@walletconnect/notify-client'
 import type { UiEnabled } from '../contexts/W3iContext/context'
 import W3iAuthFacade from './w3iAuthFacade'
 import W3iChatFacade from './w3iChatFacade'
@@ -27,7 +27,7 @@ class Web3InboxProxy {
   private chatClient?: ChatClient
   private readonly pushFacade: W3iPushFacade
   private readonly pushProvider: W3iPushFacade['providerName']
-  private pushClient?: PushWalletClient
+  private pushClient?: NotifyClient
   private readonly authFacade: W3iAuthFacade
   private readonly authProvider: W3iAuthFacade['providerName']
   private readonly relayUrl?: string
@@ -122,10 +122,6 @@ class Web3InboxProxy {
     return this.chatFacade
   }
 
-  public get push(): W3iPushFacade {
-    return this.pushFacade
-  }
-
   public get notify(): W3iPushFacade {
     return this.pushFacade
   }
@@ -177,8 +173,8 @@ class Web3InboxProxy {
       await this.chatFacade.initInternalProvider(this.chatClient)
     }
 
-    if (this.pushProvider === 'internal' && this.uiEnabled.push && !this.pushClient) {
-      this.pushClient = await PushWalletClient.init({
+    if (this.pushProvider === 'internal' && this.uiEnabled.notify && !this.pushClient) {
+      this.pushClient = await NotifyClient.init({
         SyncStoreController: SyncStore,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         syncClient: this.syncClient!,

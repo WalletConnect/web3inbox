@@ -1,8 +1,7 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { noop } from 'rxjs'
-import { subscribeModalService } from '../../../utils/store'
 import type { W3iPushClient } from '../../../w3iProxy'
 import type Web3InboxProxy from '../../../w3iProxy'
 import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommunicator'
@@ -12,7 +11,7 @@ import { EventEmitter } from 'events'
 
 export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dappOrigin: string) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
-    PushClientTypes.PushSubscription[]
+    NotifyClientTypes.NotifySubscription[]
   >([])
 
   const { pathname } = useLocation()
@@ -27,7 +26,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
 
   useEffect(() => {
     if (proxyReady) {
-      setPushClient(w3iProxy.push)
+      setPushClient(w3iProxy.notify)
     }
   }, [w3iProxy, proxyReady])
 
@@ -47,7 +46,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
 
   const handleRegistration = useCallback(
     async (key: string) => {
-      if (pushClient && key && uiEnabled.push) {
+      if (pushClient && key && uiEnabled.notify) {
         try {
           await pushClient.enableSync({ account: `eip155:1:${key}` })
           setRegisterMessage(null)
@@ -73,18 +72,12 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
       return noop
     }
 
-    const pushRequestSub = pushClient.observe('push_request', {
-      next: pushRequest => {
-        subscribeModalService.openModal(pushRequest)
-        refreshPushState()
-      }
-    })
-    const pushSignatureRequestedSub = pushClient.observe('push_signature_requested', {
+    const pushSignatureRequestedSub = pushClient.observe('notify_signature_requested', {
       next: ({ message }) => setRegisterMessage(message)
     })
 
     const pushSignatureRequestCancelledSub = pushClient.observe(
-      'push_signature_request_cancelled',
+      'notify_signature_request_cancelled',
       {
         next: () => setRegisterMessage(null)
       }
@@ -105,7 +98,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
     })
 
     return () => {
-      pushRequestSub.unsubscribe()
+      // PushRequestSub.unsubscribe()
       pushSubscriptionSub.unsubscribe()
       syncUpdateSub.unsubscribe()
       pushUpdateSub.unsubscribe()
@@ -137,15 +130,15 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
           {
             notification: message.params.message
           },
-          'push'
+          'notify'
         )
       }
     })
 
-    const pushSubscriptionSub = pushClient.observe('push_subscription', {
+    const pushSubscriptionSub = pushClient.observe('notify_subscription', {
       next: message => {
         /*
-         * Due to the fact that data is synced, push_subscription events can be triggered
+         * Due to the fact that data is synced, notify_subscription events can be triggered
          * from dapps unrelated to the one owning the dappOrigin
          */
         if (message.params.subscription?.metadata.url !== dappOrigin) {
@@ -153,7 +146,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
         }
 
         const communicator = new JsCommunicator(emitter)
-        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'push')
+        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
       }
     })
 
