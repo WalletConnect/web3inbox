@@ -122,10 +122,6 @@ class Web3InboxProxy {
     return this.chatFacade
   }
 
-  public get push(): W3iPushFacade {
-    return this.pushFacade
-  }
-
   public get notify(): W3iPushFacade {
     return this.pushFacade
   }

@@ -26,7 +26,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
 
   useEffect(() => {
     if (proxyReady) {
-      setPushClient(w3iProxy.push)
+      setPushClient(w3iProxy.notify)
     }
   }, [w3iProxy, proxyReady])
 
