@@ -28,7 +28,7 @@ export class IOSCommunicator implements ExternalCommunicator {
   public async postToExternalProvider<TReturn>(
     methodName: string,
     params: unknown,
-    target: 'chat' | 'push'
+    target: 'chat' | 'notify'
   ) {
     return new Promise<TReturn>(resolve => {
       const message = formatJsonRpcRequest(methodName, params)
@@ -43,7 +43,7 @@ export class IOSCommunicator implements ExternalCommunicator {
             window.webkit.messageHandlers.web3inboxChat.postMessage(JSON.stringify(message))
           }
           break
-        case 'push':
+        case 'notify':
           if (window.webkit?.messageHandlers?.web3inboxNotify) {
             window.webkit.messageHandlers.web3inboxNotify.postMessage(JSON.stringify(message))
           }

@@ -9,7 +9,7 @@ export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: NotifyClient | undefined
   private readonly emitter: EventEmitter
   public providerName = 'InternalPushProvider'
-  private readonly methodsListenedTo = ['push_signature_delivered']
+  private readonly methodsListenedTo = ['notify_signature_delivered']
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
@@ -50,8 +50,8 @@ export default class InternalPushProvider implements W3iPushProvider {
 
   public handleMessage(request: JsonRpcRequest<unknown>) {
     switch (request.method) {
-      case 'push_signature_delivered':
-        this.emitter.emit('push_signature_delivered', request.params)
+      case 'notify_signature_delivered':
+        this.emitter.emit('notify_signature_delivered', request.params)
         break
       default:
         throw new Error(`Method ${request.method} unsupported by provider ${this.providerName}`)
@@ -76,7 +76,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.enableSync({
       ...params,
       onSign: async message => {
-        this.emitter.emit('push_signature_requested', { message })
+        this.emitter.emit('notify_signature_requested', { message })
 
         return new Promise(resolve => {
           const intervalId = setInterval(() => {
@@ -85,13 +85,13 @@ export default class InternalPushProvider implements W3iPushProvider {
             })?.length
             if (this.pushClient && signatureForAccountExists) {
               const { signature } = this.pushClient.syncClient.signatures.get(params.account)
-              this.emitter.emit('push_signature_request_cancelled', {})
+              this.emitter.emit('notify_signature_request_cancelled', {})
               clearInterval(intervalId)
               resolve(signature)
             }
           }, 100)
 
-          this.emitter.on('push_signature_delivered', ({ signature }: { signature: string }) => {
+          this.emitter.on('notify_signature_delivered', ({ signature }: { signature: string }) => {
             resolve(signature)
           })
         })

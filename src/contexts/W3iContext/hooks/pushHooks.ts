@@ -72,12 +72,12 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
       return noop
     }
 
-    const pushSignatureRequestedSub = pushClient.observe('push_signature_requested', {
+    const pushSignatureRequestedSub = pushClient.observe('notify_signature_requested', {
       next: ({ message }) => setRegisterMessage(message)
     })
 
     const pushSignatureRequestCancelledSub = pushClient.observe(
-      'push_signature_request_cancelled',
+      'notify_signature_request_cancelled',
       {
         next: () => setRegisterMessage(null)
       }
@@ -130,7 +130,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
           {
             notification: message.params.message
           },
-          'push'
+          'notify'
         )
       }
     })
@@ -146,7 +146,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
         }
 
         const communicator = new JsCommunicator(emitter)
-        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'push')
+        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
       }
     })
 

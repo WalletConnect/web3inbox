@@ -34,7 +34,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
         this.communicator = new IOSCommunicator(this.emitter)
         break
       case 'reactnative':
-        this.communicator = new ReactNativeCommunicator(this.emitter, 'push')
+        this.communicator = new ReactNativeCommunicator(this.emitter, 'notify')
         break
       default:
         this.communicator = new JsCommunicator(this.emitter)
@@ -49,7 +49,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
     return this.communicator.postToExternalProvider<ReturnType<PushClientFunctions[MName]>>(
       methodName,
       params[0],
-      'push'
+      'notify'
     )
   }
 
