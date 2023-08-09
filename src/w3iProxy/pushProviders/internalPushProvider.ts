@@ -134,29 +134,33 @@ export default class InternalPushProvider implements W3iPushProvider {
      */
     if (window.location.protocol === 'https:' && !window.web3inbox.dappOrigin) {
       const clientId = await this.pushClient.core.crypto.getClientId()
-      // Retrieving FCM token needs to be client side, outside the service worker.
 
-      const token = await getFirebaseToken()
+      try {
+        // Retrieving FCM token needs to be client side, outside the service worker.
+        const token = await getFirebaseToken()
 
-      const subEvListener = (
-        subEv: PushClientTypes.BaseEventArgs<PushClientTypes.PushResponseEventArgs>
-      ) => {
-        if (subEv.params.subscription?.metadata.url === params.metadata.url) {
-          navigator.serviceWorker.ready.then(registration => {
-            registration.active?.postMessage({
-              type: 'INSTALL_SYMKEY_CLIENT',
-              clientId,
-              topic: subEv.topic,
-              token,
-              symkey: subEv.params.subscription?.symKey
+        const subEvListener = (
+          subEv: PushClientTypes.BaseEventArgs<PushClientTypes.PushResponseEventArgs>
+        ) => {
+          if (subEv.params.subscription?.metadata.url === params.metadata.url) {
+            navigator.serviceWorker.ready.then(registration => {
+              registration.active?.postMessage({
+                type: 'INSTALL_SYMKEY_CLIENT',
+                clientId,
+                topic: subEv.topic,
+                token,
+                symkey: subEv.params.subscription?.symKey
+              })
             })
-          })
 
-          this.pushClient?.off('push_subscription', subEvListener)
+            this.pushClient?.off('push_subscription', subEvListener)
+          }
         }
-      }
 
-      this.pushClient.on('push_subscription', subEvListener)
+        this.pushClient.on('push_subscription', subEvListener)
+      } catch (e) {
+        console.error('Failed to use firebase messaging service', e)
+      }
     }
 
     const subscribed = await this.pushClient.subscribe({
