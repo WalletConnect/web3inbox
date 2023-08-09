@@ -132,7 +132,7 @@ export default class InternalPushProvider implements W3iPushProvider {
      * no calls to the service worker or firebase messager worker
      * will be made.
      */
-    if (window.location.protocol === 'https:') {
+    if (window.location.protocol === 'https:' && !window.web3inbox.dappOrigin) {
       const clientId = await this.pushClient.core.crypto.getClientId()
       // Retrieving FCM token needs to be client side, outside the service worker.
 
