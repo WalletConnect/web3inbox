@@ -207,7 +207,7 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
           {textClamped && (
             <p className="AppNotifications__item__show">{show ? 'Show less' : 'Show more'}</p>
           )}
-          {notification.url && <ExternalLink link={notification.url}>Vist Link</ExternalLink>}
+          {notification.url && <ExternalLink link={notification.url}>Visit Link</ExternalLink>}
         </div>
       </m.div>
     </LazyMotion>
