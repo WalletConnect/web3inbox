@@ -49,7 +49,6 @@ const App = () => {
 
   return (
     <AuthProtectedPage>
-      <span>Dummy change</span>
       <LazyMotion features={domAnimation}>
         <m.div
           initial={{ opacity: 0, y: 25 }}
