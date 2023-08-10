@@ -63,9 +63,6 @@ self.addEventListener('install', () => {
   self.skipWaiting()
 })
 
-// Self.__WB_MANIFEST is default injection point
-precacheAndRoute(self.__WB_MANIFEST)
-
 // Clean old assets
 cleanupOutdatedCaches()
 
