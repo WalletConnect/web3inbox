@@ -67,6 +67,3 @@ self.addEventListener('install', () => {
 cleanupOutdatedCaches()
 
 precacheAndRoute(self.__WB_MANIFEST)
-
-// To allow work offline
-registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html')))
