@@ -12,7 +12,9 @@ const pwaOptions: Partial<VitePWAOptions> = {
   injectRegister: 'inline',
   registerType: 'autoUpdate',
   includeAssets: ['favicon.svg'],
-
+  workbox: {
+    globPatterns: ['**/*.{css,html,ico,png,svg}']
+  },
   srcDir: 'src',
   filename: 'main-sw.ts',
   manifest: {
