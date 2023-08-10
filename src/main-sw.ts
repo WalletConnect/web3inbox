@@ -63,11 +63,7 @@ self.addEventListener('install', () => {
   self.skipWaiting()
 })
 
-// Self.__WB_MANIFEST is default injection point
-precacheAndRoute(self.__WB_MANIFEST)
-
 // Clean old assets
 cleanupOutdatedCaches()
 
-// To allow work offline
-registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html')))
+precacheAndRoute(self.__WB_MANIFEST)
