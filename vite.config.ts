@@ -10,6 +10,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
   base: '/',
   strategies: 'injectManifest',
   injectRegister: 'inline',
+  registerType: 'autoUpdate',
   includeAssets: ['favicon.svg'],
 
   srcDir: 'src',
