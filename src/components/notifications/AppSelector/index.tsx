@@ -61,7 +61,7 @@ const AppSelector: React.FC = () => {
     if (dappOrigin) {
       const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
 
-      if (dappSub) {
+      if (dappSub?.topic) {
         nav(`/notifications/${dappSub.topic}`)
       } else {
         nav(`/widget/subscribe`)

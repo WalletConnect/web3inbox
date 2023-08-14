@@ -1,8 +1,8 @@
-import type { NotifyClientTypes, NotifyClient } from '@walletconnect/notify-client'
-import type { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { W3iPushProvider } from './types'
+import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-client'
+import type { EventEmitter } from 'events'
 import { getFirebaseToken } from '../../utils/firebase'
+import type { W3iPushProvider } from './types'
 
 export default class InternalPushProvider implements W3iPushProvider {
   private pushClient: NotifyClient | undefined
