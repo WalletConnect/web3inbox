@@ -1,9 +1,10 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../components/general/Button'
 import W3iContext from '../../../contexts/W3iContext/context'
 import W3iBellIcon from '../../../assets/W3iBell.svg'
 import './Subscribe.scss'
+import { showErrorMessageToast } from '../../../utils/toasts'
 
 const WidgetSubscribe: React.FC = () => {
   const {
@@ -16,22 +17,31 @@ const WidgetSubscribe: React.FC = () => {
     activeSubscriptions
   } = useContext(W3iContext)
 
+  const [isSubscribing, setIsSubscribing] = useState(false)
+
   const nav = useNavigate()
 
-  const handleOnSubscribe = useCallback(() => {
+  const handleOnSubscribe = useCallback(async () => {
     if (!pushClientProxy || !userPubkey) {
       return
     }
 
-    pushClientProxy.subscribe({
-      account: `eip155:1:${userPubkey}`,
-      metadata: {
-        description: dappNotificationDescription,
-        icons: [dappIcon],
-        name: dappName,
-        url: dappOrigin
-      }
-    })
+    setIsSubscribing(true)
+    try {
+      await pushClientProxy.subscribe({
+        account: `eip155:1:${userPubkey}`,
+        metadata: {
+          description: dappNotificationDescription,
+          icons: [dappIcon],
+          name: dappName,
+          url: dappOrigin
+        }
+      })
+    } catch (error) {
+      showErrorMessageToast('Failed to subscribe')
+    } finally {
+      setIsSubscribing(false)
+    }
   }, [pushClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
 
   useEffect(() => {
@@ -52,7 +62,9 @@ const WidgetSubscribe: React.FC = () => {
         </div>
         <h1 className="WidgetSubscribe__title">Notifications from {dappName}</h1>
         <p className="WidgetSubscribe__description">{dappNotificationDescription}</p>
-        <Button onClick={handleOnSubscribe}>Enable (Subscribe in Wallet)</Button>
+        <Button onClick={handleOnSubscribe} disabled={isSubscribing}>
+          {isSubscribing ? 'Subscribing..' : 'Enable(Subscribe in Wallet)'}
+        </Button>
       </div>
     </div>
   )
