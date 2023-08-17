@@ -1,11 +1,11 @@
-import { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { NotifyClientTypes, NotifyClient } from '@walletconnect/notify-client'
-import type { W3iPush } from './pushProviders/types'
-import ExternalPushProvider from './pushProviders/externalPushProvider'
-import InternalPushProvider from './pushProviders/internalPushProvider'
+import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-client'
+import { EventEmitter } from 'events'
 import type { PushFacadeEvents } from './listenerTypes'
 import { ObservablesController } from './observablesController'
+import ExternalPushProvider from './pushProviders/externalPushProvider'
+import InternalPushProvider from './pushProviders/internalPushProvider'
+import type { W3iPush } from './pushProviders/types'
 
 class W3iPushFacade implements W3iPush {
   private readonly providerMap = {
@@ -52,8 +52,8 @@ class W3iPushFacade implements W3iPush {
 
   // ------------------ Push Client Forwarding ------------------
 
-  public async enableSync(params: { account: string }) {
-    await this.provider.enableSync(params)
+  public async register(params: { account: string }) {
+    return this.provider.register(params)
   }
 
   public async subscribe(params: { metadata: NotifyClientTypes.Metadata; account: string }) {

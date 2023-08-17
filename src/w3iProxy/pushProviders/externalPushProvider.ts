@@ -72,8 +72,8 @@ export default class ExternalPushProvider implements W3iPushProvider {
     }
   }
 
-  public async enableSync(params: { account: string }) {
-    return this.postToExternalProvider('enableSync', {
+  public async register(params: { account: string }) {
+    return this.postToExternalProvider('register', {
       account: params.account,
       // Signing will be handled wallet-side.
       onSign: async () => Promise.resolve('')
@@ -82,9 +82,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
 
   public async subscribe(params: { metadata: NotifyClientTypes.Metadata; account: string }) {
     return this.postToExternalProvider('subscribe', {
-      ...params,
-      // Signing will be handled wallet-side.
-      onSign: async () => Promise.resolve('')
+      ...params
     })
   }
 

@@ -15,6 +15,7 @@ export interface UiEnabled {
 interface W3iContextState {
   chatClientProxy: W3iChatClient | null
   registeredKey: string | null
+  setRegisteredKey: Dispatch<SetStateAction<string | undefined>>
   refreshThreadsAndInvites: () => void
   refreshNotifications: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
@@ -48,6 +49,8 @@ const W3iContext = createContext<W3iContextState>({
   disconnect: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setUserPubkey: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setRegisteredKey: () => {},
   threads: [],
   uiEnabled: { chat: true, notify: true, settings: true, sidebar: true },
   activeSubscriptions: [],

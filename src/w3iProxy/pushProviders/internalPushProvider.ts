@@ -59,7 +59,7 @@ export default class InternalPushProvider implements W3iPushProvider {
 
   // ------------------- Method-forwarding for NotifyClient -------------------
 
-  public async enableSync(params: { account: string }) {
+  public async register(params: { account: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('approve'))
     }
@@ -68,31 +68,43 @@ export default class InternalPushProvider implements W3iPushProvider {
       account: params.account
     }).length
 
-    if (alreadySynced) {
-      return Promise.resolve()
+    const identityKey = await this.pushClient.identityKeys.getIdentity({ account: params.account })
+    if (alreadySynced && identityKey) {
+      return Promise.resolve(identityKey)
     }
 
-    return this.pushClient.enableSync({
+    return this.pushClient.register({
       ...params,
       onSign: async message => {
-        this.emitter.emit('notify_signature_requested', { message })
+        return window.web3inbox.signMessage(message).then(async signature => {
+          console.log('PushClient.register > onSign > signature', signature)
 
-        return new Promise(resolve => {
-          const intervalId = setInterval(() => {
-            const signatureForAccountExists = this.pushClient?.syncClient.signatures.getAll({
-              account: params.account
-            })?.length
-            if (this.pushClient && signatureForAccountExists) {
-              const { signature } = this.pushClient.syncClient.signatures.get(params.account)
-              this.emitter.emit('notify_signature_request_cancelled', {})
-              clearInterval(intervalId)
-              resolve(signature)
-            }
-          }, 100)
+          this.emitter.emit('notify_signature_requested', { message })
 
-          this.emitter.on('notify_signature_delivered', ({ signature }: { signature: string }) => {
-            resolve(signature)
+          await new Promise(resolve => {
+            const intervalId = setInterval(() => {
+              const signatureForAccountExists = this.pushClient?.syncClient.signatures.getAll({
+                account: params.account
+              })?.length
+              if (this.pushClient && signatureForAccountExists) {
+                const { signature: syncSignature } = this.pushClient.syncClient.signatures.get(
+                  params.account
+                )
+                this.emitter.emit('notify_signature_request_cancelled', {})
+                clearInterval(intervalId)
+                resolve(syncSignature)
+              }
+            }, 100)
+
+            this.emitter.on(
+              'notify_signature_delivered',
+              ({ signature: deliveredSyncSignature }: { signature: string }) => {
+                resolve(deliveredSyncSignature)
+              }
+            )
           })
+
+          return signature
         })
       }
     })
@@ -137,13 +149,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
 
     const subscribed = await this.pushClient.subscribe({
-      ...params,
-      onSign: async message =>
-        window.web3inbox.signMessage(message).then(signature => {
-          console.log('PushClient.subscribe > onSign > signature', signature)
-
-          return signature
-        })
+      ...params
     })
 
     return subscribed
