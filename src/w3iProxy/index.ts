@@ -1,16 +1,17 @@
+import { signMessage } from '@wagmi/core'
 import ChatClient from '@walletconnect/chat-client'
 import { Core } from '@walletconnect/core'
+import { IdentityKeys } from '@walletconnect/identity-keys'
 import { NotifyClient } from '@walletconnect/notify-client'
-import type { UiEnabled } from '../contexts/W3iContext/context'
-import W3iAuthFacade from './w3iAuthFacade'
-import W3iChatFacade from './w3iChatFacade'
-import W3iPushFacade from './w3iPushFacade'
 import type { ISyncClient } from '@walletconnect/sync-client'
 import { SyncClient, SyncStore } from '@walletconnect/sync-client'
 import type { ICore } from '@walletconnect/types'
-import { signMessage } from '@wagmi/core'
 import { EventEmitter } from 'events'
+import type { UiEnabled } from '../contexts/W3iContext/context'
 import { JsCommunicator } from './externalCommunicators/jsCommunicator'
+import W3iAuthFacade from './w3iAuthFacade'
+import W3iChatFacade from './w3iChatFacade'
+import W3iPushFacade from './w3iPushFacade'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 export type W3iPushClient = Omit<W3iPushFacade, 'initState'>
@@ -36,6 +37,8 @@ class Web3InboxProxy {
   private syncClient: ISyncClient | undefined
   private readonly core: ICore | undefined
   private readonly emitter: EventEmitter
+
+  private identityKeys?: IdentityKeys
 
   public readonly dappOrigin: string
 
@@ -161,10 +164,15 @@ class Web3InboxProxy {
       })
     }
 
+    if (this.core) {
+      this.identityKeys = new IdentityKeys(this.core)
+    }
+
     if (this.chatProvider === 'internal' && this.uiEnabled.chat && !this.chatClient) {
       this.chatClient = await ChatClient.init({
         projectId: this.projectId,
         SyncStoreController: SyncStore,
+        identityKeys: this.identityKeys,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         syncClient: this.syncClient!,
         core: this.core,
@@ -176,6 +184,7 @@ class Web3InboxProxy {
     if (this.pushProvider === 'internal' && this.uiEnabled.notify && !this.pushClient) {
       this.pushClient = await NotifyClient.init({
         SyncStoreController: SyncStore,
+        identityKeys: this.identityKeys,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         syncClient: this.syncClient!,
         core: this.core

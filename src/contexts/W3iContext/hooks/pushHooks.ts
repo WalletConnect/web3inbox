@@ -11,7 +11,7 @@ import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
 
 export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dappOrigin: string) => {
-  const { registeredKey, setRegisteredKey } = useContext(W3iContext)
+  const { setRegisteredKey } = useContext(W3iContext)
   const [activeSubscriptions, setActiveSubscriptions] = useState<
     NotifyClientTypes.NotifySubscription[]
   >([])

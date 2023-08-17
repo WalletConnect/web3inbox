@@ -68,7 +68,10 @@ export default class InternalPushProvider implements W3iPushProvider {
       account: params.account
     }).length
 
-    const identityKey = await this.pushClient.identityKeys.getIdentity({ account: params.account })
+    const identityKey = await this.pushClient.identityKeys.getIdentity({
+      account: params.account
+    })
+
     if (alreadySynced && identityKey) {
       return Promise.resolve(identityKey)
     }
