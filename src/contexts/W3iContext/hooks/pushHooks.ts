@@ -1,17 +1,15 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { EventEmitter } from 'events'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { noop } from 'rxjs'
 import type Web3InboxProxy from '../../../w3iProxy'
 import type { W3iPushClient } from '../../../w3iProxy'
 import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommunicator'
-import W3iContext from '../context'
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
 
 export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dappOrigin: string) => {
-  const { setRegisteredKey } = useContext(W3iContext)
   const [activeSubscriptions, setActiveSubscriptions] = useState<
     NotifyClientTypes.NotifySubscription[]
   >([])
@@ -23,6 +21,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
   const { uiEnabled } = useUiState()
 
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
+  const [registeredKey, setRegistered] = useState<string | null>(null)
 
   const [pushClient, setPushClient] = useState<W3iPushClient | null>(null)
 
@@ -51,8 +50,8 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
       if (pushClient && key && uiEnabled.notify) {
         try {
           const identityKey = await pushClient.register({ account: `eip155:1:${key}` })
-          setRegisteredKey(identityKey)
           setRegisterMessage(null)
+          setRegistered(identityKey)
           refreshPushState()
         } catch (error) {
           setRegisterMessage(null)
@@ -159,5 +158,5 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
     }
   }, [dappOrigin, pushClient, emitter])
 
-  return { activeSubscriptions, registerMessage, pushClient, refreshPushState }
+  return { activeSubscriptions, registeredKey, registerMessage, pushClient, refreshPushState }
 }
