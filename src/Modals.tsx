@@ -17,19 +17,23 @@ export const Modals = () => {
     isSignatureModalOpen
   } = useModals()
 
-  const { chatRegisterMessage, pushRegisterMessage, registeredKey, userPubkey } =
-    useContext(W3iContext)
+  const {
+    chatRegisterMessage,
+    pushRegisterMessage,
+    chatRegisteredKey,
+    pushRegisteredKey,
+    userPubkey
+  } = useContext(W3iContext)
 
   useEffect(() => {
-    const chatSignatureRequired = !registeredKey && chatRegisterMessage
-    const pushSignatureRequired = Boolean(pushRegisterMessage)
-    console.log({ chatSignatureRequired, pushSignatureRequired })
+    const chatSignatureRequired = !chatRegisteredKey && chatRegisterMessage
+    const pushSignatureRequired = !pushRegisteredKey && pushRegisterMessage
     if (userPubkey && (chatSignatureRequired || pushSignatureRequired)) {
       signatureModalService.openModal()
     } else {
       signatureModalService.closeModal()
     }
-  }, [userPubkey, registeredKey, chatRegisterMessage, pushRegisterMessage])
+  }, [userPubkey, chatRegisteredKey, pushRegisteredKey, chatRegisterMessage, pushRegisterMessage])
 
   return (
     <>
