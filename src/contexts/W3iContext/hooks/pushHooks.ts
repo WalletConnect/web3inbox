@@ -35,7 +35,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
       return
     }
 
-    pushClient.getActiveSubscriptions().then(subscriptions => {
+    pushClient.getActiveSubscriptions({ account: `eip155:1:${userPubkey}` }).then(subscriptions => {
       setActiveSubscriptions(Object.values(subscriptions))
     })
   }, [pushClient, userPubkey])
