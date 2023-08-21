@@ -1,9 +1,10 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../components/general/Button'
 import W3iContext from '../../../contexts/W3iContext/context'
 import W3iBellIcon from '../../../assets/W3iBell.svg'
 import './Subscribe.scss'
+import Spinner from '../../../components/general/Spinner'
 
 const WidgetSubscribe: React.FC = () => {
   const {
@@ -18,11 +19,19 @@ const WidgetSubscribe: React.FC = () => {
 
   const nav = useNavigate()
 
+  const [isSubscribing, setIsSubscribing] = useState(false)
+
   const handleOnSubscribe = useCallback(() => {
     if (!pushClientProxy || !userPubkey) {
       return
     }
 
+    setIsSubscribing(true)
+
+    /*
+     * Not setting isLoading to false as it will transition to a different page once subscription is
+     * done.
+     */
     pushClientProxy.subscribe({
       account: `eip155:1:${userPubkey}`,
       metadata: {
@@ -36,7 +45,6 @@ const WidgetSubscribe: React.FC = () => {
 
   useEffect(() => {
     const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
-    console.log({ activeSubscriptions })
     if (dappSub) {
       setTimeout(() => {
         nav(`/notifications/${dappSub.topic}`)
@@ -52,7 +60,9 @@ const WidgetSubscribe: React.FC = () => {
         </div>
         <h1 className="WidgetSubscribe__title">Notifications from {dappName}</h1>
         <p className="WidgetSubscribe__description">{dappNotificationDescription}</p>
-        <Button onClick={handleOnSubscribe}>Enable (Subscribe in Wallet)</Button>
+        <Button onClick={handleOnSubscribe}>
+          {isSubscribing ? <Spinner width="1em" /> : <span>Enable (Subscribe in Wallet)</span>}
+        </Button>
       </div>
     </div>
   )
