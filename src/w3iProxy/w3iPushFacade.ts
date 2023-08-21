@@ -70,8 +70,8 @@ class W3iPushFacade implements W3iPush {
     })
   }
 
-  public async getActiveSubscriptions() {
-    return this.provider.getActiveSubscriptions()
+  public async getActiveSubscriptions(params?: { account: string }) {
+    return this.provider.getActiveSubscriptions(params)
   }
 
   public async getMessageHistory(params: { topic: string }) {

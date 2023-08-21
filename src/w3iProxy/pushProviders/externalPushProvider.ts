@@ -96,8 +96,8 @@ export default class ExternalPushProvider implements W3iPushProvider {
     return this.postToExternalProvider('deleteSubscription', params)
   }
 
-  public async getActiveSubscriptions() {
-    return this.postToExternalProvider('getActiveSubscriptions')
+  public async getActiveSubscriptions(params?: { account: string }) {
+    return this.postToExternalProvider('getActiveSubscriptions', params)
   }
 
   public async getMessageHistory(params: { topic: string }) {
