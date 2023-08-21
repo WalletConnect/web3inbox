@@ -68,9 +68,15 @@ export default class InternalPushProvider implements W3iPushProvider {
       account: params.account
     }).length
 
-    const identityKey = await this.pushClient.identityKeys.getIdentity({
-      account: params.account
-    })
+    let identityKey: string | undefined = undefined
+    try {
+      identityKey = await this.pushClient.identityKeys.getIdentity({
+        account: params.account
+      })
+    } catch (error) {
+      // Silence not found error
+      console.log({ error })
+    }
 
     if (alreadySynced && identityKey) {
       return Promise.resolve(identityKey)
@@ -79,35 +85,29 @@ export default class InternalPushProvider implements W3iPushProvider {
     return this.pushClient.register({
       ...params,
       onSign: async message => {
-        return window.web3inbox.signMessage(message).then(async signature => {
-          console.log('PushClient.register > onSign > signature', signature)
+        this.emitter.emit('notify_signature_requested', { message })
 
-          this.emitter.emit('notify_signature_requested', { message })
+        return new Promise(resolve => {
+          const intervalId = setInterval(() => {
+            const signatureForAccountExists = this.pushClient?.syncClient.signatures.getAll({
+              account: params.account
+            })?.length
+            if (this.pushClient && signatureForAccountExists) {
+              const { signature: syncSignature } = this.pushClient.syncClient.signatures.get(
+                params.account
+              )
+              this.emitter.emit('notify_signature_request_cancelled', {})
+              clearInterval(intervalId)
+              resolve(syncSignature)
+            }
+          }, 100)
 
-          await new Promise(resolve => {
-            const intervalId = setInterval(() => {
-              const signatureForAccountExists = this.pushClient?.syncClient.signatures.getAll({
-                account: params.account
-              })?.length
-              if (this.pushClient && signatureForAccountExists) {
-                const { signature: syncSignature } = this.pushClient.syncClient.signatures.get(
-                  params.account
-                )
-                this.emitter.emit('notify_signature_request_cancelled', {})
-                clearInterval(intervalId)
-                resolve(syncSignature)
-              }
-            }, 100)
-
-            this.emitter.on(
-              'notify_signature_delivered',
-              ({ signature: deliveredSyncSignature }: { signature: string }) => {
-                resolve(deliveredSyncSignature)
-              }
-            )
-          })
-
-          return signature
+          this.emitter.on(
+            'notify_signature_delivered',
+            ({ signature: deliveredSyncSignature }: { signature: string }) => {
+              resolve(deliveredSyncSignature)
+            }
+          )
         })
       }
     })
