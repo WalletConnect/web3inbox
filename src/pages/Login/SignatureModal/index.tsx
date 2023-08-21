@@ -35,23 +35,28 @@ export const SignatureModal: React.FC<{
 
   const onSign = useCallback(() => {
     setSigning(true)
-    window.web3inbox.signMessage(message).then(signature => {
-      setStepProgress(pv => pv + 1)
-      switch (sender) {
-        case 'chat':
-          window.web3inbox.chat.postMessage(
-            formatJsonRpcRequest('chat_signature_delivered', { signature })
-          )
-          break
-        case 'push':
-          window.web3inbox.push.postMessage(
-            formatJsonRpcRequest('push_signature_delivered', { signature })
-          )
-          break
-        default:
-          console.error('No correct sender for signature modal')
-      }
-    })
+    window.web3inbox
+      .signMessage(message)
+      .then(signature => {
+        setStepProgress(pv => pv + 1)
+        switch (sender) {
+          case 'chat':
+            window.web3inbox.chat.postMessage(
+              formatJsonRpcRequest('chat_signature_delivered', { signature })
+            )
+            break
+          case 'push':
+            window.web3inbox.push.postMessage(
+              formatJsonRpcRequest('push_signature_delivered', { signature })
+            )
+            break
+          default:
+            console.error('No correct sender for signature modal')
+        }
+      })
+      .catch(() => {
+        setSigning(false)
+      })
   }, [message, sender, setStepProgress, setSigning])
 
   // Modal is ready to sign when given a new purpose
