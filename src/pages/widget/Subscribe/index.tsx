@@ -19,14 +19,14 @@ const WidgetSubscribe: React.FC = () => {
 
   const nav = useNavigate()
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSubscribing, setIsSubscribing] = useState(false)
 
   const handleOnSubscribe = useCallback(() => {
     if (!pushClientProxy || !userPubkey) {
       return
     }
 
-    setIsLoading(true)
+    setIsSubscribing(true)
 
     /*
      * Not setting isLoading to false as it will transition to a different page once subscription is
@@ -61,7 +61,7 @@ const WidgetSubscribe: React.FC = () => {
         <h1 className="WidgetSubscribe__title">Notifications from {dappName}</h1>
         <p className="WidgetSubscribe__description">{dappNotificationDescription}</p>
         <Button onClick={handleOnSubscribe}>
-          {isLoading ? <Spinner width="1em" /> : <span>Enable (Subscribe in Wallet)</span>}
+          {isSubscribing ? <Spinner width="1em" /> : <span>Enable (Subscribe in Wallet)</span>}
         </Button>
       </div>
     </div>
