@@ -48,6 +48,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
             showSuccessMessageToast(`Subscribed to ${name}`)
           }
         })
+
         await pushClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,
           metadata: {
@@ -58,6 +59,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           }
         })
       } catch (error) {
+        console.log({ error })
         showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },

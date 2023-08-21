@@ -59,7 +59,7 @@ export default class InternalPushProvider implements W3iPushProvider {
 
   // ------------------- Method-forwarding for NotifyClient -------------------
 
-  public async enableSync(params: { account: string }) {
+  public async register(params: { account: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('approve'))
     }
@@ -68,11 +68,21 @@ export default class InternalPushProvider implements W3iPushProvider {
       account: params.account
     }).length
 
-    if (alreadySynced) {
-      return Promise.resolve()
+    let identityKey: string | undefined = undefined
+    try {
+      identityKey = await this.pushClient.identityKeys.getIdentity({
+        account: params.account
+      })
+    } catch (error) {
+      // Silence not found error
+      console.log({ error })
     }
 
-    return this.pushClient.enableSync({
+    if (alreadySynced && identityKey) {
+      return Promise.resolve(identityKey)
+    }
+
+    return this.pushClient.register({
       ...params,
       onSign: async message => {
         this.emitter.emit('notify_signature_requested', { message })
@@ -83,16 +93,21 @@ export default class InternalPushProvider implements W3iPushProvider {
               account: params.account
             })?.length
             if (this.pushClient && signatureForAccountExists) {
-              const { signature } = this.pushClient.syncClient.signatures.get(params.account)
+              const { signature: syncSignature } = this.pushClient.syncClient.signatures.get(
+                params.account
+              )
               this.emitter.emit('notify_signature_request_cancelled', {})
               clearInterval(intervalId)
-              resolve(signature)
+              resolve(syncSignature)
             }
           }, 100)
 
-          this.emitter.on('notify_signature_delivered', ({ signature }: { signature: string }) => {
-            resolve(signature)
-          })
+          this.emitter.on(
+            'notify_signature_delivered',
+            ({ signature: deliveredSyncSignature }: { signature: string }) => {
+              resolve(deliveredSyncSignature)
+            }
+          )
         })
       }
     })
@@ -137,13 +152,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     }
 
     const subscribed = await this.pushClient.subscribe({
-      ...params,
-      onSign: async message =>
-        window.web3inbox.signMessage(message).then(signature => {
-          console.log('PushClient.subscribe > onSign > signature', signature)
-
-          return signature
-        })
+      ...params
     })
 
     return subscribed

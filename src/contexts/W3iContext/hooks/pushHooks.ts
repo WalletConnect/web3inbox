@@ -1,13 +1,13 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
+import { EventEmitter } from 'events'
 import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { noop } from 'rxjs'
-import type { W3iPushClient } from '../../../w3iProxy'
 import type Web3InboxProxy from '../../../w3iProxy'
+import type { W3iPushClient } from '../../../w3iProxy'
 import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommunicator'
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
-import { EventEmitter } from 'events'
 
 export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dappOrigin: string) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
@@ -21,6 +21,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
   const { uiEnabled } = useUiState()
 
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
+  const [registeredKey, setRegistered] = useState<string | null>(null)
 
   const [pushClient, setPushClient] = useState<W3iPushClient | null>(null)
 
@@ -48,8 +49,9 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
     async (key: string) => {
       if (pushClient && key && uiEnabled.notify) {
         try {
-          await pushClient.enableSync({ account: `eip155:1:${key}` })
+          const identityKey = await pushClient.register({ account: `eip155:1:${key}` })
           setRegisterMessage(null)
+          setRegistered(identityKey)
           refreshPushState()
         } catch (error) {
           setRegisterMessage(null)
@@ -156,5 +158,5 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
     }
   }, [dappOrigin, pushClient, emitter])
 
-  return { activeSubscriptions, registerMessage, pushClient, refreshPushState }
+  return { activeSubscriptions, registeredKey, registerMessage, pushClient, refreshPushState }
 }
