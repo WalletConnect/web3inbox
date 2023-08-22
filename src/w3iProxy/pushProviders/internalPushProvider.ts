@@ -128,27 +128,31 @@ export default class InternalPushProvider implements W3iPushProvider {
       const clientId = await this.pushClient.core.crypto.getClientId()
       // Retrieving FCM token needs to be client side, outside the service worker.
 
-      const token = await getFirebaseToken()
+      try {
+        const token = await getFirebaseToken()
 
-      const subEvListener = (
-        subEv: NotifyClientTypes.BaseEventArgs<NotifyClientTypes.NotifyResponseEventArgs>
-      ) => {
-        if (subEv.params.subscription?.metadata.url === params.metadata.url) {
-          navigator.serviceWorker.ready.then(registration => {
-            registration.active?.postMessage({
-              type: 'INSTALL_SYMKEY_CLIENT',
-              clientId,
-              topic: subEv.topic,
-              token,
-              symkey: subEv.params.subscription?.symKey
+        const subEvListener = (
+          subEv: NotifyClientTypes.BaseEventArgs<NotifyClientTypes.NotifyResponseEventArgs>
+        ) => {
+          if (subEv.params.subscription?.metadata.url === params.metadata.url) {
+            navigator.serviceWorker.ready.then(registration => {
+              registration.active?.postMessage({
+                type: 'INSTALL_SYMKEY_CLIENT',
+                clientId,
+                topic: subEv.topic,
+                token,
+                symkey: subEv.params.subscription?.symKey
+              })
             })
-          })
 
-          this.pushClient?.off('notify_subscription', subEvListener)
+            this.pushClient?.off('notify_subscription', subEvListener)
+          }
         }
-      }
 
-      this.pushClient.on('notify_subscription', subEvListener)
+        this.pushClient.on('notify_subscription', subEvListener)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     const subscribed = await this.pushClient.subscribe({
