@@ -4,6 +4,7 @@ import Button from '../../../components/general/Button'
 import W3iContext from '../../../contexts/W3iContext/context'
 import W3iBellIcon from '../../../assets/W3iBell.svg'
 import './Subscribe.scss'
+import Spinner from '../../../components/general/Spinner'
 import { showErrorMessageToast } from '../../../utils/toasts'
 
 const WidgetSubscribe: React.FC = () => {
@@ -25,6 +26,7 @@ const WidgetSubscribe: React.FC = () => {
     if (!pushClientProxy || !userPubkey) {
       return
     }
+    const [isSubscribing, setIsSubscribing] = useState(false)
 
     setIsSubscribing(true)
     try {
@@ -42,11 +44,24 @@ const WidgetSubscribe: React.FC = () => {
     } finally {
       setIsSubscribing(false)
     }
+
+    /*
+     * Not setting isLoading to false as it will transition to a different page once subscription is
+     * done.
+     */
+    pushClientProxy.subscribe({
+      account: `eip155:1:${userPubkey}`,
+      metadata: {
+        description: dappNotificationDescription,
+        icons: [dappIcon],
+        name: dappName,
+        url: dappOrigin
+      }
+    })
   }, [pushClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
 
   useEffect(() => {
     const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
-    console.log({ activeSubscriptions })
     if (dappSub) {
       setTimeout(() => {
         nav(`/notifications/${dappSub.topic}`)
@@ -63,7 +78,7 @@ const WidgetSubscribe: React.FC = () => {
         <h1 className="WidgetSubscribe__title">Notifications from {dappName}</h1>
         <p className="WidgetSubscribe__description">{dappNotificationDescription}</p>
         <Button onClick={handleOnSubscribe} disabled={isSubscribing}>
-          {isSubscribing ? 'Subscribing..' : 'Enable(Subscribe in Wallet)'}
+          {isSubscribing ? <Spinner width="1em" /> : <span>Enable (Subscribe in Wallet)</span>}
         </Button>
       </div>
     </div>

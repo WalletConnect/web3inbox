@@ -124,13 +124,13 @@ export default class InternalPushProvider implements W3iPushProvider {
      * no calls to the service worker or firebase messager worker
      * will be made.
      */
-    if (window.location.protocol === 'https:') {
+    if (window.location.protocol === 'https:' && !window.web3inbox.dappOrigin) {
       const clientId = await this.pushClient.core.crypto.getClientId()
-      // Retrieving FCM token needs to be client side, outside the service worker.
 
       try {
         const token = await getFirebaseToken()
 
+        // Retrieving FCM token needs to be client side, outside the service worker.
         const subEvListener = (
           subEv: NotifyClientTypes.BaseEventArgs<NotifyClientTypes.NotifyResponseEventArgs>
         ) => {
@@ -151,7 +151,7 @@ export default class InternalPushProvider implements W3iPushProvider {
 
         this.pushClient.on('notify_subscription', subEvListener)
       } catch (e) {
-        console.error(e)
+        console.error('Failed to use firebase messaging service', e)
       }
     }
 
