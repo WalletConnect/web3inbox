@@ -42,20 +42,6 @@ const WidgetSubscribe: React.FC = () => {
     } finally {
       setIsSubscribing(false)
     }
-
-    /*
-     * Not setting isLoading to false as it will transition to a different page once subscription is
-     * done.
-     */
-    pushClientProxy.subscribe({
-      account: `eip155:1:${userPubkey}`,
-      metadata: {
-        description: dappNotificationDescription,
-        icons: [dappIcon],
-        name: dappName,
-        url: dappOrigin
-      }
-    })
   }, [pushClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
 
   useEffect(() => {
