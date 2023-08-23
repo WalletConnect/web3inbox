@@ -31,8 +31,16 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { userPubkey, dappOrigin, chatProvider, uiEnabled, registeredKey, chatRegisterMessage } =
-    useContext(W3iContext)
+  const {
+    userPubkey,
+    dappOrigin,
+    chatProvider,
+    uiEnabled,
+    chatRegisteredKey,
+    pushRegisteredKey,
+    chatRegisterMessage,
+    pushRegisterMessage
+  } = useContext(W3iContext)
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
@@ -40,19 +48,19 @@ const Login: React.FC = () => {
   useEffect(() => {
     const path = next ? decodeURIComponent(next) : '/'
 
-    // If chat is not enabled, there is no need to register right away.
-    if (userPubkey && !uiEnabled.chat) {
-      nav(path)
-    }
+    if (userPubkey) {
+      const chatConditionsPass = Boolean(!uiEnabled.chat || chatRegisteredKey)
+      // Only need to trigger signatures for notify if none were issued for chat
+      const notifyConditionsPass = Boolean(uiEnabled.chat || !uiEnabled.notify || pushRegisteredKey)
 
-    if (userPubkey && registeredKey) {
-      nav(path)
+      if (chatConditionsPass && notifyConditionsPass) {
+        nav(path)
+        // Else if signature is required.
+      } else if (chatRegisterMessage || pushRegisterMessage) {
+        signatureModalService.openModal()
+      }
     }
-
-    if (userPubkey && !registeredKey && chatRegisterMessage) {
-      signatureModalService.openModal()
-    }
-  }, [userPubkey, next, registeredKey, uiEnabled, chatRegisterMessage])
+  }, [userPubkey, next, chatRegisteredKey, pushRegisteredKey, uiEnabled, chatRegisterMessage])
 
   if (chatProvider !== 'internal') {
     return (
@@ -95,8 +103,13 @@ const Login: React.FC = () => {
         </div>
         <div className="Login__actions">
           <div className="Login__actions-container">
-            {userPubkey && !registeredKey && chatRegisterMessage ? (
-              <SignatureModal message={chatRegisterMessage} sender="chat" />
+            {userPubkey &&
+            ((!chatRegisteredKey && chatRegisterMessage) ||
+              (!pushRegisteredKey && pushRegisterMessage)) ? (
+              <SignatureModal
+                message={chatRegisterMessage ?? pushRegisterMessage ?? ''}
+                sender={chatRegisterMessage ? 'chat' : 'push'}
+              />
             ) : (
               <Web3Button />
             )}

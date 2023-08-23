@@ -25,7 +25,7 @@ const Sidebar: React.FC = () => {
       items.push([<MessageIcon isFilled={pathname.includes('/messages')} />, 'messages'])
     }
 
-    if (uiEnabled.push) {
+    if (uiEnabled.notify) {
       items.push([
         <NotificationIcon isFilled={pathname.includes('/notifications')} />,
         'notifications'

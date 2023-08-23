@@ -7,7 +7,7 @@ declare global {
   interface Window {
     webkit?: {
       messageHandlers?: {
-        web3inboxPush?: {
+        web3inboxNotify?: {
           postMessage: (message: unknown) => void
         }
         web3inboxChat?: {
@@ -28,7 +28,7 @@ export class IOSCommunicator implements ExternalCommunicator {
   public async postToExternalProvider<TReturn>(
     methodName: string,
     params: unknown,
-    target: 'chat' | 'push'
+    target: 'chat' | 'notify'
   ) {
     return new Promise<TReturn>(resolve => {
       const message = formatJsonRpcRequest(methodName, params)
@@ -43,9 +43,9 @@ export class IOSCommunicator implements ExternalCommunicator {
             window.webkit.messageHandlers.web3inboxChat.postMessage(JSON.stringify(message))
           }
           break
-        case 'push':
-          if (window.webkit?.messageHandlers?.web3inboxPush) {
-            window.webkit.messageHandlers.web3inboxPush.postMessage(JSON.stringify(message))
+        case 'notify':
+          if (window.webkit?.messageHandlers?.web3inboxNotify) {
+            window.webkit.messageHandlers.web3inboxNotify.postMessage(JSON.stringify(message))
           }
           break
         default:

@@ -1,11 +1,11 @@
-import { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { PushClientTypes, WalletClient as PushWalletClient } from '@walletconnect/push-client'
-import type { W3iPush } from './pushProviders/types'
-import ExternalPushProvider from './pushProviders/externalPushProvider'
-import InternalPushProvider from './pushProviders/internalPushProvider'
+import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-client'
+import { EventEmitter } from 'events'
 import type { PushFacadeEvents } from './listenerTypes'
 import { ObservablesController } from './observablesController'
+import ExternalPushProvider from './pushProviders/externalPushProvider'
+import InternalPushProvider from './pushProviders/internalPushProvider'
+import type { W3iPush } from './pushProviders/types'
 
 class W3iPushFacade implements W3iPush {
   private readonly providerMap = {
@@ -29,7 +29,7 @@ class W3iPushFacade implements W3iPush {
     this.provider = new ProviderClass(this.emitter, providerName)
   }
 
-  public initInternalProvider(pushClient: PushWalletClient) {
+  public initInternalProvider(pushClient: NotifyClient) {
     const internalProvider = this.provider as InternalPushProvider
     internalProvider.initState(pushClient)
   }
@@ -52,19 +52,11 @@ class W3iPushFacade implements W3iPush {
 
   // ------------------ Push Client Forwarding ------------------
 
-  public async enableSync(params: { account: string }) {
-    await this.provider.enableSync(params)
+  public async register(params: { account: string }) {
+    return this.provider.register(params)
   }
 
-  public async approve(params: { id: number }) {
-    return this.provider.approve(params)
-  }
-
-  public async reject(params: { id: number; reason: string }) {
-    return this.provider.reject(params)
-  }
-
-  public async subscribe(params: { metadata: PushClientTypes.Metadata; account: string }) {
+  public async subscribe(params: { metadata: NotifyClientTypes.Metadata; account: string }) {
     return this.provider.subscribe(params)
   }
 
@@ -74,20 +66,20 @@ class W3iPushFacade implements W3iPush {
 
   public async deleteSubscription(params: { topic: string }) {
     return this.provider.deleteSubscription(params).then(() => {
-      this.emitter.emit('push_delete', {})
+      this.emitter.emit('notify_delete', {})
     })
   }
 
-  public async getActiveSubscriptions() {
-    return this.provider.getActiveSubscriptions()
+  public async getActiveSubscriptions(params?: { account: string }) {
+    return this.provider.getActiveSubscriptions(params)
   }
 
   public async getMessageHistory(params: { topic: string }) {
     return this.provider.getMessageHistory(params)
   }
 
-  public async deletePushMessage(params: { id: number }) {
-    return this.provider.deletePushMessage(params)
+  public async deleteNotifyMessage(params: { id: number }) {
+    return this.provider.deleteNotifyMessage(params)
   }
 }
 

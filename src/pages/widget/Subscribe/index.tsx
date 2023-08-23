@@ -4,6 +4,7 @@ import Button from '../../../components/general/Button'
 import W3iContext from '../../../contexts/W3iContext/context'
 import W3iBellIcon from '../../../assets/W3iBell.svg'
 import './Subscribe.scss'
+import { showErrorMessageToast } from '../../../utils/toasts'
 import Spinner from '../../../components/general/Spinner'
 
 const WidgetSubscribe: React.FC = () => {
@@ -21,26 +22,31 @@ const WidgetSubscribe: React.FC = () => {
 
   const [isSubscribing, setIsSubscribing] = useState(false)
 
-  const handleOnSubscribe = useCallback(() => {
+  const handleOnSubscribe = useCallback(async () => {
     if (!pushClientProxy || !userPubkey) {
       return
     }
 
     setIsSubscribing(true)
-
-    /*
-     * Not setting isLoading to false as it will transition to a different page once subscription is
-     * done.
-     */
-    pushClientProxy.subscribe({
-      account: `eip155:1:${userPubkey}`,
-      metadata: {
-        description: dappNotificationDescription,
-        icons: [dappIcon],
-        name: dappName,
-        url: dappOrigin
-      }
-    })
+    try {
+      /*
+       * Not setting isLoading to false as it will transition to a different page once subscription is
+       * done.
+       */
+      await pushClientProxy.subscribe({
+        account: `eip155:1:${userPubkey}`,
+        metadata: {
+          description: dappNotificationDescription,
+          icons: [dappIcon],
+          name: dappName,
+          url: dappOrigin
+        }
+      })
+    } catch (error) {
+      showErrorMessageToast('Failed to subscribe')
+    } finally {
+      setIsSubscribing(false)
+    }
   }, [pushClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
 
   useEffect(() => {
@@ -60,7 +66,7 @@ const WidgetSubscribe: React.FC = () => {
         </div>
         <h1 className="WidgetSubscribe__title">Notifications from {dappName}</h1>
         <p className="WidgetSubscribe__description">{dappNotificationDescription}</p>
-        <Button onClick={handleOnSubscribe}>
+        <Button onClick={handleOnSubscribe} disabled={isSubscribing}>
           {isSubscribing ? <Spinner width="1em" /> : <span>Enable (Subscribe in Wallet)</span>}
         </Button>
       </div>

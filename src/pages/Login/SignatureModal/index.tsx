@@ -46,8 +46,8 @@ export const SignatureModal: React.FC<{
             )
             break
           case 'push':
-            window.web3inbox.push.postMessage(
-              formatJsonRpcRequest('push_signature_delivered', { signature })
+            window.web3inbox.notify.postMessage(
+              formatJsonRpcRequest('notify_signature_delivered', { signature })
             )
             break
           default:
