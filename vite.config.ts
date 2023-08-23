@@ -9,7 +9,12 @@ const pwaOptions: Partial<VitePWAOptions> = {
   mode: 'production',
   base: '/',
   strategies: 'injectManifest',
+  injectRegister: 'inline',
+  registerType: 'autoUpdate',
   includeAssets: ['favicon.svg'],
+  injectManifest: {
+    globIgnores: ['*/**.js']
+  },
   srcDir: 'src',
   filename: 'main-sw.ts',
   manifest: {

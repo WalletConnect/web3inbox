@@ -5,6 +5,7 @@ import W3iContext from '../../../contexts/W3iContext/context'
 import W3iBellIcon from '../../../assets/W3iBell.svg'
 import './Subscribe.scss'
 import { showErrorMessageToast } from '../../../utils/toasts'
+import Spinner from '../../../components/general/Spinner'
 
 const WidgetSubscribe: React.FC = () => {
   const {
@@ -17,9 +18,8 @@ const WidgetSubscribe: React.FC = () => {
     activeSubscriptions
   } = useContext(W3iContext)
 
-  const [isSubscribing, setIsSubscribing] = useState(false)
-
   const nav = useNavigate()
+  const [isSubscribing, setIsSubscribing] = useState(false)
 
   const handleOnSubscribe = useCallback(async () => {
     if (!pushClientProxy || !userPubkey) {
@@ -46,7 +46,6 @@ const WidgetSubscribe: React.FC = () => {
 
   useEffect(() => {
     const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
-    console.log({ activeSubscriptions })
     if (dappSub) {
       setTimeout(() => {
         nav(`/notifications/${dappSub.topic}`)
@@ -63,7 +62,7 @@ const WidgetSubscribe: React.FC = () => {
         <h1 className="WidgetSubscribe__title">Notifications from {dappName}</h1>
         <p className="WidgetSubscribe__description">{dappNotificationDescription}</p>
         <Button onClick={handleOnSubscribe} disabled={isSubscribing}>
-          {isSubscribing ? 'Subscribing..' : 'Enable(Subscribe in Wallet)'}
+          {isSubscribing ? <Spinner width="1em" /> : <span>Enable (Subscribe in Wallet)</span>}
         </Button>
       </div>
     </div>
