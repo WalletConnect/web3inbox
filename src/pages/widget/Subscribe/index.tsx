@@ -19,6 +19,7 @@ const WidgetSubscribe: React.FC = () => {
   } = useContext(W3iContext)
 
   const nav = useNavigate()
+
   const [isSubscribing, setIsSubscribing] = useState(false)
 
   const handleOnSubscribe = useCallback(async () => {
@@ -28,6 +29,10 @@ const WidgetSubscribe: React.FC = () => {
 
     setIsSubscribing(true)
     try {
+      /*
+       * Not setting isLoading to false as it will transition to a different page once subscription is
+       * done.
+       */
       await pushClientProxy.subscribe({
         account: `eip155:1:${userPubkey}`,
         metadata: {
