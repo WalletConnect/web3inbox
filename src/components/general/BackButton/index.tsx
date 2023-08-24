@@ -35,9 +35,9 @@ const BackButton: React.FC<BackButtonProps> = ({ backTo, children, force }) => {
       <svg fill="none" viewBox="0 0 12 12">
         <path
           fill={themeColors['--fg-color-1']}
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M8.7.3a1 1 0 0 1 0 1.4L4.42 6l4.3 4.3a1 1 0 1 1-1.42 1.4l-5-5a1 1 0 0 1 0-1.4l5-5a1 1 0 0 1 1.42 0Z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </svg>
       {children && <p className="BackButton__Title">{children}</p>}

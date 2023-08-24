@@ -42,7 +42,10 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
   }, [pushClient, userPubkey])
 
   useEffect(() => {
-    refreshPushState()
+    // Account for sync init
+    const timeoutId = setTimeout(() => refreshPushState(), 100)
+
+    return () => clearTimeout(timeoutId)
   }, [refreshPushState])
 
   const handleRegistration = useCallback(

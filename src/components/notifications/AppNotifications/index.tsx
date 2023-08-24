@@ -108,23 +108,25 @@ const AppNotifications = () => {
             <div className="AppNotifications__list">
               <Label color="main">Latest</Label>
               <>
-                {notifications.map(notification => (
-                  <AppNotificationItem
-                    key={notification.id}
-                    onClear={updateMessages}
-                    notification={{
-                      timestamp: notification.publishedAt,
-                      // We do not manage read status for now.
-                      isRead: true,
-                      id: notification.id.toString(),
-                      message: notification.message.body,
-                      title: notification.message.title,
-                      image: notification.message.icon,
-                      url: notification.message.url
-                    }}
-                    appLogo={app.metadata.icons[0]}
-                  />
-                ))}
+                {notifications
+                  .sort((a, b) => b.publishedAt - a.publishedAt)
+                  .map(notification => (
+                    <AppNotificationItem
+                      key={notification.id}
+                      onClear={updateMessages}
+                      notification={{
+                        timestamp: notification.publishedAt,
+                        // We do not manage read status for now.
+                        isRead: true,
+                        id: notification.id.toString(),
+                        message: notification.message.body,
+                        title: notification.message.title,
+                        image: notification.message.icon,
+                        url: notification.message.url
+                      }}
+                      appLogo={app.metadata.icons[0]}
+                    />
+                  ))}
               </>
             </div>
           </>
