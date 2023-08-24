@@ -156,6 +156,8 @@ class Web3InboxProxy {
       return
     }
 
+    console.log('INITIALIZING :)')
+
     // If core is initialized, we should init sync because some SDK needs it
     if (!this.syncClient && this.core) {
       this.syncClient = await SyncClient.init({

@@ -53,6 +53,8 @@ const Login: React.FC = () => {
       // Only need to trigger signatures for notify if none were issued for chat
       const notifyConditionsPass = Boolean(uiEnabled.chat || !uiEnabled.notify || pushRegisteredKey)
 
+      console.log({ chatRegisteredKey })
+
       if (chatConditionsPass && notifyConditionsPass) {
         nav(path)
         // Else if signature is required.
