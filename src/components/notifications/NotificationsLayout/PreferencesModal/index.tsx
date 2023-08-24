@@ -77,36 +77,38 @@ export const PreferencesModal: React.FC = () => {
           </Button>
         </div>
         <Divider />
-        {Object.entries(scopes).map(([title, scope]) => (
-          <div key={title} className="PreferencesModal__content">
-            <div className="PreferencesModal__content__setting">
-              <div>
-                <h4 style={{ textTransform: 'capitalize' }}>
-                  <Text variant="paragraph-500">{title} Notifications</Text>
-                </h4>
-                <div className="PreferencesModal__content__setting__helper-text">
-                  <Text variant="small-400"> {scope.description}</Text>
+        {Object.entries(scopes)
+          .sort(([a], [b]) => a.charCodeAt(0) - b.charCodeAt(0))
+          .map(([title, scope]) => (
+            <div key={title} className="PreferencesModal__content">
+              <div className="PreferencesModal__content__setting">
+                <div>
+                  <h4 style={{ textTransform: 'capitalize' }}>
+                    <Text variant="paragraph-500">{title} Notifications</Text>
+                  </h4>
+                  <div className="PreferencesModal__content__setting__helper-text">
+                    <Text variant="small-400"> {scope.description}</Text>
+                  </div>
                 </div>
-              </div>
-              <Toggle
-                checked={scope.enabled}
-                setChecked={enabled => {
-                  setScopes(oldScopes => {
-                    return {
-                      ...oldScopes,
-                      [title]: {
-                        ...oldScopes[title],
-                        enabled
+                <Toggle
+                  checked={scope.enabled}
+                  setChecked={enabled => {
+                    setScopes(oldScopes => {
+                      return {
+                        ...oldScopes,
+                        [title]: {
+                          ...oldScopes[title],
+                          enabled
+                        }
                       }
-                    }
-                  })
-                }}
-                name={title}
-                id={title}
-              />
+                    })
+                  }}
+                  name={title}
+                  id={title}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         <Divider />
         <div className="PreferencesModal__action">
           <Button className="PreferencesModal__action__btn" onClick={handleUpdatePreferences}>
