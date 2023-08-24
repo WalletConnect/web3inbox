@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@walletconnect/chat-client": "^0.7.8",
+    "@sentry/react": "^7.64.0",
     "@walletconnect/core": "^2.9.2",
     "@walletconnect/notify-client": "^0.11.2",
     "@walletconnect/notify-message-decrypter": "^0.1.0",

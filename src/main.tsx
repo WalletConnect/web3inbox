@@ -12,6 +12,26 @@ import './styles/fonts.css'
 import { AnimatePresence } from 'framer-motion'
 import ConfiguredRoutes from './routes'
 import { Modals } from './Modals'
+import Sentry from '@sentry/react'
+
+Sentry.init({
+  dsn: 'https://96f54440c19eb6650fd5a502de09a306@o1095249.ingest.sentry.io/4505754150043648',
+  integrations: [
+    new Sentry.BrowserTracing({
+      // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+      tracePropagationTargets: [
+        'localhost',
+        'https://keys.walletconnect.com',
+        'https://history.walletconnect.com',
+        'https://web3inbox-dev-hidden.vercel.app'
+      ]
+    }),
+    new Sentry.Replay()
+  ],
+  tracesSampleRate: 0.5,
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0
+})
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
