@@ -163,8 +163,6 @@ class Web3InboxProxy {
 
     this.initializing = true
 
-    console.log('INITIALIZING :)')
-
     // If core is initialized, we should init sync because some SDK needs it
     if (!this.syncClient && this.core) {
       this.syncClient = await SyncClient.init({
@@ -176,8 +174,6 @@ class Web3InboxProxy {
     if (this.core) {
       this.identityKeys = new IdentityKeys(this.core)
     }
-
-    console.log('>< Initting chat client')
     if (this.chatProvider === 'internal' && this.uiEnabled.chat && !this.chatClient) {
       this.chatClient = await ChatClient.init({
         projectId: this.projectId,
@@ -191,13 +187,9 @@ class Web3InboxProxy {
       await this.chatFacade.initInternalProvider(this.chatClient)
     }
 
-    console.log('>< Initting auth provider')
-
     if (this.authProvider === 'internal') {
       this.authFacade.initInternalProvider()
     }
-
-    console.log('>< Initting push provider')
 
     if (this.pushProvider === 'internal' && this.uiEnabled.notify && !this.pushClient) {
       this.pushClient = await NotifyClient.init({
@@ -210,26 +202,14 @@ class Web3InboxProxy {
 
       this.pushFacade.initInternalProvider(this.pushClient)
 
-      console.log('>< trying to use chat provider')
       if (this.chatClient) {
         this.chatClient.once('sync_stores_initialized', () => {
-          console.log('>< popped event')
           const account = this.auth.getAccount()
-          console.log('>< account', account)
           if (this.pushClient && account) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const signature = this.chatClient!.syncClient!.signatures.get(
               `eip155:1:${account}`
             )!.signature
-
-            console.log(
-              'Plain',
-              this.syncClient?.storeMap.keys,
-              'Chat',
-              this.chatClient?.syncClient?.storeMap.keys,
-              'Push',
-              this.pushClient.syncClient.storeMap.keys
-            )
 
             this.pushClient.initSyncStores({
               account: `eip155:1:${account}`,

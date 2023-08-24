@@ -250,7 +250,6 @@ export default class InternalChatProvider implements W3iChatProvider {
 
           return new Promise(resolve => {
             this.emitter.on('chat_signature_delivered', ({ signature }: { signature: string }) => {
-              console.log('Signature: ', signature)
               resolve(signature)
             })
           })
