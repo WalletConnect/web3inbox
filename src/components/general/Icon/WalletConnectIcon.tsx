@@ -9,8 +9,8 @@ const WalletConnectIcon: React.FC = () => {
       />
       <defs>
         <linearGradient id="a" x1="33.5" x2="7" y1="32.5" y2="2" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#BFD9FF" />
-          <stop offset="1" stop-color="#0D7DF2" />
+          <stop stopColor="#BFD9FF" />
+          <stop offset="1" stopColor="#0D7DF2" />
         </linearGradient>
       </defs>
     </svg>
