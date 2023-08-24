@@ -181,20 +181,37 @@ class Web3InboxProxy {
       await this.chatFacade.initInternalProvider(this.chatClient)
     }
 
+    if (this.authProvider === 'internal') {
+      this.authFacade.initInternalProvider()
+    }
+
     if (this.pushProvider === 'internal' && this.uiEnabled.notify && !this.pushClient) {
       this.pushClient = await NotifyClient.init({
         SyncStoreController: SyncStore,
-        identityKeys: this.identityKeys,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         syncClient: this.syncClient!,
+        identityKeys: this.identityKeys,
         core: this.core
       })
 
       this.pushFacade.initInternalProvider(this.pushClient)
-    }
 
-    if (this.authProvider === 'internal') {
-      this.authFacade.initInternalProvider()
+      if (this.chatClient) {
+        this.chatClient.once('sync_stores_initialized', () => {
+          const account = this.auth.getAccount()
+          if (this.pushClient && account) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const signature = this.chatClient!.syncClient!.signatures.get(
+              `eip155:1:${account}`
+            )!.signature
+
+            this.pushClient.initSyncStores({
+              account: `eip155:1:${account}`,
+              signature
+            })
+          }
+        })
+      }
     }
 
     this.isInitialized = true
