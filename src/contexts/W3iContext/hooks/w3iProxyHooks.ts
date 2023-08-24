@@ -28,14 +28,13 @@ export const useW3iProxy = () => {
   )
 
   useEffect(() => {
-    setReady(oldReady => {
-      if (!oldReady) {
-        w3iProxy.init()
-      }
-
-      return true
-    })
-  }, [w3iProxy, setReady])
+    if (w3iProxy.isInitializing) {
+      return
+    }
+    if (!w3iProxy.getInitComplete()) {
+      w3iProxy.init().then(() => setReady(true))
+    }
+  }, [w3iProxy.isInitializing])
 
   return [w3iProxy, ready] as [Web3InboxProxy, boolean]
 }
