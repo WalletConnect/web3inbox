@@ -18,7 +18,6 @@ Sentry.init({
   dsn: 'https://96f54440c19eb6650fd5a502de09a306@o1095249.ingest.sentry.io/4505754150043648',
   integrations: [
     new Sentry.BrowserTracing({
-      // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
       tracePropagationTargets: ['localhost', 'https://web3inbox-dev-hidden.vercel.app']
     }),
     new Sentry.Replay()
