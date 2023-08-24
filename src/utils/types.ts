@@ -23,9 +23,6 @@ export interface IPushProject {
   name: string
   description: string
   homepage: string
-  app: {
-    browser: string
-  }
   image_url: {
     sm: string
     md: string
