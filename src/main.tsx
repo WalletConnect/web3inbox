@@ -12,6 +12,9 @@ import './styles/fonts.css'
 import { AnimatePresence } from 'framer-motion'
 import ConfiguredRoutes from './routes'
 import { Modals } from './Modals'
+import { initSentry } from './utils/sentry'
+
+initSentry()
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
