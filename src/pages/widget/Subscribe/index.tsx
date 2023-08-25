@@ -54,8 +54,10 @@ const WidgetSubscribe: React.FC = () => {
   useEffect(() => {
     const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
     if (dappSub) {
-      const communicator = new JsCommunicator(new EventEmitter())
-      communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
+      setTimeout(() => {
+        const communicator = new JsCommunicator(new EventEmitter())
+        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
+      }, 10)
       setTimeout(() => {
         nav(`/notifications/${dappSub.topic}`)
       }, 0)
