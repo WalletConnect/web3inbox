@@ -45,6 +45,7 @@ class Web3InboxProxy {
   public readonly signMessage: (message: string) => Promise<string>
 
   private isInitialized = false
+  private initializing = false
 
   /**
    *
@@ -133,6 +134,10 @@ class Web3InboxProxy {
     return this.authFacade
   }
 
+  public get isInitializing() {
+    return this.initializing
+  }
+
   public getInitComplete() {
     if (!this.isInitialized) {
       return false
@@ -156,6 +161,8 @@ class Web3InboxProxy {
       return
     }
 
+    this.initializing = true
+
     // If core is initialized, we should init sync because some SDK needs it
     if (!this.syncClient && this.core) {
       this.syncClient = await SyncClient.init({
@@ -167,7 +174,6 @@ class Web3InboxProxy {
     if (this.core) {
       this.identityKeys = new IdentityKeys(this.core)
     }
-
     if (this.chatProvider === 'internal' && this.uiEnabled.chat && !this.chatClient) {
       this.chatClient = await ChatClient.init({
         projectId: this.projectId,
@@ -181,23 +187,41 @@ class Web3InboxProxy {
       await this.chatFacade.initInternalProvider(this.chatClient)
     }
 
-    if (this.pushProvider === 'internal' && this.uiEnabled.notify && !this.pushClient) {
-      this.pushClient = await NotifyClient.init({
-        SyncStoreController: SyncStore,
-        identityKeys: this.identityKeys,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        syncClient: this.syncClient!,
-        core: this.core
-      })
-
-      this.pushFacade.initInternalProvider(this.pushClient)
-    }
-
     if (this.authProvider === 'internal') {
       this.authFacade.initInternalProvider()
     }
 
+    if (this.pushProvider === 'internal' && this.uiEnabled.notify && !this.pushClient) {
+      this.pushClient = await NotifyClient.init({
+        SyncStoreController: SyncStore,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        syncClient: this.syncClient!,
+        identityKeys: this.identityKeys,
+        core: this.core
+      })
+
+      this.pushFacade.initInternalProvider(this.pushClient)
+
+      if (this.chatClient) {
+        this.chatClient.once('sync_stores_initialized', () => {
+          const account = this.auth.getAccount()
+          if (this.pushClient && account) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const signature = this.chatClient!.syncClient!.signatures.get(
+              `eip155:1:${account}`
+            )!.signature
+
+            this.pushClient.initSyncStores({
+              account: `eip155:1:${account}`,
+              signature
+            })
+          }
+        })
+      }
+    }
+
     this.isInitialized = true
+    this.initializing = false
   }
 }
 
