@@ -117,11 +117,29 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
     }
   }, [pushClient, refreshPushState])
 
+  const checkAndInformIfWidgetSubbed = useCallback(() => {
+    if (!pushClient) {
+      return
+    }
+
+    pushClient.getActiveSubscriptions({ account: `eip155:1:${userPubkey ?? ''}` }).then(subs => {
+      const dappSubExists = Object.values(subs)
+        .map(sub => sub.metadata.url)
+        .some(url => url === dappOrigin)
+      if (dappSubExists) {
+        const communicator = new JsCommunicator(emitter)
+        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
+      }
+    })
+  }, [userPubkey, pushClient, dappOrigin, emitter])
+
   // Events used exclusively when in an iframe/widget-mode
   useEffect(() => {
     if (!pushClient || !dappOrigin) {
       return noop
     }
+
+    checkAndInformIfWidgetSubbed()
 
     const pushMessageSub = pushClient.observe('notify_message', {
       next: message => {
@@ -151,17 +169,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
      */
     const pushSyncSub = pushClient.observe('sync_update', {
       next: () => {
-        pushClient
-          .getActiveSubscriptions({ account: `eip155:1:${userPubkey ?? ''}` })
-          .then(subs => {
-            const dappSubExists = Object.values(subs)
-              .map(sub => sub.metadata.url)
-              .some(url => url === dappOrigin)
-            if (dappSubExists) {
-              const communicator = new JsCommunicator(emitter)
-              communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
-            }
-          })
+        checkAndInformIfWidgetSubbed()
       }
     })
 
@@ -185,7 +193,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
       pushSyncSub.unsubscribe()
       pushSubscriptionSub.unsubscribe()
     }
-  }, [dappOrigin, pushClient, emitter])
+  }, [dappOrigin, pushClient, emitter, checkAndInformIfWidgetSubbed])
 
   return { activeSubscriptions, registeredKey, registerMessage, pushClient, refreshPushState }
 }
