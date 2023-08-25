@@ -144,6 +144,27 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
       }
     })
 
+    /*
+     * This is currently very greedy as it will run for every sync client
+     * In the future, we can bubble the event data from sync_update
+     * And perform a check by topic
+     */
+    const pushSyncSub = pushClient.observe('sync_update', {
+      next: () => {
+        pushClient
+          .getActiveSubscriptions({ account: `eip155:1:${userPubkey ?? ''}` })
+          .then(subs => {
+            const dappSubExists = Object.values(subs)
+              .map(sub => sub.metadata.url)
+              .some(url => url === dappOrigin)
+            if (dappSubExists) {
+              const communicator = new JsCommunicator(emitter)
+              communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
+            }
+          })
+      }
+    })
+
     const pushSubscriptionSub = pushClient.observe('notify_subscription', {
       next: message => {
         /*
@@ -161,6 +182,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
 
     return () => {
       pushMessageSub.unsubscribe()
+      pushSyncSub.unsubscribe()
       pushSubscriptionSub.unsubscribe()
     }
   }, [dappOrigin, pushClient, emitter])
