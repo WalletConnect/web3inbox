@@ -32,7 +32,7 @@ export const useW3iProxy = () => {
       return
     }
     if (!w3iProxy.getInitComplete()) {
-      w3iProxy.init().then(() => setReady(true))
+      w3iProxy.init().then(() => setReady(true)).catch(error => { console.error("w3iProxy failed to initialize: ", error) })
     }
   }, [w3iProxy.isInitializing])
 
