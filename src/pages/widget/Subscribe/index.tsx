@@ -21,6 +21,7 @@ const WidgetSubscribe: React.FC = () => {
   } = useContext(W3iContext)
 
   const nav = useNavigate()
+  const [emitter] = useState(new EventEmitter())
 
   const [isSubscribing, setIsSubscribing] = useState(false)
 
@@ -52,17 +53,29 @@ const WidgetSubscribe: React.FC = () => {
   }, [pushClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
 
   useEffect(() => {
-    const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
-    if (dappSub) {
-      setTimeout(() => {
-        const communicator = new JsCommunicator(new EventEmitter())
+    const navIfSubFound = () => {
+      const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
+      if (dappSub) {
+        const communicator = new JsCommunicator(emitter)
         communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
-      }, 10)
-      setTimeout(() => {
         nav(`/notifications/${dappSub.topic}`)
-      }, 0)
+      }
     }
-  }, [activeSubscriptions, nav])
+
+    navIfSubFound()
+
+    /*
+     * The following two event listeners are essentially fail-safes if something goes wrong
+     * and navigation doesn't trigger
+     */
+    pushClientProxy?.observe('sync_update', {
+      next: navIfSubFound
+    })
+
+    pushClientProxy?.observe('notify_subscription', {
+      next: navIfSubFound
+    })
+  }, [activeSubscriptions, pushClientProxy, nav, dappOrigin, emitter])
 
   return (
     <div className="WidgetSubscribe">

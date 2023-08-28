@@ -118,6 +118,24 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
     console.log('InternalPushProvider > PushClient.subscribe > params', params)
+    const currentSubs = Object.values(
+      this.pushClient.getActiveSubscriptions({ account: params.account })
+    )
+
+    /*
+     * We do nothing with this data so it's okay if we return garbage, for now.
+     * We do not have access to the RPC ID since there's a chance the subscription came in through
+     * sync, nor do we have access to sub auth.
+     * This is essentially a fail-safe if the UI goes out of sync.
+     * TODO: Move this functionality into notify client.
+     */
+    const targettedSub = currentSubs.find(sub => sub.metadata.url === params.metadata.url)
+    if (targettedSub) {
+      return {
+        id: 0,
+        subscriptionAuth: ''
+      }
+    }
 
     /*
      * To prevent subscribing in local/dev environemntns failing,
