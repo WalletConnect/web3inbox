@@ -1,4 +1,3 @@
-import { Web3Button } from '@web3modal/react'
 import React, { useContext, useEffect } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import ByWalletConnect from '../../assets/by_walletconnect.png'
@@ -14,6 +13,8 @@ import './Login.scss'
 import { SignatureModal } from './SignatureModal'
 import TransitionDiv from '../../components/general/TransitionDiv'
 import WalletConnectIcon from '../../components/general/Icon/WalletConnectIcon'
+import { useWeb3Modal } from '@web3modal/react'
+import Button from '../../components/general/Button'
 
 const Web3InboxFeatures = [
   {
@@ -44,6 +45,8 @@ const Login: React.FC = () => {
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
+
+  const { open, isOpen } = useWeb3Modal()
 
   useEffect(() => {
     const path = next ? decodeURIComponent(next) : '/'
@@ -111,7 +114,14 @@ const Login: React.FC = () => {
                 sender={chatRegisterMessage ? 'chat' : 'push'}
               />
             ) : (
-              <Web3Button />
+              <Button
+                style={{ minWidth: 'fit-content', width: '6em', whiteSpace: 'nowrap' }}
+                onClick={() => {
+                  open()
+                }}
+              >
+                {isOpen ? <Spinner width="1em" /> : 'Connect Wallet'}
+              </Button>
             )}
           </div>
         </div>
