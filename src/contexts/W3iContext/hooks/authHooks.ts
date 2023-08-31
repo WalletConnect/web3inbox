@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { disconnect as wagmiDisconnect } from '@wagmi/core'
+import { useDisconnect } from 'wagmi'
 import type Web3InboxProxy from '../../../w3iProxy'
 import type W3iAuthFacade from '../../../w3iProxy/w3iAuthFacade'
 
@@ -8,6 +8,7 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [accountQueryParam, setAccountQueryParam] = useState('')
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
   const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(null)
+  const { disconnectAsync: wagmiDisconnect } = useDisconnect()
 
   useEffect(() => {
     if (proxyReady) {
@@ -18,9 +19,10 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const { search } = useLocation()
 
   const disconnect = useCallback(() => {
-    setUserPubkey(undefined)
     wagmiDisconnect()
-  }, [setUserPubkey])
+    // TODO: Temp fix until wagmi updates their @walletconnect/ethereum-provider
+    localStorage.removeItem('wc@2:client:0.3//session')
+  }, [wagmiDisconnect])
 
   useEffect(() => {
     const account = new URLSearchParams(search).get('account')

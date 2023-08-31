@@ -3428,34 +3428,33 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3modal/core@2.6.2":
-  version "2.6.2"
-  resolved "https://registry.npmjs.org/@web3modal/core/-/core-2.6.2.tgz"
-  integrity sha512-7gi618Z+bFOwEzhdxROt4AC8N45oiPHJFEA0AX3PxhB+ni5Usc1VQ03jQhk7DnQLDnQq+3hCY71F1escdxkdBA==
+"@web3modal/core@2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-2.7.1.tgz#257534d45f7b5d6bddbc667f787c094eb91dd281"
+  integrity sha512-eFWR1tK1qN4FguhaZq2VW0AVr8DC/Fox2eJnK1eTfk32hxSgUtl8wr5fVM8EoLeoapQ7Zcc0SNg/QLuLQ9t2tA==
   dependencies:
-    buffer "6.0.3"
-    valtio "1.10.6"
+    valtio "1.11.0"
 
-"@web3modal/ethereum@^2.6.2":
-  version "2.6.2"
-  resolved "https://registry.npmjs.org/@web3modal/ethereum/-/ethereum-2.6.2.tgz"
-  integrity sha512-8QCzJj0+x6y/7V++DQnXdPjdmMvq+zm/Fl8CEKhNlni9p4H406q7ramjdJEu1Bk4xtCklYh/aU3ZGR5wUIDysA==
+"@web3modal/ethereum@^2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/ethereum/-/ethereum-2.7.1.tgz#464dbc1d00d075c16961b77e9a353b1966538653"
+  integrity sha512-1x3qhYh9qgtvw1MDQD4VeDf2ZOsVANKRPtUty4lF+N4L8xnAIwvNKUAMA4j6T5xSsjqUfq5Tdy5mYsNxLmsWMA==
 
-"@web3modal/react@^2.6.2":
-  version "2.6.2"
-  resolved "https://registry.npmjs.org/@web3modal/react/-/react-2.6.2.tgz"
-  integrity sha512-Fi4rFCFI5L0w2Mx8hmY6Nwh4fQapGfKZA2JgXT8cduTk9N+Qov+clwyt9bhRC/60F1g8Kq+/L8a3T1OoEFvHyg==
+"@web3modal/react@^2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/react/-/react-2.7.1.tgz#c768aae41bfe15abe379f8b6489d69d153fc7a46"
+  integrity sha512-+zvP5Q7Q3ozW2hyA1NvS8giVDeZWA6PWgVhKA6656dCnOutonPUpWYuFPJahsFBYCrhLO8ApPmomgb6Dx/mh5A==
   dependencies:
-    "@web3modal/core" "2.6.2"
-    "@web3modal/ui" "2.6.2"
+    "@web3modal/core" "2.7.1"
+    "@web3modal/ui" "2.7.1"
 
-"@web3modal/ui@2.6.2":
-  version "2.6.2"
-  resolved "https://registry.npmjs.org/@web3modal/ui/-/ui-2.6.2.tgz"
-  integrity sha512-bhBNsookaqkTdLjyERBA7XM9KV8XPQ2bWAGd3roIgAFxLlaoWqrV0pPZHLtp+C97AglV4mbeqvFsHZ0jwpm8lw==
+"@web3modal/ui@2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-2.7.1.tgz#9c2cb0f66623fcf41084f50e63acff33f26b0635"
+  integrity sha512-JpGJbLAl/Wmuyyn+JwuwtlPD8mUW2HV/gsSxKWZoElgjbfDY4vjHo9PH2G++2HhugISfzjawp43r8lP/hWgWOQ==
   dependencies:
-    "@web3modal/core" "2.6.2"
-    lit "2.7.5"
+    "@web3modal/core" "2.7.1"
+    lit "2.7.6"
     motion "10.16.2"
     qrcode "1.5.3"
 
@@ -5901,15 +5900,6 @@ lit-html@^2.7.0:
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-lit@2.7.5:
-  version "2.7.5"
-  resolved "https://registry.npmjs.org/lit/-/lit-2.7.5.tgz"
-  integrity sha512-i/cH7Ye6nBDUASMnfwcictBnsTN91+aBjXoTHF2xARghXScKxpD4F4WYI+VLXg9lqbMinDfvoI7VnZXjyHgdfQ==
-  dependencies:
-    "@lit/reactive-element" "^1.6.0"
-    lit-element "^3.3.0"
-    lit-html "^2.7.0"
-
 lit@2.7.6:
   version "2.7.6"
   resolved "https://registry.yarnpkg.com/lit/-/lit-2.7.6.tgz#810007b876ed43e0c70124de91831921598b1665"
@@ -7652,14 +7642,6 @@ uuid@^8.3.2:
   resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-valtio@1.10.6:
-  version "1.10.6"
-  resolved "https://registry.npmjs.org/valtio/-/valtio-1.10.6.tgz"
-  integrity sha512-SxN1bHUmdhW6V8qsQTpCgJEwp7uHbntuH0S9cdLQtiohuevwBksbpXjwj5uDMA7bLwg1WKyq9sEpZrx3TIMrkA==
-  dependencies:
-    proxy-compare "2.5.1"
-    use-sync-external-store "1.2.0"
-
 valtio@1.11.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/valtio/-/valtio-1.11.0.tgz#c029dcd17a0f99d2fbec933721fe64cfd32a31ed"
@@ -7683,10 +7665,10 @@ viem@^1.0.0:
     isomorphic-ws "5.0.0"
     ws "8.12.0"
 
-viem@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-1.7.0.tgz#9d6fbdb4c7db2ef31fe5344fb8fc3b9103ae3225"
-  integrity sha512-S4SclYe0Oca6TuPh2YPI3BzfC7a4UvN7TRDCWwpoVNnu9+4z2hqCZhW+6aF1yufgSwdezNsF14vztE/P4eMdBw==
+viem@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-1.9.2.tgz#7cc15d8945e8268810d885610a8a06b11c0bbe16"
+  integrity sha512-a4l502Sl4ytYOT6a77ezDCEEgztR+wF8ZZRLAEVcrQawFFIiAWXGPrXVPT8MQmDF00idPMKPON8Ayz34Ft3NLw==
   dependencies:
     "@adraffy/ens-normalize" "1.9.0"
     "@noble/curves" "1.1.0"
@@ -7694,7 +7676,6 @@ viem@^1.7.0:
     "@scure/bip32" "1.3.0"
     "@scure/bip39" "1.2.0"
     "@types/ws" "^8.5.4"
-    "@wagmi/chains" "1.7.0"
     abitype "0.9.3"
     isomorphic-ws "5.0.0"
     ws "8.12.0"

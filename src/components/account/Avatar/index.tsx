@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useBalance, useEnsAvatar, useEnsName } from 'wagmi'
 
 import DisconnectIcon from '../../general/Icon/DisconnectIcon'
@@ -27,10 +26,9 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropdown = false }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const { setUserPubkey, disconnect } = useContext(W3iContext)
+  const { disconnect } = useContext(W3iContext)
   const avatarRef = useRef(null)
 
-  const navigate = useNavigate()
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
   const { data: ensAvatar } = useEnsAvatar({ name: ensName })
@@ -61,12 +59,6 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
 
     return specifiedMode
   }, [mode])
-
-  const handleDisconnect = useCallback(() => {
-    disconnect()
-    setUserPubkey(undefined)
-    navigate('/login')
-  }, [disconnect, navigate, setUserPubkey])
 
   const handleViewProfile = useCallback(() => {
     setIsDropdownOpen(currentState => currentState && !currentState)
@@ -169,7 +161,7 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
                 </button>
                 <button
                   className="Avatar__dropdown__block__actions__button Avatar__dropdown__block__actions__disconnect"
-                  onClick={handleDisconnect}
+                  onClick={disconnect}
                 >
                   <DisconnectIcon />
                   <Text variant="small-400">Disconnect</Text>

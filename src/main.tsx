@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains'
+import { mainnet } from 'wagmi/chains'
 import SettingsContextProvider from './contexts/SettingsContext'
 import W3iContextProvider from './contexts/W3iContext'
 import './index.css'
@@ -18,7 +18,7 @@ initSentry()
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
-const chains = [mainnet, polygon, optimism, arbitrum]
+const chains = [mainnet]
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiConfig = createConfig({
   autoConnect: true,
