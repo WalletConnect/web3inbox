@@ -20,7 +20,7 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
   const disconnect = useCallback(() => {
     wagmiDisconnect()
-    // Temp fix until wagmi updates their @walletconnect/ethereum-provider
+    // TODO: Temp fix until wagmi updates their @walletconnect/ethereum-provider
     localStorage.removeItem('wc@2:client:0.3//session')
   }, [wagmiDisconnect])
 
