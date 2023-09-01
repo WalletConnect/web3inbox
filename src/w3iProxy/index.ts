@@ -12,6 +12,10 @@ import { JsCommunicator } from './externalCommunicators/jsCommunicator'
 import W3iAuthFacade from './w3iAuthFacade'
 import W3iChatFacade from './w3iChatFacade'
 import W3iPushFacade from './w3iPushFacade'
+import pino from 'pino'
+import type { Logger } from 'pino'
+import mixpanel from 'mixpanel-browser'
+import { identifyMixpanelUserAndInit } from '../utils/mixpanel'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 export type W3iPushClient = Omit<W3iPushFacade, 'initState'>
@@ -37,6 +41,8 @@ class Web3InboxProxy {
   private syncClient: ISyncClient | undefined
   private readonly core: ICore | undefined
   private readonly emitter: EventEmitter
+  private readonly logger: Logger
+  private mixpanelIsReady: boolean
 
   private identityKeys?: IdentityKeys
 
@@ -72,10 +78,24 @@ class Web3InboxProxy {
     this.relayUrl = relayUrl
     this.projectId = projectId
     this.uiEnabled = uiEnabled
+    this.mixpanelIsReady = false
+    this.logger = pino({
+      level: 'debug',
+      browser: {
+        transmit: {
+          level: 'debug',
+          send: (level, log) => {
+            if (this.mixpanelIsReady) {
+              mixpanel.track(`(${level}): ${log.messages.join('||')}`)
+            }
+          }
+        }
+      }
+    })
     this.emitter = new EventEmitter()
     if (this.chatProvider === 'internal' || this.pushProvider === 'internal') {
       this.core = new Core({
-        logger: 'debug',
+        logger: this.logger,
         relayUrl: this.relayUrl,
         projectId: this.projectId
       })
@@ -163,6 +183,13 @@ class Web3InboxProxy {
 
     this.initializing = true
 
+    if (this.core) {
+      await this.core.start()
+      const clientId = await this.core.crypto.getClientId()
+      identifyMixpanelUserAndInit(clientId)
+      this.mixpanelIsReady = true
+    }
+
     // If core is initialized, we should init sync because some SDK needs it
     if (!this.syncClient && this.core) {
       this.syncClient = await SyncClient.init({
@@ -194,6 +221,7 @@ class Web3InboxProxy {
     if (this.pushProvider === 'internal' && this.uiEnabled.notify && !this.pushClient) {
       this.pushClient = await NotifyClient.init({
         identityKeys: this.identityKeys,
+        logger: this.logger,
         core: this.core
       })
 
