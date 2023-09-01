@@ -9,7 +9,8 @@ export const useUiState = () => {
 
   const notify: boolean = notifyEnabledQuery ? JSON.parse(notifyEnabledQuery) : true
   const settings: boolean = settingsEnabledQuery ? JSON.parse(settingsEnabledQuery) : true
-  const chat: boolean = chatEnabledQuery ? JSON.parse(chatEnabledQuery) : true
+  // Chat is disabled by default for now
+  const chat: boolean = chatEnabledQuery ? JSON.parse(chatEnabledQuery) : false
 
   const totalPagesEnabled = Number(notify) + Number(settings) + Number(chat)
   const [uiEnabled] = useState({
