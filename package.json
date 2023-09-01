@@ -30,7 +30,6 @@
     "idb": "^7.1.1",
     "lodash.debounce": "^4.0.8",
     "mixpanel-browser": "^2.47.0",
-    "pino-abstract-transport": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qr-reader-es6": "^2.2.1-2",
