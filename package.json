@@ -29,6 +29,8 @@
     "framer-motion": "^10.3.0",
     "idb": "^7.1.1",
     "lodash.debounce": "^4.0.8",
+    "mixpanel-browser": "^2.47.0",
+    "pino-abstract-transport": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qr-reader-es6": "^2.2.1-2",
@@ -41,6 +43,7 @@
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.7",
+    "@types/mixpanel-browser": "^2.47.1",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@typescript-eslint/eslint-plugin": "^5.45.1",
