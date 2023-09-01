@@ -28,10 +28,6 @@ export default class InternalPushProvider implements W3iPushProvider {
     this.pushClient.on('notify_update', args => this.emitter.emit('notify_update', args))
     this.pushClient.on('notify_delete', args => this.emitter.emit('notify_delete', args))
 
-    this.pushClient.syncClient.on('sync_update', () => {
-      this.emitter.emit('sync_update', {})
-    })
-
     this.pushClient.subscriptions.core.on('sync_store_update', () => {
       this.emitter.emit('sync_update', {})
     })
@@ -64,10 +60,6 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
-    const alreadySynced = this.pushClient.syncClient.signatures.getAll({
-      account: params.account
-    }).length
-
     let identityKey: string | undefined = undefined
     try {
       identityKey = await this.pushClient.identityKeys.getIdentity({
@@ -78,7 +70,7 @@ export default class InternalPushProvider implements W3iPushProvider {
       console.log({ error })
     }
 
-    if (alreadySynced && identityKey) {
+    if (identityKey) {
       return Promise.resolve(identityKey)
     }
 
@@ -88,20 +80,6 @@ export default class InternalPushProvider implements W3iPushProvider {
         this.emitter.emit('notify_signature_requested', { message })
 
         return new Promise(resolve => {
-          const intervalId = setInterval(() => {
-            const signatureForAccountExists = this.pushClient?.syncClient.signatures.getAll({
-              account: params.account
-            })?.length
-            if (this.pushClient && signatureForAccountExists) {
-              const { signature: syncSignature } = this.pushClient.syncClient.signatures.get(
-                params.account
-              )
-              this.emitter.emit('notify_signature_request_cancelled', {})
-              clearInterval(intervalId)
-              resolve(syncSignature)
-            }
-          }, 100)
-
           this.emitter.on(
             'notify_signature_delivered',
             ({ signature: deliveredSyncSignature }: { signature: string }) => {

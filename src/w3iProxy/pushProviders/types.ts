@@ -13,6 +13,7 @@ type NonMethodPushClientKeys =
   | 'historyClient'
   | 'identityKeys'
   | 'init'
+  | 'initHistory'
   | 'initSyncStores'
   | 'keyserverUrl'
   | 'logger'
