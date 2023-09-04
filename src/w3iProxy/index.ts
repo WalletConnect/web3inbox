@@ -86,7 +86,17 @@ class Web3InboxProxy {
           level: 'debug',
           send: (level, log) => {
             if (this.mixpanelIsReady) {
-              mixpanel.track(`(${level}): ${log.messages.join('||')}`)
+              mixpanel.track(
+                `(${level}): ${log.messages
+                  .map(msg => {
+                    if (typeof msg !== 'string') {
+                      return JSON.stringify(msg)
+                    }
+
+                    return msg
+                  })
+                  .join('||')}`
+              )
             }
           }
         }
