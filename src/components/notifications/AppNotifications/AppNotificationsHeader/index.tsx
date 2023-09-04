@@ -45,7 +45,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, 
           </div>
           <div className="AppNotificationsHeader__wrapper">
             {/*
-						<div className="AppNotificationsHeader__selector">
+             <div className="AppNotificationsHeader__selector">
               <Select
                 name="explorer-selector"
                 id="explorer-selector"
@@ -53,7 +53,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, 
                 options={[{ label: 'All', value: 'all' }]}
               />
             </div>
-						*/}
+            */}
             {isMobile ? (
               <>
                 <AppNotificationDropdown
