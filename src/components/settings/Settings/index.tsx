@@ -71,7 +71,7 @@ const Settings: React.FC = () => {
   )
 
   useEffect(() => {
-    if (!chatClientProxy) {
+    if (!chatClientProxy || !uiEnabled.chat) {
       return
     }
 
@@ -91,7 +91,7 @@ const Settings: React.FC = () => {
           })
       )
     })
-  }, [chatClientProxy, threads])
+  }, [chatClientProxy, threads, uiEnabled])
 
   return (
     <div className="Settings">
@@ -178,7 +178,9 @@ const Settings: React.FC = () => {
             can help weed out spam.
           </div>
 					*/}
-            <div
+            {/*
+             <div
+
               className="Settings__setting"
               onClick={() => {
                 chatClientProxy?.getMutedContacts().then(({ length }) => {
@@ -194,6 +196,7 @@ const Settings: React.FC = () => {
                 <ArrowRightIcon />
               </div>
             </div>
+            */}
             {/*
           <div className="Settings__setting">
             <div>Blocked contacts</div>
