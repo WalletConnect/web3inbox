@@ -13,7 +13,9 @@ import { AnimatePresence } from 'framer-motion'
 import ConfiguredRoutes from './routes'
 import { Modals } from './Modals'
 import { initSentry } from './utils/sentry'
+import { polyfill } from './utils/polyfill'
 
+polyfill()
 initSentry()
 
 const projectId = import.meta.env.VITE_PROJECT_ID

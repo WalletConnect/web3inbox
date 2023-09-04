@@ -1,6 +1,7 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
+import mixpanel from 'mixpanel-browser'
 import { getFirebaseToken } from '../../utils/firebase'
 import type { W3iPushProvider } from './types'
 
@@ -133,11 +134,16 @@ export default class InternalPushProvider implements W3iPushProvider {
       }
     }
 
-    const subscribed = await this.pushClient.subscribe({
-      ...params
-    })
+    try {
+      const subscribed = await this.pushClient.subscribe({
+        ...params
+      })
 
-    return subscribed
+      return subscribed
+    } catch (e: unknown) {
+      mixpanel.track(`Failed subscribing: ${JSON.stringify(e)} `)
+      throw e
+    }
   }
 
   public async update(params: { topic: string; scope: string[] }) {
