@@ -2,7 +2,7 @@ import { useWeb3ModalTheme } from '@web3modal/react'
 import cn from 'classnames'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ArtistPalette from '../../../assets/ArtistPalette.png'
-// Import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
+import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
 import DarkCity from '../../../assets/DarkCity.png'
 import HalfHalfCity from '../../../assets/HalfHalfCity.png'
 import Handshake from '../../../assets/Handshake.png'
@@ -20,6 +20,7 @@ import IconWrapper from '../../general/Icon/IconWrapper/IconWrapper'
 import Radio from '../../general/Radio'
 import ContactsModal from '../ContactsModal'
 import './Settings.scss'
+import Toggle from '../../general/Toggle'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
   { id: 'light', icon: LightCity },
@@ -47,7 +48,7 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
  */
 
 const Settings: React.FC = () => {
-  const { mode, newContacts, updateSettings } = useContext(SettingsContext)
+  const { mode, newContacts, isDevModeEnabled, updateSettings } = useContext(SettingsContext)
   const { isContactModalOpen } = useModals()
   const { chatClientProxy, threads, uiEnabled } = useContext(W3iContext)
   const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
@@ -118,7 +119,7 @@ const Settings: React.FC = () => {
           ))}
         </div>
       </div>
-      {/* <div className="Settings__section Settings__notifications">
+      <div className="Settings__section Settings__notifications">
         <div className="Settings__section-title">
           <IconWrapper shape="square" bgColor="blue">
             <img src={ColoredNotificationBell} alt="coloredNotification-icon" />
@@ -126,7 +127,19 @@ const Settings: React.FC = () => {
           <span>Notifications</span>
         </div>
         <div className="Settings__section-settings">
-          <div className="Settings__section-subtitle">Notify me about...</div>
+          <div className="Settings__section-subtitle">Developer Mode</div>
+          <div className="Settings__setting">
+            <div className="Settings__toggle-label">
+              Display all projects that enabled Notify API
+            </div>
+            <Toggle
+              name="devMode"
+              id="incoming"
+              checked={isDevModeEnabled}
+              setChecked={isEnabled => updateSettings({ isDevModeEnabled: isEnabled })}
+            />
+          </div>
+          {/* <div className="Settings__section-subtitle">Notify me about...</div>
           <div className="Settings__setting">
             <div className="Settings__toggle-label">Incoming contact requests</div>
             <Toggle name="incoming" id="incoming" />
@@ -138,10 +151,10 @@ const Settings: React.FC = () => {
           <div className="Settings__setting">
             <div className="Settings__toggle-label">New Messages</div>
             <Toggle name="new-messages" id="new-messages" />
-          </div>
+          </div> */}
         </div>
       </div>
-			*/}
+
       {uiEnabled.chat ? (
         <div className="Settings__section Settings__contacts">
           <div className="Settings__section-title">
