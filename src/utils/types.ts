@@ -18,7 +18,7 @@ export interface ISection {
   icons: IIconWithBg[]
 }
 
-export interface IPushProject {
+export interface INotifyProject {
   id: string
   name: string
   description: string
@@ -31,16 +31,16 @@ export interface IPushProject {
     md: string
     lg: string
   }
-  metadata: {
+  metadata?: {
     shortName: string
     colors: { primary?: string; secondary?: string }
   }
 }
-export interface IPushApp {
+export interface INotifyApp {
   id: string
   name: string
   description: string
   url: string
   icons: string[]
-  colors: { primary?: string; secondary?: string }
+  colors?: { primary?: string; secondary?: string }
 }

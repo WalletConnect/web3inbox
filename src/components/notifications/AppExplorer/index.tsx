@@ -4,12 +4,12 @@ import BackButton from '../../general/BackButton'
 import AppCard from './AppCard'
 import './AppExplorer.scss'
 import AppExplorerHeader from './AppExplorerHeader'
-import usePushProjects from '../../../utils/hooks/usePushProjects'
+import useNotifyProjects from '../../../utils/hooks/useNotifyProjects'
 import W3iContext from '../../../contexts/W3iContext/context'
 
 const AppExplorer = () => {
   const { appSearchTerm } = useSearch()
-  const projects = usePushProjects()
+  const projects = useNotifyProjects()
   const { activeSubscriptions } = useContext(W3iContext)
 
   const filteredApps = useMemo(
@@ -45,8 +45,8 @@ const AppExplorer = () => {
                 name={app.name}
                 description={app.description}
                 bgColor={{
-                  dark: app.colors.primary ?? '#000',
-                  light: app.colors.primary ?? '#fff'
+                  dark: app.colors?.primary ?? '#000',
+                  light: app.colors?.primary ?? '#fff'
                 }}
                 logo={app.icons[0]}
                 url={app.url}
@@ -62,8 +62,8 @@ const AppExplorer = () => {
                 name={app.name}
                 description={app.description}
                 bgColor={{
-                  dark: app.colors.primary ?? '#000',
-                  light: app.colors.primary ?? '#fff'
+                  dark: app.colors?.primary ?? '#000',
+                  light: app.colors?.primary ?? '#fff'
                 }}
                 logo={app.icons[0]}
                 url={app.url}
