@@ -8,6 +8,8 @@ import W3iContext from '../../../../contexts/W3iContext/context'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
 import { handleImageFallback } from '../../../../utils/ui'
 import Spinner from '../../../general/Spinner'
+import Text from '../../../general/Text'
+import { requestNotificationPermission } from '../../../../utils/notifications'
 
 interface AppCardProps {
   name: string
@@ -23,7 +25,7 @@ interface AppCardProps {
 const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
   const [subscribing, setSubscribing] = useState(false)
   const { mode } = useContext(SettingsContext)
-  const { pushClientProxy, userPubkey } = useContext(W3iContext)
+  const { pushClientProxy, userPubkey, pushProvider } = useContext(W3iContext)
   const cardBgColor = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     const specifiedMode = mode === 'system' ? systemTheme : mode
@@ -41,11 +43,12 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       setSubscribing(true)
 
       try {
-        pushClientProxy?.observeOne('push_subscription', {
+        pushClientProxy?.observeOne('notify_subscription', {
           next: () => {
             showSuccessMessageToast(`Subscribed to ${name}`)
           }
         })
+
         await pushClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,
           metadata: {
@@ -56,6 +59,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           }
         })
       } catch (error) {
+        console.log({ error })
         showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
@@ -63,13 +67,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   )
 
   return (
-    <a
-      className="AppCard"
-      style={{ backgroundColor: cardBgColor }}
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <div className="AppCard" style={{ backgroundColor: cardBgColor }} rel="noopener noreferrer">
       <div className="AppCard__header">
         <img
           className="AppCard__header__logo"
@@ -85,18 +83,30 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       </div>
 
       <div className="AppCard__body">
-        <h2 className="AppCard__body__name">{name}</h2>
-        <div className="AppCard__body__description">{description}</div>
-        <div className="AppCard__body__url">{url.replace('https://', '')}</div>
+        <Text variant="large-700">{name}</Text>
+        <Text variant="paragraph-500">{description}</Text>
+        <div className="AppCard__body__url">
+          <Text variant="small-400"> {url.replace('https://', '')}</Text>
+        </div>
         <Button
           disabled={subscribing}
           className="AppCard__body__subscribe"
-          onClick={async e => handleSubscription(e)}
+          onClick={e => {
+            if (pushProvider === 'internal') {
+              /*
+               * It's better to have Notification.requestPermission directly after a click was
+               * fired, according to MDN best practices.
+               */
+              requestNotificationPermission().then(async () => handleSubscription(e))
+            } else {
+              handleSubscription(e)
+            }
+          }}
         >
           {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
         </Button>
       </div>
-    </a>
+    </div>
   )
 }
 

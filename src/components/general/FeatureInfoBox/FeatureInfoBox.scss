@@ -4,6 +4,7 @@
   width: 100%;
   background: var(--bg-gradient-1);
   border-radius: 1.875em;
+  margin-top: 2em;
 
   &__container {
     display: flex;
@@ -16,16 +17,8 @@
       width: 3.5em;
       height: 3.5em;
     }
-    &__functionalities {
-      font-style: normal;
-      font-weight: 500;
-      font-size: 1.125em;
-      line-height: 1.375em;
-    }
+
     &__functionality {
-      font-weight: 500;
-      font-size: 0.875em;
-      line-height: 1.0625em;
       color: var(--fg-color-3);
       &__icons {
         display: flex;

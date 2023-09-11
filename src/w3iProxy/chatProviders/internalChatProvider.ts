@@ -242,21 +242,30 @@ export default class InternalChatProvider implements W3iChatProvider {
       throw new Error(this.formatClientRelatedError('register'))
     }
 
-    console.log('internalChatProvider > register > account:', params.account)
+    try {
+      const registeredIdentityKey = await this.chatClient.register({
+        ...params,
+        onSign: async message => {
+          this.emitter.emit('chat_signature_requested', { message })
 
-    return this.chatClient.register({
-      ...params,
-      onSign: async message => {
-        this.emitter.emit('chat_signature_requested', { message })
-
-        return new Promise(resolve => {
-          this.emitter.on('chat_signature_delivered', ({ signature }: { signature: string }) => {
-            console.log('Signature: ', signature)
-            resolve(signature)
+          return new Promise(resolve => {
+            this.emitter.on('chat_signature_delivered', ({ signature }: { signature: string }) => {
+              resolve(signature)
+            })
           })
-        })
-      }
-    })
+        }
+      })
+
+      return registeredIdentityKey
+    } catch (e) {
+      /*
+       * Right now, chat client's register doesn't work 100% of the time
+       * This essentially fulfills this function's API by returning the identity key
+       * However - the invite key is failing to register
+       * TODO: Fix underlying bug in chat client
+       */
+      return this.chatClient.identityKeys.getIdentity({ account: params.account })
+    }
   }
 
   public async resolve(params: { account: string }) {

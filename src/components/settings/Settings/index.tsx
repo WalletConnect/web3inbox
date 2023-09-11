@@ -2,7 +2,7 @@ import { useWeb3ModalTheme } from '@web3modal/react'
 import cn from 'classnames'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ArtistPalette from '../../../assets/ArtistPalette.png'
-// Import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
+import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
 import DarkCity from '../../../assets/DarkCity.png'
 import HalfHalfCity from '../../../assets/HalfHalfCity.png'
 import Handshake from '../../../assets/Handshake.png'
@@ -20,6 +20,7 @@ import IconWrapper from '../../general/Icon/IconWrapper/IconWrapper'
 import Radio from '../../general/Radio'
 import ContactsModal from '../ContactsModal'
 import './Settings.scss'
+import Toggle from '../../general/Toggle'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
   { id: 'light', icon: LightCity },
@@ -47,9 +48,9 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
  */
 
 const Settings: React.FC = () => {
-  const { mode, newContacts, updateSettings } = useContext(SettingsContext)
+  const { mode, newContacts, isDevModeEnabled, updateSettings } = useContext(SettingsContext)
   const { isContactModalOpen } = useModals()
-  const { chatClientProxy, threads } = useContext(W3iContext)
+  const { chatClientProxy, threads, uiEnabled } = useContext(W3iContext)
   const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
 
   const { setTheme } = useWeb3ModalTheme()
@@ -71,7 +72,7 @@ const Settings: React.FC = () => {
   )
 
   useEffect(() => {
-    if (!chatClientProxy) {
+    if (!chatClientProxy || !uiEnabled.chat) {
       return
     }
 
@@ -91,7 +92,7 @@ const Settings: React.FC = () => {
           })
       )
     })
-  }, [chatClientProxy, threads])
+  }, [chatClientProxy, threads, uiEnabled])
 
   return (
     <div className="Settings">
@@ -118,7 +119,7 @@ const Settings: React.FC = () => {
           ))}
         </div>
       </div>
-      {/* <div className="Settings__section Settings__notifications">
+      <div className="Settings__section Settings__notifications">
         <div className="Settings__section-title">
           <IconWrapper shape="square" bgColor="blue">
             <img src={ColoredNotificationBell} alt="coloredNotification-icon" />
@@ -126,7 +127,19 @@ const Settings: React.FC = () => {
           <span>Notifications</span>
         </div>
         <div className="Settings__section-settings">
-          <div className="Settings__section-subtitle">Notify me about...</div>
+          <div className="Settings__section-subtitle">Developer Mode</div>
+          <div className="Settings__setting">
+            <div className="Settings__toggle-label">
+              Display all projects that enabled Notify API
+            </div>
+            <Toggle
+              name="devMode"
+              id="incoming"
+              checked={isDevModeEnabled}
+              setChecked={isEnabled => updateSettings({ isDevModeEnabled: isEnabled })}
+            />
+          </div>
+          {/* <div className="Settings__section-subtitle">Notify me about...</div>
           <div className="Settings__setting">
             <div className="Settings__toggle-label">Incoming contact requests</div>
             <Toggle name="incoming" id="incoming" />
@@ -138,34 +151,35 @@ const Settings: React.FC = () => {
           <div className="Settings__setting">
             <div className="Settings__toggle-label">New Messages</div>
             <Toggle name="new-messages" id="new-messages" />
-          </div>
+          </div> */}
         </div>
       </div>
-			*/}
-      <div className="Settings__section Settings__contacts">
-        <div className="Settings__section-title">
-          <IconWrapper shape="square" bgColor="purple">
-            <img src={Handshake} alt="contacts-icon" />
-          </IconWrapper>
-          <span>Contacts</span>
-        </div>
-        <div className="Settings__section-settings">
-          <div className="Settings__section-subtitle">New Contacts</div>
-          {newContactModes.map(({ id, label }) => (
-            <Radio
-              name="new-contacts"
-              id={id}
-              key={id}
-              label={label}
-              checked={newContacts === id}
-              onCheck={() => updateSettings({ newContacts: id })}
-            />
-          ))}
-          <div className="Settings__section-helper-text">
-            People that want to message you will need to send an invite first that you can accept or
-            decline. Think of it as a polite handshake to start the conversation.
+
+      {uiEnabled.chat ? (
+        <div className="Settings__section Settings__contacts">
+          <div className="Settings__section-title">
+            <IconWrapper shape="square" bgColor="purple">
+              <img src={Handshake} alt="contacts-icon" />
+            </IconWrapper>
+            <span>Contacts</span>
           </div>
-          {/*
+          <div className="Settings__section-settings">
+            <div className="Settings__section-subtitle">New Contacts</div>
+            {newContactModes.map(({ id, label }) => (
+              <Radio
+                name="new-contacts"
+                id={id}
+                key={id}
+                label={label}
+                checked={newContacts === id}
+                onCheck={() => updateSettings({ newContacts: id })}
+              />
+            ))}
+            <div className="Settings__section-helper-text">
+              People that want to message you will need to send an invite first that you can accept
+              or decline. Think of it as a polite handshake to start the conversation.
+            </div>
+            {/*
           <div className="Settings__setting">
             <div className="Settings__toggle-label">
               Decline new contacts without any transactions onchain
@@ -177,23 +191,26 @@ const Settings: React.FC = () => {
             can help weed out spam.
           </div>
 					*/}
-          <div
-            className="Settings__setting"
-            onClick={() => {
-              chatClientProxy?.getMutedContacts().then(({ length }) => {
-                if (length) {
-                  contactsModalService.openModal()
-                }
-              })
-            }}
-          >
-            <div>Muted contacts</div>
-            <div className="Settings__toggle-dropdown">
-              <CircleBadge>{mutedContacts.length}</CircleBadge>
-              <ArrowRightIcon />
+            {/*
+             <div
+
+              className="Settings__setting"
+              onClick={() => {
+                chatClientProxy?.getMutedContacts().then(({ length }) => {
+                  if (length) {
+                    contactsModalService.openModal()
+                  }
+                })
+              }}
+            >
+              <div>Muted contacts</div>
+              <div className="Settings__toggle-dropdown">
+                <CircleBadge>{mutedContacts.length}</CircleBadge>
+                <ArrowRightIcon />
+              </div>
             </div>
-          </div>
-          {/*
+            */}
+            {/*
           <div className="Settings__setting">
             <div>Blocked contacts</div>
             <div className="Settings__toggle-dropdown">
@@ -202,8 +219,9 @@ const Settings: React.FC = () => {
             </div>
           </div>
 					*/}
+          </div>
         </div>
-      </div>
+      ) : null}
       {/*
       <div className="Settings__section Settings_crypto">
         <div className="Settings__section-title">

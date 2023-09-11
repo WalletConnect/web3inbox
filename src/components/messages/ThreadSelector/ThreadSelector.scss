@@ -4,8 +4,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  align-items: center;
-  gap: 1em;
 
   @media only screen and (min-width: 700px) {
     min-width: 17.5em;
@@ -13,6 +11,11 @@
 
   @media only screen and (max-width: 700px) {
     padding: 0 1.25em 1.25em;
+  }
+
+  &__target-title {
+    margin-top: 1.625rem;
+    padding: 0 0.75rem;
   }
 
   &__mobile {
@@ -119,13 +122,16 @@
   &__threads {
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    margin-top: 1.125rem;
     width: 100%;
     justify-content: flex-start;
-
     overflow-y: auto;
-    padding-right: 0.5rem;
     max-height: 70vh;
+
+    .NavLink {
+      padding: 1.25rem 1rem 1.25rem 0.75rem;
+    }
+
     @media only screen and (max-width: 700px) {
       max-height: 75vh;
     }

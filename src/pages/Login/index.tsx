@@ -1,9 +1,7 @@
-import { Web3Button } from '@web3modal/react'
 import React, { useContext, useEffect } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import ByWalletConnect from '../../assets/by_walletconnect.png'
 import ChatDisplay from '../../assets/chat.png'
-import Logo from '../../assets/Logo.svg'
 import NotificationDisplay from '../../assets/notifs.png'
 import Web3InboxDisplay from '../../assets/web3inbox.png'
 import MessageIcon from '../../components/general/Icon/MessageIcon'
@@ -14,6 +12,9 @@ import { signatureModalService } from '../../utils/store'
 import './Login.scss'
 import { SignatureModal } from './SignatureModal'
 import TransitionDiv from '../../components/general/TransitionDiv'
+import WalletConnectIcon from '../../components/general/Icon/WalletConnectIcon'
+import { useWeb3Modal } from '@web3modal/react'
+import Button from '../../components/general/Button'
 
 const Web3InboxFeatures = [
   {
@@ -31,28 +32,38 @@ const Web3InboxFeatures = [
 ]
 
 const Login: React.FC = () => {
-  const { userPubkey, dappOrigin, chatProvider, uiEnabled, registeredKey, chatRegisterMessage } =
-    useContext(W3iContext)
+  const {
+    userPubkey,
+    dappOrigin,
+    chatProvider,
+    uiEnabled,
+    chatRegisteredKey,
+    pushRegisteredKey,
+    chatRegisterMessage,
+    pushRegisterMessage
+  } = useContext(W3iContext)
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
 
+  const { open, isOpen } = useWeb3Modal()
+
   useEffect(() => {
     const path = next ? decodeURIComponent(next) : '/'
 
-    // If chat is not enabled, there is no need to register right away.
-    if (userPubkey && !uiEnabled.chat) {
-      nav(path)
-    }
+    if (userPubkey) {
+      const chatConditionsPass = Boolean(!uiEnabled.chat || chatRegisteredKey)
+      // Only need to trigger signatures for notify if none were issued for chat
+      const notifyConditionsPass = Boolean(uiEnabled.chat || !uiEnabled.notify || pushRegisteredKey)
 
-    if (userPubkey && registeredKey) {
-      nav(path)
+      if (chatConditionsPass && notifyConditionsPass) {
+        nav(path)
+        // Else if signature is required.
+      } else if (chatRegisterMessage || pushRegisterMessage) {
+        signatureModalService.openModal()
+      }
     }
-
-    if (userPubkey && !registeredKey && chatRegisterMessage) {
-      signatureModalService.openModal()
-    }
-  }, [userPubkey, next, registeredKey, uiEnabled, chatRegisterMessage])
+  }, [userPubkey, next, chatRegisteredKey, pushRegisteredKey, uiEnabled, chatRegisterMessage])
 
   if (chatProvider !== 'internal') {
     return (
@@ -95,16 +106,28 @@ const Login: React.FC = () => {
         </div>
         <div className="Login__actions">
           <div className="Login__actions-container">
-            {userPubkey && !registeredKey && chatRegisterMessage ? (
-              <SignatureModal message={chatRegisterMessage} sender="chat" />
+            {userPubkey &&
+            ((!chatRegisteredKey && chatRegisterMessage) ||
+              (!pushRegisteredKey && pushRegisterMessage)) ? (
+              <SignatureModal
+                message={chatRegisterMessage ?? pushRegisterMessage ?? ''}
+                sender={chatRegisterMessage ? 'chat' : 'push'}
+              />
             ) : (
-              <Web3Button />
+              <Button
+                style={{ minWidth: 'fit-content', width: '6em', whiteSpace: 'nowrap' }}
+                onClick={() => {
+                  open()
+                }}
+              >
+                {isOpen ? <Spinner width="1em" /> : 'Connect Wallet'}
+              </Button>
             )}
           </div>
         </div>
       </div>
       <div className="Login__footer">
-        <img src={Logo} alt="WC Logo" />
+        <WalletConnectIcon />
         <img src={ByWalletConnect} alt="WC Logo" />
       </div>
     </TransitionDiv>

@@ -1,6 +1,5 @@
 import React, { useContext, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import Logo from '../../../assets/Logo.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { useIsMobile } from '../../../utils/hooks'
 import Avatar from '../../account/Avatar'
@@ -8,6 +7,7 @@ import MessageIcon from '../../general/Icon/MessageIcon'
 import NotificationIcon from '../../general/Icon/NotificationIcon'
 import SettingIcon from '../../general/Icon/SettingIcon'
 import './Sidebar.scss'
+import WalletConnectIcon from '../../general/Icon/WalletConnectIcon'
 
 const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <div className="Sidebar__Item">{children}</div>
@@ -25,7 +25,7 @@ const Sidebar: React.FC = () => {
       items.push([<MessageIcon isFilled={pathname.includes('/messages')} />, 'messages'])
     }
 
-    if (uiEnabled.push) {
+    if (uiEnabled.notify) {
       items.push([
         <NotificationIcon isFilled={pathname.includes('/notifications')} />,
         'notifications'
@@ -48,9 +48,11 @@ const Sidebar: React.FC = () => {
 
   return (
     <div className="Sidebar">
-      <SidebarItem>
-        <Avatar address={userPubkey as `0x${string}`} width="2em" height="2em" hasProfileDropdown />
-      </SidebarItem>
+      {!isMobile && (
+        <SidebarItem>
+          <WalletConnectIcon />
+        </SidebarItem>
+      )}
       <SidebarItem>
         <div className="Sidebar__Navigation">
           {navItems.map(([icon, itemName]) => (
@@ -60,11 +62,10 @@ const Sidebar: React.FC = () => {
           ))}
         </div>
       </SidebarItem>
-      {!isMobile && (
-        <SidebarItem>
-          <img alt="WC logo" src={Logo} />
-        </SidebarItem>
-      )}
+
+      <SidebarItem>
+        <Avatar address={userPubkey as `0x${string}`} width="2em" height="2em" hasProfileDropdown />
+      </SidebarItem>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import W3iContext from '../../../../contexts/W3iContext/context'
@@ -11,16 +11,17 @@ import { Modal } from '../../../general/Modal/Modal'
 import Toggle from '../../../general/Toggle'
 import './PreferencesModal.scss'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
+import Text from '../../../general/Text'
 
 export const PreferencesModal: React.FC = () => {
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
   const { preferencesModalAppId } = useModals()
-  const [scopes, setScopes] = useState<PushClientTypes.PushSubscription['scope']>({})
+  const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
 
   // Reduces the scopes mapping to only an array of enabled scopes
-  const getEnabledScopes = (scopesMap: PushClientTypes.PushSubscription['scope']) => {
+  const getEnabledScopes = (scopesMap: NotifyClientTypes.NotifySubscription['scope']) => {
     const enabledScopeKeys: string[] = []
     Object.entries(scopesMap).forEach(([key, scope]) => {
       if (scope.enabled) {
@@ -45,7 +46,7 @@ export const PreferencesModal: React.FC = () => {
       const topic = preferencesModalAppId
 
       try {
-        pushClientProxy?.observeOne('push_update', {
+        pushClientProxy?.observeOne('notify_update', {
           next: () => {
             preferencesModalService.closeModal()
             showSuccessMessageToast('Preferences updated successfully')
@@ -66,7 +67,7 @@ export const PreferencesModal: React.FC = () => {
     <Modal onToggleModal={preferencesModalService.toggleModal}>
       <div className="PreferencesModal">
         <div className="PreferencesModal__header">
-          <h2>Preferences</h2>
+          <Text variant="large-500">Preferences</Text>
           <Button
             className="PreferencesModal__close"
             customType="action-icon"
@@ -76,34 +77,38 @@ export const PreferencesModal: React.FC = () => {
           </Button>
         </div>
         <Divider />
-        {Object.entries(scopes).map(([title, scope]) => (
-          <div key={title} className="PreferencesModal__content">
-            <div className="PreferencesModal__content__setting">
-              <div>
-                <h4 style={{ textTransform: 'capitalize' }}>{title} Notifications</h4>
-                <div className="PreferencesModal__content__setting__helper-text">
-                  {scope.description}
+        {Object.entries(scopes)
+          .sort(([a], [b]) => a.charCodeAt(0) - b.charCodeAt(0))
+          .map(([title, scope]) => (
+            <div key={title} className="PreferencesModal__content">
+              <div className="PreferencesModal__content__setting">
+                <div>
+                  <h4 style={{ textTransform: 'capitalize' }}>
+                    <Text variant="paragraph-500">{title} Notifications</Text>
+                  </h4>
+                  <div className="PreferencesModal__content__setting__helper-text">
+                    <Text variant="small-400"> {scope.description}</Text>
+                  </div>
                 </div>
-              </div>
-              <Toggle
-                checked={scope.enabled}
-                setChecked={enabled => {
-                  setScopes(oldScopes => {
-                    return {
-                      ...oldScopes,
-                      [title]: {
-                        ...oldScopes[title],
-                        enabled
+                <Toggle
+                  checked={scope.enabled}
+                  setChecked={enabled => {
+                    setScopes(oldScopes => {
+                      return {
+                        ...oldScopes,
+                        [title]: {
+                          ...oldScopes[title],
+                          enabled
+                        }
                       }
-                    }
-                  })
-                }}
-                name={title}
-                id={title}
-              />
+                    })
+                  }}
+                  name={title}
+                  id={title}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         <Divider />
         <div className="PreferencesModal__action">
           <Button className="PreferencesModal__action__btn" onClick={handleUpdatePreferences}>

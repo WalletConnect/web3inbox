@@ -21,7 +21,7 @@ export class AndroidCommunicator implements ExternalCommunicator {
   public async postToExternalProvider<TReturn>(
     methodName: string,
     params: unknown,
-    _: 'chat' | 'push'
+    _: 'chat' | 'notify'
   ) {
     return new Promise<TReturn>(resolve => {
       const message = formatJsonRpcRequest(methodName, params)

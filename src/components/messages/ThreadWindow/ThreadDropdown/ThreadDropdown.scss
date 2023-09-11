@@ -34,13 +34,15 @@
       height: 1em;
     }
     span {
-      text-align: start;
-      line-height: 1.0625em;
+      font-weight: 400;
+      line-height: 140%;
+      font-size: 0.875rem;
     }
     &--leave {
       color: var(--error-color-1);
     }
     &--mute {
+      color: var(--fg-color-1);
       padding: 0.5em;
     }
   }

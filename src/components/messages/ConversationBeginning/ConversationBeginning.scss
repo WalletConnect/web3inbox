@@ -3,21 +3,25 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.625em;
   height: 100%;
   font-style: normal;
+  padding-top: 2em;
 
   &__peer {
+    padding-top: 0.625em;
     color: var(--fg-color-1);
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 22px;
+
+    span {
+      letter-spacing: 0px !important;
+    }
   }
 
   &__beginning {
     color: var(--fg-color-2);
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
+    padding-top: 0.25em;
+
+    span {
+      letter-spacing: 0px !important;
+    }
   }
 }

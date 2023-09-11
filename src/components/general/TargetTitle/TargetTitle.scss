@@ -1,0 +1,12 @@
+@import '../../../styles/mixins.scss';
+
+.TargetTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+
+  span {
+    color: var(--fg-color-1);
+  }
+}

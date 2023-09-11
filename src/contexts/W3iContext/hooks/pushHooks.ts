@@ -1,53 +1,60 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
+import { EventEmitter } from 'events'
 import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { noop } from 'rxjs'
-import { subscribeModalService } from '../../../utils/store'
-import type { W3iPushClient } from '../../../w3iProxy'
 import type Web3InboxProxy from '../../../w3iProxy'
+import type { W3iPushClient } from '../../../w3iProxy'
+import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommunicator'
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
 
-export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
+export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dappOrigin: string) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
-    PushClientTypes.PushSubscription[]
+    NotifyClientTypes.NotifySubscription[]
   >([])
 
   const { pathname } = useLocation()
+  const [emitter] = useState(new EventEmitter())
 
   const { userPubkey } = useAuthState(w3iProxy, proxyReady)
   const { uiEnabled } = useUiState()
 
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
+  const [registeredKey, setRegistered] = useState<string | null>(null)
 
   const [pushClient, setPushClient] = useState<W3iPushClient | null>(null)
 
   useEffect(() => {
     if (proxyReady) {
-      setPushClient(w3iProxy.push)
+      setPushClient(w3iProxy.notify)
     }
   }, [w3iProxy, proxyReady])
 
   const refreshPushState = useCallback(() => {
-    if (!pushClient || !userPubkey) {
+    if (!proxyReady || !pushClient || !userPubkey) {
       return
     }
 
-    pushClient.getActiveSubscriptions().then(subscriptions => {
+    pushClient.getActiveSubscriptions({ account: `eip155:1:${userPubkey}` }).then(subscriptions => {
       setActiveSubscriptions(Object.values(subscriptions))
     })
-  }, [pushClient, userPubkey])
+  }, [pushClient, userPubkey, proxyReady])
 
   useEffect(() => {
-    refreshPushState()
+    // Account for sync init
+    const timeoutId = setTimeout(() => refreshPushState(), 100)
+
+    return () => clearTimeout(timeoutId)
   }, [refreshPushState])
 
   const handleRegistration = useCallback(
     async (key: string) => {
-      if (pushClient && key && uiEnabled.push) {
+      if (pushClient && key && uiEnabled.notify) {
         try {
-          await pushClient.enableSync({ account: `eip155:1:${key}` })
+          const identityKey = await pushClient.register({ account: `eip155:1:${key}` })
           setRegisterMessage(null)
+          setRegistered(identityKey)
           refreshPushState()
         } catch (error) {
           setRegisterMessage(null)
@@ -58,7 +65,12 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   )
 
   useEffect(() => {
-    if (userPubkey) {
+    /*
+     * No need to register if chat is enabled since it will handle registration
+     * notify.register is disabled in favor of chat.register since
+     * chat.register performs an extra step.
+     */
+    if (userPubkey && !uiEnabled.chat) {
       handleRegistration(userPubkey)
     } else {
       setRegisterMessage(null)
@@ -70,30 +82,24 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
       return noop
     }
 
-    const pushRequestSub = pushClient.observe('push_request', {
-      next: pushRequest => {
-        subscribeModalService.openModal(pushRequest)
-        refreshPushState()
-      }
-    })
-    const pushSignatureRequestedSub = pushClient.observe('push_signature_requested', {
+    const pushSignatureRequestedSub = pushClient.observe('notify_signature_requested', {
       next: ({ message }) => setRegisterMessage(message)
     })
 
     const pushSignatureRequestCancelledSub = pushClient.observe(
-      'push_signature_request_cancelled',
+      'notify_signature_request_cancelled',
       {
         next: () => setRegisterMessage(null)
       }
     )
 
-    const pushSubscriptionSub = pushClient.observe('push_subscription', {
+    const pushSubscriptionSub = pushClient.observe('notify_subscription', {
       next: refreshPushState
     })
-    const pushDeleteSub = pushClient.observe('push_delete', {
+    const pushDeleteSub = pushClient.observe('notify_delete', {
       next: refreshPushState
     })
-    const pushUpdateSub = pushClient.observe('push_update', {
+    const pushUpdateSub = pushClient.observe('notify_update', {
       next: refreshPushState
     })
 
@@ -102,7 +108,6 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
     })
 
     return () => {
-      pushRequestSub.unsubscribe()
       pushSubscriptionSub.unsubscribe()
       syncUpdateSub.unsubscribe()
       pushUpdateSub.unsubscribe()
@@ -112,5 +117,83 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
     }
   }, [pushClient, refreshPushState])
 
-  return { activeSubscriptions, registerMessage, pushClient, refreshPushState }
+  const checkAndInformIfWidgetSubbed = useCallback(() => {
+    if (!pushClient) {
+      return
+    }
+
+    pushClient.getActiveSubscriptions({ account: `eip155:1:${userPubkey ?? ''}` }).then(subs => {
+      const dappSubExists = Object.values(subs)
+        .map(sub => sub.metadata.url)
+        .some(url => url === dappOrigin)
+      if (dappSubExists) {
+        const communicator = new JsCommunicator(emitter)
+        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
+      }
+    })
+  }, [userPubkey, pushClient, dappOrigin, emitter])
+
+  // Events used exclusively when in an iframe/widget-mode
+  useEffect(() => {
+    if (!pushClient || !dappOrigin) {
+      return noop
+    }
+
+    checkAndInformIfWidgetSubbed()
+
+    const pushMessageSub = pushClient.observe('notify_message', {
+      next: message => {
+        /*
+         * Due to the fact that data is synced, push_message events can be triggered
+         * from subscriptions unrelated to the one related to the dappOrigin
+         */
+        if (message.params.message.url !== dappOrigin) {
+          return
+        }
+
+        const communicator = new JsCommunicator(emitter)
+        communicator.postToExternalProvider(
+          'dapp_push_notification',
+          {
+            notification: message.params.message
+          },
+          'notify'
+        )
+      }
+    })
+
+    /*
+     * This is currently very greedy as it will run for every sync client
+     * In the future, we can bubble the event data from sync_update
+     * And perform a check by topic
+     */
+    const pushSyncSub = pushClient.observe('sync_update', {
+      next: () => {
+        checkAndInformIfWidgetSubbed()
+      }
+    })
+
+    const pushSubscriptionSub = pushClient.observe('notify_subscription', {
+      next: message => {
+        /*
+         * Due to the fact that data is synced, notify_subscription events can be triggered
+         * from dapps unrelated to the one owning the dappOrigin
+         */
+        if (message.params.subscription?.metadata.url !== dappOrigin) {
+          return
+        }
+
+        const communicator = new JsCommunicator(emitter)
+        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
+      }
+    })
+
+    return () => {
+      pushMessageSub.unsubscribe()
+      pushSyncSub.unsubscribe()
+      pushSubscriptionSub.unsubscribe()
+    }
+  }, [dappOrigin, pushClient, emitter, checkAndInformIfWidgetSubbed])
+
+  return { activeSubscriptions, registeredKey, registerMessage, pushClient, refreshPushState }
 }

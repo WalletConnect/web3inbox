@@ -5,6 +5,7 @@
   align-items: center;
   margin-top: 0.75em;
   padding-left: 1px;
+
   @media screen and (max-width: 700px) {
     padding: 0 calc(0.625em - 0.4em);
     padding-top: 0.4em;
@@ -12,7 +13,6 @@
 
   .Textarea {
     flex-grow: 1;
-    border-radius: 16px 16px 6px 16px;
     &:focus-within {
       outline: 1px solid var(--accent-color-1);
     }
@@ -33,21 +33,17 @@
     grid-area: send-button;
     display: grid;
     place-items: center;
-    border-radius: 50%;
-
-    background: var(--accent-color-1);
-    border: solid 1px var(--accent-color-1);
+    background-color: var(--sender-bubble-bg);
     color: var(--fg-color-1);
-
+    border-radius: 1rem;
     transition: color 0.1s;
-
-    height: 3em;
-    width: 3em;
+    height: 2.5em;
+    width: 2.5em;
+    border: none;
 
     &:disabled {
+      opacity: 0.3;
       white-space: nowrap;
-      background-color: var(--sender-bubble-bg);
-      border-color: var(--border-color-2);
       color: #585f5f;
       cursor: not-allowed;
     }

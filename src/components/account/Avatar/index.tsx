@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useBalance, useEnsAvatar, useEnsName } from 'wagmi'
 
 import DisconnectIcon from '../../general/Icon/DisconnectIcon'
@@ -10,13 +9,13 @@ import { profileModalService, shareModalService } from '../../../utils/store'
 import { truncate } from '../../../utils/string'
 import { generateAvatarColors } from '../../../utils/ui'
 import Divider from '../../general/Divider'
-
 import './Avatar.scss'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import PersonIcon from '../../general/Icon/PersonIcon'
 import ShareIcon from '../../general/Icon/ShareIcon'
 import CopyIcon from '../../general/Icon/CopyIcon'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../utils/toasts'
+import Text from '../../general/Text'
 
 interface AvatarProps {
   address?: string
@@ -27,20 +26,29 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropdown = false }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const { setUserPubkey, disconnect } = useContext(W3iContext)
-  const ref = useRef(null)
-  const navigate = useNavigate()
+  const { disconnect } = useContext(W3iContext)
+  const avatarRef = useRef(null)
+
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
   const { data: ensAvatar } = useEnsAvatar({ name: ensName })
   const { data: balance } = useBalance({
     address: addressOrEnsDomain
   })
+
   const handleToggleProfileDropdown = useCallback(
-    () => hasProfileDropdown && setIsDropdownOpen(currentState => !currentState),
-    [setIsDropdownOpen, hasProfileDropdown]
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.preventDefault()
+
+      setIsDropdownOpen(currentState => !currentState)
+    },
+    [setIsDropdownOpen]
   )
-  useOnClickOutside(ref, handleToggleProfileDropdown)
+
+  useOnClickOutside(avatarRef, () =>
+    setIsDropdownOpen(currentState => currentState && !currentState)
+  )
+
   const isMobile = useIsMobile()
 
   const { mode } = useContext(SettingsContext)
@@ -52,19 +60,13 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
     return specifiedMode
   }, [mode])
 
-  const handleDisconnect = useCallback(() => {
-    disconnect()
-    setUserPubkey(undefined)
-    navigate('/login')
-  }, [disconnect, navigate, setUserPubkey])
-
   const handleViewProfile = useCallback(() => {
-    handleToggleProfileDropdown()
+    setIsDropdownOpen(currentState => currentState && !currentState)
     profileModalService.toggleModal()
   }, [handleToggleProfileDropdown])
 
   const handleShare = useCallback(() => {
-    handleToggleProfileDropdown()
+    setIsDropdownOpen(currentState => currentState && !currentState)
     shareModalService.toggleModal()
   }, [handleToggleProfileDropdown])
 
@@ -74,9 +76,9 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
       style={{
         width,
         height,
-        cursor: hasProfileDropdown ? 'pointer' : 'default',
-        border: isDropdownOpen ? 'solid 2px #3396FF' : 'solid 2px #E4E7E7'
+        cursor: hasProfileDropdown ? 'pointer' : 'default'
       }}
+      ref={avatarRef}
     >
       <div
         className="Avatar__container"
@@ -85,13 +87,14 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
           height,
           ...(address ? generateAvatarColors(address) : {})
         }}
-        onClick={handleToggleProfileDropdown}
+        onClick={e => {
+          handleToggleProfileDropdown(e)
+        }}
       >
         {ensAvatar && <img className="Avatar__icon" src={ensAvatar} alt="Avatar" />}
       </div>
       {hasProfileDropdown && isDropdownOpen && (
         <div
-          ref={ref}
           className="Avatar__dropdown"
           style={
             isMobile
@@ -112,7 +115,8 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
                 {ensAvatar && <img className="Avatar__icon" src={ensAvatar} alt="Avatar" />}
               </div>
               <div className="Avatar__dropdown__block__username">
-                {ensName ?? truncate(address ?? '', 4)}
+                <Text variant="paragraph-500">{ensName ?? truncate(address ?? '', 4)}</Text>
+
                 <button
                   className="Avatar__dropdown__button"
                   onClick={() => {
@@ -136,7 +140,9 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
                 <img src={ETH} alt="native token logo" />
               </div>
               <div className="Avatar__dropdown__block__balance">
-                {balance?.formatted && parseFloat(balance.formatted).toFixed(4)} ETH
+                <Text variant="paragraph-500">
+                  {balance?.formatted && parseFloat(balance.formatted).toFixed(4)} ETH
+                </Text>
               </div>
             </div>
             <Divider />
@@ -147,18 +153,18 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height, hasProfileDropd
                   className="Avatar__dropdown__block__actions__button"
                 >
                   <PersonIcon />
-                  <span>View Profile</span>
+                  <Text variant="small-400">View Profile</Text>
                 </button>
                 <button onClick={handleShare} className="Avatar__dropdown__block__actions__button">
                   <ShareIcon />
-                  <span>Share</span>
+                  <Text variant="small-400">Share</Text>
                 </button>
                 <button
                   className="Avatar__dropdown__block__actions__button Avatar__dropdown__block__actions__disconnect"
-                  onClick={handleDisconnect}
+                  onClick={disconnect}
                 >
                   <DisconnectIcon />
-                  <span>Disconnect</span>
+                  <Text variant="small-400">Disconnect</Text>
                 </button>
               </div>
             </div>

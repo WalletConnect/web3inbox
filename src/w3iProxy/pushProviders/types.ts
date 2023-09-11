@@ -1,7 +1,5 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { WalletClient as PushWalletClient, PushClientTypes } from '@walletconnect/push-client'
-import type { NextObserver, Observable } from 'rxjs'
-import type { PushFacadeEvents } from '../listenerTypes'
+import type { NotifyClient } from '@walletconnect/notify-client'
 
 // Omitting non-method PushWalletClient keys
 type NonMethodPushClientKeys =
@@ -15,6 +13,7 @@ type NonMethodPushClientKeys =
   | 'historyClient'
   | 'identityKeys'
   | 'init'
+  | 'initHistory'
   | 'initSyncStores'
   | 'keyserverUrl'
   | 'logger'
@@ -35,20 +34,20 @@ type NonMethodPushClientKeys =
   | 'version'
 
 /*
- * These methods are not currently async in the PushWalletClient
+ * These methods are not currently async in the NotifyClient
  * forcing their type (and implementing them as so) makes them
  * more seamless to implement with both internal & external providers
  */
 interface ModifiedPushClientFunctions {
   getActiveSubscriptions: (
-    ...params: Parameters<PushWalletClient['getActiveSubscriptions']>
-  ) => Promise<ReturnType<PushWalletClient['getActiveSubscriptions']>>
+    ...params: Parameters<NotifyClient['getActiveSubscriptions']>
+  ) => Promise<ReturnType<NotifyClient['getActiveSubscriptions']>>
   getMessageHistory: (
-    ...params: Parameters<PushWalletClient['getMessageHistory']>
-  ) => Promise<ReturnType<PushWalletClient['getMessageHistory']>>
+    ...params: Parameters<NotifyClient['getMessageHistory']>
+  ) => Promise<ReturnType<NotifyClient['getMessageHistory']>>
 }
 
-export type PushClientFunctions = Omit<PushWalletClient, NonMethodPushClientKeys>
+export type PushClientFunctions = Omit<NotifyClient, NonMethodPushClientKeys>
 export type W3iPush = ModifiedPushClientFunctions &
   Omit<PushClientFunctions, keyof ModifiedPushClientFunctions>
 

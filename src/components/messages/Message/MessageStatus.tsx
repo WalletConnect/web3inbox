@@ -5,6 +5,7 @@ import type { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'
 import CheckIcon from '../../general/Icon/CheckIcon'
 import RetryIcon from '../../general/Icon/RetryIcon'
 import Spinner from '../../general/Spinner'
+import Text from '../../general/Text'
 
 interface MessageStatusProps {
   status: ReplayMessage['status']
@@ -49,7 +50,11 @@ const MessageStatus: React.FC<MessageStatusProps> = ({ status, message, isLastMe
     chatClientProxy?.retryMessage(message)
   }, [message, chatClientProxy])
 
-  return <div className="Message__status">{getMessageStatusText(status, onRetry)}</div>
+  return (
+    <div className="Message__status">
+      <Text variant="tiny-500">{getMessageStatusText(status, onRetry)}</Text>
+    </div>
+  )
 }
 
 export default MessageStatus

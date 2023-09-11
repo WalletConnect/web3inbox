@@ -1,10 +1,26 @@
 .Select {
   &__control {
-    padding: 0 0.375em !important;
-    color: var(--fg-color-1) !important;
-    background: var(--bg-color-2) !important;
-    border: 1px solid var(--border-color-2) !important;
-    border-radius: 1.75em !important;
+    font-feature-settings: 'ss04' on, 'case' on;
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 590;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: -0.28px;
+    border: none !important;
+    padding: 0.625em 0.75rem;
+    background-color: var(--sender-bubble-bg) !important;
+    border-radius: 16px !important;
+    gap: 4px;
+    height: 2.5rem !important;
+  }
+
+  &__indicator {
+    padding: 0px !important;
+  }
+
+  &__value-container {
+    padding: 0px !important;
   }
 
   &__menu {

@@ -28,8 +28,18 @@ export const useW3iProxy = () => {
   )
 
   useEffect(() => {
-    w3iProxy.init().then(() => setReady(true))
-  }, [w3iProxy, setReady])
+    if (w3iProxy.isInitializing) {
+      return
+    }
+    if (!w3iProxy.getInitComplete()) {
+      w3iProxy
+        .init()
+        .then(() => setReady(true))
+        .catch(error => {
+          console.error('w3iProxy failed to initialize: ', error)
+        })
+    }
+  }, [w3iProxy.isInitializing])
 
   return [w3iProxy, ready] as [Web3InboxProxy, boolean]
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import './Message.scss'
 import { m, LazyMotion, domAnimation } from 'framer-motion'
-import MessageStatus from './MessageStatus'
+import Text from '../../general/Text'
 
 interface MessageProps {
   text: string
@@ -24,7 +24,7 @@ const Message: React.FC<MessageProps> = ({ text, from, status }) => {
           exit={{ opacity: 0, transition: { duration: 0.15 } }}
           className="Message__bubble"
         >
-          {text}
+          <Text variant="small-400">{text}</Text>
         </m.div>
       </m.div>
     </LazyMotion>

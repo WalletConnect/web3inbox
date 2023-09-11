@@ -1,4 +1,4 @@
-import type { PushClientTypes } from '@walletconnect/push-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import debounce from 'lodash.debounce'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { from } from 'rxjs'
@@ -7,7 +7,6 @@ import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { useIsMobile, useSearch } from '../../../utils/hooks'
 import { pushSearchService } from '../../../utils/store'
-import AppNotificationDropdown from '../AppNotifications/AppNotificationDropdown'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
 import Search from '../../general/Search'
@@ -15,13 +14,17 @@ import MobileHeading from '../../layout/MobileHeading'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
 import { useNavigate } from 'react-router-dom'
+import TargetTitle from '../../general/TargetTitle'
+import SubscribeIcon from '../../general/Icon/SubscribeIcon'
+import Label from '../../general/Label'
+import Text from '../../general/Text'
 
 const AppSelector: React.FC = () => {
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
   const { isPushSearchOpen } = useSearch()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
-  const [filteredApps, setFilteredApps] = useState<PushClientTypes.PushSubscription[]>([])
+  const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const { activeSubscriptions, dappOrigin, pushRegisterMessage } = useContext(W3iContext)
   const nav = useNavigate()
 
@@ -33,7 +36,7 @@ const AppSelector: React.FC = () => {
         return
       }
 
-      const newFilteredApps = [] as PushClientTypes.PushSubscription[]
+      const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
 
       from(activeSubscriptions).subscribe({
         next: app => {
@@ -58,7 +61,7 @@ const AppSelector: React.FC = () => {
     if (dappOrigin) {
       const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
 
-      if (dappSub) {
+      if (dappSub?.topic) {
         nav(`/notifications/${dappSub.topic}`)
       } else {
         nav(`/widget/subscribe`)
@@ -92,55 +95,95 @@ const AppSelector: React.FC = () => {
             placeholder="Search"
             icon={SearchIcon}
           />
-          <NavLink to="/notifications/new-app" className="AppSelector__link">
-            <img className="AppSelector__link-icon" src={PlusIcon} alt="NewApp" />
-            <span>New App</span>
-          </NavLink>
+          <TargetTitle className="AppSelector__target-title" to="/notifications/new-app">
+            <Text variant="large-700">Inbox</Text>
+            <SubscribeIcon />
+          </TargetTitle>
         </>
       )}
-      {filteredApps.map(app => (
-        <NavLink
-          key={app.topic}
-          to={`/notifications/${app.topic}`}
-          className="AppSelector__link-item"
-          onMouseEnter={() => setDropdownToShow(app.topic)}
-          onMouseLeave={() => setDropdownToShow(undefined)}
-        >
-          <div className="AppSelector__notifications">
-            <div className="AppSelector__notifications-link">
-              <img
-                className="AppSelector__link-logo"
-                src={app.metadata.icons[0]}
-                alt={`${app.metadata.name} logo`}
-                loading="lazy"
-              />
-              <span>{app.metadata.name}</span>
-            </div>
-            {isMobile ? (
-              <>
-                <AppNotificationDropdown
-                  closeDropdown={() => setDropdownToShow(undefined)}
-                  h="1.5em"
-                  w="2em"
-                  notificationId={app.topic}
-                  dropdownPlacement="bottomLeft"
-                />
-              </>
-            ) : (
-              <>
-                {dropdownToShow === app.topic && (
-                  <AppNotificationDropdown
-                    closeDropdown={() => setDropdownToShow(undefined)}
-                    h="1.5em"
-                    w="2em"
-                    notificationId={app.topic}
-                  />
-                )}
-              </>
-            )}
-          </div>
-        </NavLink>
-      ))}
+
+      <div className="AppSelector__lists">
+        {/* <div className="AppSelector__wrapper">
+          <Label color="main">Unread</Label>
+          <ul className="AppSelector__list AppSelector__list__unread">
+            {filteredApps.map(app => (
+              <NavLink
+                key={app.topic}
+                to={`/notifications/${app.topic}`}
+                className="AppSelector__link-item"
+                onMouseEnter={() => setDropdownToShow(app.topic)}
+                onMouseLeave={() => setDropdownToShow(undefined)}
+              >
+                <div className="AppSelector__unread"></div>
+                <div className="AppSelector__notifications">
+                  <div className="AppSelector__notifications-link">
+                    <img
+                      className="AppSelector__link-logo"
+                      src={app.metadata.icons[0]}
+                      alt={`${app.metadata.name} logo`}
+                      loading="lazy"
+                    />
+                    <Text variant="small-500">{app.metadata.name}</Text>
+                  </div>
+                </div>
+              </NavLink>
+            ))}
+          </ul>
+        </div> */}
+        <div className="AppSelector__wrapper">
+          <Label color="main">Subscribed</Label>
+          <ul className="AppSelector__list">
+            {filteredApps.map(app => (
+              <NavLink
+                key={app.topic}
+                to={`/notifications/${app.topic}`}
+                className="AppSelector__link-item"
+                onMouseEnter={() => setDropdownToShow(app.topic)}
+                onMouseLeave={() => setDropdownToShow(undefined)}
+              >
+                <div className="AppSelector__notifications">
+                  <div className="AppSelector__notifications-link">
+                    <img
+                      className="AppSelector__link-logo"
+                      src={app.metadata.icons[0]}
+                      alt={`${app.metadata.name} logo`}
+                      loading="lazy"
+                    />
+                    <Text variant="small-500">{app.metadata.name}</Text>
+                  </div>
+                </div>
+              </NavLink>
+            ))}
+          </ul>
+        </div>
+        {/* <div className="AppSelector__wrapper">
+          <Label color="main">Muted</Label>
+          <ul className="AppSelector__list AppSelector__list__muted">
+            {filteredApps.map(app => (
+              <NavLink
+                key={app.topic}
+                to={`/notifications/${app.topic}`}
+                className="AppSelector__link-item AppSelector__link-item__muted"
+                onMouseEnter={() => setDropdownToShow(app.topic)}
+                onMouseLeave={() => setDropdownToShow(undefined)}
+              >
+                <div className="AppSelector__notifications">
+                  <div className="AppSelector__notifications-link">
+                    <img
+                      className="AppSelector__link-logo"
+                      src={app.metadata.icons[0]}
+                      alt={`${app.metadata.name} logo`}
+                      loading="lazy"
+                    />
+                    <Text variant="small-500">{app.metadata.name}</Text>
+                  </div>
+                </div>
+              </NavLink>
+            ))}
+          </ul>
+        </div> */}
+      </div>
+
       {/* FilteredApps.length > 0 && (
         <div className="AppSelector__muted">
           <div className="AppSelector__muted__label">MUTED</div>
