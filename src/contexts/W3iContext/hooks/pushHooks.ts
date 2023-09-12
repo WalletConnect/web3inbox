@@ -107,6 +107,10 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
       next: refreshPushState
     })
 
+    const pushSubsChanged = pushClient.observe('notify_subscriptions_changed', {
+      next: refreshPushState
+    })
+
     const syncUpdateSub = pushClient.observe('sync_update', {
       next: refreshPushState
     })
@@ -116,6 +120,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
       syncUpdateSub.unsubscribe()
       pushUpdateSub.unsubscribe()
       pushDeleteSub.unsubscribe()
+      pushSubsChanged.unsubscribe()
       pushSignatureRequestedSub.unsubscribe()
       pushSignatureRequestCancelledSub.unsubscribe()
     }
