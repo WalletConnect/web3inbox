@@ -15,7 +15,7 @@ export type SettingsContextState = SettingsContextSimpleState & {
 const SettingsContext = createContext<SettingsContextState>({
   mode: 'system',
   newContacts: 'require-invite',
-  isDevModeEnabled: false,
+  isDevModeEnabled: true,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   updateSettings: () => {}
 })
