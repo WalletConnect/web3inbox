@@ -51,7 +51,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
 
         await pushClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,
-          appDomain: new URL(url).hostname
+          appDomain: new URL(url).host
         })
       } catch (error) {
         console.log({ error })
