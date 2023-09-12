@@ -36,6 +36,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
+      console.log({ userPubkey })
       if (!userPubkey) {
         return
       }
@@ -56,6 +57,8 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       } catch (error) {
         console.log({ error })
         showErrorMessageToast(`Failed to subscribe to ${name}`)
+      } finally {
+        setSubscribing(false)
       }
     },
     [userPubkey, name, description, logo, bgColor, url, setSubscribing]
