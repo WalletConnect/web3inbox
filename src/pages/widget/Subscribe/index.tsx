@@ -37,7 +37,7 @@ const WidgetSubscribe: React.FC = () => {
        */
       await pushClientProxy.subscribe({
         account: `eip155:1:${userPubkey}`,
-        appDomain: dappOrigin
+        appDomain: new URL(dappOrigin).hostname
       })
     } catch (error) {
       showErrorMessageToast('Failed to subscribe')
