@@ -37,12 +37,7 @@ const WidgetSubscribe: React.FC = () => {
        */
       await pushClientProxy.subscribe({
         account: `eip155:1:${userPubkey}`,
-        metadata: {
-          description: dappNotificationDescription,
-          icons: [dappIcon],
-          name: dappName,
-          url: dappOrigin
-        }
+        appDomain: dappOrigin
       })
     } catch (error) {
       showErrorMessageToast('Failed to subscribe')
@@ -52,7 +47,7 @@ const WidgetSubscribe: React.FC = () => {
   }, [pushClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
 
   useEffect(() => {
-    const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
+    const dappSub = activeSubscriptions.find(sub => sub.metadata.appDomain === dappOrigin)
     if (dappSub) {
       setTimeout(() => {
         const communicator = new JsCommunicator(new EventEmitter())

@@ -59,7 +59,7 @@ const AppSelector: React.FC = () => {
 
   useEffect(() => {
     if (dappOrigin) {
-      const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
+      const dappSub = activeSubscriptions.find(sub => sub.metadata.appDomain === dappOrigin)
 
       if (dappSub?.topic) {
         nav(`/notifications/${dappSub.topic}`)

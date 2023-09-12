@@ -52,7 +52,11 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
     async (key: string) => {
       if (pushClient && key && uiEnabled.notify) {
         try {
-          const identityKey = await pushClient.register({ account: `eip155:1:${key}` })
+          const identityKey = await pushClient.register({
+            account: `eip155:1:${key}`,
+            domain: window.location.hostname,
+            isLimited: false
+          })
           setRegisterMessage(null)
           setRegistered(identityKey)
           refreshPushState()
@@ -124,7 +128,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
 
     pushClient.getActiveSubscriptions({ account: `eip155:1:${userPubkey ?? ''}` }).then(subs => {
       const dappSubExists = Object.values(subs)
-        .map(sub => sub.metadata.url)
+        .map(sub => sub.metadata.appDomain)
         .some(url => url === dappOrigin)
       if (dappSubExists) {
         const communicator = new JsCommunicator(emitter)
@@ -179,7 +183,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
          * Due to the fact that data is synced, notify_subscription events can be triggered
          * from dapps unrelated to the one owning the dappOrigin
          */
-        if (message.params.subscription?.metadata.url !== dappOrigin) {
+        if (message.params.subscription?.metadata.appDomain !== dappOrigin) {
           return
         }
 

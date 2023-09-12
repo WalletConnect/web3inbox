@@ -23,7 +23,7 @@ const AppExplorer = () => {
           )
         }
 
-        const activeSubscriptionAppNames = activeSubscriptions.map(sub => sub.metadata.url)
+        const activeSubscriptionAppNames = activeSubscriptions.map(sub => sub.metadata.appDomain)
 
         return !activeSubscriptionAppNames.includes(app.url)
       }),
