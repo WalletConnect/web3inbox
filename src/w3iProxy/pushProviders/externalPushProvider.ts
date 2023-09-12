@@ -61,6 +61,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
     console.log({ request })
     switch (request.method) {
       case 'notify_subscription':
+      case 'notify_subscriptions_changed':
       case 'notify_message':
       case 'notify_update':
       case 'notify_delete':
