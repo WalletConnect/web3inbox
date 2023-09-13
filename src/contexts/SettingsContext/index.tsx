@@ -1,8 +1,8 @@
-// import { useWeb3ModalTheme } from '@web3modal/react'
 import React, { useEffect, useReducer } from 'react'
 import { useColorModeValue } from '../../utils/hooks'
 import type { SettingsContextSimpleState, SettingsContextUpdate } from './context'
 import SettingsContext from './context'
+import { useWeb3ModalTheme } from '@web3modal/wagmi/react'
 
 interface ThemeContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -28,15 +28,13 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
     isDevModeEnabled: false
   }
 
-  // const { setTheme } = useWeb3ModalTheme()
+  const { setThemeMode } = useWeb3ModalTheme()
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
   const themeColors = useColorModeValue(settingsState.mode)
 
-  // useEffect(() => {
-  //   // setTheme({
-  //   //   themeMode: favoriteTheme === 'light' ? 'light' : 'dark'
-  //   // })
-  // }, [setTheme, favoriteTheme])
+  useEffect(() => {
+    setThemeMode(favoriteTheme === 'light' ? 'light' : 'dark')
+  }, [setThemeMode, favoriteTheme])
 
   useEffect(() => {
     Object.entries(themeColors).forEach(([colorVariable, colorValue]) => {
