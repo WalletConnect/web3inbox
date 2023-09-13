@@ -19,26 +19,13 @@ export const SignatureModal: React.FC<{
    * If identity was already signed, and sync was requested then we are in the
    * final step.
    */
-  const [stepProgress, setStepProgress] = useState(purpose === 'identity' ? 0 : 1)
   const [signing, setSigning] = useState(false)
-
-  const steps = [
-    {
-      step: 1,
-      label: 'identity'
-    },
-    {
-      step: 2,
-      label: 'sync'
-    }
-  ]
 
   const onSign = useCallback(() => {
     setSigning(true)
     window.web3inbox
       .signMessage(message)
       .then(signature => {
-        setStepProgress(pv => pv + 1)
         switch (sender) {
           case 'chat':
             window.web3inbox.chat.postMessage(
@@ -57,7 +44,8 @@ export const SignatureModal: React.FC<{
       .catch(() => {
         setSigning(false)
       })
-  }, [message, sender, setStepProgress, setSigning])
+      .finally(() => setSigning(false))
+  }, [message, sender, setSigning])
 
   // Modal is ready to sign when given a new purpose
   useEffect(() => {
@@ -78,31 +66,12 @@ export const SignatureModal: React.FC<{
           </Button>
         </div>
         <div className="SignatureModal__header">
-          <div className="SignatureModal__progress">
-            <div className="SignatureModal__progress-bubbles">
-              <div className="SignatureModal__progress-line"></div>
-              {steps.map(({ step }) => (
-                <div key={step} className="SignatureModal__progress-bubble-container">
-                  <div
-                    className={`SignatureModal__progress-bubble SignatureModal__progress-bubble-${
-                      stepProgress > step - 1 ? 'checked' : ''
-                    }`}
-                  >
-                    {stepProgress > step - 1 ? <CheckIcon /> : null}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
           <div className="SignatureModal__header-text">
             <h2>Signature requested</h2>
           </div>
         </div>
         <div className="SignatureModal__explanation">
-          <p>
-            You need to perform a couple of signatures to establish an identity key and enable
-            syncing across clients.
-          </p>
+          <p>You need approve a signature to establish an identity key.</p>
         </div>
         <div className="SignatureModal__message">{purposeMessage}</div>
         <div className="SignatureModal__content">
