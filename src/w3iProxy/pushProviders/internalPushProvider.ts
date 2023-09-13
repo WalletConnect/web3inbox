@@ -63,21 +63,7 @@ export default class InternalPushProvider implements W3iPushProvider {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
-    let identityKey: string | undefined = undefined
-    try {
-      identityKey = await this.pushClient.identityKeys.getIdentity({
-        account: params.account
-      })
-    } catch (error) {
-      // Silence not found error
-      console.log({ error })
-    }
-
-    if (identityKey) {
-      return Promise.resolve(identityKey)
-    }
-
-    return this.pushClient.register({
+    const identityKey = await this.pushClient.register({
       ...params,
       isLimited: false,
       onSign: async message => {
@@ -93,6 +79,8 @@ export default class InternalPushProvider implements W3iPushProvider {
         })
       }
     })
+
+    return identityKey
   }
 
   public async subscribe(params: { appDomain: string; account: string }) {

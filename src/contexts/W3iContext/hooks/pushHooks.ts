@@ -57,6 +57,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
             domain: window.location.hostname,
             isLimited: false
           })
+
           setRegisterMessage(null)
           setRegistered(identityKey)
           refreshPushState()
@@ -65,7 +66,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
         }
       }
     },
-    [uiEnabled, pathname, pushClient, refreshPushState, setRegisterMessage]
+    [uiEnabled, pushClient, refreshPushState, setRegisterMessage]
   )
 
   useEffect(() => {
