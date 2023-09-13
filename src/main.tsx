@@ -1,5 +1,3 @@
-import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
-import { Web3Modal } from '@web3modal/react'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
@@ -14,21 +12,35 @@ import ConfiguredRoutes from './routes'
 import { Modals } from './Modals'
 import { initSentry } from './utils/sentry'
 import { polyfill } from './utils/polyfill'
+import { walletConnectProvider } from '@web3modal/wagmi'
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import { InjectedConnector } from 'wagmi/connectors/injected'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { createWeb3Modal } from '@web3modal/wagmi/react'
 
 polyfill()
 initSentry()
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
-const chains = [mainnet]
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+const { chains, publicClient } = configureChains([mainnet], [walletConnectProvider({ projectId })])
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
+  connectors: [
+    new WalletConnectConnector({ options: { projectId, showQrModal: false } }),
+    new InjectedConnector({ options: { shimDisconnect: true } }),
+    new CoinbaseWalletConnector({ options: { appName: 'Web3Inbox' } })
+  ],
   publicClient
 })
 
-export const ethereumClient = new EthereumClient(wagmiConfig, chains)
+createWeb3Modal({
+  wagmiConfig,
+  projectId,
+  chains,
+  themeMode: 'light',
+  themeVariables: { '--w3m-z-index': '9999' }
+})
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -44,9 +56,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </BrowserRouter>
       </SettingsContextProvider>
     </WagmiConfig>
-    <Web3Modal
-      ethereumClient={ethereumClient}
-      projectId={import.meta.env.VITE_PROJECT_ID}
-    ></Web3Modal>
   </React.StrictMode>
 )

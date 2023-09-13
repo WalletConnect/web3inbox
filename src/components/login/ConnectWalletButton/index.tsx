@@ -1,15 +1,15 @@
-import { useWeb3Modal } from '@web3modal/react'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 import Wallet from '../../general/Icon/Wallet'
 import './ConnectWalletButton.scss'
 
 const ConnectWalletButton: React.FC = () => {
-  const { open } = useWeb3Modal()
+  const modal = useWeb3Modal()
 
   return (
     <>
       <button
         onClick={() => {
-          open()
+          modal.open()
         }}
         className="ConnectWalletButton"
       >

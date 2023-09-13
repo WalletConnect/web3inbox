@@ -5,7 +5,7 @@ import W3iContext from '../../contexts/W3iContext/context'
 import { signatureModalService } from '../../utils/store'
 import './Login.scss'
 import TransitionDiv from '../../components/general/TransitionDiv'
-import { useWeb3Modal } from '@web3modal/react'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 import Button from '../../components/general/Button'
 import Sidebar from '../../components/layout/Sidebar'
 import IntroContent from '../../components/general/IntroContent'
@@ -26,7 +26,7 @@ const Login: React.FC = () => {
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
 
-  const { open } = useWeb3Modal()
+  const modal = useWeb3Modal()
 
   useEffect(() => {
     const path = next ? decodeURIComponent(next) : '/'
@@ -67,7 +67,9 @@ const Login: React.FC = () => {
           button={
             <Button
               onClick={() => {
-                open()
+                console.log(`modal ${modal}`)
+
+                modal.open()
               }}
               style={{ minWidth: 'fit-content' }}
             >
