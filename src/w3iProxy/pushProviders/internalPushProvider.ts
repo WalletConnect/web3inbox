@@ -26,7 +26,7 @@ export default class InternalPushProvider implements W3iPushProvider {
     )
     this.pushClient.on('notify_message', args => this.emitter.emit('notify_message', args))
     this.pushClient.on('notify_subscriptions_changed', args =>
-      this.emitter.emit('notif_subscriptions_changed', args)
+      this.emitter.emit('notify_subscriptions_changed', args)
     )
     this.pushClient.on('notify_update', args => this.emitter.emit('notify_update', args))
     this.pushClient.on('notify_delete', args => this.emitter.emit('notify_delete', args))
