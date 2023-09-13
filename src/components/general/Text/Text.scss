@@ -1,7 +1,8 @@
 .Text {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+  font-family: 'SF Pro Text', BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
     Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   line-height: 130%;
+  font-feature-settings: 'case' on;
 
   &__large-500,
   &__large-600,
@@ -87,6 +88,6 @@
   &__large_700,
   &__tiny-500,
   &__tiny-600 {
-    letter-spacing: -0.48px;
+    letter-spacing: -0.8px;
   }
 }

@@ -60,7 +60,7 @@ const App = () => {
         >
           {chatClientProxy && (
             <Fragment>
-              {uiEnabled.sidebar ? <Sidebar /> : null}
+              {uiEnabled.sidebar ? <Sidebar isLoggedIn={true} /> : null}
               <Outlet />
               <ToastContainer />
               <AnimatePresence mode="wait"></AnimatePresence>

@@ -1,0 +1,42 @@
+.IntroContent {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  position: relative;
+
+  &__Background {
+    position: absolute;
+    z-index: 0;
+    transform: scale(3) translateY(-15%);
+    pointer-events: none;
+  }
+
+  &__Text {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+
+    .Text__large-600 {
+      color: #141414;
+    }
+
+    .Text__small-400 {
+      width: 75%;
+      color: #798686;
+    }
+  }
+
+  svg {
+    z-index: 1;
+    margin-bottom: 4.75rem;
+    filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.75));
+  }
+
+  button,
+  a {
+    margin-top: 1rem;
+  }
+}
