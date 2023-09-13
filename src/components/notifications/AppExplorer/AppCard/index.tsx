@@ -9,7 +9,6 @@ import { showErrorMessageToast, showSuccessMessageToast } from '../../../../util
 import { handleImageFallback } from '../../../../utils/ui'
 import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
-import { requestNotificationPermission } from '../../../../utils/notifications'
 
 interface AppCardProps {
   name: string
@@ -90,15 +89,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           disabled={subscribing}
           className="AppCard__body__subscribe"
           onClick={e => {
-            if (pushProvider === 'internal') {
-              /*
-               * It's better to have Notification.requestPermission directly after a click was
-               * fired, according to MDN best practices.
-               */
-              requestNotificationPermission().then(async () => handleSubscription(e))
-            } else {
-              handleSubscription(e)
-            }
+            handleSubscription(e)
           }}
         >
           {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
