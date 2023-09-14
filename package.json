@@ -36,7 +36,6 @@
     "react-qr-reader-es6": "^2.2.1-2",
     "react-router-dom": "^6.4.4",
     "react-select": "^5.7.0",
-    "react-toastify": "^9.1.1",
     "rxjs": "^7.6.0",
     "viem": "^1.10.12",
     "wagmi": "^1.4.1"

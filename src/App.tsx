@@ -1,4 +1,3 @@
-import 'react-toastify/dist/ReactToastify.css'
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import { Fragment, useContext, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
