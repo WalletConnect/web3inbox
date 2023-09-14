@@ -37,7 +37,7 @@ const ConfiguredRoutes: React.FC = () => {
       <Route path="/" element={<App />}>
         {uiEnabled.notify ? (
           <Route path="notifications" element={<NotificationsLayout />}>
-            <Route index element={<Web3InboxPlaceholder />} />
+            <Route index element={<AppExplorer />} />
             <Route path="/notifications/new-app" element={<AppExplorer />} />
             <Route path="/notifications/:topic" element={<AppNotifications />} />
           </Route>

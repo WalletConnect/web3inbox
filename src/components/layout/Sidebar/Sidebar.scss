@@ -38,6 +38,15 @@
       width: 4em;
       display: flex;
       justify-content: center;
+      transition: all 250ms ease-in-out;
+
+      &:hover {
+        opacity: 0.7;
+      }
+
+      &:active {
+        opacity: 0.5;
+      }
     }
 
     svg {

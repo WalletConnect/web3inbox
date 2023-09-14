@@ -63,7 +63,7 @@ const Settings: React.FC = () => {
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (localStorage) {
-        localStorage.setItem('w3i-theme', modeId)
+        localStorage.setItem('w3i-theme', 'light')
       }
     },
     [updateSettings]
@@ -106,7 +106,11 @@ const Settings: React.FC = () => {
           {themeModes.map(({ id, icon }) => (
             <div
               key={id}
-              onClick={() => handleThemeChange(id)}
+              onClick={() => {
+                if (id === 'light') {
+                  handleThemeChange(id)
+                }
+              }}
               className={cn('Settings__theme-selector', {
                 'Settings__theme-selector-active': mode === id
               })}

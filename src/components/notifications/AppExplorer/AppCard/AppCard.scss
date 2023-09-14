@@ -1,8 +1,15 @@
 .AppCard {
-  padding: 1.5em 1.75em;
+  padding: 2rem;
   border-radius: 1.875em;
   text-decoration: none;
   height: fit-content;
+  outline: 1px solid rgba(0, 0, 0, 0.1);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
+    radial-gradient(
+      140.74% 145.41% at 7.1% 2.28%,
+      var(--local-bg-color) 0%,
+      rgba(255, 255, 255, 0) 80%
+    );
 
   &__header {
     display: flex;
@@ -13,6 +20,7 @@
       width: 3.75em;
       height: 3.75em;
       margin-bottom: 0.75em;
+      border: 1px solid rgba(0, 0, 0, 0.1);
     }
     &__link-icon {
       width: 0.67em;
@@ -24,15 +32,37 @@
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    gap: 0.25em;
+
     color: var(--fg-color-1);
 
-    &__url {
-      color: var(--fg-color-2);
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 0.3125rem;
+
+      svg {
+        width: 1.125rem;
+      }
     }
+
+    &__subtitle {
+      color: var(--fg-color-2);
+      line-height: 16px;
+      letter-spacing: -0.24px;
+      margin-top: 2px;
+    }
+
+    &__description {
+      color: var(--fg-color-1);
+      margin-top: 1rem;
+    }
+
     &__subscribe {
-      margin-top: 0.67em;
+      min-width: 84px;
+      width: max-content;
+      margin-top: 1.5rem;
       cursor: pointer;
+      height: 28px;
     }
   }
 }

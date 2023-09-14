@@ -67,8 +67,6 @@ const Login: React.FC = () => {
           button={
             <Button
               onClick={() => {
-                console.log(`modal ${modal}`)
-
                 modal.open()
               }}
               style={{ minWidth: 'fit-content' }}

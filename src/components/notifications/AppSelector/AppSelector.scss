@@ -39,7 +39,7 @@
   }
 
   &__lists {
-    margin-top: 1.125rem;
+    margin-top: 1.75rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -51,7 +51,7 @@
     gap: 0.5rem;
 
     .Label {
-      padding: 0.75rem;
+      padding: 0px 0.75rem;
     }
   }
 
@@ -107,15 +107,31 @@
 
   &__link {
     display: flex;
-    &-item {
-      padding: 0.75rem 1rem 0.75rem 0.75rem;
+
+    &-appsItem {
+      padding: 1rem 1rem 1rem 1rem;
       border-radius: 1em;
       position: relative;
+      transition: all 250ms ease-in-out;
 
       // on hover when link is not active
       &:not(.NavLink-active):hover {
         @media (hover: hover) {
-          background: var(--bg-color-2);
+          background: rgba(51, 150, 255, 0.08);
+        }
+      }
+    }
+
+    &-item {
+      padding: 0.75rem 1rem 0.75rem 0.75rem;
+      border-radius: 1em;
+      position: relative;
+      transition: all 250ms ease-in-out;
+
+      // on hover when link is not active
+      &:not(.NavLink-active):hover {
+        @media (hover: hover) {
+          background: rgba(51, 150, 255, 0.08);
         }
       }
     }
@@ -142,6 +158,11 @@
       }
     }
 
+    &-apps {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
     &-logo {
       border-radius: 50%;
       width: 2em;
@@ -155,10 +176,16 @@
     width: 100%;
     justify-content: space-between;
 
+    &-apps {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
     &-link {
       display: flex;
       align-items: center;
-      gap: 0.5em;
+      gap: 0.75rem;
 
       &__muted {
         display: flex;

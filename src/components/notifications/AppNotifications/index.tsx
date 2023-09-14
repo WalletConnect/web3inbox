@@ -131,7 +131,7 @@ const AppNotifications = () => {
             </div>
           </>
         ) : (
-          <AppNotificationsEmpty />
+          <AppNotificationsEmpty icon={app.metadata.icons[0]} name={app.metadata.name} />
         )}
       </div>
     </AppNotificationDragContext.Provider>

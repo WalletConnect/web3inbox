@@ -59,8 +59,19 @@
 
   &:disabled {
     cursor: not-allowed;
-    background-color: var(--fg-color-2);
-    color: var(--fg-color-5);
-    border-color: var(--fg-color-5);
+    background-color: #fff;
+    color: var(--fg-color-2) !important;
+    border: 1px solid rgba(6, 43, 43, 0.1);
+
+    svg {
+      width: 0.75rem;
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--fg-color-2);
+    }
   }
 }

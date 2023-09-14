@@ -8,7 +8,7 @@
   &__Background {
     position: absolute;
     z-index: 0;
-    transform: scale(3) translateY(-15%);
+    transform: scale(4) translateY(-15%) translateX(5%);
     pointer-events: none;
   }
 
@@ -24,7 +24,7 @@
     }
 
     .Text__small-400 {
-      width: 75%;
+      width: 55%;
       color: #798686;
     }
   }
@@ -37,6 +37,7 @@
 
   button,
   a {
+    z-index: 1;
     margin-top: 1rem;
   }
 }

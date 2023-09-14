@@ -15,7 +15,7 @@ import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
 import { useNavigate } from 'react-router-dom'
 import TargetTitle from '../../general/TargetTitle'
-import SubscribeIcon from '../../general/Icon/SubscribeIcon'
+import AllAppsIcon from '../../../assets/AllApps.svg'
 import Label from '../../general/Label'
 import Text from '../../general/Text'
 
@@ -97,120 +97,58 @@ const AppSelector: React.FC = () => {
           />
           <TargetTitle className="AppSelector__target-title" to="/notifications/new-app">
             <Text variant="large-700">Inbox</Text>
-            <SubscribeIcon />
           </TargetTitle>
         </>
       )}
 
       <div className="AppSelector__lists">
-        {/* <div className="AppSelector__wrapper">
-          <Label color="main">Unread</Label>
-          <ul className="AppSelector__list AppSelector__list__unread">
-            {filteredApps.map(app => (
-              <NavLink
-                key={app.topic}
-                to={`/notifications/${app.topic}`}
-                className="AppSelector__link-item"
-                onMouseEnter={() => setDropdownToShow(app.topic)}
-                onMouseLeave={() => setDropdownToShow(undefined)}
-              >
-                <div className="AppSelector__unread"></div>
-                <div className="AppSelector__notifications">
-                  <div className="AppSelector__notifications-link">
-                    <img
-                      className="AppSelector__link-logo"
-                      src={app.metadata.icons[0]}
-                      alt={`${app.metadata.name} logo`}
-                      loading="lazy"
-                    />
-                    <Text variant="small-500">{app.metadata.name}</Text>
-                  </div>
-                </div>
-              </NavLink>
-            ))}
-          </ul>
-        </div> */}
         <div className="AppSelector__wrapper">
-          <Label color="main">Subscribed</Label>
+          <Label color="main">Explore</Label>
           <ul className="AppSelector__list">
-            {filteredApps.map(app => (
-              <NavLink
-                key={app.topic}
-                to={`/notifications/${app.topic}`}
-                className="AppSelector__link-item"
-                onMouseEnter={() => setDropdownToShow(app.topic)}
-                onMouseLeave={() => setDropdownToShow(undefined)}
-              >
-                <div className="AppSelector__notifications">
-                  <div className="AppSelector__notifications-link">
-                    <img
-                      className="AppSelector__link-logo"
-                      src={app.metadata.icons[0]}
-                      alt={`${app.metadata.name} logo`}
-                      loading="lazy"
-                    />
-                    <Text variant="small-500">{app.metadata.name}</Text>
-                  </div>
-                </div>
-              </NavLink>
-            ))}
-          </ul>
-        </div>
-        {/* <div className="AppSelector__wrapper">
-          <Label color="main">Muted</Label>
-          <ul className="AppSelector__list AppSelector__list__muted">
-            {filteredApps.map(app => (
-              <NavLink
-                key={app.topic}
-                to={`/notifications/${app.topic}`}
-                className="AppSelector__link-item AppSelector__link-item__muted"
-                onMouseEnter={() => setDropdownToShow(app.topic)}
-                onMouseLeave={() => setDropdownToShow(undefined)}
-              >
-                <div className="AppSelector__notifications">
-                  <div className="AppSelector__notifications-link">
-                    <img
-                      className="AppSelector__link-logo"
-                      src={app.metadata.icons[0]}
-                      alt={`${app.metadata.name} logo`}
-                      loading="lazy"
-                    />
-                    <Text variant="small-500">{app.metadata.name}</Text>
-                  </div>
-                </div>
-              </NavLink>
-            ))}
-          </ul>
-        </div> */}
-      </div>
-
-      {/* FilteredApps.length > 0 && (
-        <div className="AppSelector__muted">
-          <div className="AppSelector__muted__label">MUTED</div>
-          {filteredApps.map(app => (
-            <NavLink
-              key={app.topic}
-              to={`/notifications/${app.topic}`}
-              className="AppSelector__link-item"
-              onMouseEnter={() => setDropdownToShow(app.topic)}
-              onMouseLeave={() => setDropdownToShow(undefined)}
-            >
+            <NavLink to={`/notifications`} end className="AppSelector__link-appsItem">
               <div className="AppSelector__notifications">
-                <div className="AppSelector__notifications-link__muted">
+                <div className="AppSelector__notifications-apps">
                   <img
-                    className="AppSelector__link-logo"
-                    src={app.metadata.icons[0]}
-                    alt={`${app.metadata.name} logo`}
+                    className="AppSelector__link-apps"
+                    src={AllAppsIcon}
+                    alt="Explore all apps logo"
                     loading="lazy"
                   />
-                  <span>{app.metadata.name}</span>
+                  <Text variant="small-500">Explore all apps</Text>
                 </div>
-                <NotificationMuteIcon fillColor={themeColors['--fg-color-3']} />
               </div>
             </NavLink>
-          ))}
+          </ul>
         </div>
-      )*/}
+        {filteredApps.length > 0 && (
+          <div className="AppSelector__wrapper">
+            <Label color="main">Subscribed</Label>
+            <ul className="AppSelector__list">
+              {filteredApps.map(app => (
+                <NavLink
+                  key={app.topic}
+                  to={`/notifications/${app.topic}`}
+                  className="AppSelector__link-item"
+                  onMouseEnter={() => setDropdownToShow(app.topic)}
+                  onMouseLeave={() => setDropdownToShow(undefined)}
+                >
+                  <div className="AppSelector__notifications">
+                    <div className="AppSelector__notifications-link">
+                      <img
+                        className="AppSelector__link-logo"
+                        src={app.metadata.icons[0]}
+                        alt={`${app.metadata.name} logo`}
+                        loading="lazy"
+                      />
+                      <Text variant="small-500">{app.metadata.name}</Text>
+                    </div>
+                  </div>
+                </NavLink>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
       <EmptyApps />
     </div>
   )

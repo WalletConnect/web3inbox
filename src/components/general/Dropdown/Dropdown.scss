@@ -9,9 +9,14 @@
     border-radius: 50%;
 
     &__square {
-      background-color: var(--sender-bubble-bg);
+      background-color: transparent;
       border: none;
       border-radius: 16px;
+      transition: all 300ms ease;
+
+      &:hover {
+        background-color: var(--sender-bubble-bg);
+      }
 
       width: 2.5em !important;
       height: 2.5em !important;
