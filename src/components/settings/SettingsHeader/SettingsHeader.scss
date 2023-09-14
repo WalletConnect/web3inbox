@@ -1,0 +1,18 @@
+.SettingsHeader {
+  margin-top: 0.5rem;
+
+  &__border {
+    position: absolute;
+    left: 0;
+    top: 4.25rem;
+    width: 100%;
+    background-color: var(--bg-color-2);
+    height: 1px;
+  }
+
+  &__title {
+    color: var(--fg-color-1);
+    line-height: 20px;
+    letter-spacing: -0.54px;
+  }
+}

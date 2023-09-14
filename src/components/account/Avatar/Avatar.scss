@@ -4,6 +4,11 @@
   position: relative;
   border-radius: 50%;
   box-sizing: content-box;
+  transition: 250ms all ease-in-out;
+
+  &:hover {
+    filter: contrast(1.25);
+  }
 
   &__container {
     border-radius: 50%;

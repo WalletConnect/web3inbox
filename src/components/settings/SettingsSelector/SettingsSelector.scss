@@ -1,0 +1,70 @@
+.SettingsSelector {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 17.5em;
+
+  &__title {
+    display: block;
+    color: var(--fg-color-1);
+    padding: 0 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .NavLink-active {
+    svg {
+      fill: black;
+      stroke: white;
+
+      :nth-child(2) {
+        stroke: none;
+        fill: white;
+      }
+
+      path {
+        fill: black;
+      }
+    }
+  }
+
+  &__link {
+    display: flex;
+    padding: 1.125rem 1rem 1.125rem 1rem;
+    border-radius: 1em;
+    position: relative;
+    transition: all 250ms ease-in-out;
+    text-decoration: none;
+
+    &__wrapper {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: transparent;
+      // stroke: black;
+      // path {
+      //   stroke: black;
+      // }
+    }
+
+    &__title {
+      color: var(--fg-color-1);
+    }
+
+    &:not(.NavLink-active):hover {
+      @media (hover: hover) {
+        background: rgba(51, 150, 255, 0.08);
+      }
+    }
+  }
+
+  &__list {
+    margin-top: 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

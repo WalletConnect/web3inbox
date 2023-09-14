@@ -136,7 +136,7 @@ const AppNotifications = () => {
       </div>
     </AppNotificationDragContext.Provider>
   ) : (
-    <Navigate to="/notifications" />
+    <Navigate to="/notifications/new-app" />
   )
 }
 

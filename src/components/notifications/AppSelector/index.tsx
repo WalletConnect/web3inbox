@@ -105,7 +105,7 @@ const AppSelector: React.FC = () => {
         <div className="AppSelector__wrapper">
           <Label color="main">Explore</Label>
           <ul className="AppSelector__list">
-            <NavLink to={`/notifications`} end className="AppSelector__link-appsItem">
+            <NavLink to={`/notifications/new-app`} end className="AppSelector__link-appsItem">
               <div className="AppSelector__notifications">
                 <div className="AppSelector__notifications-apps">
                   <img

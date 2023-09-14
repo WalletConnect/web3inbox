@@ -17,6 +17,9 @@ import { useContext } from 'react'
 import W3iContext from './contexts/W3iContext/context'
 import WidgetSubscribe from './pages/widget/Subscribe'
 import WidgetConnect from './pages/widget/Connect'
+import AppearanceSettings from './components/settings/AppearanceSettings'
+import NotificationsSettings from './components/settings/NotificationsSettings'
+import PrivacySettings from './components/settings/PrivacySettings'
 
 const ConfiguredRoutes: React.FC = () => {
   const { uiEnabled } = useContext(W3iContext)
@@ -37,7 +40,6 @@ const ConfiguredRoutes: React.FC = () => {
       <Route path="/" element={<App />}>
         {uiEnabled.notify ? (
           <Route path="notifications" element={<NotificationsLayout />}>
-            <Route index element={<AppExplorer />} />
             <Route path="/notifications/new-app" element={<AppExplorer />} />
             <Route path="/notifications/:topic" element={<AppNotifications />} />
           </Route>
@@ -53,7 +55,9 @@ const ConfiguredRoutes: React.FC = () => {
         ) : null}
         {uiEnabled.settings ? (
           <Route path="settings" element={<SettingsLayout />}>
-            <Route index element={<Settings />} />
+            <Route path="/settings/appearance" element={<AppearanceSettings />} />
+            <Route path="/settings/notification" element={<NotificationsSettings />} />
+            <Route path="/settings/privacy" element={<PrivacySettings />} />
           </Route>
         ) : null}
       </Route>
