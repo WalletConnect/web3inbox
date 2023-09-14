@@ -137,7 +137,7 @@ export default class InternalPushProvider implements W3iPushProvider {
       subscriptions
     )
 
-    return Promise.resolve(this.pushClient.getActiveSubscriptions())
+    return Promise.resolve(subscriptions)
   }
 
   public async getMessageHistory(params: { topic: string }) {
