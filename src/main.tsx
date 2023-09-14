@@ -16,7 +16,7 @@ import { walletConnectProvider } from '@web3modal/wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { createWeb3Modal } from '@web3modal/wagmi/react'
+import { createWeb3Modal, useWeb3ModalTheme } from '@web3modal/wagmi/react'
 
 polyfill()
 initSentry()

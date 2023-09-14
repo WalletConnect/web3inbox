@@ -5,7 +5,7 @@ import W3iContext from '../../contexts/W3iContext/context'
 import { signatureModalService } from '../../utils/store'
 import './Login.scss'
 import TransitionDiv from '../../components/general/TransitionDiv'
-import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useWeb3Modal, useWeb3ModalTheme } from '@web3modal/wagmi/react'
 import Button from '../../components/general/Button'
 import Sidebar from '../../components/layout/Sidebar'
 import IntroContent from '../../components/general/IntroContent'
@@ -27,6 +27,10 @@ const Login: React.FC = () => {
   const nav = useNavigate()
 
   const modal = useWeb3Modal()
+  const { setThemeMode } = useWeb3ModalTheme()
+
+  // Current fix for theme bug in w3m
+  setThemeMode('light')
 
   useEffect(() => {
     const path = next ? decodeURIComponent(next) : '/'
