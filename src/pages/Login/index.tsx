@@ -27,10 +27,6 @@ const Login: React.FC = () => {
   const nav = useNavigate()
 
   const modal = useWeb3Modal()
-  const { setThemeMode } = useWeb3ModalTheme()
-
-  // Current fix for theme bug in w3m
-  setThemeMode('light')
 
   useEffect(() => {
     const path = next ? decodeURIComponent(next) : '/'
