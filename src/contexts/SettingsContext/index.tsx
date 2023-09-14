@@ -23,7 +23,7 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
       : (localStorage.getItem('w3i-theme') as SettingsContextSimpleState['mode'] | null)
 
   const initialState: SettingsContextSimpleState = {
-    mode: favoriteTheme ?? 'system',
+    mode: 'light',
     newContacts: 'require-invite',
     isDevModeEnabled: false
   }
