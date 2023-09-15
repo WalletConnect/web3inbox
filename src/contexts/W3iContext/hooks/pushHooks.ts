@@ -82,6 +82,12 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
   }, [handleRegistration, setRegisterMessage, userPubkey])
 
   useEffect(() => {
+    if (!userPubkey) {
+      setRegistered(null)
+    }
+  }, [userPubkey, setRegistered])
+
+  useEffect(() => {
     if (!pushClient) {
       return noop
     }
