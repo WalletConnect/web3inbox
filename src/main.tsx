@@ -49,7 +49,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <SettingsContextProvider>
         <BrowserRouter>
           <W3iContextProvider>
-            <AnimatePresence mode="wait"></AnimatePresence>
             <ConfiguredRoutes />
             <Modals />
           </W3iContextProvider>

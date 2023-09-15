@@ -92,7 +92,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       </div>
       <div className="AppCard__body">
         <div className="AppCard__body__title">
-          <Text className="" variant="large-700">
+          <Text className="" variant="large-600">
             {name}
           </Text>
           <VerifiedIcon />

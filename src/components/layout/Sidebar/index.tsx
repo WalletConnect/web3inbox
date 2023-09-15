@@ -40,8 +40,6 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
     return items
   }, [pathname, uiEnabled])
 
-  console.log(navItems)
-
   // If pathname matches .*/.*/.*
   // As per design, sidebar in mobile is hidden when on "Main" is viewed on messages
   // And hidden when "TargetSelector" is viewed
@@ -53,7 +51,9 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
     <div className="Sidebar">
       {!isMobile && (
         <SidebarItem>
-          <WalletConnectIcon />
+          <Link to={`/notifications/new-app`}>
+            <WalletConnectIcon />
+          </Link>
         </SidebarItem>
       )}
       {isLoggedIn && (

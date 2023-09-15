@@ -5,6 +5,8 @@ import Dropdown from '../../../general/Dropdown/Dropdown'
 import NotificationMuteIcon from '../../../general/Icon/NotificationMuteIcon'
 import SettingIcon from '../../../general/Icon/SettingIcon'
 import './AppNotificationDropdown.scss'
+import CrossIcon from '../../../general/Icon/CrossIcon'
+import PreferencesIcon from '../../../general/Icon/PreferencesIcon'
 
 interface IAppNotificationDropdownProps {
   notificationId: string
@@ -23,6 +25,10 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
 }) => {
   const { pushClientProxy } = useContext(W3iContext)
 
+  const handleMute = useCallback(() => {
+    // mute
+  }, [])
+
   const handleUnsubscribe = useCallback(() => {
     closeDropdown()
     unsubscribeModalService.toggleModal(notificationId)
@@ -36,13 +42,20 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
   return (
     <Dropdown btnShape="square" h={h} w={w} dropdownPlacement={dropdownPlacement}>
       <div className="AppNotificationDropdown__actions">
-        <button onClick={handleUnsubscribe}>
+        <button onClick={handleMute}>
           <NotificationMuteIcon />
-          <span>Unsubscribe</span>
+          <span>Mute</span>
         </button>
         <button onClick={handleOpenNotificationPreferencesModal}>
-          <SettingIcon />
+          <PreferencesIcon />
           <span>Preferences</span>
+        </button>
+        <button
+          className="AppNotificationDropdown__actions__unsubscribe"
+          onClick={handleUnsubscribe}
+        >
+          <CrossIcon />
+          <span>Unsubscribe</span>
         </button>
       </div>
     </Dropdown>

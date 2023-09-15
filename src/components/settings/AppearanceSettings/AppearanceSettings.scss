@@ -1,2 +1,11 @@
-.SettingsWrapper {
+.AppearanceSettings {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__modes {
+    display: flex;
+    gap: 2rem;
+  }
 }

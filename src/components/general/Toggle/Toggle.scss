@@ -1,6 +1,7 @@
 .Toggle {
   position: relative;
-  width: 3em;
+  width: 3rem;
+
   display: inline-block;
   vertical-align: middle;
   user-select: none;
@@ -14,9 +15,10 @@
     display: block;
     overflow: hidden;
     cursor: pointer;
-    border: 0 solid #bbb;
+
     border-radius: 20px;
     margin: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   &__inner {
@@ -30,7 +32,7 @@
       display: block;
       float: left;
       width: 50%;
-      height: 1.5em;
+      height: 1.75rem;
       padding: 0;
       line-height: 2em;
       color: white;
@@ -66,24 +68,25 @@
 
   &__switch {
     display: block;
-    width: 35%;
+    width: 20px;
+    height: 20px;
     margin-right: 0.25em;
     margin-top: 0.25em;
     margin-bottom: 0.25em;
     margin-left: 1em;
     background: var(--bg-color-2);
     position: absolute;
-    top: 0;
+    top: 1px;
     bottom: 0;
-    right: 50%;
-    border: 0 solid #bbb;
+    right: 40%;
+    border: 1px solid rgba(6, 43, 43, 0.1);
     border-radius: 50%;
     transition: all 0.15s ease-in 0s;
   }
 
   &__checkbox:checked + &__label {
     .Toggle__inner {
-      margin-left: 0;
+      margin-left: 0px;
     }
     .Toggle__switch {
       right: 0px;

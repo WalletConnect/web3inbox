@@ -1,0 +1,11 @@
+.SettingsItem {
+  padding: 2.5rem 0px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--bg-color-2);
+  gap: 3rem;
+
+  &__content {
+    min-width: 25rem;
+  }
+}

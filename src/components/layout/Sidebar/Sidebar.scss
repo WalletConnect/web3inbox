@@ -22,6 +22,12 @@
     .wc-icon {
       width: 40px;
       height: 28px;
+
+      transition: 250ms all ease-in-out;
+
+      &:hover {
+        filter: contrast(2);
+      }
     }
   }
 

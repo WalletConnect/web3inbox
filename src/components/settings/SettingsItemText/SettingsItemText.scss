@@ -1,0 +1,15 @@
+.SettingsItemText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 240px;
+  max-width: 240px;
+
+  &__title {
+    color: var(--fg-color-1);
+  }
+
+  &__subtitle {
+    color: #788181;
+  }
+}

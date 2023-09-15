@@ -7,6 +7,7 @@ import { useOnClickOutside } from '../../../utils/hooks'
 import Button from '../Button'
 import DotsIcon from '../Icon/DotsIcon'
 import './Dropdown.scss'
+import { AnimatePresence, m } from 'framer-motion'
 
 interface IDropdown {
   btnShape?: 'circle' | 'square'
@@ -72,13 +73,22 @@ const Dropdown: React.FC<IDropdown> = ({
         <DotsIcon />
       </Button>
 
-      {isDropdownOpen && (
-        <div className="Dropdown__dropdown" style={dropdownPosition}>
-          <div className="Dropdown__dropdown__block">
-            <div>{children}</div>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isDropdownOpen && (
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15, ease: 'easeInOut' }}
+          >
+            <div className="Dropdown__dropdown" style={dropdownPosition}>
+              <div className="Dropdown__dropdown__block">
+                <div>{children}</div>
+              </div>
+            </div>
+          </m.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

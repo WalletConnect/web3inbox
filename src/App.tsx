@@ -63,22 +63,23 @@ const App = () => {
             <Fragment>
               {uiEnabled.sidebar ? <Sidebar isLoggedIn={true} /> : null}
               <Outlet />
-              <Toaster
-                toastOptions={{
-                  position: 'bottom-right',
 
-                  duration: 5000,
-                  style: {
-                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                    borderRadius: '1em'
-                  }
-                }}
-              />
               <AnimatePresence mode="wait"></AnimatePresence>
             </Fragment>
           )}
         </m.div>
       </LazyMotion>
+      <Toaster
+        toastOptions={{
+          position: 'bottom-right',
+
+          duration: 5000,
+          style: {
+            border: '1px solid rgba(0, 0, 0, 0.1)',
+            borderRadius: '1em'
+          }
+        }}
+      />
     </AuthProtectedPage>
   )
 }

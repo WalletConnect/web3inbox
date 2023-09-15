@@ -7,6 +7,7 @@ import { SignatureModal } from './pages/Login/SignatureModal'
 import { useContext, useEffect } from 'react'
 import W3iContext from './contexts/W3iContext/context'
 import { signatureModalService } from './utils/store'
+import { AnimatePresence } from 'framer-motion'
 
 export const Modals = () => {
   const {
@@ -37,16 +38,18 @@ export const Modals = () => {
 
   return (
     <>
-      {isProfileModalOpen && <Profile />}
-      {isShareModalOpen && <Share />}
-      {isPreferencesModalOpen && <PreferencesModal />}
-      {isUnsubscribeModalOpen && <UnsubscribeModal />}
-      {isSignatureModalOpen && (
-        <SignatureModal
-          message={chatRegisterMessage ?? pushRegisterMessage ?? ''}
-          sender={chatRegisterMessage ? 'chat' : 'push'}
-        />
-      )}
+      <AnimatePresence mode="popLayout">
+        {isUnsubscribeModalOpen && <UnsubscribeModal />}
+
+        {isPreferencesModalOpen && <PreferencesModal />}
+
+        {isSignatureModalOpen && (
+          <SignatureModal
+            message={chatRegisterMessage ?? pushRegisterMessage ?? ''}
+            sender={chatRegisterMessage ? 'chat' : 'push'}
+          />
+        )}
+      </AnimatePresence>
     </>
   )
 }
