@@ -18,7 +18,7 @@
     "@sentry/react": "^7.64.0",
     "@walletconnect/chat-client": "^0.8.0-dfd1e",
     "@walletconnect/core": "2.9.1",
-    "@walletconnect/notify-client": "0.12.0-1ed9efc",
+    "@walletconnect/notify-client": "0.12.0-434f609",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
     "@walletconnect/sync-client": "^0.3.8",
     "@web3modal/ethereum": "^2.7.1",
