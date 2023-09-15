@@ -41,7 +41,7 @@ const FeatureInfoBox: React.FC<IFeatureInfoBoxProps> = ({
   ) : (
     <div className="FeatureInfoBox">
       <Button className="FeatureInfoBox__close" onClick={handleCloseInfoBox}>
-        <CrossIcon fillColor={themeColors['--fg-color-1']} />
+        <CrossIcon />
       </Button>
       <div className="FeatureInfoBox__container">
         <img

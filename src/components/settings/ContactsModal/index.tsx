@@ -57,7 +57,7 @@ const ContactsModal: React.FC<ContactsModalProps> = ({
             customType="action-icon"
             onClick={contactsModalService.closeModal}
           >
-            <CrossIcon fillColor={themeColors['--fg-color-1']} />
+            <CrossIcon />
           </Button>
         </div>
         <div className="ContactsModal__content">
