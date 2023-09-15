@@ -28,6 +28,7 @@ export const Modals = () => {
   useEffect(() => {
     const chatSignatureRequired = !chatRegisteredKey && chatRegisterMessage
     const pushSignatureRequired = !pushRegisteredKey && pushRegisterMessage
+
     if (userPubkey && (chatSignatureRequired || pushSignatureRequired)) {
       signatureModalService.openModal()
     } else {
