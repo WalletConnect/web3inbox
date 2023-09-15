@@ -195,8 +195,10 @@ class Web3InboxProxy {
     if (this.core) {
       await this.core.start()
       const clientId = await this.core.crypto.getClientId()
-      identifyMixpanelUserAndInit(clientId)
-      this.mixpanelIsReady = true
+      if (import.meta.env.VITE_ENABLE_MIXPANEL && import.meta.env.VITE_MIXPANEL_TOKEN) {
+        identifyMixpanelUserAndInit(clientId)
+        this.mixpanelIsReady = true
+      }
     }
 
     // If core is initialized, we should init sync because some SDK needs it

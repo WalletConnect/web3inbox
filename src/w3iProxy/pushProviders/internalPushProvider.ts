@@ -102,7 +102,9 @@ export default class InternalPushProvider implements W3iPushProvider {
 
       return subscribed
     } catch (e: unknown) {
-      mixpanel.track(`Failed subscribing: ${JSON.stringify(e)} `)
+      if (import.meta.env.VITE_ENABLE_MIXPANEL) {
+        mixpanel.track(`Failed subscribing: ${JSON.stringify(e)} `)
+      }
       throw e
     }
   }
