@@ -233,7 +233,6 @@ class Web3InboxProxy {
       this.pushClient = await NotifyClient.init({
         identityKeys: this.identityKeys,
         logger: this.logger,
-        // @ts-expect-error - not right now.
         core: this.core
       })
 
