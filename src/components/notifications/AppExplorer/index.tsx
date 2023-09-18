@@ -23,9 +23,10 @@ const AppExplorer = () => {
           )
         }
 
-        const activeSubscriptionAppNames = activeSubscriptions.map(sub => sub.metadata.url)
+        const activeSubscriptionAppNames = activeSubscriptions.map(sub => sub.metadata.appDomain)
+        const hostname = new URL(app.url).host
 
-        return !activeSubscriptionAppNames.includes(app.url)
+        return !activeSubscriptionAppNames.includes(hostname)
       }),
     [appSearchTerm, projects, activeSubscriptions]
   )

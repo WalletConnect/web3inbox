@@ -25,6 +25,7 @@ export interface PushFacadeEvents {
   notify_subscription: NotifyClientTypes.EventArguments['notify_subscription']
   notify_update: NotifyClientTypes.EventArguments['notify_update']
   notify_delete: NotifyClientTypes.EventArguments['notify_delete']
+  notify_subscriptions_changed: NotifyClientTypes.EventArguments['notify_subscriptions_changed']
   notify_signature_requested: { message: string }
   notify_signature_request_cancelled: never
   sync_update: never

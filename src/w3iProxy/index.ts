@@ -7,15 +7,15 @@ import type { ISyncClient } from '@walletconnect/sync-client'
 import { SyncClient, SyncStore } from '@walletconnect/sync-client'
 import type { ICore } from '@walletconnect/types'
 import { EventEmitter } from 'events'
+import mixpanel from 'mixpanel-browser'
+import type { Logger } from 'pino'
+import pino from 'pino'
 import type { UiEnabled } from '../contexts/W3iContext/context'
+import { identifyMixpanelUserAndInit } from '../utils/mixpanel'
 import { JsCommunicator } from './externalCommunicators/jsCommunicator'
 import W3iAuthFacade from './w3iAuthFacade'
 import W3iChatFacade from './w3iChatFacade'
 import W3iPushFacade from './w3iPushFacade'
-import pino from 'pino'
-import type { Logger } from 'pino'
-import mixpanel from 'mixpanel-browser'
-import { identifyMixpanelUserAndInit } from '../utils/mixpanel'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 export type W3iPushClient = Omit<W3iPushFacade, 'initState'>
@@ -192,12 +192,13 @@ class Web3InboxProxy {
     }
 
     this.initializing = true
-
     if (this.core) {
       await this.core.start()
       const clientId = await this.core.crypto.getClientId()
-      identifyMixpanelUserAndInit(clientId)
-      this.mixpanelIsReady = true
+      if (import.meta.env.VITE_ENABLE_MIXPANEL && import.meta.env.VITE_MIXPANEL_TOKEN) {
+        identifyMixpanelUserAndInit(clientId)
+        this.mixpanelIsReady = true
+      }
     }
 
     // If core is initialized, we should init sync because some SDK needs it

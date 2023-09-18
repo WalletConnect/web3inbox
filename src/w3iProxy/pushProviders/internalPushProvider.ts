@@ -1,8 +1,7 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-client'
+import type { NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
-import { getFirebaseToken } from '../../utils/firebase'
 import type { W3iPushProvider } from './types'
 
 export default class InternalPushProvider implements W3iPushProvider {
@@ -26,6 +25,9 @@ export default class InternalPushProvider implements W3iPushProvider {
       this.emitter.emit('notify_subscription', args)
     )
     this.pushClient.on('notify_message', args => this.emitter.emit('notify_message', args))
+    this.pushClient.on('notify_subscriptions_changed', args =>
+      this.emitter.emit('notify_subscriptions_changed', args)
+    )
     this.pushClient.on('notify_update', args => this.emitter.emit('notify_update', args))
     this.pushClient.on('notify_delete', args => this.emitter.emit('notify_delete', args))
 
@@ -56,27 +58,14 @@ export default class InternalPushProvider implements W3iPushProvider {
 
   // ------------------- Method-forwarding for NotifyClient -------------------
 
-  public async register(params: { account: string }) {
+  public async register(params: { account: string; domain: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
-    let identityKey: string | undefined = undefined
-    try {
-      identityKey = await this.pushClient.identityKeys.getIdentity({
-        account: params.account
-      })
-    } catch (error) {
-      // Silence not found error
-      console.log({ error })
-    }
-
-    if (identityKey) {
-      return Promise.resolve(identityKey)
-    }
-
-    return this.pushClient.register({
+    const identityKey = await this.pushClient.register({
       ...params,
+      isLimited: false,
       onSign: async message => {
         this.emitter.emit('notify_signature_requested', { message })
 
@@ -90,9 +79,11 @@ export default class InternalPushProvider implements W3iPushProvider {
         })
       }
     })
+
+    return identityKey
   }
 
-  public async subscribe(params: { metadata: NotifyClientTypes.Metadata; account: string }) {
+  public async subscribe(params: { appDomain: string; account: string }) {
     if (!this.pushClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
@@ -103,36 +94,6 @@ export default class InternalPushProvider implements W3iPushProvider {
      * no calls to the service worker or firebase messager worker
      * will be made.
      */
-    if (window.location.protocol === 'https:' && !window.web3inbox.dappOrigin) {
-      const clientId = await this.pushClient.core.crypto.getClientId()
-
-      try {
-        // Retrieving FCM token needs to be client side, outside the service worker.
-        const token = await getFirebaseToken()
-
-        const subEvListener = (
-          subEv: NotifyClientTypes.BaseEventArgs<NotifyClientTypes.NotifyResponseEventArgs>
-        ) => {
-          if (subEv.params.subscription?.metadata.url === params.metadata.url) {
-            navigator.serviceWorker.ready.then(registration => {
-              registration.active?.postMessage({
-                type: 'INSTALL_SYMKEY_CLIENT',
-                clientId,
-                topic: subEv.topic,
-                token,
-                symkey: subEv.params.subscription?.symKey
-              })
-            })
-
-            this.pushClient?.off('notify_subscription', subEvListener)
-          }
-        }
-
-        this.pushClient.on('notify_subscription', subEvListener)
-      } catch (e) {
-        console.error('Failed to use firebase messaging service', e)
-      }
-    }
 
     try {
       const subscribed = await this.pushClient.subscribe({
@@ -141,7 +102,9 @@ export default class InternalPushProvider implements W3iPushProvider {
 
       return subscribed
     } catch (e: unknown) {
-      mixpanel.track(`Failed subscribing: ${JSON.stringify(e)} `)
+      if (import.meta.env.VITE_ENABLE_MIXPANEL) {
+        mixpanel.track(`Failed subscribing: ${JSON.stringify(e)} `)
+      }
       throw e
     }
   }
@@ -176,7 +139,7 @@ export default class InternalPushProvider implements W3iPushProvider {
       subscriptions
     )
 
-    return Promise.resolve(this.pushClient.getActiveSubscriptions())
+    return Promise.resolve(subscriptions)
   }
 
   public async getMessageHistory(params: { topic: string }) {

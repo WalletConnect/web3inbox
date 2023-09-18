@@ -9,7 +9,6 @@ import { showErrorMessageToast, showSuccessMessageToast } from '../../../../util
 import { handleImageFallback } from '../../../../utils/ui'
 import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
-import { requestNotificationPermission } from '../../../../utils/notifications'
 
 interface AppCardProps {
   name: string
@@ -36,6 +35,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
+      console.log({ userPubkey })
       if (!userPubkey) {
         return
       }
@@ -51,16 +51,13 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
 
         await pushClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,
-          metadata: {
-            name,
-            description,
-            icons: [logo],
-            url
-          }
+          appDomain: new URL(url).host
         })
       } catch (error) {
         console.log({ error })
         showErrorMessageToast(`Failed to subscribe to ${name}`)
+      } finally {
+        setSubscribing(false)
       }
     },
     [userPubkey, name, description, logo, bgColor, url, setSubscribing]
@@ -92,15 +89,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           disabled={subscribing}
           className="AppCard__body__subscribe"
           onClick={e => {
-            if (pushProvider === 'internal') {
-              /*
-               * It's better to have Notification.requestPermission directly after a click was
-               * fired, according to MDN best practices.
-               */
-              requestNotificationPermission().then(async () => handleSubscription(e))
-            } else {
-              handleSubscription(e)
-            }
+            handleSubscription(e)
           }}
         >
           {subscribing ? <Spinner width="1em" /> : 'Subscribe'}

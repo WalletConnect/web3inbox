@@ -12,12 +12,12 @@ const useNotifyProjects = () => {
       const projectId: string = import.meta.env.VITE_PROJECT_ID
 
       if (isDevModeEnabled) {
-        const explorerUrl = `${explorerApiBaseUrl}/w3i/v1/submissions?projectId=${projectId}`
+        const explorerUrl = `${explorerApiBaseUrl}/w3i/v1/projects?projectId=${projectId}&is_verified=false`
         const allProjectsRawRes = await fetch(explorerUrl)
         const allNotifyProjectsRes = await allProjectsRawRes.json()
 
         const notifyProjects: Omit<INotifyProject, 'app'>[] = Object.values(
-          allNotifyProjectsRes.submissions
+          allNotifyProjectsRes.projects
         )
         const notifyApps: INotifyApp[] = notifyProjects.map(
           ({
