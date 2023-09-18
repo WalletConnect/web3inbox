@@ -25,7 +25,7 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
   const initialState: SettingsContextSimpleState = {
     mode: 'light',
     newContacts: 'require-invite',
-    isDevModeEnabled: false
+    isDevModeEnabled: true
   }
 
   const { setThemeMode } = useWeb3ModalTheme()

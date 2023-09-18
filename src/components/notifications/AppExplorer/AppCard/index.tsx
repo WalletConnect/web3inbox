@@ -1,6 +1,4 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-
-import externalLinkIcon from '../../../../assets/ExternalLink.svg'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import './AppCard.scss'
 import Button from '../../../general/Button'
@@ -9,7 +7,6 @@ import { showErrorMessageToast, showSuccessMessageToast } from '../../../../util
 import { handleImageFallback } from '../../../../utils/ui'
 import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
-import { requestNotificationPermission } from '../../../../utils/notifications'
 import VerifiedIcon from '../../../general/Icon/VerifiedIcon'
 import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
 
@@ -49,12 +46,11 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
+      console.log({ userPubkey })
       if (!userPubkey) {
         return
       }
-
       setSubscribing(true)
-
       try {
         pushClientProxy?.observeOne('notify_subscription', {
           next: () => {
@@ -64,17 +60,14 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
 
         await pushClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,
-          metadata: {
-            name,
-            description,
-            icons: [logo],
-            url
-          }
+          appDomain: new URL(url).host
         })
       } catch (error) {
         console.log({ error })
-        setSubscribing(false)
+
         showErrorMessageToast(`Failed to subscribe to ${name}`)
+      } finally {
+        setSubscribing(false)
       }
     },
     [userPubkey, name, description, logo, bgColor, url, setSubscribing]
@@ -101,15 +94,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
             disabled={subscribing}
             className="AppCard__mobile__button"
             onClick={e => {
-              if (pushProvider === 'internal') {
-                /*
-                 * It's better to have Notification.requestPermission directly after a click was
-                 * fired, according to MDN best practices.
-                 */
-                requestNotificationPermission().then(async () => handleSubscription(e))
-              } else {
-                handleSubscription(e)
-              }
+              handleSubscription(e)
             }}
           >
             {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
@@ -141,15 +126,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
             disabled={subscribing}
             className="AppCard__body__subscribe"
             onClick={e => {
-              if (pushProvider === 'internal') {
-                /*
-                 * It's better to have Notification.requestPermission directly after a click was
-                 * fired, according to MDN best practices.
-                 */
-                requestNotificationPermission().then(async () => handleSubscription(e))
-              } else {
-                handleSubscription(e)
-              }
+              handleSubscription(e)
             }}
           >
             {subscribing ? <Spinner width="1em" /> : 'Subscribe'}

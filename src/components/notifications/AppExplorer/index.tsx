@@ -1,12 +1,10 @@
-import BackButton from '../../general/BackButton'
 import AppCard from './AppCard'
 import './AppExplorer.scss'
 import useNotifyProjects from '../../../utils/hooks/useNotifyProjects'
-import Button from '../../general/Button'
-
-import IntroContent from '../../general/IntroContent'
-import IntroApps from '../../general/Icon/IntroApps'
 import MobileHeader from '../../layout/MobileHeader'
+import IntroContent from '../../general/IntroContent'
+import Button from '../../general/Button'
+import IntroApps from '../../general/Icon/IntroApps'
 
 const AppExplorer = () => {
   const projects = useNotifyProjects()
@@ -14,7 +12,6 @@ const AppExplorer = () => {
   return (
     <div className="AppExplorer">
       <MobileHeader title="Discover" />
-      {/* <BackButton backTo="/notifications">Notifications</BackButton> */}
       <IntroContent
         title="Welcome to Web3Inbox"
         subtitle="Subscribing to our available apps below to start receiving notifications"
@@ -41,8 +38,8 @@ const AppExplorer = () => {
                 name={app.name}
                 description={app.description}
                 bgColor={{
-                  dark: app.colors?.primary ?? '#000',
-                  light: app.colors?.primary ?? '#fff'
+                  dark: app.colors?.primary ?? '#00FF00',
+                  light: app.colors?.primary ?? '#00FF00'
                 }}
                 logo={app.icons[0]}
                 url={app.url}
@@ -58,8 +55,8 @@ const AppExplorer = () => {
                 name={app.name}
                 description={app.description}
                 bgColor={{
-                  dark: app.colors?.primary ?? '#000',
-                  light: app.colors?.primary ?? '#fff'
+                  dark: app.colors?.primary ?? '#FF00FF',
+                  light: app.colors?.primary ?? '#FF00FF'
                 }}
                 logo={app.icons[0]}
                 url={app.url}

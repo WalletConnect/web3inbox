@@ -2,17 +2,13 @@ import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import debounce from 'lodash.debounce'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { from } from 'rxjs'
-import PlusIcon from '../../../assets/Plus.svg'
 import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { useIsMobile, useSearch } from '../../../utils/hooks'
-import { pushSearchService } from '../../../utils/store'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
-import Search from '../../general/Search'
-import MobileHeading from '../../layout/MobileHeading'
 import './AppSelector.scss'
-import EmptyApps from './EmptyApps'
+
 import { useLocation, useNavigate } from 'react-router-dom'
 import TargetTitle from '../../general/TargetTitle'
 import AllAppsIcon from '../../../assets/AllApps.svg'
@@ -61,7 +57,7 @@ const AppSelector: React.FC = () => {
 
   useEffect(() => {
     if (dappOrigin) {
-      const dappSub = activeSubscriptions.find(sub => sub.metadata.url === dappOrigin)
+      const dappSub = activeSubscriptions.find(sub => sub.metadata.appDomain === dappOrigin)
 
       if (dappSub?.topic) {
         nav(`/notifications/${dappSub.topic}`)

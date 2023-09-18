@@ -1,5 +1,4 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
 import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
@@ -12,6 +11,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
   protected readonly emitter: EventEmitter
   private readonly methodsListenedTo = [
     'notify_subscription',
+    'notify_subscriptions_changed',
     'notify_message',
     'notify_update',
     'notify_delete',
@@ -61,6 +61,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
     console.log({ request })
     switch (request.method) {
       case 'notify_subscription':
+      case 'notify_subscriptions_changed':
       case 'notify_message':
       case 'notify_update':
       case 'notify_delete':
@@ -72,15 +73,17 @@ export default class ExternalPushProvider implements W3iPushProvider {
     }
   }
 
-  public async register(params: { account: string }) {
+  public async register(params: { account: string; domain: string; isLimited: boolean }) {
     return this.postToExternalProvider('register', {
       account: params.account,
+      isLimited: params.isLimited,
+      domain: params.domain,
       // Signing will be handled wallet-side.
       onSign: async () => Promise.resolve('')
     })
   }
 
-  public async subscribe(params: { metadata: NotifyClientTypes.Metadata; account: string }) {
+  public async subscribe(params: { appDomain: string; account: string }) {
     return this.postToExternalProvider('subscribe', {
       ...params
     })

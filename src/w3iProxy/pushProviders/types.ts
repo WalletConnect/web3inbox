@@ -19,6 +19,7 @@ type NonMethodPushClientKeys =
   | 'logger'
   | 'messages'
   | 'name'
+  | 'notifyServerUrl'
   | 'off'
   | 'on'
   | 'once'
