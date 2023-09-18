@@ -15,9 +15,7 @@
 
   .TargetSelector {
     grid-area: target-selector;
-    @include padding-y(2em);
     display: var(--targetselector-display);
-    padding-bottom: 3em;
   }
   .Sidebar {
     padding-top: 1.25em;
@@ -36,9 +34,10 @@
     position: relative;
     grid-area: main;
     max-width: 100vw;
-    height: 100svh;
+    height: auto;
     overflow-x: hidden;
-    padding: 1rem 0.085em;
+    padding-bottom: 90px;
+
     display: var(--main-display);
   }
 }
@@ -58,6 +57,7 @@
     .Main {
       overflow-x: hidden;
       overflow-y: scroll;
+      padding: 1rem 0.085em;
     }
   }
   .App {
@@ -78,6 +78,7 @@
 
     .Main {
       padding: 1rem 1.5rem;
+      height: 100svh;
     }
 
     .TargetSelector {

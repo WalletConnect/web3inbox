@@ -1,0 +1,23 @@
+.MobileFooter {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  padding: 0.625rem 3.375rem;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.5px solid rgba(6, 43, 43, 0.15);
+  border-top: 0.5px solid rgba(6, 43, 43, 0.15);
+  height: 48px;
+
+  &__link {
+    svg {
+      width: 1.5rem;
+    }
+  }
+
+  @media only screen and (min-width: 700px) {
+    display: none;
+  }
+}

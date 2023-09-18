@@ -9,7 +9,7 @@
   height: 3em;
 
   @include padding-y(2em);
-  display: flex;
+  display: none;
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
@@ -64,6 +64,7 @@
 
 @media only screen and (min-width: 700px) {
   .Sidebar {
+    display: flex;
     background-color: var(--bg-color-1);
     transform: unset;
     position: relative;

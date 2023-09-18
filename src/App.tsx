@@ -10,6 +10,7 @@ import W3iContext from './contexts/W3iContext/context'
 import { useMobileResponsiveGrid } from './utils/hooks'
 import { truncate } from './utils/string'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
+import MobileFooter from './components/layout/MobileFooter'
 
 const App = () => {
   const { chatClientProxy, uiEnabled } = useContext(W3iContext)
@@ -63,12 +64,12 @@ const App = () => {
             <Fragment>
               {uiEnabled.sidebar ? <Sidebar isLoggedIn={true} /> : null}
               <Outlet />
-
               <AnimatePresence mode="wait"></AnimatePresence>
             </Fragment>
           )}
         </m.div>
       </LazyMotion>
+      <MobileFooter />
       <Toaster
         toastOptions={{
           position: 'bottom-right',

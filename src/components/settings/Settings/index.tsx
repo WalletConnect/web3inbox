@@ -11,7 +11,7 @@ import type { SettingsContextSimpleState } from '../../../contexts/SettingsConte
 // eslint-disable-next-line no-duplicate-imports
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import W3iContext from '../../../contexts/W3iContext/context'
-import { useModals } from '../../../utils/hooks'
+import { useIsMobile, useModals } from '../../../utils/hooks'
 import { contactsModalService } from '../../../utils/store'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import ArrowRightIcon from '../../general/Icon/ArrowRightIcon'
@@ -21,6 +21,8 @@ import ContactsModal from '../ContactsModal'
 import './Settings.scss'
 import Toggle from '../../general/Toggle'
 import { useWeb3ModalTheme } from '@web3modal/wagmi/react'
+import { useLocation } from 'react-router-dom'
+import MobileHeader from '../../layout/MobileHeader'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
   { id: 'light', icon: LightCity },
@@ -52,8 +54,9 @@ const Settings: React.FC = () => {
   const { isContactModalOpen } = useModals()
   const { chatClientProxy, threads, uiEnabled } = useContext(W3iContext)
   const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
-
+  const { pathname } = useLocation()
   const { setThemeMode } = useWeb3ModalTheme()
+  const isMobile = useIsMobile()
 
   const handleThemeChange = useCallback(
     (modeId: SettingsContextSimpleState['mode']) => {

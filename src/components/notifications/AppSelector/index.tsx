@@ -13,13 +13,15 @@ import Search from '../../general/Search'
 import MobileHeading from '../../layout/MobileHeading'
 import './AppSelector.scss'
 import EmptyApps from './EmptyApps'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import TargetTitle from '../../general/TargetTitle'
 import AllAppsIcon from '../../../assets/AllApps.svg'
 import Label from '../../general/Label'
 import Text from '../../general/Text'
+import MobileHeader from '../../layout/MobileHeader'
 
 const AppSelector: React.FC = () => {
+  const { pathname } = useLocation()
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
   const { isPushSearchOpen } = useSearch()
@@ -71,21 +73,10 @@ const AppSelector: React.FC = () => {
 
   return (
     <div className="AppSelector">
-      {isMobile ? (
-        <div className="AppSelector__mobile-header">
-          {!isPushSearchOpen && <MobileHeading>Notifications</MobileHeading>}
-          <div className="AppSelector__mobile-actions">
-            <Search
-              setSearch={setSearch}
-              isSearchOpen={isPushSearchOpen}
-              openSearch={pushSearchService.openSearch}
-              closeSearch={pushSearchService.closeSearch}
-            />
-            <NavLink to="/notifications/new-app" className="AppSelector__link">
-              <img className="AppSelector__link-icon" src={PlusIcon} alt="NewApp" />
-            </NavLink>
-          </div>
-        </div>
+      {isMobile && pathname.endsWith('/notifications') ? (
+        <>
+          <MobileHeader title="Notifications" />
+        </>
       ) : (
         <>
           <Input
@@ -103,22 +94,26 @@ const AppSelector: React.FC = () => {
 
       <div className="AppSelector__lists">
         <div className="AppSelector__wrapper">
-          <Label color="main">Explore</Label>
-          <ul className="AppSelector__list">
-            <NavLink to={`/notifications/new-app`} end className="AppSelector__link-appsItem">
-              <div className="AppSelector__notifications">
-                <div className="AppSelector__notifications-apps">
-                  <img
-                    className="AppSelector__link-apps"
-                    src={AllAppsIcon}
-                    alt="Explore all apps logo"
-                    loading="lazy"
-                  />
-                  <Text variant="small-500">Explore all apps</Text>
-                </div>
-              </div>
-            </NavLink>
-          </ul>
+          {!isMobile && (
+            <>
+              <Label color="main">Explore</Label>
+              <ul className="AppSelector__list">
+                <NavLink to={`/notifications/new-app`} end className="AppSelector__link-appsItem">
+                  <div className="AppSelector__notifications">
+                    <div className="AppSelector__notifications-apps">
+                      <img
+                        className="AppSelector__link-apps"
+                        src={AllAppsIcon}
+                        alt="Explore all apps logo"
+                        loading="lazy"
+                      />
+                      <Text variant="small-500">Explore all apps</Text>
+                    </div>
+                  </div>
+                </NavLink>
+              </ul>
+            </>
+          )}
         </div>
         {filteredApps.length > 0 && (
           <div className="AppSelector__wrapper">

@@ -5,7 +5,15 @@
   border-bottom: 1px solid var(--bg-color-2);
   gap: 3rem;
 
+  @media only screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
+
   &__content {
     min-width: 25rem;
+
+    @media only screen and (max-width: 1000px) {
+      min-width: 100%;
+    }
   }
 }

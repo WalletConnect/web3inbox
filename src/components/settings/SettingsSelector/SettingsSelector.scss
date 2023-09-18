@@ -9,6 +9,10 @@
     color: var(--fg-color-1);
     padding: 0 0.75rem;
     margin-top: 0.5rem;
+
+    @media only screen and (max-width: 700px) {
+      display: none;
+    }
   }
 
   .NavLink-active {
@@ -35,9 +39,18 @@
     transition: all 250ms ease-in-out;
     text-decoration: none;
 
+    @media only screen and (max-width: 700px) {
+      padding: 1.125rem 0rem;
+      border-radius: 0em;
+    }
+
     &__wrapper {
       display: flex;
       gap: 0.75rem;
+
+      @media only screen and (max-width: 700px) {
+        padding: 0rem 1.25rem;
+      }
     }
 
     svg {
@@ -66,5 +79,9 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    @media only screen and (max-width: 700px) {
+      margin-top: 1.25rem;
+    }
   }
 }

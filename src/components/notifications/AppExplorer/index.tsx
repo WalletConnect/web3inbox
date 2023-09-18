@@ -1,23 +1,20 @@
-import { useContext, useMemo } from 'react'
-import { useSearch } from '../../../utils/hooks'
 import BackButton from '../../general/BackButton'
 import AppCard from './AppCard'
 import './AppExplorer.scss'
-import AppExplorerHeader from './AppExplorerHeader'
 import useNotifyProjects from '../../../utils/hooks/useNotifyProjects'
-import W3iContext from '../../../contexts/W3iContext/context'
 import Button from '../../general/Button'
 
 import IntroContent from '../../general/IntroContent'
 import IntroApps from '../../general/Icon/IntroApps'
+import MobileHeader from '../../layout/MobileHeader'
 
 const AppExplorer = () => {
   const projects = useNotifyProjects()
-  // const { activeSubscriptions } = useContext(W3iContext)
 
   return (
     <div className="AppExplorer">
-      <BackButton backTo="/notifications">Notifications</BackButton>
+      <MobileHeader title="Discover" />
+      {/* <BackButton backTo="/notifications">Notifications</BackButton> */}
       <IntroContent
         title="Welcome to Web3Inbox"
         subtitle="Subscribing to our available apps below to start receiving notifications"

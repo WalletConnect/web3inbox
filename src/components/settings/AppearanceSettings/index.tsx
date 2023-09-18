@@ -7,6 +7,7 @@ import SettingsThemeButton from '../SettingsThemeButton'
 import SunIcon from '../../general/Icon/SunIcon'
 import MoonIcon from '../../general/Icon/MoonIcon'
 import SystemIcon from '../../general/Icon/SystemIcon'
+import MobileHeader from '../../layout/MobileHeader'
 
 const languages = [
   { label: 'English', value: 'english' },
@@ -22,6 +23,7 @@ const AppearanceSettings: React.FC = () => {
   return (
     <div className="AppearanceSettings">
       <SettingsHeader title="Appearance" />
+      <MobileHeader title="Appearance" />
       <div className="AppearanceSettings__wrapper">
         <SettingsItem
           title="Interface theme"

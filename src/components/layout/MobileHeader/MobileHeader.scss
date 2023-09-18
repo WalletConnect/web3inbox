@@ -1,0 +1,33 @@
+.MobileHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.625rem 1rem;
+  background-color: #fff;
+  width: 100%;
+  z-index: 10;
+  align-items: center;
+  border-bottom: 0.5px solid rgba(6, 43, 43, 0.15);
+
+  @media only screen and (min-width: 700px) {
+    display: none;
+  }
+
+  &__icon,
+  .Avatar {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+
+  .Avatar {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  svg {
+    width: 2.5rem;
+  }
+
+  &__title {
+    color: var(--fg-color-1);
+  }
+}

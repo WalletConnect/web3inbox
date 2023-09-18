@@ -6,9 +6,6 @@
   height: 100%;
   min-width: 17.5em;
 
-  @media only screen and (max-width: 700px) {
-    padding: 0 1.25em 1.25em 1.25em;
-  }
   &__mobile-header {
     display: flex;
     justify-content: space-between;
@@ -43,6 +40,12 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
+    @media only screen and (max-width: 700px) {
+      margin-top: 1.25rem;
+
+      padding: 0 1.25rem;
+    }
   }
 
   &__wrapper {
@@ -52,6 +55,10 @@
 
     .Label {
       padding: 0px 0.75rem;
+
+      @media only screen and (max-width: 700px) {
+        padding: 0rem;
+      }
     }
   }
 
@@ -127,6 +134,11 @@
       border-radius: 1em;
       position: relative;
       transition: all 250ms ease-in-out;
+
+      @media only screen and (max-width: 700px) {
+        border-radius: 0px;
+        padding: 1rem 0rem;
+      }
 
       // on hover when link is not active
       &:not(.NavLink-active):hover {

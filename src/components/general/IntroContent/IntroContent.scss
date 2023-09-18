@@ -33,6 +33,10 @@
     z-index: 0;
     margin-bottom: 4.75rem;
     filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.75));
+
+    @media only screen and (max-width: 700px) {
+      margin-bottom: 1.5rem;
+    }
   }
 
   button,

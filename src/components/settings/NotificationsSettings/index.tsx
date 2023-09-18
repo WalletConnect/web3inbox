@@ -3,11 +3,13 @@ import './NotificationsSettings.scss'
 import SettingsHeader from '../SettingsHeader'
 import SettingsItem from '../SettingsItem'
 import SettingsToggle from '../SettingsToggle/Index'
+import MobileHeader from '../../layout/MobileHeader'
 
 const NotificationsSettings: React.FC = () => {
   return (
     <div className="NotificationsSettings">
       <SettingsHeader title="Notifications" />
+      <MobileHeader title="Notifications" />
       <div className="NotificationsSettings__wrapper">
         <SettingsItem
           title="Notify me about"

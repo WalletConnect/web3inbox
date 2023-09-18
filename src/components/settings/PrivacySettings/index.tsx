@@ -5,6 +5,7 @@ import SettingsItem from '../SettingsItem'
 import SettingsToggle from '../SettingsToggle/Index'
 import Radio from '../../general/Radio'
 import Text from '../../general/Text'
+import MobileHeader from '../../layout/MobileHeader'
 
 const radios = [
   { id: 'require-invite', label: 'Require new contacts to send me a chat invite' },
@@ -16,6 +17,7 @@ const PrivacySettings: React.FC = () => {
   return (
     <div className="PrivacySettings">
       <SettingsHeader title="Privacy" />
+      <MobileHeader title="Privacy" />
       <div className="PrivacySettings__wrapper">
         <SettingsItem
           title="Read receipts"

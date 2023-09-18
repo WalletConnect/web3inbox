@@ -89,6 +89,32 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           alt={`${name} logo`}
           onError={handleImageFallback}
         />
+        {subscribed ? (
+          <>
+            <Button disabled className="AppCard__mobile__button">
+              Subscribed
+              <CheckMarkIcon />
+            </Button>
+          </>
+        ) : (
+          <Button
+            disabled={subscribing}
+            className="AppCard__mobile__button"
+            onClick={e => {
+              if (pushProvider === 'internal') {
+                /*
+                 * It's better to have Notification.requestPermission directly after a click was
+                 * fired, according to MDN best practices.
+                 */
+                requestNotificationPermission().then(async () => handleSubscription(e))
+              } else {
+                handleSubscription(e)
+              }
+            }}
+          >
+            {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
+          </Button>
+        )}
       </div>
       <div className="AppCard__body">
         <div className="AppCard__body__title">
