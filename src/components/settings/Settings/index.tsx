@@ -137,12 +137,12 @@ const Settings: React.FC = () => {
             <div className="Settings__toggle-label">
               Display all projects that enabled Notify API
             </div>
-            <Toggle
+            {/* <Toggle
               name="devMode"
               id="incoming"
               checked={isDevModeEnabled}
               setChecked={isEnabled => updateSettings({ isDevModeEnabled: isEnabled })}
-            />
+            /> */}
           </div>
           {/* <div className="Settings__section-subtitle">Notify me about...</div>
           <div className="Settings__setting">
@@ -170,7 +170,7 @@ const Settings: React.FC = () => {
           </div>
           <div className="Settings__section-settings">
             <div className="Settings__section-subtitle">New Contacts</div>
-            {newContactModes.map(({ id, label }) => (
+            {/* {newContactModes.map(({ id, label }) => (
               <Radio
                 name="new-contacts"
                 id={id}
@@ -179,7 +179,7 @@ const Settings: React.FC = () => {
                 checked={newContacts === id}
                 onCheck={() => updateSettings({ newContacts: id })}
               />
-            ))}
+            ))} */}
             <div className="Settings__section-helper-text">
               People that want to message you will need to send an invite first that you can accept
               or decline. Think of it as a polite handshake to start the conversation.
