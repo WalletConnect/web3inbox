@@ -3141,10 +3141,10 @@
     "@walletconnect/modal-core" "2.6.2"
     "@walletconnect/modal-ui" "2.6.2"
 
-"@walletconnect/notify-client@0.12.0-8cae2ef":
-  version "0.12.0-8cae2ef"
-  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-0.12.0-8cae2ef.tgz#92d58f3191e2a3b670e2ae80d2f306ad7efdd851"
-  integrity sha512-up7sQVjcsgz2FbjXj0new9FWBwPG70+JDyuAzzh+EY+eErvZxHYI5m5PEkrJ7AgIwSouR2AJv1UZ4qtZc6AQMA==
+"@walletconnect/notify-client@0.12.0-0801cdb":
+  version "0.12.0-0801cdb"
+  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-0.12.0-0801cdb.tgz#1aa7e4a7a5e6e72d5147992f4fdb3f2ad114597c"
+  integrity sha512-vbDYIcW1I6/uAdu+vg/XQ+i1kIPAd87oOIs/jpsClhbwwnDG5wTDTYFucPC+pOM/8CFpC3dR3Ylx0YThgqNCoA==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
