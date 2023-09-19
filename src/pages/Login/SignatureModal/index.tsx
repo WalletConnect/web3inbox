@@ -8,6 +8,8 @@ import CheckIcon from '../../../components/general/Icon/CheckIcon'
 import Spinner from '../../../components/general/Spinner'
 import CrossIcon from '../../../components/general/Icon/CrossIcon'
 import W3iContext from '../../../contexts/W3iContext/context'
+import Text from '../../../components/general/Text'
+import SignatureIcon from '../../../components/general/Icon/SignatureIcon'
 
 export const SignatureModal: React.FC<{
   message: string
@@ -60,23 +62,22 @@ export const SignatureModal: React.FC<{
   return (
     <Modal onToggleModal={signatureModalService.toggleModal}>
       <div className="SignatureModal">
-        <div className="SignatureModal__cancel-container">
-          <Button onClick={disconnect} customType="danger">
-            <CrossIcon />
-          </Button>
+        <div className="SignatureModal__icon">
+          <SignatureIcon />
         </div>
-        <div className="SignatureModal__header">
-          <div className="SignatureModal__header-text">
-            <h2>Signature requested</h2>
-          </div>
-        </div>
-        <div className="SignatureModal__explanation">
-          <p>You need approve a signature to establish an identity key.</p>
-        </div>
-        <div className="SignatureModal__message">{purposeMessage}</div>
-        <div className="SignatureModal__content">
+
+        <Text className="SignatureModal__title" variant="large-600">
+          {signing ? 'Requesting sign-in' : 'Sign in to enable notifications'}
+        </Text>
+        <Text className="SignatureModal__url" variant="small-400">
+          app.web3inbox.com
+        </Text>
+        <Text className="SignatureModal__description" variant="small-500">
+          To fully use Web3Inbox, please sign into app.web3inbox.com with your wallet.
+        </Text>
+        <div className="SignatureModal__button">
           <Button disabled={signing} onClick={onSign}>
-            {signing ? <Spinner width="1em" /> : 'Sign Message'}
+            {signing ? <Spinner width="1em" /> : 'Sign in with wallet'}
           </Button>
         </div>
       </div>
