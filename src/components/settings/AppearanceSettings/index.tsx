@@ -52,7 +52,7 @@ const AppearanceSettings: React.FC = () => {
             disabled={true}
           />
         </SettingsItem>
-        <SettingsItem
+        {/* <SettingsItem
           title="Currency"
           subtitle="Select your preferred fiat currency to display value in."
         >
@@ -65,7 +65,7 @@ const AppearanceSettings: React.FC = () => {
         </SettingsItem>
         <SettingsItem title="Language" subtitle="Select your preferred interface language.">
           <Select name="languages" id="languages" options={languages} onChange={() => {}}></Select>
-        </SettingsItem>
+        </SettingsItem> */}
       </div>
     </div>
   )

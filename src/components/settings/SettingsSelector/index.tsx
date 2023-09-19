@@ -57,7 +57,7 @@ const SettingsSelector: React.FC = () => {
                     </div>
                   </div>
                 </NavLink>
-                <NavLink to={`/settings/privacy`} end className="SettingsSelector__link">
+                {/* <NavLink to={`/settings/privacy`} end className="SettingsSelector__link">
                   <div className="SettingsSelector__link__wrapper">
                     <PrivacyIcon />
                     <div className="SettingsSelector__link__icon__wrapper">
@@ -73,7 +73,7 @@ const SettingsSelector: React.FC = () => {
                       <ChevronRightIcon />
                     </div>
                   </div>
-                </NavLink>
+                </NavLink> */}
               </ul>
             )}
           </>
@@ -96,14 +96,14 @@ const SettingsSelector: React.FC = () => {
                   </Text>
                 </div>
               </NavLink>
-              <NavLink to={`/settings/privacy`} end className="SettingsSelector__link">
+              {/* <NavLink to={`/settings/privacy`} end className="SettingsSelector__link">
                 <div className="SettingsSelector__link__wrapper">
                   <PrivacyIcon />
                   <Text className="SettingsSelector__link__title" variant="small-500">
                     Privacy
                   </Text>
                 </div>
-              </NavLink>
+              </NavLink> */}
             </ul>
           </>
         )}

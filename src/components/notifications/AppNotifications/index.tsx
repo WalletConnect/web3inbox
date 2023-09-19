@@ -31,6 +31,7 @@ const AppNotifications = () => {
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
+
   const [notificationsDrag, setNotificationsDrag] = useState<
     AppNotificationsDragProps[] | undefined
   >()

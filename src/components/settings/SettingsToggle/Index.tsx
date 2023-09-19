@@ -1,4 +1,5 @@
-import React, { ReactNode, useState } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 import './SettingsToggle.scss'
 import Text from '../../general/Text'
 import Toggle from '../../general/Toggle'
@@ -8,11 +9,11 @@ interface IProps {
   subtitle?: string
   active: boolean
   icon: ReactNode
+  checked: boolean
+  setChecked: (isChecked: boolean) => void
 }
 
-const SettingsToggle: React.FC<IProps> = ({ icon, title, subtitle, active }) => {
-  const [status, setStatus] = useState<boolean>(active)
-
+const SettingsToggle: React.FC<IProps> = ({ icon, title, subtitle, checked, setChecked }) => {
   return (
     <div className="SettingsToggle">
       <div className="SettingsToggle__wrapper">
@@ -22,14 +23,7 @@ const SettingsToggle: React.FC<IProps> = ({ icon, title, subtitle, active }) => 
             {title}
           </Text>
         </div>
-        <Toggle
-          name={title}
-          id={title}
-          checked={status}
-          setChecked={() => {
-            setStatus(!status)
-          }}
-        />
+        <Toggle name={title} id={title} checked={checked} setChecked={setChecked} />
       </div>
       {subtitle && (
         <Text className="SettingsToggle__subtitle" variant="small-500">
