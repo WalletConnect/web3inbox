@@ -42,12 +42,12 @@ const PrivacySettings: React.FC = () => {
           title="Read receipts"
           subtitle="Allow others to see when you have read their messages."
         >
-          <SettingsToggle
+          {/* <SettingsToggle
             icon={<MessageCheckmarkIcon />}
             title="Send read receipts"
             subtitle="You must enable read receipts to see when others have read your messages."
             active={true}
-          />
+          /> */}
         </SettingsItem>
         <SettingsItem
           title="Message requests"
