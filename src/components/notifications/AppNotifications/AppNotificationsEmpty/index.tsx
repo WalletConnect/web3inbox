@@ -10,7 +10,7 @@ const AppNotificationsEmpty: React.FC<{ icon: string; name: string }> = ({ icon,
     if (backgroundRef.current) {
       backgroundRef.current.style.setProperty('--local-bg-url', `url(${icon})`)
     }
-  }, [])
+  }, [icon])
 
   return (
     <div className="AppNotificationsEmpty">

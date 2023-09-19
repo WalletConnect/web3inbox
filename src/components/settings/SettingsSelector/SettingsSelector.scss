@@ -20,6 +20,12 @@
       fill: black;
       stroke: white;
 
+      g {
+        :nth-child(2) {
+          stroke: white;
+        }
+      }
+
       :nth-child(2) {
         stroke: none;
         fill: white;
