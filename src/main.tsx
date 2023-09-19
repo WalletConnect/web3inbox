@@ -39,7 +39,7 @@ createWeb3Modal({
   projectId,
   chains,
   themeMode: 'light',
-  themeVariables: { '--w3m-z-index': '9999' }
+  themeVariables: { '--w3m-z-index': 9999 }
 })
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
