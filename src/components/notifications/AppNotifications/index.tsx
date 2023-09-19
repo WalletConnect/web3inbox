@@ -8,6 +8,8 @@ import './AppNotifications.scss'
 import AppNotificationsHeader from './AppNotificationsHeader'
 import AppNotificationsEmpty from './AppNotificationsEmpty'
 import Label from '../../general/Label'
+import MobileHeader from '../../layout/MobileHeader'
+import AppNotificationsCardMobile from './AppNotificationsCardMobile'
 
 export interface AppNotificationsDragProps {
   id: number
@@ -80,6 +82,8 @@ const AppNotifications = () => {
           name={app.metadata.name}
           logo={app.metadata.icons[0]}
         />
+        <MobileHeader back="/notifications" notificationId={app.topic} title={app.metadata.name} />
+        <AppNotificationsCardMobile />
         {notifications.length > 0 ? (
           <>
             {/* <div className="AppNotifications__list">

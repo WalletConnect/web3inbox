@@ -42,9 +42,8 @@
     gap: 1.5rem;
 
     @media only screen and (max-width: 700px) {
-      margin-top: 1.25rem;
-
-      padding: 0 1.25rem;
+      margin-top: 0px;
+      gap: 1.25rem;
     }
   }
 
@@ -57,7 +56,7 @@
       padding: 0px 0.75rem;
 
       @media only screen and (max-width: 700px) {
-        padding: 0rem;
+        padding: 0 1.25rem;
       }
     }
   }
@@ -115,6 +114,43 @@
   &__link {
     display: flex;
 
+    &__wrapper {
+      @media only screen and (max-width: 700px) {
+        width: 250px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+    }
+
+    &__title {
+      @media only screen and (max-width: 700px) {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.45px;
+      }
+    }
+
+    &__subtitle {
+      display: none;
+
+      @media only screen and (max-width: 700px) {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 130%;
+        letter-spacing: -0.14px;
+        color: #474d4d;
+        display: block;
+      }
+    }
+
     &-appsItem {
       padding: 1rem 1rem 1rem 1rem;
       border-radius: 1em;
@@ -137,7 +173,7 @@
 
       @media only screen and (max-width: 700px) {
         border-radius: 0px;
-        padding: 1rem 0rem;
+        padding: 1rem 1.25rem;
       }
 
       // on hover when link is not active
@@ -179,6 +215,10 @@
       border-radius: 50%;
       width: 2em;
       height: 2em;
+      @media only screen and (max-width: 700px) {
+        width: 3rem;
+        height: 3rem;
+      }
     }
   }
 

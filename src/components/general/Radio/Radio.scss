@@ -1,16 +1,56 @@
 .Radio {
   display: flex;
-  gap: 0.625rem;
+  gap: 1.625rem;
   align-items: center;
 
+  @media only screen and (max-width: 700px) {
+    align-items: flex-start;
+  }
+
+  svg {
+    width: 1.75rem;
+    min-width: 1.75rem;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &__title {
+      @media only screen and (max-width: 700px) {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 130%; /* 19.5px */
+        letter-spacing: -0.3px;
+      }
+    }
+
+    &__description {
+      color: #868f8f;
+
+      @media only screen and (max-width: 700px) {
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 130%;
+        letter-spacing: -0.26px;
+      }
+    }
+  }
+
   label {
-    font-family: SF Pro;
     font-size: 16px;
     font-style: normal;
     font-weight: 510;
     line-height: 20px;
     color: var(--fg-color-1);
     cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
   }
 
   input[type='radio'] {

@@ -31,6 +31,12 @@
   border-radius: 1.75rem;
   cursor: pointer;
 
+  @media only screen and (max-width: 1000px) {
+    padding: 1rem 0.75rem;
+    flex-direction: row;
+    gap: 1.25rem;
+  }
+
   &__disabled {
     cursor: not-allowed;
     opacity: 1;
@@ -39,6 +45,16 @@
 
   &:hover:enabled {
     background: rgba(51, 150, 255, 0.1);
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
+    @media only screen and (max-width: 1000px) {
+      gap: 4px;
+    }
   }
 
   &__icon {
@@ -64,11 +80,17 @@
     margin-top: 1.25rem;
     color: var(--fg-color-1);
     text-align: center;
+    @media only screen and (max-width: 1000px) {
+      margin-top: 0px;
+      text-align: left;
+    }
   }
 
   &__subtitle {
-    margin-top: 0.625rem;
     color: #474d4d;
     text-align: center;
+    @media only screen and (max-width: 1000px) {
+      text-align: left;
+    }
   }
 }

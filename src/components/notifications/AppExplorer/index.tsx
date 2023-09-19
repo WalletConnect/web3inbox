@@ -55,8 +55,8 @@ const AppExplorer = () => {
                 name={app.name}
                 description={app.description}
                 bgColor={{
-                  dark: app.colors?.primary ?? '#FF00FF',
-                  light: app.colors?.primary ?? '#FF00FF'
+                  dark: app.colors?.primary ?? '#00FF00',
+                  light: app.colors?.primary ?? '#00FF00'
                 }}
                 logo={app.icons[0]}
                 url={app.url}

@@ -23,7 +23,7 @@ const AppearanceSettings: React.FC = () => {
   return (
     <div className="AppearanceSettings">
       <SettingsHeader title="Appearance" />
-      <MobileHeader title="Appearance" />
+      <MobileHeader title="Appearance" back="/settings" />
       <div className="AppearanceSettings__wrapper">
         <SettingsItem
           title="Interface theme"

@@ -5,6 +5,7 @@
   background-color: #fff;
   width: 100%;
   z-index: 10;
+  height: 3rem;
   align-items: center;
   border-bottom: 0.5px solid rgba(6, 43, 43, 0.15);
 
@@ -13,14 +14,28 @@
   }
 
   &__icon,
+  &__arrow,
+  .Dropdown,
   .Avatar {
     flex-grow: 1;
     flex-basis: 0;
   }
 
-  .Avatar {
+  .Avatar,
+  .Dropdown {
     display: flex;
     justify-content: flex-end;
+  }
+
+  &__arrow {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 4px;
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
   }
 
   svg {

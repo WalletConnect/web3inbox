@@ -7,6 +7,7 @@ import NavLink from '../../general/NavLink'
 import { useIsMobile } from '../../../utils/hooks'
 import { useLocation } from 'react-router-dom'
 import MobileHeader from '../../layout/MobileHeader'
+import ChevronRightIcon from '../../general/Icon/ChevronRightIcon'
 
 const SettingsSelector: React.FC = () => {
   const isMobile = useIsMobile()
@@ -26,25 +27,51 @@ const SettingsSelector: React.FC = () => {
                 <NavLink to={`/settings/appearance`} end className="SettingsSelector__link">
                   <div className="SettingsSelector__link__wrapper">
                     <AppearanceIcon />
-                    <Text className="SettingsSelector__link__title" variant="small-500">
-                      Appearance
-                    </Text>
+                    <div className="SettingsSelector__link__icon__wrapper">
+                      <div className="SettingsSelector__link__title__wrapper">
+                        <Text className="SettingsSelector__link__title" variant="small-500">
+                          Appearance
+                        </Text>
+                        <Text className="SettingsSelector__link__description" variant="small-500">
+                          Change how you want Web3Inbox to look, select your preferred currency and
+                          interface language.
+                        </Text>
+                      </div>
+                      <ChevronRightIcon />
+                    </div>
                   </div>
                 </NavLink>
-                <NavLink to="/settings/notification" end className="SettingsSelector__link">
+                <NavLink to={`/settings/notification`} end className="SettingsSelector__link">
                   <div className="SettingsSelector__link__wrapper">
                     <NotificationIcon />
-                    <Text className="SettingsSelector__link__title" variant="small-500">
-                      Notifications
-                    </Text>
+                    <div className="SettingsSelector__link__icon__wrapper">
+                      <div className="SettingsSelector__link__title__wrapper">
+                        <Text className="SettingsSelector__link__title" variant="small-500">
+                          Notifications
+                        </Text>
+                        <Text className="SettingsSelector__link__description" variant="small-500">
+                          Select about which events you want to be notified.
+                        </Text>
+                      </div>
+                      <ChevronRightIcon />
+                    </div>
                   </div>
                 </NavLink>
                 <NavLink to={`/settings/privacy`} end className="SettingsSelector__link">
                   <div className="SettingsSelector__link__wrapper">
                     <PrivacyIcon />
-                    <Text className="SettingsSelector__link__title" variant="small-500">
-                      Privacy
-                    </Text>
+                    <div className="SettingsSelector__link__icon__wrapper">
+                      <div className="SettingsSelector__link__title__wrapper">
+                        <Text className="SettingsSelector__link__title" variant="small-500">
+                          Privacy
+                        </Text>
+                        <Text className="SettingsSelector__link__description" variant="small-500">
+                          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                          eirmod tempor invidunt.
+                        </Text>
+                      </div>
+                      <ChevronRightIcon />
+                    </div>
                   </div>
                 </NavLink>
               </ul>

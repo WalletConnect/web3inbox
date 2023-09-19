@@ -19,7 +19,7 @@ const NewAppIcon: React.FC<TNewAppIconProps> = ({ isFilled = false }) => {
       />
     </svg>
   ) : (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
       <mask
         id="path-1-outside-1_6_1294"
         maskUnits="userSpaceOnUse"

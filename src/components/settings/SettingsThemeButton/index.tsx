@@ -36,12 +36,14 @@ const SettingsThemeButton: React.FC<IProps> = ({
         className={`SettingsThemeButton ${disabled ? 'SettingsThemeButton__disabled' : ''}`}
       >
         <div className="SettingsThemeButton__icon">{icon}</div>
-        <Text className="SettingsThemeButton__title" variant="paragraph-600">
-          {title}
-        </Text>
-        <Text className="SettingsThemeButton__subtitle" variant="small-500">
-          {subtitle}
-        </Text>
+        <div className="SettingsThemeButton__wrapper">
+          <Text className="SettingsThemeButton__title" variant="paragraph-600">
+            {title}
+          </Text>
+          <Text className="SettingsThemeButton__subtitle" variant="small-500">
+            {subtitle}
+          </Text>
+        </div>
       </label>
     </>
   )

@@ -131,7 +131,14 @@ const AppSelector: React.FC = () => {
                         alt={`${app.metadata.name} logo`}
                         loading="lazy"
                       />
-                      <Text variant="small-500">{app.metadata.name}</Text>
+                      <div className="AppSelector__link__wrapper">
+                        <Text className="AppSelector__link__title" variant="small-500">
+                          {app.metadata.name}
+                        </Text>
+                        <Text className="AppSelector__link__subtitle" variant="small-500">
+                          {app.metadata.description}
+                        </Text>
+                      </div>
                     </div>
                   </div>
                 </NavLink>
