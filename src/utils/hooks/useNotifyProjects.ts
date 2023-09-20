@@ -33,7 +33,7 @@ const useNotifyProjects = () => {
           name,
           description,
           url: dapp_url,
-          icons: [image_url?.md],
+          icons: image_url ? [image_url.md] : [],
           colors: metadata?.colors
         })
       )
