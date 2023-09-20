@@ -19,7 +19,7 @@
     "@walletconnect/chat-client": "^0.8.2",
     "@walletconnect/core": "^2.10.1",
     "@walletconnect/identity-keys": "^0.2.0",
-    "@walletconnect/notify-client": "0.12.0-14c2331",
+    "@walletconnect/notify-client": "0.12.0-9756a02",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
     "@walletconnect/sync-client": "^0.3.8",
     "@web3modal/wagmi": "^3.0.0-beta.2",
