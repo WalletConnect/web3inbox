@@ -1,0 +1,24 @@
+.SettingsItem {
+  padding: 2.5rem 0px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--bg-color-2);
+  gap: 3rem;
+
+  @media only screen and (max-width: 700px) {
+    padding: 1.5rem 1.25rem;
+    gap: 1.5rem;
+  }
+
+  @media only screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
+
+  &__content {
+    min-width: 25rem;
+
+    @media only screen and (max-width: 1000px) {
+      min-width: 100%;
+    }
+  }
+}

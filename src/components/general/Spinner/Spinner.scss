@@ -1,17 +1,36 @@
-$primaryColor: #fff;
-$secondaryColor: #eee;
+.Spinner {
+  animation: rotate 2s linear infinite;
+  transition: all ease-in-out 250ms;
 
-@keyframes spin {
+  circle {
+    fill: none;
+    stroke: var(--fg-color-2);
+    stroke-width: 4px;
+    stroke-dasharray: 1, 124;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes rotate {
   100% {
     transform: rotate(360deg);
   }
 }
 
-.Spinner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &__inner {
-    animation: 1.5s linear spin infinite;
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 124;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 124;
+    stroke-dashoffset: -35;
+  }
+
+  100% {
+    stroke-dashoffset: -125;
   }
 }

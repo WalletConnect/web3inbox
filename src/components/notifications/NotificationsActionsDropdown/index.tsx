@@ -39,7 +39,7 @@ const NotificationsActionsDropdown: React.FC<INotificationsActionsDropdownProps>
           className="NotificationsActions__dropdown__block__actions__unsubscribe"
           onClick={handleUnsubscribe}
         >
-          <CrossIcon fillColor="hsla(5, 85%, 60%, 1)" />
+          <CrossIcon />
           <span>Unsubscribe</span>
         </button>
       </div>

@@ -1,0 +1,144 @@
+.SettingsSelector {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 17.5em;
+
+  &__title {
+    display: block;
+    color: var(--fg-color-1);
+    padding: 0 0.75rem;
+    margin-top: 0.5rem;
+
+    @media only screen and (max-width: 700px) {
+      display: none;
+    }
+  }
+
+  .NavLink-active {
+    svg {
+      fill: black;
+      stroke: white;
+
+      g {
+        :nth-child(2) {
+          stroke: white;
+        }
+      }
+
+      :nth-child(2) {
+        stroke: none;
+        fill: white;
+      }
+
+      path {
+        fill: black;
+      }
+    }
+  }
+
+  &__link {
+    display: flex;
+    padding: 1.125rem 1rem 1.125rem 1rem;
+    border-radius: 1em;
+    position: relative;
+    transition: all 250ms ease-in-out;
+    text-decoration: none;
+
+    @media only screen and (max-width: 700px) {
+      padding: 0px 0px;
+      border-radius: 0em;
+    }
+
+    &__description {
+      @media only screen and (max-width: 700px) {
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 130%; /* 18.2px */
+        letter-spacing: -0.28px;
+      }
+    }
+
+    &__wrapper {
+      display: flex;
+      gap: 0.75rem;
+
+      @media only screen and (max-width: 700px) {
+        gap: 1rem;
+        padding: 0rem 1.25rem;
+        width: 100%;
+        align-items: center;
+      }
+    }
+
+    svg {
+      min-width: 1.25rem;
+      min-height: 1.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: transparent;
+      // stroke: black;
+      // path {
+      //   stroke: black;
+      // }
+    }
+
+    &__icon {
+      &__wrapper {
+        @media only screen and (max-width: 700px) {
+          display: flex;
+          align-items: center;
+          border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+          gap: 0.75rem;
+          width: 100%;
+        }
+      }
+    }
+
+    &__title {
+      color: var(--fg-color-1);
+
+      @media only screen and (max-width: 700px) {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 130%; /* 19.5px */
+        letter-spacing: -0.3px;
+      }
+
+      &__wrapper {
+        @media only screen and (max-width: 700px) {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          padding: 1.5rem 0rem;
+          width: 100%;
+        }
+      }
+    }
+
+    &:not(.NavLink-active):hover {
+      @media (hover: hover) {
+        background: rgba(51, 150, 255, 0.08);
+      }
+
+      @media only screen and (max-width: 700px) {
+        @media (hover: hover) {
+          background: transparent;
+        }
+      }
+    }
+  }
+
+  &__list {
+    margin-top: 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    @media only screen and (max-width: 700px) {
+      margin-top: 0px;
+    }
+  }
+}

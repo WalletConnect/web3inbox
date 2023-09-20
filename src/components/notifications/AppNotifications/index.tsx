@@ -8,6 +8,8 @@ import './AppNotifications.scss'
 import AppNotificationsHeader from './AppNotificationsHeader'
 import AppNotificationsEmpty from './AppNotificationsEmpty'
 import Label from '../../general/Label'
+import MobileHeader from '../../layout/MobileHeader'
+import AppNotificationsCardMobile from './AppNotificationsCardMobile'
 
 export interface AppNotificationsDragProps {
   id: number
@@ -29,6 +31,7 @@ const AppNotifications = () => {
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
+
   const [notificationsDrag, setNotificationsDrag] = useState<
     AppNotificationsDragProps[] | undefined
   >()
@@ -80,6 +83,8 @@ const AppNotifications = () => {
           name={app.metadata.name}
           logo={app.metadata.icons[0]}
         />
+        <MobileHeader back="/notifications" notificationId={app.topic} title={app.metadata.name} />
+        <AppNotificationsCardMobile />
         {notifications.length > 0 ? (
           <>
             {/* <div className="AppNotifications__list">
@@ -131,12 +136,12 @@ const AppNotifications = () => {
             </div>
           </>
         ) : (
-          <AppNotificationsEmpty />
+          <AppNotificationsEmpty icon={app.metadata.icons[0]} name={app.metadata.name} />
         )}
       </div>
     </AppNotificationDragContext.Provider>
   ) : (
-    <Navigate to="/notifications" />
+    <Navigate to="/notifications/new-app" />
   )
 }
 

@@ -1,42 +1,35 @@
-import { useContext, useMemo } from 'react'
-import { useSearch } from '../../../utils/hooks'
-import BackButton from '../../general/BackButton'
 import AppCard from './AppCard'
 import './AppExplorer.scss'
-import AppExplorerHeader from './AppExplorerHeader'
 import useNotifyProjects from '../../../utils/hooks/useNotifyProjects'
-import W3iContext from '../../../contexts/W3iContext/context'
+import MobileHeader from '../../layout/MobileHeader'
+import IntroContent from '../../general/IntroContent'
+import Button from '../../general/Button'
+import IntroApps from '../../general/Icon/IntroApps'
 
 const AppExplorer = () => {
-  const { appSearchTerm } = useSearch()
   const projects = useNotifyProjects()
-  const { activeSubscriptions } = useContext(W3iContext)
-
-  const filteredApps = useMemo(
-    () =>
-      projects.filter(app => {
-        if (appSearchTerm) {
-          return (
-            app.name.includes(appSearchTerm) ||
-            app.description.includes(appSearchTerm) ||
-            app.url.includes(appSearchTerm)
-          )
-        }
-
-        const activeSubscriptionAppNames = activeSubscriptions.map(sub => sub.metadata.url)
-
-        return !activeSubscriptionAppNames.includes(app.url)
-      }),
-    [appSearchTerm, projects, activeSubscriptions]
-  )
 
   return (
     <div className="AppExplorer">
-      <BackButton backTo="/notifications">Notifications</BackButton>
-      <AppExplorerHeader />
+      <MobileHeader title="Discover" />
+      <IntroContent
+        title="Welcome to Web3Inbox"
+        subtitle="Subscribing to our available apps below to start receiving notifications"
+        button={
+          <Button
+            onClick={() => {
+              // TODO: Subscribe all function
+            }}
+            style={{ minWidth: 'fit-content' }}
+          >
+            {'Subscribe all'}
+          </Button>
+        }
+        icon={<IntroApps />}
+      />
       <div className="AppExplorer__apps">
         <div className="AppExplorer__apps__column">
-          {filteredApps
+          {projects
             .filter((_, i) => i % 2 === 0)
             .filter(app => Boolean(app.name))
             .map(app => (
@@ -45,8 +38,8 @@ const AppExplorer = () => {
                 name={app.name}
                 description={app.description}
                 bgColor={{
-                  dark: app.colors?.primary ?? '#000',
-                  light: app.colors?.primary ?? '#fff'
+                  dark: app.colors?.primary ?? '#00FF00',
+                  light: app.colors?.primary ?? '#00FF00'
                 }}
                 logo={app.icons[0]}
                 url={app.url}
@@ -54,7 +47,7 @@ const AppExplorer = () => {
             ))}
         </div>
         <div className="AppExplorer__apps__column">
-          {filteredApps
+          {projects
             .filter((_, i) => i % 2 !== 0)
             .map(app => (
               <AppCard
@@ -62,8 +55,8 @@ const AppExplorer = () => {
                 name={app.name}
                 description={app.description}
                 bgColor={{
-                  dark: app.colors?.primary ?? '#000',
-                  light: app.colors?.primary ?? '#fff'
+                  dark: app.colors?.primary ?? '#00FF00',
+                  light: app.colors?.primary ?? '#00FF00'
                 }}
                 logo={app.icons[0]}
                 url={app.url}

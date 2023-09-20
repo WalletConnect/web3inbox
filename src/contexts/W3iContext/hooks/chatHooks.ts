@@ -1,8 +1,8 @@
 import type { ChatClientTypes } from '@walletconnect/chat-client'
 import { useCallback, useEffect, useState } from 'react'
 import { noop } from 'rxjs'
-import type { W3iChatClient } from '../../../w3iProxy'
 import type Web3InboxProxy from '../../../w3iProxy'
+import type { W3iChatClient } from '../../../w3iProxy'
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
 

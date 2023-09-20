@@ -1,18 +1,47 @@
 .AppCard {
-  padding: 1.5em 1.75em;
+  padding: 2rem;
   border-radius: 1.875em;
   text-decoration: none;
   height: fit-content;
+  outline: 1px solid rgba(0, 0, 0, 0.1);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
+    radial-gradient(
+      140.74% 145.41% at 7.1% 2.28%,
+      var(--local-bg-color) 0%,
+      rgba(255, 255, 255, 0) 80%
+    );
+
+  @media only screen and (max-width: 700px) {
+    border-radius: 0.75rem;
+    padding: 1rem;
+  }
+
+  &__mobile__button {
+    @media only screen and (min-width: 700px) {
+      display: none;
+    }
+  }
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+
+    @media only screen and (max-width: 700px) {
+      align-items: center;
+    }
     &__logo {
       border-radius: 50%;
       width: 3.75em;
       height: 3.75em;
       margin-bottom: 0.75em;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+
+      @media only screen and (max-width: 700px) {
+        width: 3rem;
+        height: 3rem;
+        margin-bottom: 0px;
+      }
     }
     &__link-icon {
       width: 0.67em;
@@ -24,15 +53,67 @@
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    gap: 0.25em;
     color: var(--fg-color-1);
 
-    &__url {
-      color: var(--fg-color-2);
+    @media only screen and (max-width: 700px) {
+      margin-top: 0.75rem;
     }
+
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 0.3125rem;
+
+      @media only screen and (max-width: 700px) {
+        span {
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 130%;
+          letter-spacing: -0.48px;
+        }
+      }
+
+      svg {
+        width: 1.125rem;
+
+        @media only screen and (max-width: 700px) {
+          width: 1rem;
+        }
+      }
+    }
+
+    &__subtitle {
+      color: var(--fg-color-2);
+      line-height: 16px;
+      letter-spacing: -0.24px;
+      margin-top: 2px;
+    }
+
+    &__description {
+      color: var(--fg-color-1);
+      margin-top: 1rem;
+
+      @media only screen and (max-width: 700px) {
+        margin-top: 0.75rem;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 130%; /* 18.2px */
+        letter-spacing: -0.14px;
+        color: #474d4d;
+      }
+    }
+
     &__subscribe {
-      margin-top: 0.67em;
+      @media only screen and (max-width: 700px) {
+        display: none;
+      }
+      min-width: 84px;
+      width: max-content;
+      margin-top: 1.5rem;
       cursor: pointer;
+      height: 28px;
     }
   }
 }

@@ -1,0 +1,27 @@
+.SettingsHeader {
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+
+  @media only screen and (max-width: 700px) {
+    display: none;
+  }
+
+  &__border {
+    position: absolute;
+    left: 0;
+    top: 4.25rem;
+    width: 100%;
+    background-color: var(--bg-color-2);
+    height: 1px;
+
+    @media only screen and (max-width: 700px) {
+      display: none;
+    }
+  }
+
+  &__title {
+    color: var(--fg-color-1);
+    line-height: 20px;
+    letter-spacing: -0.54px;
+  }
+}

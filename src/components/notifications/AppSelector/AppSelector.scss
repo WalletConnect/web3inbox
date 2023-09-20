@@ -6,9 +6,6 @@
   height: 100%;
   min-width: 17.5em;
 
-  @media only screen and (max-width: 700px) {
-    padding: 0 1.25em 1.25em 1.25em;
-  }
   &__mobile-header {
     display: flex;
     justify-content: space-between;
@@ -39,10 +36,15 @@
   }
 
   &__lists {
-    margin-top: 1.125rem;
+    margin-top: 1.75rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
+    @media only screen and (max-width: 700px) {
+      margin-top: 0px;
+      gap: 1.25rem;
+    }
   }
 
   &__wrapper {
@@ -51,13 +53,22 @@
     gap: 0.5rem;
 
     .Label {
-      padding: 0.75rem;
+      padding: 0px 0.75rem;
+
+      @media only screen and (max-width: 700px) {
+        padding: 0 1.25rem;
+      }
     }
   }
 
   &__list {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+
+    @media only screen and (max-width: 700px) {
+      gap: 0px;
+    }
 
     &__muted {
       opacity: 0.5;
@@ -107,15 +118,73 @@
 
   &__link {
     display: flex;
-    &-item {
-      padding: 0.75rem 1rem 0.75rem 0.75rem;
+
+    &__wrapper {
+      @media only screen and (max-width: 700px) {
+        width: 250px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+    }
+
+    &__title {
+      @media only screen and (max-width: 700px) {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.45px;
+      }
+    }
+
+    &__subtitle {
+      display: none;
+
+      @media only screen and (max-width: 700px) {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 130%;
+        letter-spacing: -0.14px;
+        color: #474d4d;
+        display: block;
+      }
+    }
+
+    &-appsItem {
+      padding: 1rem 1rem 1rem 1rem;
       border-radius: 1em;
       position: relative;
+      transition: all 250ms ease-in-out;
 
       // on hover when link is not active
       &:not(.NavLink-active):hover {
         @media (hover: hover) {
-          background: var(--bg-color-2);
+          background: rgba(51, 150, 255, 0.08);
+        }
+      }
+    }
+
+    &-item {
+      padding: 0.75rem 1rem 0.75rem 0.75rem;
+      border-radius: 1em;
+      position: relative;
+      transition: all 250ms ease-in-out;
+
+      @media only screen and (max-width: 700px) {
+        border-radius: 0px;
+        padding: 1rem 1.25rem;
+      }
+
+      // on hover when link is not active
+      &:not(.NavLink-active):hover {
+        @media (hover: hover) {
+          background: rgba(51, 150, 255, 0.08);
         }
       }
     }
@@ -142,10 +211,19 @@
       }
     }
 
+    &-apps {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
     &-logo {
       border-radius: 50%;
       width: 2em;
       height: 2em;
+      @media only screen and (max-width: 700px) {
+        width: 3rem;
+        height: 3rem;
+      }
     }
   }
 
@@ -155,10 +233,16 @@
     width: 100%;
     justify-content: space-between;
 
+    &-apps {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
     &-link {
       display: flex;
       align-items: center;
-      gap: 0.5em;
+      gap: 0.75rem;
 
       &__muted {
         display: flex;

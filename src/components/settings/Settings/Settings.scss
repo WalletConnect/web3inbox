@@ -56,6 +56,11 @@
   }
 
   &__theme-selector {
+    &:nth-child(2),
+    &:nth-child(3) {
+      opacity: 0.1;
+      cursor: not-allowed;
+    }
     background: var(--bg-gradient-1);
     border-radius: 30px;
     padding: 1.5em;

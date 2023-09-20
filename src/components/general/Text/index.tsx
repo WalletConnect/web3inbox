@@ -21,10 +21,11 @@ interface ITextProps {
     | 'small-700'
     | 'tiny-500'
     | 'tiny-600'
+  className?: string
 }
 
-const Text: React.FC<ITextProps> = ({ children, variant }) => {
-  return <span className={`Text Text__${variant}`}>{children}</span>
+const Text: React.FC<ITextProps> = ({ children, variant, className }) => {
+  return <span className={`Text Text__${variant} ${className ? className : ''}`}>{children}</span>
 }
 
 export default Text

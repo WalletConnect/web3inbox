@@ -1,5 +1,5 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-client'
+import type { NotifyClient } from '@walletconnect/notify-client'
 import { EventEmitter } from 'events'
 import type { PushFacadeEvents } from './listenerTypes'
 import { ObservablesController } from './observablesController'
@@ -52,11 +52,11 @@ class W3iPushFacade implements W3iPush {
 
   // ------------------ Push Client Forwarding ------------------
 
-  public async register(params: { account: string }) {
+  public async register(params: { account: string; domain: string; isLimited: boolean }) {
     return this.provider.register(params)
   }
 
-  public async subscribe(params: { metadata: NotifyClientTypes.Metadata; account: string }) {
+  public async subscribe(params: { appDomain: string; account: string }) {
     return this.provider.subscribe(params)
   }
 

@@ -23,6 +23,7 @@ export interface INotifyProject {
   name: string
   description: string
   homepage: string
+  dapp_url: string
   app: {
     browser: string
   }

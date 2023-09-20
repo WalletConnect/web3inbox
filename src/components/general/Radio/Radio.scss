@@ -1,23 +1,74 @@
 .Radio {
   display: flex;
-  gap: 0.3em;
+  gap: 1.625rem;
   align-items: center;
 
+  @media only screen and (max-width: 700px) {
+    align-items: flex-start;
+  }
+
+  svg {
+    width: 1.75rem;
+    min-width: 1.75rem;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &__title {
+      @media only screen and (max-width: 700px) {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 130%; /* 19.5px */
+        letter-spacing: -0.3px;
+      }
+    }
+
+    &__description {
+      color: #868f8f;
+
+      @media only screen and (max-width: 700px) {
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 130%;
+        letter-spacing: -0.26px;
+      }
+    }
+  }
+
+  label {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 510;
+    line-height: 20px;
+    color: var(--fg-color-1);
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
   input[type='radio'] {
-    min-width: 1.75em;
-    min-height: 1.75em;
-    max-width: 1.75em;
-    max-height: 1.75em;
+    min-width: 1.25em;
+    min-height: 1.25em;
+    max-width: 1.25em;
+    max-height: 1.25em;
     appearance: none;
-    background-color: var(--accent-color-1);
+    background-color: #f1f3f3;
     margin: 0;
     font: inherit;
     color: var(--bg-color-1);
-    border: 0.15em solid var(--accent-color-1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     width: inherit;
     height: inherit;
     border-radius: 50%;
     transform: translateY(-0.075em);
+    transition: 120ms all ease-in-out;
     display: grid;
     place-content: center;
     cursor: pointer;
@@ -25,13 +76,21 @@
     &::before {
       content: '';
       background-color: var(--bg-color-1);
-      width: 0.75em;
-      height: 0.75em;
+      width: 0.5em;
+      height: 0.5em;
       transform: scale(0);
       transition: 120ms transform ease-in-out;
       box-shadow: inset 1em 1em var(--bg-color-1);
-      transform-origin: bottom left;
+      transform-origin: center center;
       border-radius: 50%;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:checked {
+      background-color: #3396ff;
     }
 
     &:checked::before {
