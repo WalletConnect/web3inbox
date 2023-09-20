@@ -27,7 +27,7 @@ export interface INotifyProject {
   app: {
     browser: string
   }
-  image_url: {
+  image_url?: {
     sm: string
     md: string
     lg: string
