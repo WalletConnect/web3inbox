@@ -1,13 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Button from '../../../components/general/Button'
 import { Modal } from '../../../components/general/Modal/Modal'
 import { signatureModalService } from '../../../utils/store'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import './SignatureModal.scss'
-import CheckIcon from '../../../components/general/Icon/CheckIcon'
 import Spinner from '../../../components/general/Spinner'
-import CrossIcon from '../../../components/general/Icon/CrossIcon'
-import W3iContext from '../../../contexts/W3iContext/context'
 import Text from '../../../components/general/Text'
 import SignatureIcon from '../../../components/general/Icon/SignatureIcon'
 
@@ -15,7 +12,6 @@ export const SignatureModal: React.FC<{
   message: string
   sender: 'chat' | 'push'
 }> = ({ message, sender }) => {
-  const { disconnect } = useContext(W3iContext)
   const purpose: 'identity' | 'sync' = message.includes('did:key') ? 'identity' : 'sync'
   /*
    * If identity was already signed, and sync was requested then we are in the

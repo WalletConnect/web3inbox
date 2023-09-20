@@ -18,7 +18,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   const { chatProvider, pushProvider, authProvider } = useProviderQueries()
   const [w3iProxy, isW3iProxyReady] = useW3iProxy()
 
-  const { userPubkey, setUserPubkey, disconnect } = useAuthState(w3iProxy, isW3iProxyReady)
+  const { userPubkey, setUserPubkey } = useAuthState(w3iProxy, isW3iProxyReady)
 
   const {
     chatClient,
@@ -57,7 +57,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         threads,
         activeSubscriptions,
         invites,
-        disconnect,
         chatRegisteredKey,
         pushRegisteredKey,
         setUserPubkey,
