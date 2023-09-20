@@ -4,7 +4,7 @@ import { Modal } from '../../general/Modal/Modal'
 import './Share.scss'
 // eslint-disable-next-line no-duplicate-imports
 import CopyIcon from '../../general/Icon/CopyIcon'
-import { W3mQrCode } from '@web3modal/react'
+// import { W3mQrCode } from '@web3modal/react'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { truncate } from '../../../utils/string'
@@ -96,9 +96,9 @@ export const ShareModalContent: React.FC<ModalContentProps> = ({
           ✕
         </button>
       </div>
-      <div className="Share__qr">
+      {/* <div className="Share__qr">
         <W3mQrCode size={318} imageUrl={ensAvatar ?? '/logo.svg'} uri={uri} />
-      </div>
+      </div> */}
       <div className="Share__address">
         <Text variant="small-600">Address</Text>
         <div className="Share__address__content">

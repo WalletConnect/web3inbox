@@ -1,5 +1,6 @@
 import React from 'react'
 import './Radio.scss'
+import Text from '../Text'
 
 interface RadioProps {
   label: string
@@ -7,11 +8,24 @@ interface RadioProps {
   checked: boolean
   onCheck: (name: string) => void
   id: string
+  description?: string
+  icon: React.ReactNode
 }
 
-const Radio: React.FC<RadioProps> = ({ label, checked, onCheck, name, id }) => {
+const Radio: React.FC<RadioProps> = ({ label, checked, onCheck, name, id, description, icon }) => {
   return (
     <div className="Radio">
+      <label htmlFor={id}>
+        {icon}
+        <div className="Radio__wrapper">
+          <p className="Radio__wrapper__title">{label}</p>
+          {description && (
+            <Text variant="small-500" className="Radio__wrapper__description">
+              {description}
+            </Text>
+          )}
+        </div>
+      </label>
       <input
         checked={checked}
         onChange={ev => {
@@ -23,7 +37,6 @@ const Radio: React.FC<RadioProps> = ({ label, checked, onCheck, name, id }) => {
         name={name}
         id={id}
       />
-      <label htmlFor={id}>{label}</label>
     </div>
   )
 }

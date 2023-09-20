@@ -1,0 +1,27 @@
+.PrivacySettings {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .SettingsItem__content {
+      width: 100%;
+    }
+  }
+
+  &__radios {
+    padding: 0.625rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    @media only screen and (max-width: 700px) {
+      padding: 0.625rem 0rem;
+    }
+
+    &__subtitle {
+      display: block;
+      color: #788181;
+      width: 75%;
+    }
+  }
+}

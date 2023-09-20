@@ -1,0 +1,12 @@
+.NotificationsSettings {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__notifications {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}

@@ -26,27 +26,23 @@ export const Modal: React.FC<IModalProps> = ({ children, onToggleModal, width, h
       <Fragment>
         <m.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 0.3 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.1, ease: 'easeInOut' }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
           className="blur"
         />
         <m.div
-          initial={{ opacity: 0, y: '-45%', x: '-50%' }}
-          animate={{ opacity: 1, y: '-50%', x: '-50%' }}
-          exit={{ opacity: 0, y: '-45%', x: '-50%' }}
-          transition={{ duration: 0.15, ease: 'easeInOut' }}
+          initial={{ opacity: 0, y: '-50%', x: '-50%', scale: 0.95 }}
+          animate={{ opacity: 1, y: '-50%', x: '-50%', scale: 1 }}
+          exit={{ opacity: 0, y: '-50%', x: '-50%', scale: 0.95 }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
           ref={ref}
           className="modal"
           style={{ width, height }}
         >
-          <m.div
-            transition={{ duration: 0.1, ease: 'easeInOut' }}
-            ref={contentRef}
-            className="modal__content"
-          >
+          <div ref={contentRef} className="modal__content">
             {children}
-          </m.div>
+          </div>
         </m.div>
       </Fragment>
     </LazyMotion>

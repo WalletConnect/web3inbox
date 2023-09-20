@@ -67,27 +67,24 @@ export const PreferencesModal: React.FC = () => {
     <Modal onToggleModal={preferencesModalService.toggleModal}>
       <div className="PreferencesModal">
         <div className="PreferencesModal__header">
-          <Text variant="large-500">Preferences</Text>
-          <Button
-            className="PreferencesModal__close"
-            customType="action-icon"
-            onClick={preferencesModalService.closeModal}
-          >
-            <CrossIcon fillColor={themeColors['--fg-color-1']} />
-          </Button>
+          <Text variant="paragraph-600">Preferences</Text>
+          <button className="PreferencesModal__close" onClick={preferencesModalService.closeModal}>
+            <CrossIcon />
+          </button>
         </div>
-        <Divider />
-        {Object.entries(scopes)
-          .sort(([a], [b]) => a.charCodeAt(0) - b.charCodeAt(0))
-          .map(([title, scope]) => (
-            <div key={title} className="PreferencesModal__content">
-              <div className="PreferencesModal__content__setting">
-                <div>
+        <div className="PreferencesModal__content">
+          {Object.entries(scopes)
+            .sort(([a], [b]) => a.charCodeAt(0) - b.charCodeAt(0))
+            .map(([title, scope]) => (
+              <div key={title} className="PreferencesModal__content__item">
+                <div className="PreferencesModal__content__item__wrapper">
                   <h4 style={{ textTransform: 'capitalize' }}>
-                    <Text variant="paragraph-500">{title} Notifications</Text>
+                    <Text variant="paragraph-600">{title} Notifications</Text>
                   </h4>
                   <div className="PreferencesModal__content__setting__helper-text">
-                    <Text variant="small-400"> {scope.description}</Text>
+                    <Text className="PreferencesModal__content__item__subtitle" variant="small-500">
+                      {scope.description}
+                    </Text>
                   </div>
                 </div>
                 <Toggle
@@ -107,9 +104,8 @@ export const PreferencesModal: React.FC = () => {
                   id={title}
                 />
               </div>
-            </div>
-          ))}
-        <Divider />
+            ))}
+        </div>
         <div className="PreferencesModal__action">
           <Button className="PreferencesModal__action__btn" onClick={handleUpdatePreferences}>
             Update

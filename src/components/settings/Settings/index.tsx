@@ -1,4 +1,3 @@
-import { useWeb3ModalTheme } from '@web3modal/react'
 import cn from 'classnames'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ArtistPalette from '../../../assets/ArtistPalette.png'
@@ -12,7 +11,7 @@ import type { SettingsContextSimpleState } from '../../../contexts/SettingsConte
 // eslint-disable-next-line no-duplicate-imports
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import W3iContext from '../../../contexts/W3iContext/context'
-import { useModals } from '../../../utils/hooks'
+import { useIsMobile, useModals } from '../../../utils/hooks'
 import { contactsModalService } from '../../../utils/store'
 import CircleBadge from '../../general/Badge/CircleBadge'
 import ArrowRightIcon from '../../general/Icon/ArrowRightIcon'
@@ -21,6 +20,9 @@ import Radio from '../../general/Radio'
 import ContactsModal from '../ContactsModal'
 import './Settings.scss'
 import Toggle from '../../general/Toggle'
+import { useWeb3ModalTheme } from '@web3modal/wagmi/react'
+import { useLocation } from 'react-router-dom'
+import MobileHeader from '../../layout/MobileHeader'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
   { id: 'light', icon: LightCity },
@@ -52,20 +54,19 @@ const Settings: React.FC = () => {
   const { isContactModalOpen } = useModals()
   const { chatClientProxy, threads, uiEnabled } = useContext(W3iContext)
   const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
-
-  const { setTheme } = useWeb3ModalTheme()
+  const { pathname } = useLocation()
+  const { setThemeMode } = useWeb3ModalTheme()
+  const isMobile = useIsMobile()
 
   const handleThemeChange = useCallback(
     (modeId: SettingsContextSimpleState['mode']) => {
       updateSettings({ mode: modeId })
       // Can't set `mode` directly due it being able to be 'system'
-      setTheme({
-        themeMode: mode === 'dark' ? 'dark' : 'light'
-      })
+      // setThemeMode(mode === 'dark' ? 'dark' : 'light')
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (localStorage) {
-        localStorage.setItem('w3i-theme', modeId)
+        localStorage.setItem('w3i-theme', 'light')
       }
     },
     [updateSettings]
@@ -108,7 +109,11 @@ const Settings: React.FC = () => {
           {themeModes.map(({ id, icon }) => (
             <div
               key={id}
-              onClick={() => handleThemeChange(id)}
+              onClick={() => {
+                if (id === 'light') {
+                  handleThemeChange(id)
+                }
+              }}
               className={cn('Settings__theme-selector', {
                 'Settings__theme-selector-active': mode === id
               })}
@@ -132,12 +137,12 @@ const Settings: React.FC = () => {
             <div className="Settings__toggle-label">
               Display all projects that enabled Notify API
             </div>
-            <Toggle
+            {/* <Toggle
               name="devMode"
               id="incoming"
               checked={isDevModeEnabled}
               setChecked={isEnabled => updateSettings({ isDevModeEnabled: isEnabled })}
-            />
+            /> */}
           </div>
           {/* <div className="Settings__section-subtitle">Notify me about...</div>
           <div className="Settings__setting">
@@ -165,7 +170,7 @@ const Settings: React.FC = () => {
           </div>
           <div className="Settings__section-settings">
             <div className="Settings__section-subtitle">New Contacts</div>
-            {newContactModes.map(({ id, label }) => (
+            {/* {newContactModes.map(({ id, label }) => (
               <Radio
                 name="new-contacts"
                 id={id}
@@ -174,7 +179,7 @@ const Settings: React.FC = () => {
                 checked={newContacts === id}
                 onCheck={() => updateSettings({ newContacts: id })}
               />
-            ))}
+            ))} */}
             <div className="Settings__section-helper-text">
               People that want to message you will need to send an invite first that you can accept
               or decline. Think of it as a polite handshake to start the conversation.

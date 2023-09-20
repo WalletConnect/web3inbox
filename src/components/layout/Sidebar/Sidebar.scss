@@ -9,7 +9,7 @@
   height: 3em;
 
   @include padding-y(2em);
-  display: flex;
+  display: none;
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
@@ -22,6 +22,12 @@
     .wc-icon {
       width: 40px;
       height: 28px;
+
+      transition: 250ms all ease-in-out;
+
+      &:hover {
+        filter: contrast(2);
+      }
     }
   }
 
@@ -38,6 +44,15 @@
       width: 4em;
       display: flex;
       justify-content: center;
+      transition: all 250ms ease-in-out;
+
+      &:hover {
+        opacity: 0.7;
+      }
+
+      &:active {
+        opacity: 0.5;
+      }
     }
 
     svg {
@@ -49,6 +64,7 @@
 
 @media only screen and (min-width: 700px) {
   .Sidebar {
+    display: flex;
     background-color: var(--bg-color-1);
     transform: unset;
     position: relative;

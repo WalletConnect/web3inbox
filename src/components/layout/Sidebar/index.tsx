@@ -8,12 +8,13 @@ import NotificationIcon from '../../general/Icon/NotificationIcon'
 import SettingIcon from '../../general/Icon/SettingIcon'
 import './Sidebar.scss'
 import WalletConnectIcon from '../../general/Icon/WalletConnectIcon'
+import ConnectWalletButton from '../../login/ConnectWalletButton'
 
 const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <div className="Sidebar__Item">{children}</div>
 }
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
   const { pathname } = useLocation()
   const navigationPaths = useMemo(() => pathname.split('/'), [pathname])
   const { userPubkey, uiEnabled } = useContext(W3iContext)
@@ -28,12 +29,12 @@ const Sidebar: React.FC = () => {
     if (uiEnabled.notify) {
       items.push([
         <NotificationIcon isFilled={pathname.includes('/notifications')} />,
-        'notifications'
+        'notifications/new-app'
       ])
     }
 
     if (uiEnabled.settings) {
-      items.push([<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings'])
+      items.push([<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings/appearance'])
     }
 
     return items
@@ -50,21 +51,34 @@ const Sidebar: React.FC = () => {
     <div className="Sidebar">
       {!isMobile && (
         <SidebarItem>
-          <WalletConnectIcon />
+          <Link to={`/notifications/new-app`}>
+            <WalletConnectIcon />
+          </Link>
         </SidebarItem>
       )}
-      <SidebarItem>
-        <div className="Sidebar__Navigation">
-          {navItems.map(([icon, itemName]) => (
-            <Link className="Sidebar__Navigation__Link" key={itemName} to={`/${itemName}`}>
-              {icon}
-            </Link>
-          ))}
-        </div>
-      </SidebarItem>
+      {isLoggedIn && (
+        <SidebarItem>
+          <div className="Sidebar__Navigation">
+            {navItems.map(([icon, itemName]) => (
+              <Link className="Sidebar__Navigation__Link" key={itemName} to={`/${itemName}`}>
+                {icon}
+              </Link>
+            ))}
+          </div>
+        </SidebarItem>
+      )}
 
       <SidebarItem>
-        <Avatar address={userPubkey as `0x${string}`} width="2em" height="2em" hasProfileDropdown />
+        {isLoggedIn ? (
+          <Avatar
+            address={userPubkey as `0x${string}`}
+            width="2em"
+            height="2em"
+            hasProfileDropdown
+          />
+        ) : (
+          <ConnectWalletButton />
+        )}
       </SidebarItem>
     </div>
   )

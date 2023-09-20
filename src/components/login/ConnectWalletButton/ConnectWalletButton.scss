@@ -1,0 +1,26 @@
+.ConnectWalletButton {
+  width: 2em;
+  height: 2em;
+  background-color: var(--sender-bubble-bg);
+  border: 1px solid #cfd6d6;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 300ms ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 0.6;
+  }
+
+  svg {
+    color: #9ea9a9;
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}

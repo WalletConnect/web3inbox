@@ -2,22 +2,42 @@
   display: flex;
   height: 100%;
   flex-direction: column;
+  align-items: center;
   max-width: 100vw;
+  margin-right: 30%;
+
+  @media only screen and (max-width: 1300px) {
+    margin-right: 0%;
+  }
+
+  .IntroContent {
+    margin-top: 2.25rem;
+
+    &__Background {
+      transform: scale(2.5) translateY(-15%) translateX(5%);
+    }
+  }
 
   &__apps {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.625em;
-    padding-top: 1em;
+    gap: 1.5rem;
+    padding: 5rem 0rem;
+
+    @media only screen and (max-width: 1000px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
     @media only screen and (max-width: 700px) {
       grid-template-columns: repeat(1, 1fr);
-      padding: 0 calc(1.25em - 0.4em);
+      padding: 0 1.25rem;
+      margin-top: 3rem;
     }
     &__column {
       display: flex;
       flex-flow: column wrap;
       justify-content: flex-start;
-      gap: 0.625em;
+      gap: 1.5rem;
     }
   }
 }

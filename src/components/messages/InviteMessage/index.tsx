@@ -31,7 +31,7 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
   const RejectedStatus = useCallback(() => {
     return (
       <div className="InviteMessage__pending">
-        <CrossIcon fillColor={themeColors['--fg-color-1']} />
+        <CrossIcon />
         <span>Rejected</span>
       </div>
     )

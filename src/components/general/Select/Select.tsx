@@ -47,7 +47,7 @@ const Select: React.FC<ISelectProps> = ({ name, id, options, onChange }) => {
       styles={{
         control: baseStyles => ({
           ...baseStyles,
-
+          cursor: 'pointer',
           boxShadow: 'none'
         }),
         option: (baseStyles, state) => ({
@@ -56,10 +56,10 @@ const Select: React.FC<ISelectProps> = ({ name, id, options, onChange }) => {
             ? themeColors['--accent-color-1']
             : themeColors['--bg-color-2'],
           color: state.isSelected ? 'white' : themeColors['--fg-color-1'],
+          cursor: 'pointer',
+          transition: '250ms all ease-in-out',
           ':hover': {
-            backgroundColor: state.isSelected
-              ? themeColors['--accent-color-1']
-              : themeColors['--bg-color-1']
+            backgroundColor: state.isSelected ? themeColors['--accent-color-1'] : '#D9DBDB'
           }
         })
       }}

@@ -13,6 +13,10 @@
     border-radius: 16px !important;
     gap: 4px;
     height: 2.5rem !important;
+
+    @media only screen and (max-width: 700px) {
+      height: 3.5rem !important;
+    }
   }
 
   &__indicator {

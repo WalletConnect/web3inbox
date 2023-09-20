@@ -1,5 +1,6 @@
 import React from 'react'
 import './Button.scss'
+import Text from '../Text'
 
 type THTMLButtonProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -24,7 +25,7 @@ const Button: React.FC<TButtonProps> = ({
       disabled={disabled}
       className={`Button Button__${customType} ${className ?? ''}`}
     >
-      {children}
+      <Text variant="small-500">{children}</Text>
     </button>
   )
 }
