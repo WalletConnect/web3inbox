@@ -66,6 +66,7 @@ const Login: React.FC = () => {
         <IntroContent
           title="Welcome to Web3Inbox"
           subtitle="Connect your wallet to start using Web3Inbox today."
+          scale={4}
           button={
             <Button
               onClick={() => {

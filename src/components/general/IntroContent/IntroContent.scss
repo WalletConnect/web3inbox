@@ -7,8 +7,7 @@
 
   &__Background {
     position: absolute;
-    z-index: 0;
-    transform: scale(4) translateY(-15%) translateX(5%);
+    z-index: -1;
     pointer-events: none;
   }
 

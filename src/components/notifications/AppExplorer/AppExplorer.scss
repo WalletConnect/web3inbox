@@ -10,12 +10,12 @@
     margin-right: 0%;
   }
 
+  @media only screen and (max-width: 700px) {
+    overflow-x: hidden;
+  }
+
   .IntroContent {
     margin-top: 2.25rem;
-
-    &__Background {
-      transform: scale(2.5) translateY(-15%) translateX(5%);
-    }
   }
 
   &__apps {

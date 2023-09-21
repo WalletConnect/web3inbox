@@ -8,19 +8,18 @@ import { useIsMobile, useSearch } from '../../../utils/hooks'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
 import './AppSelector.scss'
-
 import { useLocation, useNavigate } from 'react-router-dom'
 import TargetTitle from '../../general/TargetTitle'
 import AllAppsIcon from '../../../assets/AllApps.svg'
 import Label from '../../general/Label'
 import Text from '../../general/Text'
 import MobileHeader from '../../layout/MobileHeader'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
-  const { isPushSearchOpen } = useSearch()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const { activeSubscriptions, dappOrigin, pushRegisterMessage } = useContext(W3iContext)
@@ -116,32 +115,40 @@ const AppSelector: React.FC = () => {
             <Label color="main">Subscribed</Label>
             <ul className="AppSelector__list">
               {filteredApps.map(app => (
-                <NavLink
-                  key={app.topic}
-                  to={`/notifications/${app.topic}`}
-                  className="AppSelector__link-item"
-                  onMouseEnter={() => setDropdownToShow(app.topic)}
-                  onMouseLeave={() => setDropdownToShow(undefined)}
-                >
-                  <div className="AppSelector__notifications">
-                    <div className="AppSelector__notifications-link">
-                      <img
-                        className="AppSelector__link-logo"
-                        src={app.metadata.icons[0]}
-                        alt={`${app.metadata.name} logo`}
-                        loading="lazy"
-                      />
-                      <div className="AppSelector__link__wrapper">
-                        <Text className="AppSelector__link__title" variant="small-500">
-                          {app.metadata.name}
-                        </Text>
-                        <Text className="AppSelector__link__subtitle" variant="small-500">
-                          {app.metadata.description}
-                        </Text>
+                <AnimatePresence>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    exit={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <NavLink
+                      key={app.topic}
+                      to={`/notifications/${app.topic}`}
+                      className="AppSelector__link-item"
+                      onMouseEnter={() => setDropdownToShow(app.topic)}
+                      onMouseLeave={() => setDropdownToShow(undefined)}
+                    >
+                      <div className="AppSelector__notifications">
+                        <div className="AppSelector__notifications-link">
+                          <img
+                            className="AppSelector__link-logo"
+                            src={app.metadata.icons[0]}
+                            alt={`${app.metadata.name} logo`}
+                            loading="lazy"
+                          />
+                          <div className="AppSelector__link__wrapper">
+                            <Text className="AppSelector__link__title" variant="small-500">
+                              {app.metadata.name}
+                            </Text>
+                            <Text className="AppSelector__link__subtitle" variant="small-500">
+                              {app.metadata.description}
+                            </Text>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </NavLink>
+                    </NavLink>
+                  </motion.div>
+                </AnimatePresence>
               ))}
             </ul>
           </div>

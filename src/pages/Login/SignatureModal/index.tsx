@@ -45,16 +45,9 @@ export const SignatureModal: React.FC<{
       .finally(() =>
         setTimeout(() => {
           setSigning(false)
-        }, 3000)
+        }, 5000)
       )
   }, [message, sender, setSigning])
-
-  // Modal is ready to sign when given a new purpose
-  useEffect(() => {
-    setTimeout(() => {
-      setSigning(false)
-    }, 3000)
-  }, [purpose, setSigning])
 
   return (
     <Modal onToggleModal={signatureModalService.toggleModal}>

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import App from './App'
 import Web3InboxPlaceholder from './components/general/Web3InboxPlaceholder'
 import ChatInvites from './components/messages/ChatInvites'
@@ -18,9 +19,11 @@ import WidgetSubscribe from './pages/widget/Subscribe'
 import WidgetConnect from './pages/widget/Connect'
 import AppearanceSettings from './components/settings/AppearanceSettings'
 import NotificationsSettings from './components/settings/NotificationsSettings'
+import { useIsMobile } from './utils/hooks'
 
 const ConfiguredRoutes: React.FC = () => {
   const { uiEnabled } = useContext(W3iContext)
+  const isMobile = useIsMobile()
 
   const defaultPage =
     Object.entries({
@@ -37,10 +40,18 @@ const ConfiguredRoutes: React.FC = () => {
 
       <Route path="/" element={<App />}>
         {uiEnabled.notify ? (
-          <Route path="notifications" element={<NotificationsLayout />}>
-            <Route path="/notifications/new-app" element={<AppExplorer />} />
-            <Route path="/notifications/:topic" element={<AppNotifications />} />
-          </Route>
+          isMobile ? (
+            <>
+              <Route path="notifications" element={<NotificationsLayout />}></Route>
+              <Route path="/notifications/new-app" element={<AppExplorer />} />
+              <Route path="/notifications/:topic" element={<AppNotifications />} />
+            </>
+          ) : (
+            <Route path="notifications" element={<NotificationsLayout />}>
+              <Route path="/notifications/new-app" element={<AppExplorer />} />
+              <Route path="/notifications/:topic" element={<AppNotifications />} />
+            </Route>
+          )
         ) : null}
         {uiEnabled.chat ? (
           <Route path="messages" element={<MessagesLayout />}>
