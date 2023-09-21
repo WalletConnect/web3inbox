@@ -16,28 +16,6 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
   const { search } = useLocation()
 
-  /*
-   * UseEffect(() => {
-   *   const hasSignSession = localStorage.getItem('wc@2:client:0.3//session')
-   *   console.log({
-   *     hasSignSession,
-   *     userPubkey,
-   *     proxyReady
-   *   })
-   */
-
-  /*
-   *   If (proxyReady && !userPubkey && hasSignSession) {
-   *     console.log('>>>>> CLEANUP')
-   */
-
-  /*
-   *     LocalStorage.removeItem('wc@2:client:0.3//session')
-   *     window.location.reload()
-   *   }
-   * }, [userPubkey, proxyReady])
-   */
-
   useEffect(() => {
     const account = new URLSearchParams(search).get('account')
 
@@ -62,10 +40,6 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   useEffect(() => {
     const sub = authClient?.observe('auth_set_account', {
       next: ({ account }) => {
-        if (userPubkey && !account) {
-          localStorage.removeItem('wc@2:client:0.3//session')
-          window.location.reload()
-        }
         setUserPubkey(account)
       }
     })
