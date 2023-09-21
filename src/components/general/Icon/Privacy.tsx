@@ -12,9 +12,9 @@ const PrivacyIcon: React.FC = () => {
       />
       <path
         fill="#000"
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M11.56 7.58a.75.75 0 0 0-1.07-1.06L7.65 9.36l-.97-.97a.75.75 0 0 0-1.06 1.07l1.5 1.5c.3.29.77.29 1.06 0l3.38-3.38Z"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
     </svg>
   )
