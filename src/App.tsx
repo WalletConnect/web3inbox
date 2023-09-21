@@ -51,15 +51,7 @@ const App = () => {
   return (
     <AuthProtectedPage>
       <LazyMotion features={domAnimation}>
-        <m.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 25 }}
-          transition={{ duration: 0.2, ease: 'easeInOut', delay: 0.1 }}
-          ref={ref}
-          data-path={location.pathname}
-          className="App"
-        >
+        <m.div ref={ref} data-path={location.pathname} className="App">
           {chatClientProxy && (
             <Fragment>
               {uiEnabled.sidebar ? <Sidebar isLoggedIn={true} /> : null}

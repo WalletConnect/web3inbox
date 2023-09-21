@@ -25,7 +25,7 @@ const IntroContent: React.FC<IIntroContent> = ({
     <div className="IntroContent">
       <motion.img
         transition={{ duration: 0.66 }}
-        initial={{ scale: animation ? 1 : scale, translateY: '-15%', translateX: '5%' }}
+        initial={{ scale: animation ? 1.75 : scale, translateY: '-15%', translateX: '5%' }}
         animate={{ scale, translateY: '-15%', translateX: '5%' }}
         className="IntroContent__Background"
         src={BackgroundImage}
