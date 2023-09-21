@@ -21,7 +21,7 @@ const App = () => {
     <AuthProtectedPage>
       <LazyMotion features={domAnimation}>
         <m.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 25 }}
           transition={{ duration: 0.2, ease: 'easeInOut', delay: 0.1 }}
