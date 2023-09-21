@@ -1,6 +1,4 @@
 import { useModals } from './utils/hooks'
-import { Profile } from './components/account/Profile'
-import { Share } from './components/account/Share/Share'
 import { PreferencesModal } from './components/notifications/NotificationsLayout/PreferencesModal'
 import { UnsubscribeModal } from './components/notifications/NotificationsLayout/UnsubscribeModal'
 import { SignatureModal } from './pages/Login/SignatureModal'
@@ -10,13 +8,7 @@ import { signatureModalService } from './utils/store'
 import { AnimatePresence } from 'framer-motion'
 
 export const Modals = () => {
-  const {
-    isProfileModalOpen,
-    isShareModalOpen,
-    isPreferencesModalOpen,
-    isUnsubscribeModalOpen,
-    isSignatureModalOpen
-  } = useModals()
+  const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen } = useModals()
 
   const {
     chatRegisterMessage,
