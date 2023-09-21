@@ -107,7 +107,8 @@ class Web3InboxProxy {
       this.core = new Core({
         logger: this.logger,
         relayUrl: this.relayUrl,
-        projectId: this.projectId
+        projectId: this.projectId,
+        customStoragePrefix: ':web3inbox'
       })
     }
 
