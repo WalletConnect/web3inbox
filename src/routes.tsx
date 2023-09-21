@@ -42,7 +42,7 @@ const ConfiguredRoutes: React.FC = () => {
         {uiEnabled.notify ? (
           isMobile ? (
             <>
-              <Route path="notifications" element={<NotificationsLayout />}></Route>
+              <Route path="notifications" element={<NotificationsLayout />} />
               <Route path="/notifications/new-app" element={<AppExplorer />} />
               <Route path="/notifications/:topic" element={<AppNotifications />} />
             </>

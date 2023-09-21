@@ -8,16 +8,19 @@ const NotificationsLayout: React.FC = () => {
   return (
     <Fragment>
       <div className="TargetSelector">
-        <motion.div
-          style={{ height: '100%' }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.33 }}
-        >
-          <AppSelector />
-        </motion.div>
+        <AnimatePresence>
+          <motion.div
+            style={{ height: '100%' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.33 }}
+          >
+            <AppSelector />
+          </motion.div>
+        </AnimatePresence>
       </div>
+
       <div className="Main">
         <AnimatePresence>
           <motion.div

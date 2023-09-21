@@ -8,15 +8,17 @@ const SettingsLayout: React.FC = () => {
   return (
     <Fragment>
       <div className="TargetSelector">
-        <motion.div
-          style={{ height: '100%' }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.33 }}
-        >
-          <SettingsSelector />
-        </motion.div>
+        <AnimatePresence>
+          <motion.div
+            style={{ height: '100%' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.33 }}
+          >
+            <SettingsSelector />
+          </motion.div>
+        </AnimatePresence>
       </div>
       <div className="Main">
         <AnimatePresence>

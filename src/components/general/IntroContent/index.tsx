@@ -3,6 +3,7 @@ import './IntroContent.scss'
 import Text from '../Text'
 import BackgroundImage from '../../../assets/IntroBackground.png'
 import { motion } from 'framer-motion'
+import { useIsMobile } from '../../../utils/hooks'
 
 interface IIntroContent {
   icon: React.ReactNode
@@ -21,12 +22,15 @@ const IntroContent: React.FC<IIntroContent> = ({
   scale,
   animation
 }) => {
+  const isMobile = useIsMobile()
+  const animateImage = isMobile ? false : animation
+
   return (
     <div className="IntroContent">
       <motion.img
         transition={{ duration: 0.66 }}
-        initial={{ scale: animation ? 1.75 : scale, translateY: '-15%', translateX: '5%' }}
-        animate={{ scale, translateY: '-15%', translateX: '5%' }}
+        initial={{ scale: animateImage ? 1.75 : scale, translateY: '-15%', translateX: '5%' }}
+        animate={{ scale: isMobile ? 2 : scale, translateY: '-15%', translateX: '5%' }}
         className="IntroContent__Background"
         src={BackgroundImage}
       />
