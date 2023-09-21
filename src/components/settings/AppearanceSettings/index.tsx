@@ -2,22 +2,11 @@ import React from 'react'
 import './AppearanceSettings.scss'
 import SettingsHeader from '../SettingsHeader'
 import SettingsItem from '../SettingsItem'
-import Select from '../../general/Select/Select'
 import SettingsThemeButton from '../SettingsThemeButton'
 import SunIcon from '../../general/Icon/SunIcon'
 import MoonIcon from '../../general/Icon/MoonIcon'
 import SystemIcon from '../../general/Icon/SystemIcon'
 import MobileHeader from '../../layout/MobileHeader'
-
-const languages = [
-  { label: 'English', value: 'english' },
-  { label: 'Spanish', value: 'spanish' },
-  { label: 'German', value: 'german' }
-]
-const currencies = [
-  { label: '🇺🇸 United States Dollar (USD)', value: 'usd' },
-  { label: '🇪🇺 Euro (EUR)', value: 'eur' }
-]
 
 const AppearanceSettings: React.FC = () => {
   return (
@@ -52,20 +41,6 @@ const AppearanceSettings: React.FC = () => {
             disabled={true}
           />
         </SettingsItem>
-        {/* <SettingsItem
-          title="Currency"
-          subtitle="Select your preferred fiat currency to display value in."
-        >
-          <Select
-            name="currencies"
-            id="currencies"
-            options={currencies}
-            onChange={() => {}}
-          ></Select>
-        </SettingsItem>
-        <SettingsItem title="Language" subtitle="Select your preferred interface language.">
-          <Select name="languages" id="languages" options={languages} onChange={() => {}}></Select>
-        </SettingsItem> */}
       </div>
     </div>
   )

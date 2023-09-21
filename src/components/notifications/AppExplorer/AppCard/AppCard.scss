@@ -4,12 +4,6 @@
   text-decoration: none;
   height: fit-content;
   outline: 1px solid rgba(0, 0, 0, 0.1);
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
-    radial-gradient(
-      140.74% 145.41% at 7.1% 2.28%,
-      var(--local-bg-color) 0%,
-      rgba(255, 255, 255, 0) 80%
-    );
 
   @media only screen and (max-width: 700px) {
     border-radius: 0.75rem;

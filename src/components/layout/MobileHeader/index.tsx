@@ -48,12 +48,7 @@ const MobileHeader: React.FC<IMobileHeaderProps> = ({ title, back, notificationI
           notificationId={notificationId}
         />
       ) : (
-        <Avatar
-          address={userPubkey as `0x${string}`}
-          width="1.875em"
-          height="1.875em"
-          hasProfileDropdown
-        />
+        <Avatar address={userPubkey as `0x${string}`} width="1.875em" height="1.875em" />
       )}
     </div>
   )

@@ -9,7 +9,6 @@ interface AvatarProps {
   address?: string
   width: number | string
   height: number | string
-  hasProfileDropdown?: boolean
 }
 
 const Avatar: React.FC<AvatarProps> = ({ address, width, height }) => {

@@ -3,7 +3,6 @@ import './AppExplorer.scss'
 import useNotifyProjects from '../../../utils/hooks/useNotifyProjects'
 import MobileHeader from '../../layout/MobileHeader'
 import IntroContent from '../../general/IntroContent'
-import Button from '../../general/Button'
 import IntroApps from '../../general/Icon/IntroApps'
 
 const AppExplorer = () => {
@@ -14,17 +13,7 @@ const AppExplorer = () => {
       <MobileHeader title="Discover" />
       <IntroContent
         title="Welcome to Web3Inbox"
-        subtitle="Subscribing to our available apps below to start receiving notifications"
-        button={
-          <Button
-            onClick={() => {
-              // TODO: Subscribe all function
-            }}
-            style={{ minWidth: 'fit-content' }}
-          >
-            {'Subscribe all'}
-          </Button>
-        }
+        subtitle="Subscribe to our available apps below to start receiving notifications"
         icon={<IntroApps />}
       />
       <div className="AppExplorer__apps">
