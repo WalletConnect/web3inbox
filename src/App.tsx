@@ -8,7 +8,6 @@ import Sidebar from './components/layout/Sidebar'
 import AuthProtectedPage from './components/utils/AuthProtectedPage'
 import W3iContext from './contexts/W3iContext/context'
 import { useMobileResponsiveGrid } from './utils/hooks'
-import { truncate } from './utils/string'
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import MobileFooter from './components/layout/MobileFooter'
 
@@ -17,36 +16,6 @@ const App = () => {
   const location = useLocation()
 
   const ref = useMobileResponsiveGrid()
-
-  useEffect(() => {
-    const messageEventListener = (
-      messageEvent: ChatClientTypes.BaseEventArgs<ChatClientTypes.Message>
-    ) => {
-      /*
-       * We can't use hooks like `useLocation` or `useParam` to prevent
-       * constantly reregistering the listener.
-       */
-      const peer = new URLSearchParams(window.location.search).get('peer')
-      if (!peer || peer !== messageEvent.params.authorAccount) {
-        navigator.serviceWorker.getRegistration().then(swRegistration => {
-          swRegistration?.showNotification(truncate(messageEvent.params.authorAccount, 6), {
-            body: messageEvent.params.message
-          })
-        })
-      }
-    }
-
-    if (!chatClientProxy) {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      return () => {}
-    }
-
-    const sub = chatClientProxy.observe('chat_message', { next: messageEventListener })
-
-    return () => {
-      sub.unsubscribe()
-    }
-  }, [chatClientProxy])
 
   return (
     <AuthProtectedPage>
