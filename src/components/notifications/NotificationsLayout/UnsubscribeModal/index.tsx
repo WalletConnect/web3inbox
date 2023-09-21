@@ -26,7 +26,7 @@ export const UnsubscribeModal: React.FC = () => {
   useEffect(() => {
     if (loading) {
       unsubscribeModalService.closeModal()
-      showSuccessMessageToast(`Succesfully unsubscribed from ${app ? app.metadata.name : `dapp`}`)
+      showSuccessMessageToast(`Successfully unsubscribed from ${app ? app.metadata.name : `dapp`}`)
       setLoading(false)
     }
   }, [location])
