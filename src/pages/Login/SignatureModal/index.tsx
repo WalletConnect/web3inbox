@@ -42,18 +42,19 @@ export const SignatureModal: React.FC<{
       .catch(() => {
         setSigning(false)
       })
-      .finally(() => setSigning(false))
+      .finally(() =>
+        setTimeout(() => {
+          setSigning(false)
+        }, 3000)
+      )
   }, [message, sender, setSigning])
 
   // Modal is ready to sign when given a new purpose
   useEffect(() => {
     setTimeout(() => {
       setSigning(false)
-    }, 0)
+    }, 3000)
   }, [purpose, setSigning])
-
-  const purposeMessage =
-    purpose === 'identity' ? 'Sign for your identity key.' : 'Sign for syncing capabilities'
 
   return (
     <Modal onToggleModal={signatureModalService.toggleModal}>

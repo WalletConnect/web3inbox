@@ -37,6 +37,13 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
 
   const subscribed = activeSubscriptions.some(element => element.metadata.name === name)
 
+  useEffect(() => {
+    if (subscribing && subscribed) {
+      showSuccessMessageToast(`Subscribed to ${name}`)
+      setSubscribing(false)
+    }
+  }, [subscribed])
+
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
@@ -46,22 +53,13 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       }
       setSubscribing(true)
       try {
-        pushClientProxy?.observeOne('notify_subscription', {
-          next: () => {
-            showSuccessMessageToast(`Subscribed to ${name}`)
-          }
-        })
-
         await pushClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,
           appDomain: new URL(url).host
         })
       } catch (error) {
-        console.log({ error })
-
-        showErrorMessageToast(`Failed to subscribe to ${name}`)
-      } finally {
         setSubscribing(false)
+        showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
     [userPubkey, name, description, logo, bgColor, url, setSubscribing]
@@ -92,7 +90,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         />
         {subscribed ? (
           <>
-            <Button disabled className="AppCard__mobile__button">
+            <Button disabled className="AppCard__mobile__button__subscribed">
               Subscribed
               <CheckMarkIcon />
             </Button>
@@ -100,7 +98,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         ) : (
           <Button
             disabled={subscribing}
-            className="AppCard__mobile__button"
+            className="AppCard__mobile__button__subscribe"
             onClick={handleSubscription}
           >
             {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
@@ -122,7 +120,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         </Text>
         {subscribed ? (
           <>
-            <Button disabled className="AppCard__body__subscribe">
+            <Button disabled className="AppCard__body__subscribed">
               Subscribed
               <CheckMarkIcon />
             </Button>

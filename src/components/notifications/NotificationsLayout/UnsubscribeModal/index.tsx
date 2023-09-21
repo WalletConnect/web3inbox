@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import SettingsContext from '../../../../contexts/SettingsContext/context'
 import W3iContext from '../../../../contexts/W3iContext/context'
 import { useColorModeValue, useModals } from '../../../../utils/hooks'
@@ -8,29 +8,38 @@ import CrossIcon from '../../../general/Icon/CrossIcon'
 import { Modal } from '../../../general/Modal/Modal'
 import './UnsubscribeModal.scss'
 import Text from '../../../general/Text'
+import Spinner from '../../../general/Spinner'
+import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
+import { useLocation } from 'react-router-dom'
 
 export const UnsubscribeModal: React.FC = () => {
-  const { mode } = useContext(SettingsContext)
-  const themeColors = useColorModeValue(mode)
+  const location = useLocation()
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const { unsubscribeModalAppId } = useModals()
+  const [loading, setLoading] = useState(false)
 
   const app = useMemo(
     () => activeSubscriptions.find(activeApp => activeApp.topic === unsubscribeModalAppId),
     [unsubscribeModalAppId]
   )
 
+  useEffect(() => {
+    if (loading) {
+      unsubscribeModalService.closeModal()
+      showSuccessMessageToast(`Succesfully unsubscribed from ${app ? app.metadata.name : `dapp`}`)
+      setLoading(false)
+    }
+  }, [location])
+
   const handleUnsubscribe = useCallback(async () => {
+    setLoading(true)
     if (pushClientProxy && unsubscribeModalAppId) {
       try {
-        pushClientProxy.observeOne('notify_delete', {
-          next: () => {
-            unsubscribeModalService.closeModal()
-          }
-        })
         await pushClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
       } catch (error) {
         console.error(error)
+        showErrorMessageToast(`Unsubscribing failed, try again later`)
+        setLoading(false)
       }
     }
   }, [pushClientProxy, unsubscribeModalAppId])
@@ -69,7 +78,11 @@ export const UnsubscribeModal: React.FC = () => {
           className="UnsubscribeModal__action"
           onClick={handleUnsubscribe}
         >
-          <Text variant="small-600">Disable Notifications</Text>
+          {loading ? (
+            <Spinner width="1.25em" />
+          ) : (
+            <Text variant="small-600">Disable Notifications</Text>
+          )}
         </Button>
       </div>
     </Modal>

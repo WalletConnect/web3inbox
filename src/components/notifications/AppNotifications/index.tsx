@@ -1,6 +1,6 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { Navigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { noop } from 'rxjs'
 import W3iContext from '../../../contexts/W3iContext/context'
 import AppNotificationItem from './AppNotificationItem'
@@ -31,6 +31,8 @@ const AppNotifications = () => {
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
+  const [currentApp, setCurrentApp] = useState<NotifyClientTypes.NotifySubscription>()
+  const navigate = useNavigate()
 
   const [notificationsDrag, setNotificationsDrag] = useState<
     AppNotificationsDragProps[] | undefined
@@ -57,6 +59,18 @@ const AppNotifications = () => {
   }, [updateMessages])
 
   useEffect(() => {
+    if (app) {
+      setCurrentApp(app)
+    }
+
+    if (currentApp) {
+      if (!app) {
+        navigate('/notifications/new-app')
+      }
+    }
+  }, [app])
+
+  useEffect(() => {
     if (!(pushClientProxy && topic)) {
       return noop
     }
@@ -74,74 +88,55 @@ const AppNotifications = () => {
     }
   }, [pushClientProxy, setNotifications, topic])
 
-  return app?.metadata ? (
-    <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>
-      <div className="AppNotifications">
-        <div className="AppNotifications__border"></div>
-        <AppNotificationsHeader
-          id={app.topic}
-          name={app.metadata.name}
-          logo={app.metadata.icons[0]}
-        />
-        <MobileHeader back="/notifications" notificationId={app.topic} title={app.metadata.name} />
-        <AppNotificationsCardMobile />
-        {notifications.length > 0 ? (
-          <>
-            {/* <div className="AppNotifications__list">
-              <Label color="accent">Unread</Label>
-              <>
-                {notifications.map(notification => (
-                  <AppNotificationItem
-                    key={notification.id}
-                    onClear={updateMessages}
-                    notification={{
-                      timestamp: notification.publishedAt,
-                      // We do not manage read status for now.
-                      isRead: false,
-                      id: notification.id.toString(),
-                      message: notification.message.body,
-                      title: notification.message.title,
-                      image: notification.message.icon,
-                      url: notification.message.url
-                    }}
-                    appLogo={app.metadata.icons[0]}
-                  />
-                ))}
-              </>
-            </div> */}
-
-            <div className="AppNotifications__list">
-              <Label color="main">Latest</Label>
-              <>
-                {notifications
-                  .sort((a, b) => b.publishedAt - a.publishedAt)
-                  .map(notification => (
-                    <AppNotificationItem
-                      key={notification.id}
-                      onClear={updateMessages}
-                      notification={{
-                        timestamp: notification.publishedAt,
-                        // We do not manage read status for now.
-                        isRead: true,
-                        id: notification.id.toString(),
-                        message: notification.message.body,
-                        title: notification.message.title,
-                        image: notification.message.icon,
-                        url: notification.message.url
-                      }}
-                      appLogo={app.metadata.icons[0]}
-                    />
-                  ))}
-              </>
-            </div>
-          </>
-        ) : (
-          <AppNotificationsEmpty icon={app.metadata.icons[0]} name={app.metadata.name} />
-        )}
-      </div>
-    </AppNotificationDragContext.Provider>
-  ) : (
-    <Navigate to="/notifications/new-app" />
+  return (
+    app?.metadata && (
+      <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>
+        <div className="AppNotifications">
+          <div className="AppNotifications__border"></div>
+          <AppNotificationsHeader
+            id={app.topic}
+            name={app.metadata.name}
+            logo={app.metadata.icons[0]}
+          />
+          <MobileHeader
+            back="/notifications"
+            notificationId={app.topic}
+            title={app.metadata.name}
+          />
+          <AppNotificationsCardMobile />
+          {notifications.length > 0 ? (
+            <>
+              <div className="AppNotifications__list">
+                <Label color="main">Latest</Label>
+                <>
+                  {notifications
+                    .sort((a, b) => b.publishedAt - a.publishedAt)
+                    .map(notification => (
+                      <AppNotificationItem
+                        key={notification.id}
+                        onClear={updateMessages}
+                        notification={{
+                          timestamp: notification.publishedAt,
+                          // We do not manage read status for now.
+                          isRead: true,
+                          id: notification.id.toString(),
+                          message: notification.message.body,
+                          title: notification.message.title,
+                          image: notification.message.icon,
+                          url: notification.message.url
+                        }}
+                        appLogo={app.metadata.icons[0]}
+                      />
+                    ))}
+                </>
+              </div>
+            </>
+          ) : (
+            <AppNotificationsEmpty icon={app.metadata.icons[0]} name={app.metadata.name} />
+          )}
+        </div>
+      </AppNotificationDragContext.Provider>
+    )
   )
 }
 
