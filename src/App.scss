@@ -16,6 +16,8 @@
   .TargetSelector {
     grid-area: target-selector;
     display: var(--targetselector-display);
+    max-height: 100vh;
+    overflow-y: scroll;
   }
   .Sidebar {
     padding-top: 1.25em;

@@ -6,11 +6,19 @@
   max-width: 100vw;
   margin-right: 30%;
 
+  z-index: -1;
+  backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  will-change: opacity;
+
   @media only screen and (max-width: 1300px) {
     margin-right: 0%;
   }
 
   @media only screen and (max-width: 700px) {
+    margin-bottom: 20%;
     overflow-x: hidden;
   }
 

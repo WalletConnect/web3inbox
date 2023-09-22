@@ -22,17 +22,7 @@ const NotificationsLayout: React.FC = () => {
       </div>
 
       <div className="Main">
-        <AnimatePresence>
-          <motion.div
-            style={{ height: '100%' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.33 }}
-          >
-            <Outlet />
-          </motion.div>
-        </AnimatePresence>
+        <Outlet />
       </div>
     </Fragment>
   )

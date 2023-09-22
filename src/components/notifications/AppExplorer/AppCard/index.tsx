@@ -37,20 +37,20 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
 
   const subscribed = activeSubscriptions.some(element => element.metadata.name === name)
 
-  useEffect(() => {
-    if (subscribing && subscribed) {
-      showSuccessMessageToast(`Subscribed to ${name}`)
-      setSubscribing(false)
-    }
-  }, [subscribed])
-
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-      console.log({ userPubkey })
+
       if (!userPubkey) {
         return
       }
+
+      if (subscribing && subscribed) {
+        showSuccessMessageToast(`Subscribed to ${name}`)
+
+        return
+      }
+
       setSubscribing(true)
       try {
         await pushClientProxy?.subscribe({
@@ -62,7 +62,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
-    [userPubkey, name, description, logo, bgColor, url, setSubscribing]
+    [userPubkey, name, description, logo, bgColor, url, setSubscribing, subscribed]
   )
 
   return (
