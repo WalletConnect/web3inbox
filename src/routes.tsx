@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import App from './App'
 import Web3InboxPlaceholder from './components/general/Web3InboxPlaceholder'
 import ChatInvites from './components/messages/ChatInvites'
@@ -7,7 +8,6 @@ import ThreadWindow from './components/messages/ThreadWindow'
 import AppExplorer from './components/notifications/AppExplorer'
 import AppNotifications from './components/notifications/AppNotifications'
 import NotificationsLayout from './components/notifications/NotificationsLayout'
-import Settings from './components/settings/Settings'
 import SettingsLayout from './components/settings/SettingsLayout'
 import Login from './pages/Login'
 import ScanQrCode from './pages/ScanQrCode'
@@ -19,10 +19,11 @@ import WidgetSubscribe from './pages/widget/Subscribe'
 import WidgetConnect from './pages/widget/Connect'
 import AppearanceSettings from './components/settings/AppearanceSettings'
 import NotificationsSettings from './components/settings/NotificationsSettings'
-import PrivacySettings from './components/settings/PrivacySettings'
+import { useIsMobile } from './utils/hooks'
 
 const ConfiguredRoutes: React.FC = () => {
   const { uiEnabled } = useContext(W3iContext)
+  const isMobile = useIsMobile()
 
   const defaultPage =
     Object.entries({
@@ -39,10 +40,18 @@ const ConfiguredRoutes: React.FC = () => {
 
       <Route path="/" element={<App />}>
         {uiEnabled.notify ? (
-          <Route path="notifications" element={<NotificationsLayout />}>
-            <Route path="/notifications/new-app" element={<AppExplorer />} />
-            <Route path="/notifications/:topic" element={<AppNotifications />} />
-          </Route>
+          isMobile ? (
+            <>
+              <Route path="notifications" element={<NotificationsLayout />} />
+              <Route path="/notifications/new-app" element={<AppExplorer />} />
+              <Route path="/notifications/:topic" element={<AppNotifications />} />
+            </>
+          ) : (
+            <Route path="notifications" element={<NotificationsLayout />}>
+              <Route path="/notifications/new-app" element={<AppExplorer />} />
+              <Route path="/notifications/:topic" element={<AppNotifications />} />
+            </Route>
+          )
         ) : null}
         {uiEnabled.chat ? (
           <Route path="messages" element={<MessagesLayout />}>

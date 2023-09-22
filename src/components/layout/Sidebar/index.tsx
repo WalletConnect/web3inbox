@@ -70,12 +70,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
 
       <SidebarItem>
         {isLoggedIn ? (
-          <Avatar
-            address={userPubkey as `0x${string}`}
-            width="2em"
-            height="2em"
-            hasProfileDropdown
-          />
+          <Avatar address={userPubkey as `0x${string}`} width="2em" height="2em" />
         ) : (
           <ConnectWalletButton />
         )}

@@ -6,16 +6,24 @@
   max-width: 100vw;
   margin-right: 30%;
 
+  z-index: -1;
+  backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  will-change: opacity;
+
   @media only screen and (max-width: 1300px) {
     margin-right: 0%;
   }
 
+  @media only screen and (max-width: 700px) {
+    margin-bottom: 20%;
+    overflow-x: hidden;
+  }
+
   .IntroContent {
     margin-top: 2.25rem;
-
-    &__Background {
-      transform: scale(2.5) translateY(-15%) translateX(5%);
-    }
   }
 
   &__apps {

@@ -116,31 +116,10 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
 
   return (
     <LazyMotion features={domMax}>
-      <m.div
-        drag={isMobile && 'x'}
-        animate={dragControls}
-        dragConstraints={{ left: 0, right: DRAG_OFFSET }}
-        onDragEnd={handleDragEnd}
-        onDrag={handleDrag}
-        onDragStart={handleDragStart}
-        dragElastic={false}
-        whileHover={{ scale: isMobile ? 1.01 : 1 }}
-        whileDrag={{ scale: 1.01 }}
-        initial="hidden"
-        variants={{
-          hidden: { x: 0 },
-          visible: { x: DRAG_OFFSET }
-        }}
+      <div
         className={`AppNotifications__item ${
           notification.isRead ? '' : 'AppNotifications__item--blue'
         }`}
-        onMouseEnter={() => setDropdownToShow(notification.id)}
-        onMouseLeave={() => setDropdownToShow(undefined)}
-        onClick={() => {
-          if (!animating) {
-            setShow(!show)
-          }
-        }}
       >
         <m.div
           animate={actionControls}
@@ -209,7 +188,7 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
           )}
           {notification.url && <ExternalLink link={notification.url}>Visit Link</ExternalLink>}
         </div>
-      </m.div>
+      </div>
     </LazyMotion>
   )
 }

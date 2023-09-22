@@ -12,7 +12,6 @@ export const SignatureModal: React.FC<{
   message: string
   sender: 'chat' | 'push'
 }> = ({ message, sender }) => {
-  const purpose: 'identity' | 'sync' = message.includes('did:key') ? 'identity' : 'sync'
   /*
    * If identity was already signed, and sync was requested then we are in the
    * final step.
@@ -42,18 +41,13 @@ export const SignatureModal: React.FC<{
       .catch(() => {
         setSigning(false)
       })
-      .finally(() => setSigning(false))
+      .finally(() => {
+        signatureModalService.closeModal()
+        setTimeout(() => {
+          setSigning(false)
+        }, 300)
+      })
   }, [message, sender, setSigning])
-
-  // Modal is ready to sign when given a new purpose
-  useEffect(() => {
-    setTimeout(() => {
-      setSigning(false)
-    }, 0)
-  }, [purpose, setSigning])
-
-  const purposeMessage =
-    purpose === 'identity' ? 'Sign for your identity key.' : 'Sign for syncing capabilities'
 
   return (
     <Modal onToggleModal={signatureModalService.toggleModal}>

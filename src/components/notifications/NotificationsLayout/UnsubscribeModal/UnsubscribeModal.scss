@@ -52,6 +52,7 @@
     align-items: center;
     gap: 0.5rem;
     &__title {
+      text-align: center;
       color: var(--fg-color-1);
     }
     &__helper-text {
@@ -65,5 +66,12 @@
     border: none;
     border-radius: 10px;
     margin: 2.125rem 1.25rem 1.25rem 1.25rem;
+    height: 2.4375rem;
+
+    .Spinner {
+      circle {
+        stroke: white;
+      }
+    }
   }
 }

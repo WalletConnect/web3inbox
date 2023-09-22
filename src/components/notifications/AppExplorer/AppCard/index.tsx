@@ -37,44 +37,50 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
 
   const subscribed = activeSubscriptions.some(element => element.metadata.name === name)
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.style.setProperty('--local-bg-color', cardBgColor)
-    }
-  }, [])
-
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-      console.log({ userPubkey })
+
       if (!userPubkey) {
         return
       }
+
+      if (subscribing && subscribed) {
+        showSuccessMessageToast(`Subscribed to ${name}`)
+
+        return
+      }
+
       setSubscribing(true)
       try {
-        pushClientProxy?.observeOne('notify_subscription', {
-          next: () => {
-            showSuccessMessageToast(`Subscribed to ${name}`)
-          }
-        })
-
         await pushClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,
           appDomain: new URL(url).host
         })
       } catch (error) {
-        console.log({ error })
-
-        showErrorMessageToast(`Failed to subscribe to ${name}`)
-      } finally {
         setSubscribing(false)
+        showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
-    [userPubkey, name, description, logo, bgColor, url, setSubscribing]
+    [userPubkey, name, description, logo, bgColor, url, setSubscribing, subscribed]
   )
 
   return (
-    <div ref={ref} className="AppCard" rel="noopener noreferrer">
+    <div
+      ref={ref}
+      style={{
+        background: `
+        linear-gradient(0deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
+        radial-gradient(
+          140.74% 145.41% at 7.1% 2.28%,
+          ${cardBgColor} 0%,
+          rgba(255, 255, 255, 0) 80%
+        )
+      `
+      }}
+      className="AppCard"
+      rel="noopener noreferrer"
+    >
       <div className="AppCard__header">
         <img
           className="AppCard__header__logo"
@@ -84,7 +90,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         />
         {subscribed ? (
           <>
-            <Button disabled className="AppCard__mobile__button">
+            <Button disabled className="AppCard__mobile__button__subscribed">
               Subscribed
               <CheckMarkIcon />
             </Button>
@@ -92,10 +98,8 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         ) : (
           <Button
             disabled={subscribing}
-            className="AppCard__mobile__button"
-            onClick={e => {
-              handleSubscription(e)
-            }}
+            className="AppCard__mobile__button__subscribe"
+            onClick={handleSubscription}
           >
             {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
           </Button>
@@ -116,7 +120,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         </Text>
         {subscribed ? (
           <>
-            <Button disabled className="AppCard__body__subscribe">
+            <Button disabled className="AppCard__body__subscribed">
               Subscribed
               <CheckMarkIcon />
             </Button>
@@ -125,9 +129,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           <Button
             disabled={subscribing}
             className="AppCard__body__subscribe"
-            onClick={e => {
-              handleSubscription(e)
-            }}
+            onClick={handleSubscription}
           >
             {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
           </Button>

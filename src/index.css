@@ -6,6 +6,13 @@ body {
   background: #fff;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
     Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  overflow-y: hidden;
+}
+
+@media only screen and (max-width: 700px) {
+  body {
+    overflow-y: unset;
+  }
 }
 
 *,

@@ -4,19 +4,28 @@
   text-decoration: none;
   height: fit-content;
   outline: 1px solid rgba(0, 0, 0, 0.1);
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
-    radial-gradient(
-      140.74% 145.41% at 7.1% 2.28%,
-      var(--local-bg-color) 0%,
-      rgba(255, 255, 255, 0) 80%
-    );
 
   @media only screen and (max-width: 700px) {
     border-radius: 0.75rem;
     padding: 1rem;
   }
 
-  &__mobile__button {
+  &__mobile__button__subscribe {
+    &:disabled {
+      background-color: var(--accent-color-1);
+
+      .Spinner {
+        circle {
+          stroke: white;
+        }
+      }
+    }
+  }
+
+  &__mobile__button__subscribed,
+  &__mobile__button__subscribe {
+    min-width: 84px;
+    height: 28px;
     @media only screen and (min-width: 700px) {
       display: none;
     }
@@ -109,6 +118,29 @@
       @media only screen and (max-width: 700px) {
         display: none;
       }
+
+      &:disabled {
+        background-color: var(--accent-color-1);
+
+        .Spinner {
+          circle {
+            stroke: white;
+          }
+        }
+      }
+
+      min-width: 84px;
+      width: max-content;
+      margin-top: 1.5rem;
+      cursor: pointer;
+      height: 28px;
+    }
+
+    &__subscribed {
+      @media only screen and (max-width: 700px) {
+        display: none;
+      }
+
       min-width: 84px;
       width: max-content;
       margin-top: 1.5rem;

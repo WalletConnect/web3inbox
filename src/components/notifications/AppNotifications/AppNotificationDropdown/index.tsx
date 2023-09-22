@@ -25,10 +25,6 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
 }) => {
   const { pushClientProxy } = useContext(W3iContext)
 
-  const handleMute = useCallback(() => {
-    // mute
-  }, [])
-
   const handleUnsubscribe = useCallback(() => {
     closeDropdown()
     unsubscribeModalService.toggleModal(notificationId)
@@ -42,10 +38,6 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
   return (
     <Dropdown btnShape="square" h={h} w={w} dropdownPlacement={dropdownPlacement}>
       <div className="AppNotificationDropdown__actions">
-        <button onClick={handleMute}>
-          <NotificationMuteIcon />
-          <span>Mute</span>
-        </button>
         <button onClick={handleOpenNotificationPreferencesModal}>
           <PreferencesIcon />
           <span>Preferences</span>
