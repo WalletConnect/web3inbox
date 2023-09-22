@@ -12,7 +12,6 @@ export const SignatureModal: React.FC<{
   message: string
   sender: 'chat' | 'push'
 }> = ({ message, sender }) => {
-  const purpose: 'identity' | 'sync' = message.includes('did:key') ? 'identity' : 'sync'
   /*
    * If identity was already signed, and sync was requested then we are in the
    * final step.
@@ -42,11 +41,12 @@ export const SignatureModal: React.FC<{
       .catch(() => {
         setSigning(false)
       })
-      .finally(() =>
+      .finally(() => {
+        signatureModalService.closeModal()
         setTimeout(() => {
           setSigning(false)
-        }, 5000)
-      )
+        }, 300)
+      })
   }, [message, sender, setSigning])
 
   return (

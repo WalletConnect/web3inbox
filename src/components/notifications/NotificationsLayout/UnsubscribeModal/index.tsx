@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import SettingsContext from '../../../../contexts/SettingsContext/context'
+import React, { useCallback, useContext, useMemo, useState } from 'react'
 import W3iContext from '../../../../contexts/W3iContext/context'
-import { useColorModeValue, useModals } from '../../../../utils/hooks'
+import { useModals } from '../../../../utils/hooks'
 import { unsubscribeModalService } from '../../../../utils/store'
 import Button from '../../../general/Button'
 import CrossIcon from '../../../general/Icon/CrossIcon'
@@ -10,35 +9,37 @@ import './UnsubscribeModal.scss'
 import Text from '../../../general/Text'
 import Spinner from '../../../general/Spinner'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const UnsubscribeModal: React.FC = () => {
-  const location = useLocation()
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const { unsubscribeModalAppId } = useModals()
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const app = useMemo(
     () => activeSubscriptions.find(activeApp => activeApp.topic === unsubscribeModalAppId),
     [unsubscribeModalAppId]
   )
 
-  useEffect(() => {
-    if (loading) {
-      unsubscribeModalService.closeModal()
-      showSuccessMessageToast(`Successfully unsubscribed from ${app ? app.metadata.name : `dapp`}`)
-      setLoading(false)
-    }
-  }, [location])
-
   const handleUnsubscribe = useCallback(async () => {
     setLoading(true)
     if (pushClientProxy && unsubscribeModalAppId) {
       try {
+        pushClientProxy.observeOne('notify_delete', {
+          next: () => {
+            unsubscribeModalService.closeModal()
+            showSuccessMessageToast(
+              `Successfully unsubscribed from ${app ? app.metadata.name : `dapp`}`
+            )
+            setLoading(false)
+            navigate('/notifications/new-app')
+          }
+        })
         await pushClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
       } catch (error) {
         console.error(error)
-        showErrorMessageToast(`Unsubscribing failed, try again later`)
+        showErrorMessageToast(`Unsubscribing failed, please try again`)
         setLoading(false)
       }
     }

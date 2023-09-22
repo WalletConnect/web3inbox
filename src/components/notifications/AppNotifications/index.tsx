@@ -1,6 +1,6 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { noop } from 'rxjs'
 import W3iContext from '../../../contexts/W3iContext/context'
 import AppNotificationItem from './AppNotificationItem'
@@ -33,8 +33,7 @@ const AppNotifications = () => {
   const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
-  const [currentApp, setCurrentApp] = useState<NotifyClientTypes.NotifySubscription>()
-  const navigate = useNavigate()
+
   const ref = useRef<HTMLDivElement>(null)
 
   const [notificationsDrag, setNotificationsDrag] = useState<
@@ -60,18 +59,6 @@ const AppNotifications = () => {
   useEffect(() => {
     updateMessages()
   }, [updateMessages])
-
-  useEffect(() => {
-    if (app) {
-      setCurrentApp(app)
-    }
-
-    if (currentApp) {
-      if (!app) {
-        navigate('/notifications/new-app')
-      }
-    }
-  }, [app])
 
   useEffect(() => {
     if (!(pushClientProxy && topic)) {
