@@ -9,8 +9,10 @@ import pino from 'pino'
 import type { UiEnabled } from '../contexts/W3iContext/context'
 import { identifyMixpanelUserAndInit } from '../utils/mixpanel'
 import W3iAuthFacade from './w3iAuthFacade'
+import type W3iChatFacade from './w3iChatFacade'
 import W3iPushFacade from './w3iPushFacade'
 
+export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 export type W3iPushClient = Omit<W3iPushFacade, 'initState'>
 
 declare global {

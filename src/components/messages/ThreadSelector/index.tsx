@@ -23,10 +23,10 @@ const ThreadSelector: React.FC = () => {
   const isMobile = useIsMobile()
   const { isChatSearchOpen } = useSearch()
 
-  const [filteredThreadTopics, setFilteredThreadTopics] = useState<
+  const [filteredThreadTopics] = useState<
     { topic: string; message?: string; timestamp?: number }[]
   >([])
-  const { threads, invites, chatClientProxy, sentInvites } = useContext(W3iContext)
+  const { threads, invites, sentInvites } = useContext(W3iContext)
 
   const filteredThreads = useMemo(() => {
     return threads.filter(
@@ -36,6 +36,7 @@ const ThreadSelector: React.FC = () => {
     )
   }, [threads, filteredThreadTopics])
 
+  // Commit it was removed: 9e95e32053c7ef0e3d605dbe8b6fea7e2ddbbf48
   const filterThreads = useCallback((_search: string) => {
     return []
   }, [])

@@ -1,7 +1,6 @@
 import React, { useCallback, useContext } from 'react'
 import capitalize from 'lodash/capitalize'
 import SettingsContext from '../../../contexts/SettingsContext/context'
-import W3iContext from '../../../contexts/W3iContext/context'
 import SearchSvg from '../../../assets/Search.svg'
 import { useColorModeValue } from '../../../utils/hooks'
 import { contactsModalService } from '../../../utils/store'
@@ -30,15 +29,12 @@ const ContactsModal: React.FC<ContactsModalProps> = ({
   mutedContacts,
   setMutedContacts
 }) => {
-  const { chatClientProxy } = useContext(W3iContext)
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
 
   const handleContactAction = useCallback(
-    async (topic: string) => {
+    (topic: string) => {
       if (status === 'muted') {
-        await chatClientProxy?.unmuteContact({ topic })
-
         setMutedContacts(currentlyMutedContacts =>
           currentlyMutedContacts.filter(contacts => topic !== contacts.topic)
         )
@@ -70,7 +66,7 @@ const ContactsModal: React.FC<ContactsModalProps> = ({
           {mutedContacts.map(contact => (
             <div key={contact.topic} className="ContactsModal__content__contact">
               <PeerAndMessage peer={contact.address} message="" withAvatar={true} />
-              <Button customType="action" onClick={async () => handleContactAction(contact.topic)}>
+              <Button customType="action" onClick={() => handleContactAction(contact.topic)}>
                 {status === 'muted' ? 'Unmute' : 'Unblock'}
               </Button>
             </div>

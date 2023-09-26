@@ -52,7 +52,7 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
 const Settings: React.FC = () => {
   const { mode, newContacts, isDevModeEnabled, updateSettings } = useContext(SettingsContext)
   const { isContactModalOpen } = useModals()
-  const { chatClientProxy, threads, uiEnabled } = useContext(W3iContext)
+  const { uiEnabled } = useContext(W3iContext)
   const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
   const { pathname } = useLocation()
   const { setThemeMode } = useWeb3ModalTheme()
@@ -71,29 +71,6 @@ const Settings: React.FC = () => {
     },
     [updateSettings]
   )
-
-  useEffect(() => {
-    if (!chatClientProxy || !uiEnabled.chat) {
-      return
-    }
-
-    chatClientProxy.getMutedContacts().then(mContacts => {
-      setMutedContacts(
-        mContacts
-          .filter(mutedContact => {
-            const address = threads.find(t => t.topic === mutedContact)?.peerAccount
-
-            return Boolean(address)
-          })
-          .map(mutedContact => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const address = threads.find(t => t.topic === mutedContact)!.peerAccount
-
-            return { address, topic: mutedContact }
-          })
-      )
-    })
-  }, [chatClientProxy, threads, uiEnabled])
 
   return (
     <div className="Settings">

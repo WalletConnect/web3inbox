@@ -15,7 +15,7 @@ interface W3iContextProviderProps {
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
   const { uiEnabled } = useUiState()
   const { dappOrigin, dappIcon, dappName, dappNotificationDescription } = useDappOrigin()
-  const { chatProvider, pushProvider, authProvider } = useProviderQueries()
+  const { pushProvider, authProvider } = useProviderQueries()
   const [w3iProxy, isW3iProxyReady] = useW3iProxy()
 
   const { userPubkey, setUserPubkey } = useAuthState(w3iProxy, isW3iProxyReady)
@@ -31,7 +31,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   return (
     <W3iContext.Provider
       value={{
-        chatProvider,
+        chatClientProxy: null,
         pushProvider,
         authProvider,
         userPubkey,
@@ -42,7 +42,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         dappIcon,
         refreshNotifications: refreshPushState,
         refreshThreadsAndInvites: noop,
-        chatClientProxy: null,
         activeSubscriptions,
         pushRegisteredKey,
         setUserPubkey,
@@ -50,9 +49,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         pushClientProxy: pushClient,
         sentInvites: [],
         threads: [],
-        invites: [],
-        chatRegisteredKey: null,
-        chatRegisterMessage: null
+        invites: []
       }}
     >
       {children}
