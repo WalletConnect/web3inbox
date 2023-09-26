@@ -1,4 +1,4 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
+import type { ChatClientTypes } from '../../w3iProxy/chatProviders/types'
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import type { Dispatch, SetStateAction } from 'react'
 // eslint-disable-next-line no-duplicate-imports

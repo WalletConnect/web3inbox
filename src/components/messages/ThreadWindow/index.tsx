@@ -1,4 +1,4 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
+import type { ChatClientTypes } from '../../../w3iProxy/chatProviders/types'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'

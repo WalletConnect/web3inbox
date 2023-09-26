@@ -3,7 +3,6 @@ import W3iContext from '../../../contexts/W3iContext/context'
 import Textarea from '../../general/Textarea'
 import './MessageBox.scss'
 import SendIcon from '../../general/Icon/SendIcon'
-import type { ChatClientTypes } from '@walletconnect/chat-client'
 
 interface MessageBoxProps {
   topic: string
@@ -16,7 +15,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ topic, authorAccount }) => {
 
   const inviteStatus = useMemo(() => {
     if (topic.includes('invite:')) {
-      return topic.split(':')[1] as ChatClientTypes.SentInvite['status']
+      return topic.split(':')[1]
     }
 
     return 'approved'

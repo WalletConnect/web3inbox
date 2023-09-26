@@ -51,7 +51,7 @@ const ThreadDropdown: React.FC<ThreadDropdownProps> = ({ w, h, dropdownPlacement
   useEffect(() => {
     if (chatClientProxy) {
       chatClientProxy.getMutedContacts().then(mutedContacts => {
-        const foundMutedContact = mutedContacts.find(
+        const foundMutedContact = (mutedContacts as string[]).find(
           contactThreadcId => contactThreadcId === threadId
         )
         if (foundMutedContact) {
