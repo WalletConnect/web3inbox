@@ -5,7 +5,6 @@ import W3iContext from '../../../../contexts/W3iContext/context'
 import { useColorModeValue, useModals } from '../../../../utils/hooks'
 import { preferencesModalService } from '../../../../utils/store'
 import Button from '../../../general/Button'
-import Divider from '../../../general/Divider'
 import CrossIcon from '../../../general/Icon/CrossIcon'
 import { Modal } from '../../../general/Modal/Modal'
 import Toggle from '../../../general/Toggle'
@@ -14,7 +13,7 @@ import { showErrorMessageToast, showSuccessMessageToast } from '../../../../util
 import Text from '../../../general/Text'
 
 export const PreferencesModal: React.FC = () => {
-  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
+  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const { mode } = useContext(SettingsContext)
   const themeColors = useColorModeValue(mode)
   const { preferencesModalAppId } = useModals()
@@ -46,13 +45,13 @@ export const PreferencesModal: React.FC = () => {
       const topic = preferencesModalAppId
 
       try {
-        pushClientProxy?.observeOne('notify_update', {
+        notifyClientProxy?.observeOne('notify_update', {
           next: () => {
             preferencesModalService.closeModal()
             showSuccessMessageToast('Preferences updated successfully')
           }
         })
-        await pushClientProxy?.update({
+        await notifyClientProxy?.update({
           topic,
           scope: getEnabledScopes(scopes)
         })
@@ -61,7 +60,7 @@ export const PreferencesModal: React.FC = () => {
         showErrorMessageToast('Failed to update preferences')
       }
     }
-  }, [preferencesModalAppId, pushClientProxy, scopes])
+  }, [preferencesModalAppId, notifyClientProxy, scopes])
 
   return (
     <Modal onToggleModal={preferencesModalService.toggleModal}>

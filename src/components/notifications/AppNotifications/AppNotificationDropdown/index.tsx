@@ -23,12 +23,12 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
   h,
   closeDropdown
 }) => {
-  const { pushClientProxy } = useContext(W3iContext)
+  const { notifyClientProxy } = useContext(W3iContext)
 
   const handleUnsubscribe = useCallback(() => {
     closeDropdown()
     unsubscribeModalService.toggleModal(notificationId)
-  }, [notificationId, closeDropdown, unsubscribeModalService, pushClientProxy])
+  }, [notificationId, closeDropdown, unsubscribeModalService, notifyClientProxy])
 
   const handleOpenNotificationPreferencesModal = useCallback(() => {
     preferencesModalService.toggleModal(notificationId)

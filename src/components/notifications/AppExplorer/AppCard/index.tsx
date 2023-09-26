@@ -25,7 +25,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   const [subscribing, setSubscribing] = useState(false)
   const { mode } = useContext(SettingsContext)
   const ref = useRef<HTMLDivElement>(null)
-  const { pushClientProxy, userPubkey, pushProvider } = useContext(W3iContext)
+  const { notifyClientProxy, userPubkey, notifyProvider } = useContext(W3iContext)
   const cardBgColor = useMemo(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     const specifiedMode = mode === 'system' ? systemTheme : mode
@@ -53,7 +53,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
 
       setSubscribing(true)
       try {
-        await pushClientProxy?.subscribe({
+        await notifyClientProxy?.subscribe({
           account: `eip155:1:${userPubkey}`,
           appDomain: new URL(url).host
         })

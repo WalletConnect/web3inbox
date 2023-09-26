@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import { createContext } from 'react'
 import { noop } from 'rxjs'
-import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
+import type { W3iChatClient, W3iNotifyClient } from '../../w3iProxy'
 
 export interface UiEnabled {
   chat: boolean
@@ -22,10 +22,10 @@ interface W3iContextState {
   threads: ChatClientTypes.Thread[]
   invites: ChatClientTypes.ReceivedInvite[]
   userPubkey?: string
-  pushClientProxy: W3iPushClient | null
-  pushRegisteredKey: string | null
-  pushRegisterMessage: string | null
-  pushProvider: string
+  notifyClientProxy: W3iNotifyClient | null
+  notifyRegisteredKey: string | null
+  notifyRegisterMessage: string | null
+  notifyProvider: string
   authProvider: string
   uiEnabled: UiEnabled
   dappOrigin: string
@@ -37,7 +37,7 @@ interface W3iContextState {
 }
 
 const W3iContext = createContext<W3iContextState>({
-  pushRegisteredKey: '',
+  notifyRegisteredKey: '',
   refreshThreadsAndInvites: noop,
   refreshNotifications: noop,
   setUserPubkey: noop,
@@ -46,9 +46,9 @@ const W3iContext = createContext<W3iContextState>({
   activeSubscriptions: [],
   sentInvites: [],
   invites: [],
-  pushClientProxy: null,
-  pushRegisterMessage: null,
-  pushProvider: '',
+  notifyClientProxy: null,
+  notifyRegisterMessage: null,
+  notifyProvider: '',
   authProvider: '',
   dappOrigin: '',
   dappIcon: '',

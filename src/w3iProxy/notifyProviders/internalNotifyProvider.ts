@@ -2,12 +2,12 @@ import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
-import type { W3iPushProvider } from './types'
+import type { W3iNotifyProvider } from './types'
 
-export default class InternalPushProvider implements W3iPushProvider {
-  private pushClient: NotifyClient | undefined
+export default class InternalNotifyProvider implements W3iNotifyProvider {
+  private notifyClient: NotifyClient | undefined
   private readonly emitter: EventEmitter
-  public providerName = 'InternalPushProvider'
+  public providerName = 'InternalNotifyProvider'
   private readonly methodsListenedTo = ['notify_signature_delivered']
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
@@ -18,20 +18,20 @@ export default class InternalPushProvider implements W3iPushProvider {
    * We need to re-register events from the chat client to the emitter
    * to allow the observers in the facade to work seamlessly.
    */
-  public initState(pushClient: NotifyClient) {
-    this.pushClient = pushClient
+  public initState(notifyClient: NotifyClient) {
+    this.notifyClient = notifyClient
 
-    this.pushClient.on('notify_subscription', args =>
+    this.notifyClient.on('notify_subscription', args =>
       this.emitter.emit('notify_subscription', args)
     )
-    this.pushClient.on('notify_message', args => this.emitter.emit('notify_message', args))
-    this.pushClient.on('notify_subscriptions_changed', args =>
+    this.notifyClient.on('notify_message', args => this.emitter.emit('notify_message', args))
+    this.notifyClient.on('notify_subscriptions_changed', args =>
       this.emitter.emit('notify_subscriptions_changed', args)
     )
-    this.pushClient.on('notify_update', args => this.emitter.emit('notify_update', args))
-    this.pushClient.on('notify_delete', args => this.emitter.emit('notify_delete', args))
+    this.notifyClient.on('notify_update', args => this.emitter.emit('notify_update', args))
+    this.notifyClient.on('notify_delete', args => this.emitter.emit('notify_delete', args))
 
-    this.pushClient.subscriptions.core.on('sync_store_update', () => {
+    this.notifyClient.subscriptions.core.on('sync_store_update', () => {
       this.emitter.emit('sync_update', {})
     })
   }
@@ -39,7 +39,7 @@ export default class InternalPushProvider implements W3iPushProvider {
   // ------------------------ Provider-specific methods ------------------------
 
   private formatClientRelatedError(method: string) {
-    return `An initialized PushClient is required for method: [${method}].`
+    return `An initialized NotifyClient is required for method: [${method}].`
   }
 
   public isListeningToMethodFromPostMessage(method: string) {
@@ -59,11 +59,11 @@ export default class InternalPushProvider implements W3iPushProvider {
   // ------------------- Method-forwarding for NotifyClient -------------------
 
   public async register(params: { account: string; domain: string }) {
-    if (!this.pushClient) {
+    if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
-    const identityKey = await this.pushClient.register({
+    const identityKey = await this.notifyClient.register({
       ...params,
       isLimited: false,
       onSign: async message => {
@@ -84,10 +84,10 @@ export default class InternalPushProvider implements W3iPushProvider {
   }
 
   public async subscribe(params: { appDomain: string; account: string }) {
-    if (!this.pushClient) {
+    if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
-    console.log('InternalPushProvider > PushClient.subscribe > params', params)
+    console.log('InternalNotifyProvider > NotifyClient.subscribe > params', params)
 
     /*
      * To prevent subscribing in local/dev environemntns failing,
@@ -96,7 +96,7 @@ export default class InternalPushProvider implements W3iPushProvider {
      */
 
     try {
-      const subscribed = await this.pushClient.subscribe({
+      const subscribed = await this.notifyClient.subscribe({
         ...params
       })
 
@@ -110,32 +110,32 @@ export default class InternalPushProvider implements W3iPushProvider {
   }
 
   public async update(params: { topic: string; scope: string[] }) {
-    if (!this.pushClient) {
+    if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('update'))
     }
 
-    const updated = await this.pushClient.update(params)
+    const updated = await this.notifyClient.update(params)
 
     return updated
   }
 
   public async deleteSubscription(params: { topic: string }) {
-    if (!this.pushClient) {
+    if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('deleteSubscription'))
     }
 
-    return this.pushClient.deleteSubscription(params)
+    return this.notifyClient.deleteSubscription(params)
   }
 
   public async getActiveSubscriptions(params?: { account: string }) {
-    if (!this.pushClient) {
+    if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('getActiveSubscriptions'))
     }
 
-    const subscriptions = this.pushClient.getActiveSubscriptions(params)
+    const subscriptions = this.notifyClient.getActiveSubscriptions(params)
 
     console.log(
-      'InternalPushProvider > PushClient.getActiveSubscriptions > subscriptions',
+      'InternalNotifyProvider > NotifyClient.getActiveSubscriptions > subscriptions',
       subscriptions
     )
 
@@ -143,23 +143,23 @@ export default class InternalPushProvider implements W3iPushProvider {
   }
 
   public async getMessageHistory(params: { topic: string }) {
-    if (!this.pushClient) {
+    if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('getMessageHistory'))
     }
 
-    const messages = this.pushClient.getMessageHistory(params)
+    const messages = this.notifyClient.getMessageHistory(params)
 
-    console.log('InternalPushProvider > PushClient.getMessageHistory > messages', messages)
+    console.log('InternalNotifyProvider > NotifyClient.getMessageHistory > messages', messages)
 
     return Promise.resolve(messages)
   }
 
   public async deleteNotifyMessage(params: { id: number }) {
-    if (!this.pushClient) {
+    if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('deleteNotifyMessage'))
     }
 
-    this.pushClient.deleteNotifyMessage(params)
+    this.notifyClient.deleteNotifyMessage(params)
 
     return Promise.resolve()
   }

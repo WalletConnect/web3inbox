@@ -5,9 +5,9 @@ import type { ExternalCommunicator } from '../externalCommunicators/communicator
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
 import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
 import { ReactNativeCommunicator } from '../externalCommunicators/reactNativeCommunicator'
-import type { PushClientFunctions, W3iPushProvider } from './types'
+import type { NotifyClientFunctions, W3iNotifyProvider } from './types'
 
-export default class ExternalPushProvider implements W3iPushProvider {
+export default class ExternalNotifyProvider implements W3iNotifyProvider {
   protected readonly emitter: EventEmitter
   private readonly methodsListenedTo = [
     'notify_subscription',
@@ -17,7 +17,7 @@ export default class ExternalPushProvider implements W3iPushProvider {
     'notify_delete',
     'sync_update'
   ]
-  public providerName = 'ExternalPushProvider'
+  public providerName = 'ExternalNotifyProvider'
   protected readonly communicator: ExternalCommunicator
 
   /*
@@ -42,11 +42,11 @@ export default class ExternalPushProvider implements W3iPushProvider {
     }
   }
 
-  protected async postToExternalProvider<MName extends keyof PushClientFunctions>(
+  protected async postToExternalProvider<MName extends keyof NotifyClientFunctions>(
     methodName: MName,
-    ...params: Parameters<PushClientFunctions[MName]>
+    ...params: Parameters<NotifyClientFunctions[MName]>
   ) {
-    return this.communicator.postToExternalProvider<ReturnType<PushClientFunctions[MName]>>(
+    return this.communicator.postToExternalProvider<ReturnType<NotifyClientFunctions[MName]>>(
       methodName,
       params[0],
       'notify'

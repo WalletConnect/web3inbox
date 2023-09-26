@@ -20,7 +20,7 @@ export interface ChatFacadeEvents {
   sync_update: never
 }
 
-export interface PushFacadeEvents {
+export interface NotifyFacadeEvents {
   notify_message: NotifyClientTypes.EventArguments['notify_message']
   notify_subscription: NotifyClientTypes.EventArguments['notify_subscription']
   notify_update: NotifyClientTypes.EventArguments['notify_update']

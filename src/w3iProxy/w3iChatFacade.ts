@@ -119,7 +119,7 @@ class W3iChatFacade implements W3iChat {
           const messages: ReplayMessage[] = []
           for (const message of messageMap.values()) {
             if (message.status !== 'sent') {
-              messages.push(message)
+              messages.notify(message)
             }
           }
           this.unsentMessages = messages

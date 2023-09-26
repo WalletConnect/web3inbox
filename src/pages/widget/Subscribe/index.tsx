@@ -11,7 +11,7 @@ import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommun
 
 const WidgetSubscribe: React.FC = () => {
   const {
-    pushClientProxy,
+    notifyClientProxy,
     userPubkey,
     dappOrigin,
     dappIcon,
@@ -25,7 +25,7 @@ const WidgetSubscribe: React.FC = () => {
   const [isSubscribing, setIsSubscribing] = useState(false)
 
   const handleOnSubscribe = useCallback(async () => {
-    if (!pushClientProxy || !userPubkey) {
+    if (!notifyClientProxy || !userPubkey) {
       return
     }
 
@@ -35,7 +35,7 @@ const WidgetSubscribe: React.FC = () => {
        * Not setting isLoading to false as it will transition to a different page once subscription is
        * done.
        */
-      await pushClientProxy.subscribe({
+      await notifyClientProxy.subscribe({
         account: `eip155:1:${userPubkey}`,
         appDomain: new URL(dappOrigin).host
       })
@@ -44,7 +44,7 @@ const WidgetSubscribe: React.FC = () => {
     } finally {
       setIsSubscribing(false)
     }
-  }, [pushClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
+  }, [notifyClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
 
   useEffect(() => {
     const dappSub = activeSubscriptions.find(sub => sub.metadata.appDomain === dappOrigin)

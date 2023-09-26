@@ -11,7 +11,7 @@ import IntroContent from '../../components/general/IntroContent'
 import IntroWallet from '../../components/general/Icon/IntroWallet'
 
 const Login: React.FC = () => {
-  const { userPubkey, uiEnabled, pushRegisteredKey, pushRegisterMessage } = useContext(W3iContext)
+  const { userPubkey, uiEnabled, notifyRegisteredKey, notifyRegisterMessage } = useContext(W3iContext)
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
@@ -24,17 +24,17 @@ const Login: React.FC = () => {
     if (userPubkey) {
       // Only need to trigger signatures for notify if none were issued for chat
       const notifyConditionsPass = Boolean(
-        (!uiEnabled.chat && uiEnabled.notify) || pushRegisteredKey
+        (!uiEnabled.chat && uiEnabled.notify) || notifyRegisteredKey
       )
 
       if (notifyConditionsPass) {
         nav(path)
         // Else if signature is required.
-      } else if (pushRegisterMessage) {
+      } else if (notifyRegisterMessage) {
         signatureModalService.openModal()
       }
     }
-  }, [userPubkey, next, pushRegisteredKey, uiEnabled])
+  }, [userPubkey, next, notifyRegisteredKey, uiEnabled])
 
   return (
     <TransitionDiv className="Login">

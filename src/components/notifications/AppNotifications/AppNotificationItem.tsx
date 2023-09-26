@@ -36,7 +36,7 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
   onClear
 }) => {
   const formattedTime = useFormattedTime(notification.timestamp)
-  const { pushClientProxy } = useContext(W3iContext)
+  const { notifyClientProxy } = useContext(W3iContext)
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [textClamped, setTextClamped] = useState<boolean>(false)
   const [show, setShow] = useState<boolean>(false)
@@ -76,9 +76,9 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
 
   const handleClearClick = useCallback(() => {
     dragControls.start('hidden')
-    pushClientProxy?.deleteNotifyMessage({ id: Number(notification.id) }).then(onClear)
+    notifyClientProxy?.deleteNotifyMessage({ id: Number(notification.id) }).then(onClear)
     actionControls.start('hidden')
-  }, [pushClientProxy, onClear])
+  }, [notifyClientProxy, onClear])
 
   const handleUnreadClick = () => {
     dragControls.start('hidden')

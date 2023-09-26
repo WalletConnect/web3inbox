@@ -1,8 +1,8 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NotifyClient } from '@walletconnect/notify-client'
 
-// Omitting non-method PushWalletClient keys
-type NonMethodPushClientKeys =
+// Omitting non-method NotifyWalletClient keys
+type NonMethodNotifyClientKeys =
   | 'context'
   | 'core'
   | 'decryptMessage'
@@ -39,7 +39,7 @@ type NonMethodPushClientKeys =
  * forcing their type (and implementing them as so) makes them
  * more seamless to implement with both internal & external providers
  */
-interface ModifiedPushClientFunctions {
+interface ModifiedNotifyClientFunctions {
   getActiveSubscriptions: (
     ...params: Parameters<NotifyClient['getActiveSubscriptions']>
   ) => Promise<ReturnType<NotifyClient['getActiveSubscriptions']>>
@@ -48,11 +48,11 @@ interface ModifiedPushClientFunctions {
   ) => Promise<ReturnType<NotifyClient['getMessageHistory']>>
 }
 
-export type PushClientFunctions = Omit<NotifyClient, NonMethodPushClientKeys>
-export type W3iPush = ModifiedPushClientFunctions &
-  Omit<PushClientFunctions, keyof ModifiedPushClientFunctions>
+export type NotifyClientFunctions = Omit<NotifyClient, NonMethodNotifyClientKeys>
+export type W3iNotify = ModifiedNotifyClientFunctions &
+  Omit<NotifyClientFunctions, keyof ModifiedNotifyClientFunctions>
 
-export type W3iPushProvider = W3iPush & {
+export type W3iNotifyProvider = W3iNotify & {
   isListeningToMethodFromPostMessage: (method: string) => boolean
   handleMessage: (request: JsonRpcRequest<unknown>) => void
 }
