@@ -1,6 +1,4 @@
-import debounce from 'lodash.debounce'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { concatAll, from, takeLast, takeWhile } from 'rxjs'
 import PlusIcon from '../../../assets/Plus.svg'
 import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
@@ -38,55 +36,9 @@ const ThreadSelector: React.FC = () => {
     )
   }, [threads, filteredThreadTopics])
 
-  const filterThreads = useCallback(
-    debounce((searchQuery: string) => {
-      if (!searchQuery || !chatClientProxy) {
-        setFilteredThreadTopics([])
-
-        return
-      }
-
-      const newFilteredThreadTopics: { topic: string; message?: string; timestamp?: number }[] = []
-
-      /*
-       * For every thread, check if the thread address matches the searchQuery
-       * If it does, add it to filtered topics
-       * If it doesn't, look through the last 100 messages (or until a match is
-       * found), if one is found add it to filtered topics with the matched
-       * message as the reason (so it can be showcased).
-       */
-      from(threads).subscribe({
-        next: thread => {
-          if (thread.peerAccount.includes(searchQuery)) {
-            newFilteredThreadTopics.push({ topic: thread.topic })
-
-            return
-          }
-
-          from(chatClientProxy.getMessages({ topic: thread.topic }))
-            .pipe(concatAll())
-            .pipe(takeLast(100))
-            .pipe(
-              takeWhile(messageToCheck => {
-                return !messageToCheck.message.includes(searchQuery)
-              }, true)
-            )
-            .pipe(takeLast(1))
-            .subscribe({
-              next: ({ message }) => {
-                if (message.includes(searchQuery)) {
-                  newFilteredThreadTopics.push({ topic: thread.topic, message })
-                }
-              }
-            })
-        },
-        complete: () => {
-          setFilteredThreadTopics(newFilteredThreadTopics)
-        }
-      })
-    }, 50),
-    [threads, chatClientProxy]
-  )
+  const filterThreads = useCallback((_search: string) => {
+    return []
+  }, [])
 
   useEffect(() => {
     filterThreads(search)

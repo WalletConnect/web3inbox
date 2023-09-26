@@ -3,10 +3,10 @@ import W3iContext from './context'
 import { useUiState } from './hooks/uiHooks'
 import { useProviderQueries } from './hooks/providerQueryHooks'
 import { useAuthState } from './hooks/authHooks'
-import { useChatState } from './hooks/chatHooks'
 import { usePushState } from './hooks/pushHooks'
 import { useW3iProxy } from './hooks/w3iProxyHooks'
 import { useDappOrigin } from './hooks/dappOrigin'
+import { noop } from 'rxjs'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -21,16 +21,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   const { userPubkey, setUserPubkey } = useAuthState(w3iProxy, isW3iProxyReady)
 
   const {
-    chatClient,
-    sentInvites,
-    refreshChatState,
-    threads,
-    invites,
-    registeredKey: chatRegisteredKey,
-    registerMessage: chatRegisterMessage
-  } = useChatState(w3iProxy, isW3iProxyReady)
-
-  const {
     pushClient,
     activeSubscriptions,
     refreshPushState,
@@ -41,7 +31,6 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   return (
     <W3iContext.Provider
       value={{
-        chatClientProxy: chatClient,
         chatProvider,
         pushProvider,
         authProvider,
@@ -51,18 +40,19 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         dappName,
         dappNotificationDescription,
         dappIcon,
-        refreshThreadsAndInvites: refreshChatState,
         refreshNotifications: refreshPushState,
-        sentInvites,
-        threads,
+        refreshThreadsAndInvites: noop,
+        chatClientProxy: null,
         activeSubscriptions,
-        invites,
-        chatRegisteredKey,
         pushRegisteredKey,
         setUserPubkey,
-        chatRegisterMessage,
         pushRegisterMessage,
-        pushClientProxy: pushClient
+        pushClientProxy: pushClient,
+        sentInvites: [],
+        threads: [],
+        invites: [],
+        chatRegisteredKey: null,
+        chatRegisterMessage: null
       }}
     >
       {children}
