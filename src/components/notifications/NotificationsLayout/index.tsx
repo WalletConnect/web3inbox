@@ -5,7 +5,6 @@ import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 
 const NotificationsLayout: React.FC = () => {
-  console.log('>>>> aa')
 
   return (
     <Fragment>
