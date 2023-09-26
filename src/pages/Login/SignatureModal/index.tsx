@@ -25,7 +25,7 @@ export const SignatureModal: React.FC<{
       .then(signature => {
         switch (sender) {
           case 'chat':
-	    console.warn("signing messages for chat is not supported")
+        console.warn("[Web3Inbox] Signing messages for chat is not supported.")
             break
           case 'push':
             window.web3inbox.notify.postMessage(
