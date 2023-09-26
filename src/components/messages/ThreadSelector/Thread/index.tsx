@@ -21,19 +21,6 @@ const Thread: React.FC<ThreadProps> = ({
   const [calculatedLastMessage] = useState<string | undefined>()
   const [calculatedLastMsgTimestamp] = useState<number | undefined>()
 
-  /*
-   * UseEffect(() => {
-   *   if (!calculatedLastMessage && !lastMessage) {
-   *     chatClientProxy?.getMessages({ topic }).then(messages => {
-   *       if (messages.length) {
-   *         setCalculatedLastMessage(messages[messages.length - 1].message)
-   *         setCalculatedLastMsgTimestamp(messages[messages.length - 1].timestamp)
-   *       }
-   *     })
-   *   }
-   * }, [chatClientProxy, calculatedLastMessage, lastMessage, setCalculatedLastMessage])
-   */
-
   return (
     <NavLink to={`/messages/chat/${threadPeer}?topic=${topic}`}>
       <PeerAndMessage
