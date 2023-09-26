@@ -1,5 +1,4 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
-import { Fragment, useContext, useEffect } from 'react'
+import { Fragment, useContext } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
