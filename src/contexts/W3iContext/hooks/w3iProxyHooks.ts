@@ -16,7 +16,10 @@ export const useW3iProxy = () => {
   const { pushProvider, authProvider } = useProviderQueries()
 
   const [w3iProxy] = useState(
-    Web3InboxProxy.getProxy(pushProvider, authProvider, dappOrigin, projectId, relayUrl, uiEnabled)
+    Web3InboxProxy.getProxy(pushProvider, authProvider, dappOrigin, projectId, relayUrl, {
+      ...uiEnabled,
+      chat: false
+    })
   )
 
   useEffect(() => {

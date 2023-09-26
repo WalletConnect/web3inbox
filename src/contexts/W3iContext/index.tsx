@@ -35,7 +35,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         pushProvider,
         authProvider,
         userPubkey,
-        uiEnabled,
+        uiEnabled: { chat: false, ...uiEnabled },
         dappOrigin,
         dappName,
         dappNotificationDescription,
