@@ -1,5 +1,5 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
-import type { ChatClientTypes } from '@walletconnect/chat-client'
+import type { ChatClientTypes } from './chatProviders/types'
 
 export interface ChatFacadeEvents {
   chat_invite: ChatClientTypes.BaseEventArgs<ChatClientTypes.Invite>

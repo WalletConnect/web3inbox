@@ -1,4 +1,7 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
+/* eslint-disable*/
+// @ts-nocheck
+//
+import type { ChatClientTypes } from './types'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { EventEmitter } from 'events'
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'

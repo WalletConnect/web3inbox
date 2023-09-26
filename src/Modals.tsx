@@ -10,23 +10,16 @@ import { AnimatePresence } from 'framer-motion'
 export const Modals = () => {
   const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen } = useModals()
 
-  const {
-    chatRegisterMessage,
-    pushRegisterMessage,
-    chatRegisteredKey,
-    pushRegisteredKey,
-    userPubkey
-  } = useContext(W3iContext)
+  const { pushRegisterMessage, pushRegisteredKey, userPubkey } = useContext(W3iContext)
 
   useEffect(() => {
-    const chatSignatureRequired = !chatRegisteredKey && chatRegisterMessage
     const pushSignatureRequired = !pushRegisteredKey && pushRegisterMessage
-    if (userPubkey && (chatSignatureRequired || pushSignatureRequired)) {
+    if (userPubkey && pushSignatureRequired) {
       signatureModalService.openModal()
     } else {
       signatureModalService.closeModal()
     }
-  }, [userPubkey, chatRegisteredKey, pushRegisteredKey, chatRegisterMessage, pushRegisterMessage])
+  }, [userPubkey, pushRegisteredKey, pushRegisterMessage])
 
   return (
     <>
@@ -36,10 +29,7 @@ export const Modals = () => {
         {isPreferencesModalOpen && <PreferencesModal />}
 
         {isSignatureModalOpen && (
-          <SignatureModal
-            message={chatRegisterMessage ?? pushRegisterMessage ?? ''}
-            sender={chatRegisterMessage ? 'chat' : 'push'}
-          />
+          <SignatureModal message={pushRegisterMessage ?? ''} sender={'push'} />
         )}
       </AnimatePresence>
     </>

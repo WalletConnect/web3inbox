@@ -1,4 +1,4 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
+import type { ChatClientTypes } from '../../../w3iProxy/chatProviders/types'
 import React, { useCallback, useContext } from 'react'
 import W3iContext from '../../../contexts/W3iContext/context'
 import type { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'

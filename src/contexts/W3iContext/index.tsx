@@ -3,10 +3,10 @@ import W3iContext from './context'
 import { useUiState } from './hooks/uiHooks'
 import { useProviderQueries } from './hooks/providerQueryHooks'
 import { useAuthState } from './hooks/authHooks'
-import { useChatState } from './hooks/chatHooks'
 import { usePushState } from './hooks/pushHooks'
 import { useW3iProxy } from './hooks/w3iProxyHooks'
 import { useDappOrigin } from './hooks/dappOrigin'
+import { noop } from 'rxjs'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -15,20 +15,10 @@ interface W3iContextProviderProps {
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
   const { uiEnabled } = useUiState()
   const { dappOrigin, dappIcon, dappName, dappNotificationDescription } = useDappOrigin()
-  const { chatProvider, pushProvider, authProvider } = useProviderQueries()
+  const { pushProvider, authProvider } = useProviderQueries()
   const [w3iProxy, isW3iProxyReady] = useW3iProxy()
 
   const { userPubkey, setUserPubkey } = useAuthState(w3iProxy, isW3iProxyReady)
-
-  const {
-    chatClient,
-    sentInvites,
-    refreshChatState,
-    threads,
-    invites,
-    registeredKey: chatRegisteredKey,
-    registerMessage: chatRegisterMessage
-  } = useChatState(w3iProxy, isW3iProxyReady)
 
   const {
     pushClient,
@@ -41,28 +31,25 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   return (
     <W3iContext.Provider
       value={{
-        chatClientProxy: chatClient,
-        chatProvider,
+        chatClientProxy: null,
         pushProvider,
         authProvider,
         userPubkey,
-        uiEnabled,
+        uiEnabled: { ...uiEnabled, chat: false },
         dappOrigin,
         dappName,
         dappNotificationDescription,
         dappIcon,
-        refreshThreadsAndInvites: refreshChatState,
         refreshNotifications: refreshPushState,
-        sentInvites,
-        threads,
+        refreshThreadsAndInvites: noop,
         activeSubscriptions,
-        invites,
-        chatRegisteredKey,
         pushRegisteredKey,
         setUserPubkey,
-        chatRegisterMessage,
         pushRegisterMessage,
-        pushClientProxy: pushClient
+        pushClientProxy: pushClient,
+        sentInvites: [],
+        threads: [],
+        invites: []
       }}
     >
       {children}

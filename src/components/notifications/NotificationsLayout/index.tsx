@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 
 const NotificationsLayout: React.FC = () => {
+
   return (
     <Fragment>
       <div className="TargetSelector">

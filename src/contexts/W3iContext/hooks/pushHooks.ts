@@ -69,12 +69,7 @@ export const usePushState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dapp
   )
 
   useEffect(() => {
-    /*
-     * No need to register if chat is enabled since it will handle registration
-     * notify.register is disabled in favor of chat.register since
-     * chat.register performs an extra step.
-     */
-    if (userPubkey && !uiEnabled.chat) {
+    if (userPubkey) {
       handleRegistration(userPubkey)
     } else {
       setRegisterMessage(null)

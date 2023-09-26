@@ -1,4 +1,4 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
+import type { ChatClientTypes } from '../../../w3iProxy/chatProviders/types'
 import { differenceInHours } from 'date-fns'
 import { useEffect, useMemo, useRef } from 'react'
 import Message from '.'

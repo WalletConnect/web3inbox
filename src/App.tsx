@@ -1,5 +1,4 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
-import { Fragment, useContext, useEffect } from 'react'
+import { Fragment, useContext } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
@@ -12,7 +11,7 @@ import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import MobileFooter from './components/layout/MobileFooter'
 
 const App = () => {
-  const { chatClientProxy, uiEnabled } = useContext(W3iContext)
+  const { uiEnabled, pushClientProxy } = useContext(W3iContext)
   const location = useLocation()
 
   const ref = useMobileResponsiveGrid()
@@ -21,7 +20,7 @@ const App = () => {
     <AuthProtectedPage>
       <LazyMotion features={domAnimation}>
         <m.div ref={ref} data-path={location.pathname} className="App">
-          {chatClientProxy && (
+          {pushClientProxy && (
             <Fragment>
               {uiEnabled.sidebar ? <Sidebar isLoggedIn={true} /> : null}
               <Outlet />

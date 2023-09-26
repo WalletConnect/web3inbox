@@ -1,8 +1,9 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
+import type { ChatClientTypes } from '../../w3iProxy/chatProviders/types'
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import type { Dispatch, SetStateAction } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import { createContext } from 'react'
+import { noop } from 'rxjs'
 import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
 
 export interface UiEnabled {
@@ -13,7 +14,6 @@ export interface UiEnabled {
 }
 
 interface W3iContextState {
-  chatClientProxy: W3iChatClient | null
   refreshThreadsAndInvites: () => void
   refreshNotifications: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
@@ -23,11 +23,8 @@ interface W3iContextState {
   invites: ChatClientTypes.ReceivedInvite[]
   userPubkey?: string
   pushClientProxy: W3iPushClient | null
-  chatRegisterMessage: string | null
-  chatRegisteredKey: string | null
   pushRegisteredKey: string | null
   pushRegisterMessage: string | null
-  chatProvider: string
   pushProvider: string
   authProvider: string
   uiEnabled: UiEnabled
@@ -35,33 +32,29 @@ interface W3iContextState {
   dappName: string
   dappIcon: string
   dappNotificationDescription: string
+  // This is only kept to allow old components to build
+  chatClientProxy: W3iChatClient | null
 }
 
 const W3iContext = createContext<W3iContextState>({
-  chatClientProxy: null,
-  chatRegisteredKey: '',
   pushRegisteredKey: '',
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  refreshThreadsAndInvites: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  refreshNotifications: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setUserPubkey: () => {},
+  refreshThreadsAndInvites: noop,
+  refreshNotifications: noop,
+  setUserPubkey: noop,
   threads: [],
   uiEnabled: { chat: true, notify: true, settings: true, sidebar: true },
   activeSubscriptions: [],
   sentInvites: [],
   invites: [],
   pushClientProxy: null,
-  chatRegisterMessage: null,
   pushRegisterMessage: null,
-  chatProvider: '',
   pushProvider: '',
   authProvider: '',
   dappOrigin: '',
   dappIcon: '',
   dappNotificationDescription: '',
-  dappName: ''
+  dappName: '',
+  chatClientProxy: null
 })
 
 export default W3iContext

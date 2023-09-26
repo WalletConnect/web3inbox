@@ -7,7 +7,7 @@ import SettingsContext from '../../../contexts/SettingsContext/context'
 import ChatInviteHandEmoji from '../../../assets/ChatInviteHandEmoji.svg'
 import ChatRejectedHandEmoji from '../../../assets/ChatRejectedHandEmoji.svg'
 import CheckIcon from '../../general/Icon/CheckIcon'
-import type { ChatClientTypes } from '@walletconnect/chat-client'
+import type { ChatClientTypes } from '../../../w3iProxy/chatProviders/types'
 import Text from '../../general/Text'
 
 interface InviteMessageProps {
@@ -47,20 +47,22 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
   }, [themeColors])
 
   const StatusComponents = useMemo(
-    () => ({
-      pending: <PendingStatus />,
-      rejected: <RejectedStatus />,
-      approved: <AcceptedStatus />
-    }),
+    () =>
+      ({
+        pending: <PendingStatus />,
+        rejected: <RejectedStatus />,
+        approved: <AcceptedStatus />
+      } as Record<string, React.ReactNode>),
     [PendingStatus, RejectedStatus, AcceptedStatus]
   )
 
   const StatusEmojis = useMemo(
-    () => ({
-      pending: ChatInviteHandEmoji,
-      rejected: ChatRejectedHandEmoji,
-      approved: ChatInviteHandEmoji
-    }),
+    () =>
+      ({
+        pending: ChatInviteHandEmoji,
+        rejected: ChatRejectedHandEmoji,
+        approved: ChatInviteHandEmoji
+      } as Record<string, string>),
     []
   )
 

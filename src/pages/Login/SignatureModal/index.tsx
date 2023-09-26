@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Button from '../../../components/general/Button'
 import { Modal } from '../../../components/general/Modal/Modal'
 import { signatureModalService } from '../../../utils/store'
@@ -25,9 +25,7 @@ export const SignatureModal: React.FC<{
       .then(signature => {
         switch (sender) {
           case 'chat':
-            window.web3inbox.chat.postMessage(
-              formatJsonRpcRequest('chat_signature_delivered', { signature })
-            )
+            console.warn("[Web3Inbox] Signing messages for chat is not supported.")
             break
           case 'push':
             window.web3inbox.notify.postMessage(
