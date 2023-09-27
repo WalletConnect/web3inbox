@@ -10,7 +10,7 @@ export const useProviderQueries = () => {
     authProviderQuery ? (authProviderQuery as Web3InboxProxy['authProvider']) : 'internal'
   )
 
-  // PUSH STATE
+  // NOTIFY STATE
   const [notifyProvider] = useState(
     notifyProviderQuery ? (notifyProviderQuery as Web3InboxProxy['notifyProvider']) : 'internal'
   )
