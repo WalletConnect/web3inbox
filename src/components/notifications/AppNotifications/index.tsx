@@ -30,7 +30,7 @@ export const AppNotificationDragContext = createContext<AppNotificationsDragCont
 
 const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
-  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
+  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
 
@@ -41,8 +41,8 @@ const AppNotifications = () => {
   >()
 
   const updateMessages = useCallback(() => {
-    if (pushClientProxy && topic) {
-      pushClientProxy.getMessageHistory({ topic }).then(messageHistory => {
+    if (notifyClientProxy && topic) {
+      notifyClientProxy.getMessageHistory({ topic }).then(messageHistory => {
         setNotifications(Object.values(messageHistory))
         setNotificationsDrag(
           Object.values(messageHistory).map(notification => {
@@ -54,29 +54,25 @@ const AppNotifications = () => {
         )
       })
     }
-  }, [setNotifications, pushClientProxy, topic])
+  }, [setNotifications, notifyClientProxy, topic])
 
   useEffect(() => {
     updateMessages()
   }, [updateMessages])
 
   useEffect(() => {
-    if (!(pushClientProxy && topic)) {
+    if (!(notifyClientProxy && topic)) {
       return noop
     }
 
-    const pushMessageSentSub = pushClientProxy.observe('notify_message', {
-      next: updateMessages
-    })
-    const notifyMessageSentSub = pushClientProxy.observe('notify_message', {
+    const notifyMessageSentSub = notifyClientProxy.observe('notify_message', {
       next: updateMessages
     })
 
     return () => {
-      pushMessageSentSub.unsubscribe()
       notifyMessageSentSub.unsubscribe()
     }
-  }, [pushClientProxy, setNotifications, topic])
+  }, [notifyClientProxy, setNotifications, topic])
 
   return app?.metadata ? (
     <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>

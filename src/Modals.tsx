@@ -10,16 +10,16 @@ import { AnimatePresence } from 'framer-motion'
 export const Modals = () => {
   const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen } = useModals()
 
-  const { pushRegisterMessage, pushRegisteredKey, userPubkey } = useContext(W3iContext)
+  const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
 
   useEffect(() => {
-    const pushSignatureRequired = !pushRegisteredKey && pushRegisterMessage
-    if (userPubkey && pushSignatureRequired) {
+    const notifySignatureRequired = !notifyRegisteredKey && notifyRegisterMessage
+    if (userPubkey && notifySignatureRequired) {
       signatureModalService.openModal()
     } else {
       signatureModalService.closeModal()
     }
-  }, [userPubkey, pushRegisteredKey, pushRegisterMessage])
+  }, [userPubkey, notifyRegisteredKey, notifyRegisterMessage])
 
   return (
     <>
@@ -29,7 +29,7 @@ export const Modals = () => {
         {isPreferencesModalOpen && <PreferencesModal />}
 
         {isSignatureModalOpen && (
-          <SignatureModal message={pushRegisterMessage ?? ''} sender={'push'} />
+          <SignatureModal message={notifyRegisterMessage ?? ''} sender={'notify'} />
         )}
       </AnimatePresence>
     </>

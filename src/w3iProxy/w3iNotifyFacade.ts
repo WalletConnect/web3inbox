@@ -1,26 +1,26 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NotifyClient } from '@walletconnect/notify-client'
 import { EventEmitter } from 'events'
-import type { PushFacadeEvents } from './listenerTypes'
+import type { NotifyFacadeEvents } from './listenerTypes'
 import { ObservablesController } from './observablesController'
-import ExternalPushProvider from './pushProviders/externalPushProvider'
-import InternalPushProvider from './pushProviders/internalPushProvider'
-import type { W3iPush } from './pushProviders/types'
+import ExternalNotifyProvider from './notifyProviders/externalNotifyProvider'
+import InternalNotifyProvider from './notifyProviders/internalNotifyProvider'
+import type { W3iNotify } from './notifyProviders/types'
 
-class W3iPushFacade implements W3iPush {
+class W3iNotifyFacade implements W3iNotify {
   private readonly providerMap = {
-    internal: InternalPushProvider,
-    external: ExternalPushProvider,
-    android: ExternalPushProvider,
-    reactnative: ExternalPushProvider,
-    ios: ExternalPushProvider
+    internal: InternalNotifyProvider,
+    external: ExternalNotifyProvider,
+    android: ExternalNotifyProvider,
+    reactnative: ExternalNotifyProvider,
+    ios: ExternalNotifyProvider
   }
   private readonly providerName: keyof typeof this.providerMap
   private readonly emitter: EventEmitter
-  private readonly observablesController: ObservablesController<PushFacadeEvents>
-  private readonly provider: ExternalPushProvider | InternalPushProvider
+  private readonly observablesController: ObservablesController<NotifyFacadeEvents>
+  private readonly provider: ExternalNotifyProvider | InternalNotifyProvider
 
-  public constructor(providerName: W3iPushFacade['providerName']) {
+  public constructor(providerName: W3iNotifyFacade['providerName']) {
     this.providerName = providerName
     this.emitter = new EventEmitter()
     this.observablesController = new ObservablesController(this.emitter)
@@ -29,9 +29,9 @@ class W3iPushFacade implements W3iPush {
     this.provider = new ProviderClass(this.emitter, providerName)
   }
 
-  public initInternalProvider(pushClient: NotifyClient) {
-    const internalProvider = this.provider as InternalPushProvider
-    internalProvider.initState(pushClient)
+  public initInternalProvider(notifyClient: NotifyClient) {
+    const internalProvider = this.provider as InternalNotifyProvider
+    internalProvider.initState(notifyClient)
   }
 
   // Method to be used by external providers. Not internal use.
@@ -50,7 +50,7 @@ class W3iPushFacade implements W3iPush {
     return this.observablesController.observeOne
   }
 
-  // ------------------ Push Client Forwarding ------------------
+  // ------------------ Notify Client Forwarding ------------------
 
   public async register(params: { account: string; domain: string; isLimited: boolean }) {
     return this.provider.register(params)
@@ -83,4 +83,4 @@ class W3iPushFacade implements W3iPush {
   }
 }
 
-export default W3iPushFacade
+export default W3iNotifyFacade

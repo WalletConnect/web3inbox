@@ -11,7 +11,7 @@ import {
   contactsModalService,
   preferencesModalService,
   profileModalService,
-  pushSearchService,
+  notifySearchService,
   shareModalService,
   signatureModalService,
   unsubscribeModalService
@@ -132,15 +132,15 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
 
 export const useSearch = () => {
   const [isChatSearchOpen, setIsChatSearchOpen] = useState(false)
-  const [isPushSearchOpen, setIsPushSearchOpen] = useState(false)
+  const [isNotifySearchOpen, setIsNotifySearchOpen] = useState(false)
   const [isAppSearchOpen, setIsAppSearchOpen] = useState(false)
   const [appSearchTerm, setAppSearchTerm] = useState<string>()
   useEffect(() => {
     const chatSearchSubscription = chatSearchService.searchState.subscribe(isOpen => {
       setIsChatSearchOpen(isOpen)
     })
-    const pushSearchSubscription = pushSearchService.searchState.subscribe(isOpen => {
-      setIsPushSearchOpen(isOpen)
+    const notifySearchSubscription = notifySearchService.searchState.subscribe(isOpen => {
+      setIsNotifySearchOpen(isOpen)
     })
     const appSearchSubscription = appSearchService.searchState.subscribe(state => {
       setIsAppSearchOpen(state.isOpen)
@@ -149,12 +149,12 @@ export const useSearch = () => {
 
     return () => {
       chatSearchSubscription.unsubscribe()
-      pushSearchSubscription.unsubscribe()
+      notifySearchSubscription.unsubscribe()
       appSearchSubscription.unsubscribe()
     }
   }, [])
 
-  return { isChatSearchOpen, isPushSearchOpen, isAppSearchOpen, appSearchTerm }
+  return { isChatSearchOpen, isNotifySearchOpen, isAppSearchOpen, appSearchTerm }
 }
 
 export const useModals = () => {
@@ -168,7 +168,7 @@ export const useModals = () => {
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
   /*
    * Const [subscribeModalMetadata, setSubscribeModalMetadata] =
-   *   useState<NotifyClientTypes.PushRequestEventArgs>()
+   *   useState<NotifyClientTypes.NotifyRequestEventArgs>()
    */
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 

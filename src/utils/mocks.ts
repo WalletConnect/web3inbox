@@ -71,8 +71,8 @@ export const appNotificationsMock = ({ topic }: { topic: string }) => ({
     topic,
     publishedAt: 1676969627782,
     message: {
-      title: 'Test Push 1',
-      body: 'This is a test push notification',
+      title: 'Test Notify 1',
+      body: 'This is a test notify notification',
       icon: 'https://f8n-production.imgix.net/collections/a39acu5u8.jpg?q=45&w=128&h=128&fit=crop&dpr=2',
       url: 'https://walletconnect.com'
     }
@@ -82,8 +82,8 @@ export const appNotificationsMock = ({ topic }: { topic: string }) => ({
     topic,
     publishedAt: 1676969637782,
     message: {
-      title: 'Test Push 2',
-      body: 'This is another test push notification',
+      title: 'Test Notify 2',
+      body: 'This is another test notify notification',
       icon: 'https://f8n-production.imgix.net/collections/a39acu5u8.jpg?q=45&w=128&h=128&fit=crop&dpr=2',
       url: 'https://walletconnect.com'
     }

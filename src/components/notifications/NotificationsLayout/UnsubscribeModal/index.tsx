@@ -12,7 +12,7 @@ import { showErrorMessageToast, showSuccessMessageToast } from '../../../../util
 import { useNavigate } from 'react-router-dom'
 
 export const UnsubscribeModal: React.FC = () => {
-  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
+  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const { unsubscribeModalAppId } = useModals()
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -24,9 +24,9 @@ export const UnsubscribeModal: React.FC = () => {
 
   const handleUnsubscribe = useCallback(async () => {
     setLoading(true)
-    if (pushClientProxy && unsubscribeModalAppId) {
+    if (notifyClientProxy && unsubscribeModalAppId) {
       try {
-        pushClientProxy.observeOne('notify_delete', {
+        notifyClientProxy.observeOne('notify_delete', {
           next: () => {
             unsubscribeModalService.closeModal()
             showSuccessMessageToast(
@@ -36,14 +36,14 @@ export const UnsubscribeModal: React.FC = () => {
             navigate('/notifications/new-app')
           }
         })
-        await pushClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
+        await notifyClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
       } catch (error) {
         console.error(error)
         showErrorMessageToast(`Unsubscribing failed, please try again`)
         setLoading(false)
       }
     }
-  }, [pushClientProxy, unsubscribeModalAppId])
+  }, [notifyClientProxy, unsubscribeModalAppId])
 
   if (!app) {
     return null

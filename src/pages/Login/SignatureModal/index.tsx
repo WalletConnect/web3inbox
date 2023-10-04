@@ -10,7 +10,7 @@ import SignatureIcon from '../../../components/general/Icon/SignatureIcon'
 
 export const SignatureModal: React.FC<{
   message: string
-  sender: 'chat' | 'push'
+  sender: 'chat' | 'notify'
 }> = ({ message, sender }) => {
   /*
    * If identity was already signed, and sync was requested then we are in the
@@ -27,7 +27,7 @@ export const SignatureModal: React.FC<{
           case 'chat':
             console.warn("[Web3Inbox] Signing messages for chat is not supported.")
             break
-          case 'push':
+          case 'notify':
             window.web3inbox.notify.postMessage(
               formatJsonRpcRequest('notify_signature_delivered', { signature })
             )

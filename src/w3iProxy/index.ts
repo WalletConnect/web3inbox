@@ -10,10 +10,10 @@ import type { UiEnabled } from '../contexts/W3iContext/context'
 import { identifyMixpanelUserAndInit } from '../utils/mixpanel'
 import W3iAuthFacade from './w3iAuthFacade'
 import type W3iChatFacade from './w3iChatFacade'
-import W3iPushFacade from './w3iPushFacade'
+import W3iNotifyFacade from './w3iNotifyFacade'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
-export type W3iPushClient = Omit<W3iPushFacade, 'initState'>
+export type W3iNotifyClient = Omit<W3iNotifyFacade, 'initState'>
 
 declare global {
   interface Window {
@@ -22,9 +22,9 @@ declare global {
 }
 
 class Web3InboxProxy {
-  private readonly pushFacade: W3iPushFacade
-  private readonly pushProvider: W3iPushFacade['providerName']
-  private pushClient?: NotifyClient
+  private readonly notifyFacade: W3iNotifyFacade
+  private readonly notifyProvider: W3iNotifyFacade['providerName']
+  private notifyClient?: NotifyClient
   private readonly authFacade: W3iAuthFacade
   private readonly authProvider: W3iAuthFacade['providerName']
   private readonly relayUrl?: string
@@ -47,16 +47,16 @@ class Web3InboxProxy {
    *
    */
   private constructor(
-    pushProvider: Web3InboxProxy['pushProvider'],
+    notifyProvider: Web3InboxProxy['notifyProvider'],
     authProvider: Web3InboxProxy['authProvider'],
     dappOrigin: string,
     projectId: string,
     relayUrl: string,
     uiEnabled: UiEnabled
   ) {
-    // Bind Push properties
-    this.pushProvider = pushProvider
-    this.pushFacade = new W3iPushFacade(this.pushProvider)
+    // Bind Notify properties
+    this.notifyProvider = notifyProvider
+    this.notifyFacade = new W3iNotifyFacade(this.notifyProvider)
     // Bind Auth Properties
     this.authProvider = authProvider
     this.authFacade = new W3iAuthFacade(this.authProvider)
@@ -88,7 +88,7 @@ class Web3InboxProxy {
         }
       }
     })
-    if (this.pushProvider === 'internal') {
+    if (this.notifyProvider === 'internal') {
       this.core = new Core({
         logger: this.logger,
         relayUrl: this.relayUrl,
@@ -105,7 +105,7 @@ class Web3InboxProxy {
   }
 
   public static getProxy(
-    pushProvider: Web3InboxProxy['pushProvider'],
+    notifyProvider: Web3InboxProxy['notifyProvider'],
     authProvider: Web3InboxProxy['authProvider'],
     dappOrigin: string,
     projectId: string,
@@ -115,7 +115,7 @@ class Web3InboxProxy {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!window.web3inbox) {
       window.web3inbox = new Web3InboxProxy(
-        pushProvider,
+        notifyProvider,
         authProvider,
         dappOrigin,
         projectId,
@@ -127,8 +127,8 @@ class Web3InboxProxy {
     return window.web3inbox
   }
 
-  public get notify(): W3iPushFacade {
-    return this.pushFacade
+  public get notify(): W3iNotifyFacade {
+    return this.notifyFacade
   }
 
   public get auth(): W3iAuthFacade {
@@ -144,8 +144,8 @@ class Web3InboxProxy {
       return false
     }
 
-    if (this.pushProvider === 'internal') {
-      if (!this.pushClient) {
+    if (this.notifyProvider === 'internal') {
+      if (!this.notifyClient) {
         return false
       }
     }
@@ -176,14 +176,14 @@ class Web3InboxProxy {
       this.authFacade.initInternalProvider()
     }
 
-    if (this.pushProvider === 'internal' && this.uiEnabled.notify && !this.pushClient) {
-      this.pushClient = await NotifyClient.init({
+    if (this.notifyProvider === 'internal' && this.uiEnabled.notify && !this.notifyClient) {
+      this.notifyClient = await NotifyClient.init({
         identityKeys: this.identityKeys,
         logger: this.logger,
         core: this.core
       })
 
-      this.pushFacade.initInternalProvider(this.pushClient)
+      this.notifyFacade.initInternalProvider(this.notifyClient)
     }
 
     this.isInitialized = true

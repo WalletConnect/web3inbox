@@ -20,7 +20,7 @@ interface ISubscribeModalState {
 }
 
 const chatSearchSubject = new BehaviorSubject(false)
-const pushSearchSubject = new BehaviorSubject(false)
+const notifySearchSubject = new BehaviorSubject(false)
 const appSearchSubject = new BehaviorSubject<IAppSearchState>({
   isOpen: false,
   searchTerm: undefined
@@ -49,11 +49,11 @@ export const chatSearchService = {
   closeSearch: () => chatSearchSubject.next(false),
   searchState: chatSearchSubject.asObservable()
 }
-export const pushSearchService = {
-  toggleSearch: () => pushSearchSubject.next(!pushSearchSubject.value),
-  openSearch: () => pushSearchSubject.next(true),
-  closeSearch: () => pushSearchSubject.next(false),
-  searchState: pushSearchSubject.asObservable()
+export const notifySearchService = {
+  toggleSearch: () => notifySearchSubject.next(!notifySearchSubject.value),
+  openSearch: () => notifySearchSubject.next(true),
+  closeSearch: () => notifySearchSubject.next(false),
+  searchState: notifySearchSubject.asObservable()
 }
 
 export const appSearchService = {

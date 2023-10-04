@@ -11,7 +11,7 @@ import SettingsContext from '../../../../contexts/SettingsContext/context'
 
 const AppNotificationsCardMobile: React.FC = () => {
   const { topic } = useParams<{ topic: string }>()
-  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
+  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const { mode } = useContext(SettingsContext)
   const ref = useRef<HTMLDivElement>(null)

@@ -22,7 +22,7 @@ const AppSelector: React.FC = () => {
   const isMobile = useIsMobile()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
-  const { activeSubscriptions, dappOrigin, pushRegisterMessage } = useContext(W3iContext)
+  const { activeSubscriptions, dappOrigin, notifyRegisterMessage } = useContext(W3iContext)
   const nav = useNavigate()
 
   const filterApps = useCallback(
@@ -64,7 +64,7 @@ const AppSelector: React.FC = () => {
         nav(`/widget/subscribe`)
       }
     }
-  }, [dappOrigin, nav, activeSubscriptions, pushRegisterMessage])
+  }, [dappOrigin, nav, activeSubscriptions, notifyRegisterMessage])
 
   return (
     <div className="AppSelector">

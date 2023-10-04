@@ -1,4 +1,4 @@
-this.web3inbox.push.on('getActiveSubscriptions', ev => {
+this.web3inbox.notify.on('getActiveSubscriptions', ev => {
   console.log('Received getActiveSubscriptions', ev, 'posting to', ev.id)
 
   const response = {
@@ -37,7 +37,7 @@ this.web3inbox.push.on('getActiveSubscriptions', ev => {
   this.web3inbox.push.postMessage(response)
 })
 
-this.web3inbox.push.on('getMessageHistory', ev => {
+this.web3inbox.notify.on('getMessageHistory', ev => {
   console.log('Received getMessageHistory', ev, 'posting to', ev.id)
 
   const response = {
@@ -69,5 +69,5 @@ this.web3inbox.push.on('getMessageHistory', ev => {
     }
   }
 
-  this.web3inbox.push.postMessage(response)
+  this.web3inbox.notify.postMessage(response)
 })
