@@ -132,7 +132,7 @@ const AppSelector: React.FC = () => {
                         <div className="AppSelector__notifications-link">
                           <img
                             className="AppSelector__link-logo"
-                            src={app.metadata.icons.length? app.metadata.icons[0] : "/fallback.svg"}
+                            src={app.metadata.icons?.length? app.metadata.icons[0] : "/fallback.svg"}
                             alt={`${app.metadata.name} logo`}
                             loading="lazy"
                           />
