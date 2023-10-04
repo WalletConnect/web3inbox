@@ -89,7 +89,7 @@ const AppNotifications = () => {
           <AppNotificationsHeader
             id={app.topic}
             name={app.metadata.name}
-            logo={app.metadata.icons[0]}
+            logo={app?.metadata.icons?.length? app.metadata.icons[0] : "/fallback.svg"}
           />
           <MobileHeader
             back="/notifications"
@@ -118,14 +118,14 @@ const AppNotifications = () => {
                           image: notification.message.icon,
                           url: notification.message.url
                         }}
-                        appLogo={app.metadata.icons[0]}
+                        appLogo={app.metadata.icons?.length? app.metadata.icons[0] : "/fallback.svg"}
                       />
                     ))}
                 </>
               </div>
             </>
           ) : (
-            <AppNotificationsEmpty icon={app.metadata.icons[0]} name={app.metadata.name} />
+            <AppNotificationsEmpty icon={app.metadata.icons?.length? app.metadata.icons[0] : "/fallback.svg"} name={app.metadata.name} />
           )}
         </motion.div>
       </AnimatePresence>
