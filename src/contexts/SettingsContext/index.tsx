@@ -2,7 +2,6 @@ import React, { useEffect, useReducer } from 'react'
 import { useColorModeValue } from '../../utils/hooks'
 import type { SettingsContextSimpleState, SettingsContextUpdate } from './context'
 import SettingsContext from './context'
-import { useWeb3ModalTheme } from '@web3modal/wagmi/react'
 
 interface ThemeContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -16,25 +15,16 @@ const settingsReducer = (
 }
 
 const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
-  const favoriteTheme =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    typeof localStorage === 'undefined' || !localStorage
-      ? null
-      : (localStorage.getItem('w3i-theme') as SettingsContextSimpleState['mode'] | null)
+  const localSettings = localStorage.getItem('w3i-settings')
 
-  const initialState: SettingsContextSimpleState = {
+  const initialState: SettingsContextSimpleState = localSettings? JSON.parse(localSettings) : {
     mode: 'light',
     newContacts: 'require-invite',
     isDevModeEnabled: true
   }
 
-  const { setThemeMode } = useWeb3ModalTheme()
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
   const themeColors = useColorModeValue(settingsState.mode)
-
-  useEffect(() => {
-    // SetThemeMode(favoriteTheme === 'light' ? 'light' : 'dark')
-  }, [setThemeMode, favoriteTheme])
 
   useEffect(() => {
     Object.entries(themeColors).forEach(([colorVariable, colorValue]) => {
@@ -42,6 +32,10 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
     })
   }, [themeColors])
 
+  useEffect(() => {
+    localStorage?.setItem("w3i-settings", JSON.stringify(settingsState))
+  }, [settingsState])
+  
   return (
     <SettingsContext.Provider
       value={{
