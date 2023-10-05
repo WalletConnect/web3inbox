@@ -22,7 +22,7 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
   const initialState: SettingsContextSimpleState = localSettings? JSON.parse(localSettings) : {
     mode: 'light',
     newContacts: 'require-invite',
-    isDevModeEnabled: true
+    isDevModeEnabled: false
   }
 
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
