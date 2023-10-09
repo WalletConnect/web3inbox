@@ -93,7 +93,7 @@ class Web3InboxProxy {
         logger: this.logger,
         relayUrl: this.relayUrl,
         projectId: this.projectId,
-        customStoragePrefix: ':w3i'
+        customStoragePrefix: 'w3i'
       })
     }
 
