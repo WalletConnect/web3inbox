@@ -28,7 +28,6 @@ export default class InternalAuthProvider {
       }
 
       const caip10Chain = `eip155:${getNetwork().chain?.id}`;
-      console.log({caip10Chain, networkCall: getNetwork()})
       this.emitter.emit('auth_set_account', { account: account.address, chain: caip10Chain })
       this.chain = caip10Chain;
       this.account = account.address
