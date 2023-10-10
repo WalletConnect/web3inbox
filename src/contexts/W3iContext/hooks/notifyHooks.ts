@@ -16,8 +16,6 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, da
   const { userPubkey } = useAuthState(w3iProxy, proxyReady)
   const { uiEnabled } = useUiState()
 
-  console.log({userPubkey})
-
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
 
