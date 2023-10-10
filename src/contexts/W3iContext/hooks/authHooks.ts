@@ -28,7 +28,10 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
   useEffect(() => {
     if (accountQueryParam && authClient) {
-      authClient.setAccount(accountQueryParam)
+      const splitAccount = accountQueryParam.split(':');
+      if(splitAccount.length === 3) {
+	authClient.updateFullAccount(splitAccount.slice(0, 2).join(':'), splitAccount[2])
+      }
     }
   }, [accountQueryParam, authClient])
 
