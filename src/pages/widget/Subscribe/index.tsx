@@ -36,7 +36,7 @@ const WidgetSubscribe: React.FC = () => {
        * done.
        */
       await notifyClientProxy.subscribe({
-        account: `eip155:1:${userPubkey}`,
+        account: userPubkey,
         appDomain: new URL(dappOrigin).host
       })
     } catch (error) {

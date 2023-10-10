@@ -49,6 +49,10 @@ export default class ExternalAuthProvider {
     }
   }
 
+  public getChain() {
+    return `eip155:1`;
+  }
+
   public getAccount() {
     return this.account
   }

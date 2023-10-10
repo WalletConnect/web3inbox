@@ -9,6 +9,7 @@ import SettingIcon from '../../general/Icon/SettingIcon'
 import './Sidebar.scss'
 import WalletConnectIcon from '../../general/Icon/WalletConnectIcon'
 import ConnectWalletButton from '../../login/ConnectWalletButton'
+import { getEthChainAddress } from '../../../utils/address'
 
 const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <div className="Sidebar__Item">{children}</div>
@@ -70,7 +71,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
 
       <SidebarItem>
         {isLoggedIn ? (
-          <Avatar address={userPubkey as `0x${string}`} width="2em" height="2em" />
+          <Avatar address={getEthChainAddress(userPubkey) as `0x${string}`} width="2em" height="2em" />
         ) : (
           <ConnectWalletButton />
         )}

@@ -42,6 +42,10 @@ class W3iAuthFacade {
     await internalProvider.initState()
   }
 
+  public getChain() {
+    return this.provider.getChain()
+  }
+
   public getAccount() {
     return this.provider.getAccount()
   }
