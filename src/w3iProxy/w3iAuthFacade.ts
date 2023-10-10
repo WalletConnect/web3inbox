@@ -50,10 +50,18 @@ class W3iAuthFacade {
     return this.provider.getAccount()
   }
 
+  public updateFullAccount(account: string, chain: string) {
+    this.provider.setAccount(account)
+    this.provider.setChain(chain);
+    this.emitter.emit('auth_set_account', { account, chain })
+  }
+
   public setAccount(account: string) {
     this.provider.setAccount(account)
+  }
 
-    this.emitter.emit('auth_set_account', { account })
+  public setChain(chain: string) {
+    this.provider.setChain(chain);
   }
 
   public get observe() {

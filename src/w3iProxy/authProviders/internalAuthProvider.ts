@@ -69,4 +69,8 @@ export default class InternalAuthProvider {
   public setAccount(account: string) {
     this.account = account
   }
+
+  public setChain(chain: string) {
+    this.chain = chain
+  }
 }

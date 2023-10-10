@@ -14,6 +14,7 @@ export default class ExternalAuthProvider {
   private readonly methodsListenedTo = ['auth_set_account']
 
   private account?: string
+  private chain?: string
 
   public constructor(emitter: EventEmitter, name: string) {
     this.emitter = emitter
@@ -50,7 +51,7 @@ export default class ExternalAuthProvider {
   }
 
   public getChain() {
-    return `eip155:1`;
+    return this.chain;
   }
 
   public getAccount() {
@@ -59,5 +60,9 @@ export default class ExternalAuthProvider {
 
   public setAccount(account: string) {
     this.account = account
+  }
+
+  public setChain(chain: string) {
+    this.chain = chain
   }
 }
