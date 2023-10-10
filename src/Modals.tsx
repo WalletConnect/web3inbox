@@ -22,7 +22,7 @@ export const Modals = () => {
     } else {
       signatureModalService.closeModal()
     }
-  }, [userPubkey, close, notifyRegisteredKey, notifyRegisterMessage])
+  }, [userPubkey, closeWeb3Modal, notifyRegisteredKey, notifyRegisterMessage])
 
   return (
     <>
