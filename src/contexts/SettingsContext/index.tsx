@@ -3,7 +3,7 @@ import { useColorModeValue } from '../../utils/hooks'
 import type { SettingsContextSimpleState, SettingsContextUpdate } from './context'
 import SettingsContext from './context'
 
-const LOCAL_SETTINGS_KEY = 'w3i-settings';
+const LOCAL_SETTINGS_KEY = 'w3i-settings'
 
 interface ThemeContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -19,11 +19,13 @@ const settingsReducer = (
 const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
   const localSettings = localStorage.getItem(LOCAL_SETTINGS_KEY)
 
-  const initialState: SettingsContextSimpleState = localSettings? JSON.parse(localSettings) : {
-    mode: 'light',
-    newContacts: 'require-invite',
-    isDevModeEnabled: false
-  }
+  const initialState: SettingsContextSimpleState = localSettings
+    ? JSON.parse(localSettings)
+    : {
+        mode: 'light',
+        newContacts: 'require-invite',
+        isDevModeEnabled: false
+      }
 
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
   const themeColors = useColorModeValue(settingsState.mode)
@@ -37,7 +39,7 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
   useEffect(() => {
     localStorage?.setItem(LOCAL_SETTINGS_KEY, JSON.stringify(settingsState))
   }, [settingsState])
-  
+
   return (
     <SettingsContext.Provider
       value={{

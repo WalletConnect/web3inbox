@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import type Web3InboxProxy from '../../../w3iProxy'
 import type W3iAuthFacade from '../../../w3iProxy/w3iAuthFacade'
+import { formatEthChainsAddress, getChain, getEthChainAddress } from '../../../utils/address'
 
 export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [accountQueryParam, setAccountQueryParam] = useState('')
+
   const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
   const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(null)
 
@@ -26,21 +28,25 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
   useEffect(() => {
     if (accountQueryParam && authClient) {
-      authClient.setAccount(accountQueryParam)
+      authClient.updateFullAccount(
+        getChain(accountQueryParam),
+        getEthChainAddress(accountQueryParam)
+      )
     }
-  }, [accountQueryParam, setUserPubkey, authClient])
+  }, [accountQueryParam, authClient])
 
   useEffect(() => {
     const account = authClient?.getAccount()
+    const chain = authClient?.getChain()
     if (account) {
-      setUserPubkey(account)
+      setUserPubkey(formatEthChainsAddress(account, chain))
     }
   }, [authClient, setUserPubkey])
 
   useEffect(() => {
     const sub = authClient?.observe('auth_set_account', {
-      next: ({ account }) => {
-        setUserPubkey(account)
+      next: ({ account, chain }) => {
+        setUserPubkey(formatEthChainsAddress(account, chain))
       }
     })
 

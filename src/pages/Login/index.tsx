@@ -11,7 +11,8 @@ import IntroContent from '../../components/general/IntroContent'
 import IntroWallet from '../../components/general/Icon/IntroWallet'
 
 const Login: React.FC = () => {
-  const { userPubkey, uiEnabled, notifyRegisteredKey, notifyRegisterMessage } = useContext(W3iContext)
+  const { userPubkey, uiEnabled, notifyRegisteredKey, notifyRegisterMessage } =
+    useContext(W3iContext)
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()

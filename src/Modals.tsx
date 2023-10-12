@@ -6,20 +6,23 @@ import { useContext, useEffect } from 'react'
 import W3iContext from './contexts/W3iContext/context'
 import { signatureModalService } from './utils/store'
 import { AnimatePresence } from 'framer-motion'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 
 export const Modals = () => {
   const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen } = useModals()
+  const { close: closeWeb3Modal } = useWeb3Modal()
 
   const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
 
   useEffect(() => {
-    const notifySignatureRequired = !notifyRegisteredKey && notifyRegisterMessage
+    const notifySignatureRequired = Boolean(notifyRegisterMessage)
     if (userPubkey && notifySignatureRequired) {
+      closeWeb3Modal() // close web3modal in case user is switching accounts
       signatureModalService.openModal()
     } else {
       signatureModalService.closeModal()
     }
-  }, [userPubkey, notifyRegisteredKey, notifyRegisterMessage])
+  }, [userPubkey, closeWeb3Modal, notifyRegisteredKey, notifyRegisterMessage])
 
   return (
     <>

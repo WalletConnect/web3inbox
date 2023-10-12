@@ -7,6 +7,7 @@ import Text from '../../general/Text'
 import W3iContext from '../../../contexts/W3iContext/context'
 import ArrowLeftIcon from '../../general/Icon/ArrowLeftIcon'
 import AppNotificationDropdown from '../../notifications/AppNotifications/AppNotificationDropdown'
+import { getEthChainAddress } from '../../../utils/address'
 
 interface IMobileHeaderProps {
   title: string
@@ -48,7 +49,11 @@ const MobileHeader: React.FC<IMobileHeaderProps> = ({ title, back, notificationI
           notificationId={notificationId}
         />
       ) : (
-        <Avatar address={userPubkey as `0x${string}`} width="1.875em" height="1.875em" />
+        <Avatar
+          address={getEthChainAddress(userPubkey) as `0x${string}`}
+          width="1.875em"
+          height="1.875em"
+        />
       )}
     </div>
   )

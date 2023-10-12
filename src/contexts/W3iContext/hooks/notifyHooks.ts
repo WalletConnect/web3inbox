@@ -5,17 +5,17 @@ import { useLocation } from 'react-router-dom'
 import { noop } from 'rxjs'
 import type Web3InboxProxy from '../../../w3iProxy'
 import type { W3iNotifyClient } from '../../../w3iProxy'
-import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommunicator'
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
 
-export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dappOrigin: string) => {
+export const useNotifyState = (
+  w3iProxy: Web3InboxProxy,
+  proxyReady: boolean,
+  dappOrigin: string
+) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
     NotifyClientTypes.NotifySubscription[]
   >([])
-
-  const { pathname } = useLocation()
-  const [emitter] = useState(new EventEmitter())
 
   const { userPubkey } = useAuthState(w3iProxy, proxyReady)
   const { uiEnabled } = useUiState()
@@ -35,7 +35,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, da
     if (!proxyReady || !notifyClient || !userPubkey) {
       return
     }
-    notifyClient.getActiveSubscriptions({ account: `eip155:1:${userPubkey}` }).then(subscriptions => {
+    notifyClient.getActiveSubscriptions({ account: userPubkey }).then(subscriptions => {
       setActiveSubscriptions(Object.values(subscriptions))
     })
   }, [notifyClient, userPubkey, proxyReady])
@@ -50,9 +50,10 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, da
   const handleRegistration = useCallback(
     async (key: string) => {
       if (notifyClient && key && uiEnabled.notify) {
+        console.log('Calling register with', key)
         try {
           const identityKey = await notifyClient.register({
-            account: `eip155:1:${key}`,
+            account: key,
             domain: window.location.hostname,
             isLimited: false
           })
@@ -126,22 +127,6 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, da
       notifySignatureRequestCancelledSub.unsubscribe()
     }
   }, [notifyClient, refreshNotifyState])
-
-  const checkAndInformIfWidgetSubbed = useCallback(() => {
-    if (!notifyClient) {
-      return
-    }
-
-    notifyClient.getActiveSubscriptions({ account: `eip155:1:${userPubkey ?? ''}` }).then(subs => {
-      const dappSubExists = Object.values(subs)
-        .map(sub => sub.metadata.appDomain)
-        .some(url => url === dappOrigin)
-      if (dappSubExists) {
-        const communicator = new JsCommunicator(emitter)
-        communicator.postToExternalProvider('dapp_subscription_settled', {}, 'notify')
-      }
-    })
-  }, [userPubkey, notifyClient, dappOrigin, emitter])
 
   return { activeSubscriptions, registeredKey, registerMessage, notifyClient, refreshNotifyState }
 }

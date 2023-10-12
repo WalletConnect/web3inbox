@@ -34,7 +34,7 @@ const AppNotificationsCardMobile: React.FC = () => {
       <div className="AppNotificationsCardMobile" ref={ref}>
         <img
           className="AppNotificationsCardMobile__logo"
-          src={app?.metadata.icons?.length? app.metadata.icons[0] : "/fallback.svg"}
+          src={app?.metadata.icons?.length ? app.metadata.icons[0] : '/fallback.svg'}
           alt={`${app?.metadata.name} logo`}
           onError={handleImageFallback}
         />

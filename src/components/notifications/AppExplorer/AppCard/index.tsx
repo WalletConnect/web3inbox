@@ -35,7 +35,13 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
 
   const { activeSubscriptions } = useContext(W3iContext)
 
-  const subscribed = activeSubscriptions.some(element => element.metadata.name === name)
+  useEffect(() => {
+    // If the account changes, the subscribing flow has broken.
+    setSubscribing(false)
+  }, [userPubkey])
+
+  const subscribed =
+    userPubkey && activeSubscriptions.some(element => element.metadata.name === name)
 
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,7 +60,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       setSubscribing(true)
       try {
         await notifyClientProxy?.subscribe({
-          account: `eip155:1:${userPubkey}`,
+          account: userPubkey,
           appDomain: new URL(url).host
         })
       } catch (error) {
