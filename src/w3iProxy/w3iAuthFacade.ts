@@ -52,7 +52,7 @@ class W3iAuthFacade {
 
   public updateFullAccount(account: string, chain: string) {
     this.provider.setAccount(account)
-    this.provider.setChain(chain);
+    this.provider.setChain(chain)
     this.emitter.emit('auth_set_account', { account, chain })
   }
 
@@ -61,7 +61,7 @@ class W3iAuthFacade {
   }
 
   public setChain(chain: string) {
-    this.provider.setChain(chain);
+    this.provider.setChain(chain)
   }
 
   public get observe() {

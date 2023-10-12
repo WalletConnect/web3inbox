@@ -49,7 +49,11 @@ const MobileHeader: React.FC<IMobileHeaderProps> = ({ title, back, notificationI
           notificationId={notificationId}
         />
       ) : (
-        <Avatar address={getEthChainAddress(userPubkey) as `0x${string}`} width="1.875em" height="1.875em" />
+        <Avatar
+          address={getEthChainAddress(userPubkey) as `0x${string}`}
+          width="1.875em"
+          height="1.875em"
+        />
       )}
     </div>
   )

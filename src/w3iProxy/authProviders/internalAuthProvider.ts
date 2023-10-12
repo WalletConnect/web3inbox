@@ -12,9 +12,9 @@ export default class InternalAuthProvider {
   public constructor(emitter: EventEmitter, _name = 'InternalAuthProvider') {
     this.emitter = emitter
 
-    watchNetwork((network) => {
-      const caip10Chain = `eip155:${network.chain?.id}`;
-      this.chain = caip10Chain;
+    watchNetwork(network => {
+      const caip10Chain = `eip155:${network.chain?.id}`
+      this.chain = caip10Chain
 
       this.emitter.emit('auth_set_account', { account: this.account, chain: caip10Chain })
     })
@@ -27,9 +27,9 @@ export default class InternalAuthProvider {
         return
       }
 
-      const caip10Chain = `eip155:${getNetwork().chain?.id}`;
+      const caip10Chain = `eip155:${getNetwork().chain?.id}`
       this.emitter.emit('auth_set_account', { account: account.address, chain: caip10Chain })
-      this.chain = caip10Chain;
+      this.chain = caip10Chain
       this.account = account.address
     })
   }
@@ -59,7 +59,7 @@ export default class InternalAuthProvider {
   }
 
   public getChain() {
-    return this.chain;
+    return this.chain
   }
 
   public getAccount() {

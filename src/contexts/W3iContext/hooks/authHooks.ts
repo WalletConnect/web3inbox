@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import type Web3InboxProxy from '../../../w3iProxy'
 import type W3iAuthFacade from '../../../w3iProxy/w3iAuthFacade'
-import { formatEthChainsAddress } from '../../../utils/address'
+import { formatEthChainsAddress, getChain, getEthChainAddress } from '../../../utils/address'
 
 export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [accountQueryParam, setAccountQueryParam] = useState('')
@@ -28,10 +28,10 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
   useEffect(() => {
     if (accountQueryParam && authClient) {
-      const splitAccount = accountQueryParam.split(':');
-      if(splitAccount.length === 3) {
-	authClient.updateFullAccount(splitAccount.slice(0, 2).join(':'), splitAccount[2])
-      }
+      authClient.updateFullAccount(
+        getChain(accountQueryParam),
+        getEthChainAddress(accountQueryParam)
+      )
     }
   }, [accountQueryParam, authClient])
 

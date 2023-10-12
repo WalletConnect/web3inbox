@@ -8,7 +8,11 @@ import type { W3iNotifyClient } from '../../../w3iProxy'
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
 
-export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, dappOrigin: string) => {
+export const useNotifyState = (
+  w3iProxy: Web3InboxProxy,
+  proxyReady: boolean,
+  dappOrigin: string
+) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
     NotifyClientTypes.NotifySubscription[]
   >([])
@@ -46,7 +50,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean, da
   const handleRegistration = useCallback(
     async (key: string) => {
       if (notifyClient && key && uiEnabled.notify) {
-	console.log("Calling register with", key);
+        console.log('Calling register with', key)
         try {
           const identityKey = await notifyClient.register({
             account: key,

@@ -36,10 +36,11 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   const { activeSubscriptions } = useContext(W3iContext)
 
   useEffect(() => {
-    setSubscribing(false);
+    setSubscribing(false)
   }, [userPubkey])
 
-  const subscribed = userPubkey && activeSubscriptions.some(element => element.metadata.name === name)
+  const subscribed =
+    userPubkey && activeSubscriptions.some(element => element.metadata.name === name)
 
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {

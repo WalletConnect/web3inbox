@@ -51,7 +51,7 @@ export default class ExternalAuthProvider {
   }
 
   public getChain() {
-    return this.chain;
+    return this.chain
   }
 
   public getAccount() {

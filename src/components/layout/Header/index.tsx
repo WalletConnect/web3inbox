@@ -13,7 +13,11 @@ const Header: React.FC = () => {
   return (
     <div className="Header">
       <div className="Header__account">
-        <Avatar address={getEthChainAddress(userPubkey) as `0x${string}`} width="1.5em" height="1.5em" />
+        <Avatar
+          address={getEthChainAddress(userPubkey) as `0x${string}`}
+          width="1.5em"
+          height="1.5em"
+        />
         <span>{ensName ?? truncate(getEthChainAddress(userPubkey) ?? '', 5)}</span>
       </div>
     </div>

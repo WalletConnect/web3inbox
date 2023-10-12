@@ -17,13 +17,7 @@ polyfill()
 initSentry()
 
 const projectId = import.meta.env.VITE_PROJECT_ID
-const chains = [
-  mainnet,
-  arbitrum,
-  polygon,
-  avalanche,
-  bsc,
-]
+const chains = [mainnet, arbitrum, polygon, avalanche, bsc]
 
 const metadata = {
   name: 'Web3Inbox',
@@ -33,7 +27,13 @@ const metadata = {
 }
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
-createWeb3Modal({wagmiConfig, chains, projectId, themeMode: 'light', themeVariables: {"--w3m-z-index": 9999}})
+createWeb3Modal({
+  wagmiConfig,
+  chains,
+  projectId,
+  themeMode: 'light',
+  themeVariables: { '--w3m-z-index': 9999 }
+})
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById('root')!).render(
