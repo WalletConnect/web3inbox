@@ -36,6 +36,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   const { activeSubscriptions } = useContext(W3iContext)
 
   useEffect(() => {
+    // If the account changes, the subscribing flow has broken.
     setSubscribing(false)
   }, [userPubkey])
 
