@@ -36,8 +36,6 @@ createWeb3Modal({
   themeVariables: { '--w3m-z-index': 9999 }
 })
 
-console.log({env: process.env.NODE_ENV})
-
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
