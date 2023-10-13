@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "vite",
     "build": "tsc && vite build && yarn buildMessager",
     "buildMessager": "esbuild ./src/firebase-messaging-sw.ts --bundle --minify --outfile=./dist/firebase-messaging-sw.js",
     "preview": "vite preview",
