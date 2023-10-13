@@ -29,6 +29,7 @@ const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
 createWeb3Modal({
   wagmiConfig,
+  enableAnalytics: true,
   chains,
   projectId,
   themeMode: 'light',
