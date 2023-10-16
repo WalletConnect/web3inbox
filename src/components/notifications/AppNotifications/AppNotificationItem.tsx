@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { handleImageFallback } from '../../../utils/ui'
 import { useFormattedTime, useIsMobile } from '../../../utils/hooks'
 import CircleIcon from '../../general/Icon/CircleIcon'
 import './AppNotifications.scss'
@@ -143,6 +144,7 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
         <img
           src={notification.image ?? appLogo}
           loading="lazy"
+	  onError={handleImageFallback}
           alt="image corresponding to the notification"
         />
 
