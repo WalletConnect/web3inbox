@@ -52,7 +52,7 @@ class W3iNotifyFacade implements W3iNotify {
 
   // ------------------ Notify Client Forwarding ------------------
 
-  public async register(params: { account: string; domain: string; isLimited: boolean }) {
+  public async register(params: { account: string; domain: string; isLimited?: boolean }) {
     return this.provider.register(params)
   }
 

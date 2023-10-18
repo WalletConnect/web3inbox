@@ -28,6 +28,8 @@ type NonMethodNotifyClientKeys =
   | 'proposals'
   | 'protocol'
   | 'removeListener'
+  | 'signedStatements'
+  | 'lastWatchedAccount'
   | 'requests'
   | 'subscriptions'
   | 'syncClient'
