@@ -73,7 +73,7 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
     }
   }
 
-  public async register(params: { account: string; domain: string; isLimited: boolean }) {
+  public async register(params: { account: string; domain: string; isLimited?: boolean }) {
     return this.postToExternalProvider('register', {
       account: params.account,
       isLimited: params.isLimited,

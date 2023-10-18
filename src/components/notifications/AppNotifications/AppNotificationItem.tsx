@@ -144,7 +144,7 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
         <img
           src={notification.image ?? appLogo}
           loading="lazy"
-	  onError={handleImageFallback}
+          onError={handleImageFallback}
           alt="image corresponding to the notification"
         />
 

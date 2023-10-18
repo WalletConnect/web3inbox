@@ -2160,10 +2160,10 @@
     "@walletconnect/time" "^1.0.2"
     tslib "1.14.1"
 
-"@walletconnect/identity-keys@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@walletconnect/identity-keys/-/identity-keys-0.2.0.tgz"
-  integrity sha512-PwFLESTRMuC3nvxDxFWQ83nijx2YnJ5/A+yRwhD01sYDMzBHYC4qKKd+6Srv6l/ffQqn6Mw43xiTKmI6a66P7Q==
+"@walletconnect/identity-keys@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@walletconnect/identity-keys/-/identity-keys-0.2.2.tgz#b42e5709d517fcd5e7fd93a837da5c5e78388f78"
+  integrity sha512-Od34t90Z+fFV3akTapgUbn+NlsgJEBRQ0dIckgT3VMWtQZ0kj3PXYIJL1YOmfpBMiU1n5VVGTkqgIRxMxWiWdg==
   dependencies:
     "@noble/ed25519" "^1.7.1"
     "@walletconnect/cacao" "1.0.2"
@@ -2330,16 +2330,16 @@
     "@walletconnect/modal-core" "2.6.2"
     "@walletconnect/modal-ui" "2.6.2"
 
-"@walletconnect/notify-client@0.13.2":
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-0.13.2.tgz#f00cf83ca4958acffc3aecb14dc9697272bd9a77"
-  integrity sha512-m0tH+9LgscmVZeKCstgpXjSivFX0SRQf4erEGf3RkVx+A5hpUb7JPioajEBH4m8zS9hYl5SSThkFPthI4AgCfQ==
+"@walletconnect/notify-client@^0.14.3":
+  version "0.14.3"
+  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-0.14.3.tgz#b9ca6f2110a552c865e04fb49ab1a18474f4bfe2"
+  integrity sha512-PaWiOfYgINwVbIU1fsI0NCVFjo5ubzp6NIKOGk+nDFUbux7XPL9YpNfSlwsJhj/1H7R3JsQaDIdc/pxedB1RfA==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
     "@walletconnect/core" "^2.10.1"
     "@walletconnect/did-jwt" "2.0.1"
-    "@walletconnect/identity-keys" "^0.2.0"
+    "@walletconnect/identity-keys" "^0.2.2"
     "@walletconnect/jsonrpc-utils" "1.0.7"
     "@walletconnect/time" "1.0.2"
     "@walletconnect/utils" "^2.10.1"

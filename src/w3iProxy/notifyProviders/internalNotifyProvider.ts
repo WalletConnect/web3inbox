@@ -58,14 +58,14 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
   // ------------------- Method-forwarding for NotifyClient -------------------
 
-  public async register(params: { account: string; domain: string }) {
+  public async register(params: { account: string; domain: string; isLimited?: boolean }) {
     if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
     const identityKey = await this.notifyClient.register({
       ...params,
-      isLimited: false,
+      isLimited: params.isLimited,
       onSign: async message => {
         this.emitter.emit('notify_signature_requested', { message })
 
