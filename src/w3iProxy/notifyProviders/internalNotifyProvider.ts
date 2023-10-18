@@ -58,7 +58,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
   // ------------------- Method-forwarding for NotifyClient -------------------
 
-  public async register(params: { account: string; domain: string, isLimited?: boolean }) {
+  public async register(params: { account: string; domain: string; isLimited?: boolean }) {
     if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('approve'))
     }
