@@ -74,11 +74,11 @@ export const PreferencesModal: React.FC = () => {
         <div className="PreferencesModal__content">
           {Object.entries(scopes)
             .sort(([a], [b]) => a.charCodeAt(0) - b.charCodeAt(0))
-            .map(([title, scope]) => (
-              <div key={title} className="PreferencesModal__content__item">
+            .map(([scopeId, scope]) => (
+              <div key={scope.name} className="PreferencesModal__content__item">
                 <div className="PreferencesModal__content__item__wrapper">
                   <h4 style={{ textTransform: 'capitalize' }}>
-                    <Text variant="paragraph-600">{title} Notifications</Text>
+                    <Text variant="paragraph-600">{scope.name} Notifications</Text>
                   </h4>
                   <div className="PreferencesModal__content__setting__helper-text">
                     <Text className="PreferencesModal__content__item__subtitle" variant="small-500">
@@ -92,15 +92,15 @@ export const PreferencesModal: React.FC = () => {
                     setScopes(oldScopes => {
                       return {
                         ...oldScopes,
-                        [title]: {
-                          ...oldScopes[title],
+                        [scopeId]: {
+                          ...oldScopes[scopeId],
                           enabled
                         }
                       }
                     })
                   }}
-                  name={title}
-                  id={title}
+                  name={scope.name}
+                  id={scopeId}
                 />
               </div>
             ))}
