@@ -14,10 +14,9 @@
     display: flex;
     justify-content: flex-end;
 
-    .Button {
-      svg {
-        width: 1em;
-      }
+    svg {
+      cursor: pointer;
+      width: 1.25em;
     }
   }
 

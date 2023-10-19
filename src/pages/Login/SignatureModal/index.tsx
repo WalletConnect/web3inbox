@@ -56,9 +56,9 @@ export const SignatureModal: React.FC<{
     <Modal onToggleModal={signatureModalService.toggleModal}>
       <div className="SignatureModal">
 	<div className="SignatureModal__header">
-          <Button onClick={() => {disconnect()}} customType="danger">
-            <CrossIcon />
-	  </Button>
+          <div onClick className="SignatureModal__exit">
+	    <CrossIcon />
+          </div>
 	</div>
         <div className="SignatureModal__icon">
           <SignatureIcon />
