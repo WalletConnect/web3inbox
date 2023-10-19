@@ -8,6 +8,18 @@
   padding: 1.25em;
   text-align: center;
 
+  &__header {
+    font-size: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    svg {
+      cursor: pointer;
+      width: 1.25em;
+    }
+  }
+
   &__icon {
     width: 11rem;
     height: 9rem;

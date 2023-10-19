@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import Button from '../../../components/general/Button'
 import { Modal } from '../../../components/general/Modal/Modal'
 import { signatureModalService } from '../../../utils/store'
@@ -7,6 +7,9 @@ import './SignatureModal.scss'
 import Spinner from '../../../components/general/Spinner'
 import Text from '../../../components/general/Text'
 import SignatureIcon from '../../../components/general/Icon/SignatureIcon'
+import CrossIcon from '../../../components/general/Icon/CrossIcon'
+import W3iContext from '../../../contexts/W3iContext/context'
+import { useDisconnect } from 'wagmi'
 
 export const SignatureModal: React.FC<{
   message: string
@@ -17,6 +20,8 @@ export const SignatureModal: React.FC<{
    * final step.
    */
   const [signing, setSigning] = useState(false)
+
+  const { disconnect } = useDisconnect();
 
   const onSign = useCallback(() => {
     setSigning(true)
@@ -50,6 +55,11 @@ export const SignatureModal: React.FC<{
   return (
     <Modal onToggleModal={signatureModalService.toggleModal}>
       <div className="SignatureModal">
+	<div className="SignatureModal__header">
+          <div onClick={() => disconnect()} className="SignatureModal__exit">
+	    <CrossIcon />
+          </div>
+	</div>
         <div className="SignatureModal__icon">
           <SignatureIcon />
         </div>
