@@ -23,7 +23,7 @@ const metadata = {
   name: 'Web3Inbox',
   description: 'Notification Hub',
   url: 'https://app.web3inbox.com',
-  icons: ['https://app.web3inbox.com/logo.svg']
+  icons: ['https://app.web3inbox.com/connect-icon.png']
 }
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
