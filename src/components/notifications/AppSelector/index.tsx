@@ -15,6 +15,7 @@ import Label from '../../general/Label'
 import Text from '../../general/Text'
 import MobileHeader from '../../layout/MobileHeader'
 import { AnimatePresence, motion } from 'framer-motion'
+import { handleImageFallback } from '../../../utils/ui'
 
 const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
@@ -136,6 +137,7 @@ const AppSelector: React.FC = () => {
                               app.metadata.icons?.length ? app.metadata.icons[0] : '/fallback.svg'
                             }
                             alt={`${app.metadata.name} logo`}
+			    onError={handleImageFallback}
                             loading="lazy"
                           />
                           <div className="AppSelector__link__wrapper">
