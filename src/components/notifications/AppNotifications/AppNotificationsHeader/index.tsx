@@ -6,6 +6,7 @@ import BackButton from '../../../general/BackButton'
 import Button from '../../../general/Button'
 import AppNotificationDropdown from '../AppNotificationDropdown'
 import './AppNotificationsHeader.scss'
+import { handleImageFallback } from '../../../../utils/ui'
 
 interface IAppNotificationsHeaderProps {
   id: string
@@ -38,6 +39,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, 
               <img
                 className="AppNotificationsHeader__app__logo"
                 src={logo}
+		onError={handleImageFallback}
                 alt={`${name}logo`}
                 loading="lazy"
               />
