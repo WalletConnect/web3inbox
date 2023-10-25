@@ -29,8 +29,10 @@ type NonMethodNotifyClientKeys =
   | 'protocol'
   | 'removeListener'
   | 'signedStatements'
-  | 'lastWatchedAccount'
+  | 'watchedAccounts'
   | 'requests'
+  // unregister functionality is not present in web3inbox at the moment.
+  | 'unregister' 
   | 'subscriptions'
   | 'syncClient'
   | 'SyncStoreController'
