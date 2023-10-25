@@ -5,9 +5,9 @@ const AppearanceIcon: React.FC = () => {
     <svg fill="none" viewBox="0 0 20 20">
       <g
         stroke="#000"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.67"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.67"
         clip-path="url(#a)"
       >
         <path d="M1.67 10c0 4.6 3.73 8.33 8.33 8.33a2.5 2.5 0 0 0 2.5-2.5v-.41c0-.39 0-.58.02-.75a2.5 2.5 0 0 1 2.15-2.15c.17-.02.36-.02.75-.02h.41a2.5 2.5 0 0 0 2.5-2.5 8.33 8.33 0 0 0-16.66 0Z" />

@@ -5,9 +5,9 @@ const ProfileLoadingIcon: React.FC = () => {
     <svg fill="none" viewBox="0 0 28 28">
       <g
         stroke="#141414"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.67"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.67"
         clip-path="url(#a)"
       >
         <path d="M13.92 3.5a10.5 10.5 0 1 1 0 21M10.33 23.86a10.5 10.5 0 0 1-3.16-1.82M7.17 5.96c.94-.79 2-1.4 3.16-1.82M3.58 12.18c.21-1.2.64-2.37 1.25-3.43M3.58 15.82c.21 1.2.64 2.37 1.25 3.43" />

@@ -116,7 +116,7 @@ const AppSelector: React.FC = () => {
             <Label color="main">Subscribed</Label>
             <ul className="AppSelector__list">
               {filteredApps.map(app => (
-                <AnimatePresence>
+                <AnimatePresence key={app.topic}>
                   <motion.div
                     initial={{ opacity: 0 }}
                     exit={{ opacity: 0 }}

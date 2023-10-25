@@ -3,9 +3,9 @@ const MoonIcon = () => {
     <svg fill="none" viewBox="0 0 24 24">
       <path
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
         d="M22 15.84A10.46 10.46 0 0 1 8.16 2 10.46 10.46 0 1 0 22 15.84Z"
       />
     </svg>

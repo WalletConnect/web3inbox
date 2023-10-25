@@ -5,9 +5,9 @@ const CrossIcon: React.FC = () => {
     <svg fill="none" viewBox="0 0 16 16">
       <path
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
         d="m4 4 8 8m-8 0 8-8"
       />
     </svg>
