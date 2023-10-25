@@ -39,7 +39,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, 
               <img
                 className="AppNotificationsHeader__app__logo"
                 src={logo}
-		onError={handleImageFallback}
+                onError={handleImageFallback}
                 alt={`${name}logo`}
                 loading="lazy"
               />

@@ -137,7 +137,7 @@ const AppSelector: React.FC = () => {
                               app.metadata.icons?.length ? app.metadata.icons[0] : '/fallback.svg'
                             }
                             alt={`${app.metadata.name} logo`}
-			    onError={handleImageFallback}
+                            onError={handleImageFallback}
                             loading="lazy"
                           />
                           <div className="AppSelector__link__wrapper">
