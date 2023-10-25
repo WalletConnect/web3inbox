@@ -116,7 +116,7 @@ const AppSelector: React.FC = () => {
             <Label color="main">Subscribed</Label>
             <ul className="AppSelector__list">
               {filteredApps.map(app => (
-                <AnimatePresence>
+                <AnimatePresence key={app.topic}>
                   <motion.div
                     initial={{ opacity: 0 }}
                     exit={{ opacity: 0 }}
@@ -137,7 +137,7 @@ const AppSelector: React.FC = () => {
                               app.metadata.icons?.length ? app.metadata.icons[0] : '/fallback.svg'
                             }
                             alt={`${app.metadata.name} logo`}
-			    onError={handleImageFallback}
+                            onError={handleImageFallback}
                             loading="lazy"
                           />
                           <div className="AppSelector__link__wrapper">
