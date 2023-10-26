@@ -10,6 +10,7 @@ import Text from '../../../general/Text'
 import Spinner from '../../../general/Spinner'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
 import { useNavigate } from 'react-router-dom'
+import { handleImageFallback } from '../../../../utils/ui'
 
 export const UnsubscribeModal: React.FC = () => {
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
@@ -61,6 +62,7 @@ export const UnsubscribeModal: React.FC = () => {
         <div className="UnsubscribeModal__hero">
           <img
             src={app.metadata.icons?.length ? app.metadata.icons[0] : '/fallback.svg'}
+            onError={handleImageFallback}
             alt="logo"
           />
         </div>
