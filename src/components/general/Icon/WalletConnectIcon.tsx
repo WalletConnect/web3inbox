@@ -1,11 +1,4 @@
 import React from 'react'
-;<svg
-  width="40"
-  height="28"
-  viewBox="0 0 40 28"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
-></svg>
 
 const WalletConnectIcon: React.FC<{ hoverable: boolean }> = ({ hoverable }) => {
   return (
