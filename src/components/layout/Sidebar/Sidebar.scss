@@ -19,14 +19,21 @@
   &__Item {
     cursor: pointer;
 
+    &-disabled {
+      cursor: crosshair;
+      pointer-events: none;
+    }
+
     .wc-icon {
       width: 40px;
       height: 28px;
 
       transition: 250ms all ease-in-out;
 
-      &:hover {
-        filter: contrast(2);
+      &-hoverable {
+        &:hover {
+          filter: contrast(0.8);
+        }
       }
     }
   }
@@ -51,6 +58,10 @@
       }
 
       &:active {
+        opacity: 0.5;
+      }
+
+      &-disabled {
         opacity: 0.5;
       }
     }
