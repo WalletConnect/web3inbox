@@ -25,16 +25,9 @@ interface AppCardProps {
 
 const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url, isVerified }) => {
   const [subscribing, setSubscribing] = useState(false)
-  const { mode } = useContext(SettingsContext)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
   const { notifyClientProxy, userPubkey, notifyProvider } = useContext(W3iContext)
-  const cardBgColor = useMemo(() => {
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    const specifiedMode = mode === 'system' ? systemTheme : mode
-
-    return specifiedMode === 'dark' ? bgColor.dark : bgColor.light
-  }, [mode, bgColor])
 
   const { activeSubscriptions } = useContext(W3iContext)
 
@@ -119,7 +112,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           {isVerified? <VerifiedIcon /> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
-          {isVerified? "Official app" : url}
+          {isVerified? "Official app" : new URL(url).host}
         </Text>
         <Text className="AppCard__body__description" variant="paragraph-500">
           {description}
