@@ -47,14 +47,27 @@
     padding: 0.5em;
     border-radius: 44px;
     gap: 1em;
+
     &__Link {
       width: 4em;
       display: flex;
       justify-content: center;
+      align-items: center;
       transition: all 250ms ease-in-out;
 
       &:hover {
         opacity: 0.7;
+      }
+
+      &-active::before {
+        position: absolute;
+        border-radius: 0px 12px 12px 0px;
+        left: -2%;
+        display: inline-block;
+        content: '';
+        height: 3em;
+        width: 0.25em;
+        background: hsla(211, 100%, 60%, 1);
       }
 
       &:active {
