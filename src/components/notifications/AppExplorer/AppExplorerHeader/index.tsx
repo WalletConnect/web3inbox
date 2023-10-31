@@ -12,7 +12,7 @@ const AppExplorerHeader = () => {
 
   return isMobile ? (
     <div className="AppExplorerHeader">
-      {!isAppSearchOpen && <MobileHeading>Explore Apps</MobileHeading>}
+      {!isAppSearchOpen && <MobileHeading>Discover Apps</MobileHeading>}
       <Search
         isSearchOpen={isAppSearchOpen}
         closeSearch={appSearchService.closeSearch}
@@ -24,7 +24,7 @@ const AppExplorerHeader = () => {
     <div className="AppExplorerHeader">
       <div className="AppExplorerHeader__title">
         <img src={ExplorerIcon} alt="Compass" />
-        <h1>Explore Apps</h1>
+        <h1>Discover Apps</h1>
       </div>
       <div className="AppExplorerHeader__selector">
         <Select

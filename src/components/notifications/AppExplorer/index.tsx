@@ -22,7 +22,7 @@ const AppExplorer = () => {
         <MobileHeader title="Discover" />
         <IntroContent
           animation={true}
-          title="Welcome to Web3Inbox"
+          title="Discover Web3Inbox"
           subtitle="Subscribe to our available apps below to start receiving notifications"
           scale={2.5}
           icon={<IntroApps />}

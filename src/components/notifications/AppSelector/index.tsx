@@ -92,7 +92,7 @@ const AppSelector: React.FC = () => {
         <div className="AppSelector__wrapper">
           {!isMobile && (
             <>
-              <Label color="main">Explore</Label>
+              <Label color="main">Discover</Label>
               <ul className="AppSelector__list">
                 <NavLink to={`/notifications/new-app`} end className="AppSelector__link-appsItem">
                   <div className="AppSelector__notifications">
@@ -100,10 +100,10 @@ const AppSelector: React.FC = () => {
                       <img
                         className="AppSelector__link-apps"
                         src={AllAppsIcon}
-                        alt="Explore all apps logo"
+                        alt="Discover all apps logo"
                         loading="lazy"
                       />
-                      <Text variant="small-500">Explore all apps</Text>
+                      <Text variant="small-500">Discover all apps</Text>
                     </div>
                   </div>
                 </NavLink>
