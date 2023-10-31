@@ -74,19 +74,11 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   return (
     <div
       ref={ref}
-      style={{
-        background: `
-        linear-gradient(0deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
-        radial-gradient(
-          140.74% 145.41% at 7.1% 2.28%,
-          ${cardBgColor} 0%,
-          rgba(255, 255, 255, 0) 80%
-        )
-      `
-      }}
       className="AppCard"
       rel="noopener noreferrer"
     >
+      <div className="AppCard__background" style={{backgroundImage: `url("${logo ?? './fallback.svg'}"), url("./fallback.svg")`}} />
+
       <div className="AppCard__header">
         <img
           className="AppCard__header__logo"
