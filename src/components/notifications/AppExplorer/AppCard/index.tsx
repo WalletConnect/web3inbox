@@ -94,22 +94,6 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           alt={`${name} logo`}
           onError={handleImageFallback}
         />
-        {subscribed ? (
-          <>
-            <Button disabled className="AppCard__mobile__button__subscribed">
-              Subscribed
-              <CheckMarkIcon />
-            </Button>
-          </>
-        ) : (
-          <Button
-            disabled={subscribing}
-            className="AppCard__mobile__button__subscribe"
-            onClick={handleSubscription}
-          >
-            {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
-          </Button>
-        )}
       </div>
       <div className="AppCard__body">
         <div className="AppCard__body__title">
