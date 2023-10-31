@@ -1,9 +1,10 @@
 import React from 'react'
+import cn from 'classnames'
 
 const WalletConnectIcon: React.FC<{ hoverable: boolean }> = ({ hoverable }) => {
   return (
     <svg
-      className={`wc-icon${hoverable ? ' wc-icon-hoverable' : ''}`}
+      className={cn(`wc-icon`, hoverable && 'wc-icon-hoverable')}
       fill="none"
       viewBox="0 0 40 28"
     >
