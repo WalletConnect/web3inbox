@@ -38,7 +38,7 @@ const AppSelector: React.FC = () => {
 
       from(activeSubscriptions).subscribe({
         next: app => {
-          const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery)
+          const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
           if (isAppNameMatch) {
             newFilteredApps.push(app)
           }
