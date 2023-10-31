@@ -9,6 +9,7 @@ import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
 import VerifiedIcon from '../../../general/Icon/VerifiedIcon'
 import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
+import { useNavigate } from 'react-router-dom'
 
 interface AppCardProps {
   name: string
@@ -24,6 +25,7 @@ interface AppCardProps {
 const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
   const [subscribing, setSubscribing] = useState(false)
   const { mode } = useContext(SettingsContext)
+  const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
   const { notifyClientProxy, userPubkey, notifyProvider } = useContext(W3iContext)
   const cardBgColor = useMemo(() => {
@@ -71,13 +73,34 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
     [userPubkey, name, description, logo, bgColor, url, setSubscribing, subscribed]
   )
 
+  const handleNavigateApp = () => {
+    if (subscribed) {
+      try {
+        const appDomain = new URL(url).host
+        const topic = activeSubscriptions.find(sub => sub.metadata.appDomain === appDomain)?.topic
+        if (topic) {
+          nav(`/notifications/${topic}`)
+        } else {
+          throw new Error(`No matching subscription found to domain, ${appDomain}`)
+        }
+      } catch (e: any) {
+        console.error(`Failed to navigate to app: ${e.message}`)
+      }
+    }
+  }
+
   return (
     <div
       ref={ref}
       className="AppCard"
       rel="noopener noreferrer"
+      style={{ cursor: subscribed ? 'pointer' : 'default' }}
+      onClick={handleNavigateApp}
     >
-      <div className="AppCard__background" style={{backgroundImage: `url("${logo ?? './fallback.svg'}"), url("./fallback.svg")`}} />
+      <div
+        className="AppCard__background"
+        style={{ backgroundImage: `url("${logo ?? './fallback.svg'}"), url("./fallback.svg")` }}
+      />
 
       <div className="AppCard__header">
         <img
