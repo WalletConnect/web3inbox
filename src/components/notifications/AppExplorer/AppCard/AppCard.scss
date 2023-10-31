@@ -30,7 +30,7 @@
 
   &__mobile__button__subscribe {
     &:disabled {
-      background-color: var(--accent-color-1);
+      background-color: var(--accent-color-1) !important;
 
       .Spinner {
         circle {
@@ -138,7 +138,7 @@
       }
 
       &:disabled {
-        background-color: var(--accent-color-1);
+        background-color: var(--accent-color-1) !important;
 
         .Spinner {
           circle {
