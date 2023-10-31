@@ -11,19 +11,28 @@
     pointer-events: none;
   }
 
+  .Button {
+    .Text {
+      letter-spacing: -0.2px !important;
+    }
+  }
+
   &__Text {
     z-index: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    letter-spacing: -0.2px !important;
 
     .Text__large-600 {
       color: #141414;
+      letter-spacing: -0.2px !important;
     }
 
     .Text__small-400 {
       width: 55%;
+      letter-spacing: -0.2px !important;
       color: #798686;
     }
   }

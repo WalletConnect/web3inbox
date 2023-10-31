@@ -33,7 +33,7 @@ const MobileHeader: React.FC<IMobileHeaderProps> = ({ title, back, notificationI
         </div>
       ) : (
         <Link className="MobileHeader__icon" to={`/notifications/new-app`}>
-          <WalletConnectIcon />
+          <WalletConnectIcon hoverable={false} />
         </Link>
       )}
 

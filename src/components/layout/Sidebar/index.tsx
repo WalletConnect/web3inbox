@@ -10,9 +10,15 @@ import './Sidebar.scss'
 import WalletConnectIcon from '../../general/Icon/WalletConnectIcon'
 import ConnectWalletButton from '../../login/ConnectWalletButton'
 import { getEthChainAddress } from '../../../utils/address'
+import cn from 'classnames'
 
-const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <div className="Sidebar__Item">{children}</div>
+const SidebarItem: React.FC<{ children?: React.ReactNode; isDisabled?: boolean }> = ({
+  children,
+  isDisabled
+}) => {
+  return (
+    <div className={cn('Sidebar__Item', isDisabled && 'Sidebar__Item-disabled')}>{children}</div>
+  )
 }
 
 const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
@@ -53,21 +59,27 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
       {!isMobile && (
         <SidebarItem>
           <Link to={`/notifications/new-app`}>
-            <WalletConnectIcon />
+            <WalletConnectIcon hoverable={isLoggedIn} />
           </Link>
         </SidebarItem>
       )}
-      {isLoggedIn && (
-        <SidebarItem>
-          <div className="Sidebar__Navigation">
-            {navItems.map(([icon, itemName]) => (
-              <Link className="Sidebar__Navigation__Link" key={itemName} to={`/${itemName}`}>
-                {icon}
-              </Link>
-            ))}
-          </div>
-        </SidebarItem>
-      )}
+
+      <SidebarItem isDisabled={!isLoggedIn}>
+        <div className="Sidebar__Navigation">
+          {navItems.map(([icon, itemName]) => (
+            <Link
+              className={cn(
+                `Sidebar__Navigation__Link`,
+                !isLoggedIn && `Sidebar__Navigation__Link-disabled`
+              )}
+              key={itemName}
+              to={`/${itemName}`}
+            >
+              {icon}
+            </Link>
+          ))}
+        </div>
+      </SidebarItem>
 
       <SidebarItem>
         {isLoggedIn ? (
