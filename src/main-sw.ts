@@ -1,4 +1,5 @@
 /// <reference lib="WebWorker" />
+
 import { openDB } from 'idb'
 
 const ECHO_URL = 'https://echo.walletconnect.com'
@@ -52,6 +53,9 @@ self.addEventListener('message', event => {
       break
   }
 })
+
+//@ts-ignore
+const _ = self.__WB_MANIFEST;
 
 self.addEventListener('install', () => {
   self.skipWaiting()

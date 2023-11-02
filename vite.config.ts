@@ -13,7 +13,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
   includeAssets: ['favicon.svg'],
   injectManifest: {
-    globIgnores: ['*/**.js']
+    injectionPoint: undefined,
   },
   srcDir: 'src',
   filename: 'main-sw.ts',
