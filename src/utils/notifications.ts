@@ -58,5 +58,5 @@ export const setupPushNotifications = async (notifyClient: NotifyClient, subAppD
 
   const token = await getFirebaseToken()
 
-  await installSymkeyInServiceWorker(clientId, sub.symKey, token, subAppDomain)
+  await installSymkeyInServiceWorker(clientId, sub.symKey, token, sub.topic)
 }
