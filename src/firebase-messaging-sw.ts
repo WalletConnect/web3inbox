@@ -22,7 +22,6 @@ export const firebaseApp = initializeApp({
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages. Need to keep this alive
-const messaging = getMessaging(firebaseApp)
 
 const getDbSymkeyStore = async () => {
   const db = await openDB('w3i-sw-db', 3, {
@@ -47,6 +46,11 @@ const getSymKey = async (topic: string) => {
 
   throw new Error('No symkey exists for such topic')
 }
+
+const messaging = getMessaging(firebaseApp)
+onBackgroundMessage(messaging, (ev) => {
+  console.log("Got background message", ev);
+})
 
 self.addEventListener('push', async ev => {
 
