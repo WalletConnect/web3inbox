@@ -1,11 +1,5 @@
 /// <reference lib="WebWorker" />
 import { openDB } from 'idb'
-import {
-  cleanupOutdatedCaches,
-  createHandlerBoundToURL,
-  precacheAndRoute
-} from 'workbox-precaching'
-import { NavigationRoute, registerRoute } from 'workbox-routing'
 
 const ECHO_URL = 'https://echo.walletconnect.com'
 
@@ -62,8 +56,3 @@ self.addEventListener('message', event => {
 self.addEventListener('install', () => {
   self.skipWaiting()
 })
-
-// Clean old assets
-cleanupOutdatedCaches()
-
-precacheAndRoute(self.__WB_MANIFEST)
