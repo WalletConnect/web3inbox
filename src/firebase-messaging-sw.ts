@@ -55,7 +55,7 @@ const triggerPn = (data: { encodedData:string, topic: string}) => {
     body: 'pn'
   })
 
-  getSymKey(topic)
+  getSymKey(data.topic)
     .then(symkey => {
       return decryptMessage({
         encoded: data.encodedData,
