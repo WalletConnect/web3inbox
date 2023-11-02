@@ -43,17 +43,13 @@ const getSymKey = async (topic: string) => {
     return result
   }
 
-  throw new Error('No symkey exists for such topic')
+  throw new Error(`No symkey exists for such topic: ${topic}`)
 }
 
 const messaging = getMessaging(firebaseApp)
 
 const triggerPn = (data: { encodedData:string, topic: string}) => {
   console.log(">>data", data);
-
-  self.registration.showNotification('pn', {
-    body: 'pn'
-  })
 
   getSymKey(data.topic)
     .then(symkey => {
