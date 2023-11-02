@@ -49,6 +49,9 @@ const getSymKey = async (topic: string) => {
 }
 
 self.addEventListener('push', async ev => {
+
+  console.log("recieved pushEvent", ev)
+
   const { blob: encoded, topic } = ev.data!.json().data
 
   console.log("recieved pushEvent from topic", topic)
