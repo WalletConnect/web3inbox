@@ -40,7 +40,7 @@ export const installSymkeyInServiceWorker = async (
 }
 
 export const setupPushNotifications = async (notifyClient: NotifyClient, subAppDomain: string) => {
-  const isSecureContext = window.location.protocol === 'https://'
+  const isSecureContext = window.location.protocol === 'https:'
 
   const sub = Object.values(notifyClient.getActiveSubscriptions()).find(
     sub => sub.metadata.appDomain === subAppDomain
