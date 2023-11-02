@@ -1,5 +1,5 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { NotifyClient } from '@walletconnect/notify-client'
+import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 import type { W3iNotifyProvider } from './types'
@@ -90,23 +90,29 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     }
     console.log('InternalNotifyProvider > NotifyClient.subscribe > params', params)
 
-    /*
-     * To prevent subscribing in local/dev environemntns failing,
-     * no calls to the service worker or firebase messager worker
-     * will be made.
-     */
+    const subsChangedListener = async (ev: {
+      params: { subscriptions: NotifyClientTypes.NotifySubscription[] }
+    }) => {
+      const thisSub = ev.params.subscriptions.find(
+        sub => sub.metadata.appDomain === params.appDomain
+      )
+      if (thisSub && this.notifyClient) {
+        try {
+          await setupPushNotifications(this.notifyClient, params.appDomain)
+        } catch (e) {
+          console.error(e)
+        }
+
+        this.notifyClient.off('notify_subscriptions_changed', subsChangedListener)
+      }
+    }
+
+    this.notifyClient.on('notify_subscriptions_changed', subsChangedListener)
 
     try {
       const subscribed = await this.notifyClient.subscribe({
         ...params
       })
-
-      try {
-	await setupPushNotifications(this.notifyClient, params.appDomain);
-      }
-      catch (e) {
-	console.error(e);
-      }
 
       return subscribed
     } catch (e: unknown) {

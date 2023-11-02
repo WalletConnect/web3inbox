@@ -55,7 +55,7 @@ self.addEventListener('message', event => {
 })
 
 //@ts-ignore
-const _ = self.__WB_MANIFEST;
+const _ = self.__WB_MANIFEST
 
 self.addEventListener('install', () => {
   self.skipWaiting()
