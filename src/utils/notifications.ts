@@ -39,11 +39,11 @@ export const installSymkeyInServiceWorker = async (
   })
 }
 
-export const setupPushNotifications = async (notifyClient: NotifyClient, subTopic: string) => {
+export const setupPushNotifications = async (notifyClient: NotifyClient, subAppDomain: string) => {
   const isSecureContext = window.location.protocol === 'https://'
 
   const sub = Object.values(notifyClient.getActiveSubscriptions()).find(
-    sub => sub.topic === subTopic
+    sub => sub.metadata.appDomain === subAppDomain
   )
 
   if (!sub) {
@@ -58,5 +58,5 @@ export const setupPushNotifications = async (notifyClient: NotifyClient, subTopi
 
   const token = await getFirebaseToken()
 
-  await installSymkeyInServiceWorker(clientId, sub.symKey, token, subTopic)
+  await installSymkeyInServiceWorker(clientId, sub.symKey, token, subAppDomain)
 }

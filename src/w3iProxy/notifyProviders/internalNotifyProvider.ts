@@ -3,6 +3,7 @@ import type { NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 import type { W3iNotifyProvider } from './types'
+import { setupPushNotifications } from '../../utils/notifications'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined
@@ -99,6 +100,13 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       const subscribed = await this.notifyClient.subscribe({
         ...params
       })
+
+      try {
+	await setupPushNotifications(this.notifyClient, params.appDomain);
+      }
+      catch (e) {
+	console.error(e);
+      }
 
       return subscribed
     } catch (e: unknown) {
