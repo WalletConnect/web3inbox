@@ -20,11 +20,13 @@ const getDbSymkeyStore = async () => {
 
 const initData = async (topic: string, symkey: string, clientId: string, token: string) => {
   const db = await getDbSymkeyStore()
+  const echoUrl = `${ECHO_URL}/${process.env.VITE_PROJECT_ID}/clients`
 
-  console.log({ symkey, topic, clientId, token })
+  console.log({ symkey, topic, clientId, token, echoUrl })
   await db.put(SYMKEY_OBJ_STORE, symkey, topic)
 
-  const echoResponse = await fetch(`${ECHO_URL}/${'547aafa48826c4d76f492efecde4843d'}/clients`, {
+
+  const echoResponse = await fetch(echoUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
