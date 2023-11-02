@@ -56,8 +56,8 @@ const triggerPn = async (data: { encodedData:string, topic: string}) => {
   const m = await decryptMessage({encoded: data.encodedData, symkey, topic: data.topic})
 
   self.registration.showNotification(m.title, {
+    icon: m.icon,
     body: m.body,
-    image: m.icon
   })
 }
 
