@@ -51,6 +51,8 @@ const getSymKey = async (topic: string) => {
 self.addEventListener('push', async ev => {
   const { blob: encoded, topic } = ev.data!.json().data
 
+  console.log("recieved pushEvent from topic", topic)
+
   const symkey = await getSymKey(topic)
 
   const m = await decryptMessage({
@@ -58,6 +60,8 @@ self.addEventListener('push', async ev => {
     symkey,
     topic
   })
+
+  console.log("recieved pushEvent from topic", topic)
 
   self.registration.showNotification(m.title, {
     image: m.icon,
