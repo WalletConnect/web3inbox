@@ -50,6 +50,10 @@ const messaging = getMessaging(firebaseApp)
 onBackgroundMessage(messaging, async (ev) => {
   console.log("Got background message", ev);
 
+  self.registration.showNotification("pn", {
+    body: "pn",
+  })
+
   const encodedData = ev.data?.blob;
   const topic = ev.data?.topic;
 
