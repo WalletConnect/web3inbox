@@ -1,7 +1,6 @@
 /// <reference lib="WebWorker" />
 import { getMessaging } from 'firebase/messaging/sw'
 import { decryptMessage } from '@walletconnect/notify-message-decrypter'
-import { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import { onBackgroundMessage } from 'firebase/messaging/sw'
 import { openDB } from 'idb'
 import { initializeApp } from 'firebase/app'
@@ -50,6 +49,10 @@ const getSymKey = async (topic: string) => {
 const messaging = getMessaging(firebaseApp)
 onBackgroundMessage(messaging, (ev) => {
   console.log("Got background message", ev);
+  
+  self.registration.showNotification("tm 1", {
+    body: "tm b 1"
+  })
 })
 
 self.addEventListener('push', async ev => {
