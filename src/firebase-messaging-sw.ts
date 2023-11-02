@@ -47,34 +47,26 @@ const getSymKey = async (topic: string) => {
 }
 
 const messaging = getMessaging(firebaseApp)
-onBackgroundMessage(messaging, (ev) => {
+onBackgroundMessage(messaging, async (ev) => {
   console.log("Got background message", ev);
-  
-  self.registration.showNotification("tm 1", {
-    body: "tm b 1"
-  })
-})
 
-self.addEventListener('push', async ev => {
+  const encodedData = ev.data?.blob;
+  const topic = ev.data?.topic;
 
-  console.log("recieved pushEvent", ev)
-
-  const { blob: encoded, topic } = ev.data!.json().data
-
-  console.log("recieved pushEvent from topic", topic)
+  if(!encodedData || !topic) {
+    return;
+  }
 
   const symkey = await getSymKey(topic)
 
   const m = await decryptMessage({
-    encoded,
+    encoded: encodedData,
     symkey,
     topic
   })
-
-  console.log("recieved pushEvent from topic", topic)
-
+  
   self.registration.showNotification(m.title, {
+    body: m.body,
     image: m.icon,
-    body: m.body
   })
 })
