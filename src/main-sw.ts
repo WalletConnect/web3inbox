@@ -1,5 +1,7 @@
 /// <reference lib="WebWorker" />
 
+declare let self: ServiceWorkerGlobalScope
+
 import { openDB } from 'idb'
 
 const ECHO_URL = 'https://echo.walletconnect.com'
@@ -18,14 +20,10 @@ const getDbSymkeyStore = async () => {
   return db
 }
 
-const initData = async (topic: string, symkey: string, clientId: string, token: string) => {
-  const db = await getDbSymkeyStore()
+const registerWithEcho = async (clientId: string, token: string) => {
   const projectId = '7cb67f700b96a290fb5bb73d9001d489'
 
   const echoUrl = `${ECHO_URL}/${projectId}/clients`
-
-  console.log({ symkey, topic, clientId, token, echoUrl })
-  await db.put(SYMKEY_OBJ_STORE, symkey, topic)
 
   const echoResponse = await fetch(echoUrl, {
     method: 'POST',
@@ -42,7 +40,19 @@ const initData = async (topic: string, symkey: string, clientId: string, token: 
   console.log({ echoResponse: await echoResponse.text(), status: echoResponse.status })
 }
 
-declare let self: ServiceWorkerGlobalScope
+const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
+  const db = await getDbSymkeyStore()
+
+  await db.put(SYMKEY_OBJ_STORE, symkey, topic)
+}
+
+const setupSubscriptionsSymkeys = async (topicSymkeyEntries: [string,string][]) => {
+  topicSymkeyEntries.forEach(([topic, symkey]) => setupSubscriptionSymkey(topic, symkey))
+
+  for(const [topic, symkey] of topicSymkeyEntries) {
+    setupSubscriptionSymkey(topic, symkey)
+  }
+}
 
 self.addEventListener('message', event => {
   if (!event.data) return
@@ -53,14 +63,15 @@ self.addEventListener('message', event => {
       self.skipWaiting()
       break
     // Event to download symkey into indexedDb and setup the store
-    case 'INSTALL_SYMKEY_CLIENT':
-      initData(event.data.topic, event.data.symkey, event.data.clientId, event.data.token)
+    case 'SET_SUBS_SYMKEYS':
+      setupSubscriptionsSymkeys(event.data.topicSymkeyEntries);
       break
+    // Event to register with echo
+    case 'REGISTER_WITH_ECHO':
+      registerWithEcho(event.data.clientId, event.data.token);
+      break;
   }
 })
-
-//@ts-ignore
-const _ = self.__WB_MANIFEST
 
 self.addEventListener('install', () => {
   self.skipWaiting()

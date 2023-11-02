@@ -62,8 +62,6 @@ const triggerPn = async (data: { encodedData:string, topic: string}) => {
 }
 
 onBackgroundMessage(messaging, ev => {
-  console.log('Got background message', ev)
-
 
   const encodedData = ev.data?.blob
   const topic = ev.data?.topic
