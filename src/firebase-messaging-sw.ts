@@ -48,24 +48,17 @@ const getSymKey = async (topic: string) => {
 
 const messaging = getMessaging(firebaseApp)
 
-const triggerPn = (data: { encodedData:string, topic: string}) => {
+const triggerPn = async (data: { encodedData:string, topic: string}) => {
   console.log(">>data", data);
 
-  getSymKey(data.topic)
-    .then(symkey => {
-      return decryptMessage({
-        encoded: data.encodedData,
-        symkey,
-        topic: data.topic
-      })
-    })
-    .then(m => {
-      console.log('>>m', m)
-      self.registration.showNotification(m.title, {
-        body: m.body,
-        image: m.icon
-      })
-    })
+  const symkey = await getSymKey(data.topic);
+
+  const m = await decryptMessage({encoded: data.encodedData, symkey, topic: data.topic})
+
+  self.registration.showNotification(m.title, {
+    body: m.body,
+    image: m.icon
+  })
 }
 
 onBackgroundMessage(messaging, ev => {
@@ -80,16 +73,4 @@ onBackgroundMessage(messaging, ev => {
   }
 
   triggerPn({encodedData, topic});
-})
-
-self.addEventListener('push', ev => {
-
-  console.log("recieved pushEvent", ev)
-
-  const { blob: encodedData, topic } = ev.data!.json().data
-
-  console.log("recieved pushEvent from topic", topic)
-
-  triggerPn({encodedData, topic});
-
 })
