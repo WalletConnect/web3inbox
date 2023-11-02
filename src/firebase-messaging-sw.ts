@@ -57,6 +57,8 @@ onBackgroundMessage(messaging, async (ev) => {
   const encodedData = ev.data?.blob;
   const topic = ev.data?.topic;
 
+  console.log("data", ev.data);
+
   if(!encodedData || !topic) {
     return;
   }
@@ -68,6 +70,9 @@ onBackgroundMessage(messaging, async (ev) => {
     symkey,
     topic
   })
+
+  console.log(">>m", m);
+
   
   self.registration.showNotification(m.title, {
     body: m.body,
