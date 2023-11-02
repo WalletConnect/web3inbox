@@ -20,13 +20,12 @@ const getDbSymkeyStore = async () => {
 
 const initData = async (topic: string, symkey: string, clientId: string, token: string) => {
   const db = await getDbSymkeyStore()
-  const projectId = "7cb67f700b96a290fb5bb73d9001d489"
+  const projectId = '7cb67f700b96a290fb5bb73d9001d489'
 
   const echoUrl = `${ECHO_URL}/${projectId}/clients`
 
   console.log({ symkey, topic, clientId, token, echoUrl })
   await db.put(SYMKEY_OBJ_STORE, symkey, topic)
-
 
   const echoResponse = await fetch(echoUrl, {
     method: 'POST',
@@ -40,7 +39,7 @@ const initData = async (topic: string, symkey: string, clientId: string, token: 
     })
   })
 
-  console.log({echoResponse: await echoResponse.text(), status: echoResponse.status})
+  console.log({ echoResponse: await echoResponse.text(), status: echoResponse.status })
 }
 
 declare let self: ServiceWorkerGlobalScope
