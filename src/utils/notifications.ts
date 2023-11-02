@@ -1,6 +1,5 @@
 import { NotifyClient } from '@walletconnect/notify-client'
-import { getToken } from 'firebase/messaging'
-import { getFirebaseToken, messaging } from './firebase'
+import { getFirebaseToken } from './firebase'
 
 export const requireNotifyPermission = async () => {
   if (!('Notification' in window)) {
