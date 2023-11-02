@@ -98,7 +98,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       )
       if (thisSub && this.notifyClient) {
         try {
-          await setupPushNotifications(this.notifyClient, thisSub.topic)
+          await setupPushNotifications(this.notifyClient, params.appDomain)
         } catch (e) {
           console.error(e)
         }
