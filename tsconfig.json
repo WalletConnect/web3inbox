@@ -16,7 +16,7 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": ["src", "../../../../tmp/!home!clinenerd!dev!web3inbox!src!utils!pwa.ts~"],
   "exclude": ["*/**/*.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

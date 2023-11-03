@@ -10,6 +10,7 @@ const ECHO_URL = 'https://echo.walletconnect.com'
 const registerWithEcho = async (clientId: string, token: string) => {
   const [getRegistrationToken, putRegistrationToken] = await getDbEchoRegistrations()
 
+  // Check for existing registration to prevent spamming echo
   const existingRegistrationToken = await getRegistrationToken(clientId)
 
   // Already registered device.
@@ -18,6 +19,7 @@ const registerWithEcho = async (clientId: string, token: string) => {
     return Promise.resolve()
   }
 
+  //TODO: Make this an env var
   const projectId = '7cb67f700b96a290fb5bb73d9001d489'
 
   const echoUrl = `${ECHO_URL}/${projectId}/clients`

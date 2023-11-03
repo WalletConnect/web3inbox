@@ -33,7 +33,7 @@ const getSymKey = async (topic: string) => {
   throw new Error(`No symkey exists for such topic: ${topic}`)
 }
 
-const triggerPn = async (data: { encodedData: string; topic: string }) => {
+const triggerPushNotification = async (data: { encodedData: string; topic: string }) => {
   const symkey = await getSymKey(data.topic)
 
   const m = await decryptMessage({ encoded: data.encodedData, symkey, topic: data.topic })
@@ -52,5 +52,5 @@ onBackgroundMessage(messaging, ev => {
     return
   }
 
-  triggerPn({ encodedData, topic })
+  triggerPushNotification({ encodedData, topic })
 })
