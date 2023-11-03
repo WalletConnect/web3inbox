@@ -1,7 +1,8 @@
 import { NotifyClient } from '@walletconnect/notify-client'
 import { getFirebaseToken } from './firebase'
 import { SERVICE_WORKER_ACTIONS } from './constants'
-import { useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
+import W3iContext from '../contexts/W3iContext/context'
 
 export const getEchoRegistrationToken = () => {}
 
@@ -17,15 +18,21 @@ export const userEnabledNotification = () => {
 }
 
 export const useNotificationPermissionState = () => {
-  const [enabled, setEnabled] = useState(userEnabledNotification())
+  const [notificationPermissionGranted, setNotificationPermissionGranted] = useState(
+    userEnabledNotification()
+  )
 
-  navigator.permissions?.query({ name: 'notifications' }).then(permissionStatus => {
-    permissionStatus.onchange = () => {
-      setEnabled(userEnabledNotification())
-    }
-  })
+  useEffect(() => {
+    navigator.permissions?.query({ name: 'notifications' }).then(permissionStatus => {
+      permissionStatus.onchange = () => {
+        setNotificationPermissionGranted(userEnabledNotification())
+      }
+    })
 
-  return enabled
+  }, [])
+
+
+  return notificationPermissionGranted
 }
 
 export const requireNotifyPermission = async () => {

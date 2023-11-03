@@ -34,7 +34,6 @@ const getSymKey = async (topic: string) => {
   throw new Error(`No symkey exists for such topic: ${topic}`)
 }
 
-
 const triggerPn = async (data: { encodedData: string; topic: string }) => {
   console.log('>>data', data)
 

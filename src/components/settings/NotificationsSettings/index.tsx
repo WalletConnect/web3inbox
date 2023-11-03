@@ -16,11 +16,22 @@ import {
 } from '../../../utils/notifications'
 import NotificationIcon from '../../general/Icon/Notification'
 import cn from 'classnames'
+import W3iContext from '../../../contexts/W3iContext/context'
 
 const NotificationsSettings: React.FC = () => {
   const { isDevModeEnabled, updateSettings } = useContext(SettingsContext)
+  const { notifyClientProxy } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
+
+  const handleEnableNotifications = async () => {
+    if (!notifyClientProxy) {
+      return
+    }
+    await requireNotifyPermission()
+
+    await notifyClientProxy.registerWithEcho()
+  }
 
   return (
     <AnimatePresence>
@@ -64,7 +75,7 @@ const NotificationsSettings: React.FC = () => {
             >
               <SettingsToggle
                 checked={notificationsEnabled}
-                setChecked={requireNotifyPermission}
+                setChecked={handleEnableNotifications}
                 icon={<NotificationIcon />}
                 title="Enable Push Notifications"
                 active={notificationsEnabledInBrowser() && !notificationsEnabled}

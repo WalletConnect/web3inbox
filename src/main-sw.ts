@@ -8,14 +8,13 @@ import { getDbEchoRegistrations, getDbSymkeyStore } from './utils/idb'
 const ECHO_URL = 'https://echo.walletconnect.com'
 
 const registerWithEcho = async (clientId: string, token: string) => {
-
   const [getRegistrationToken, putRegistrationToken] = await getDbEchoRegistrations()
 
-  const existingRegistrationToken = await getRegistrationToken(clientId);
+  const existingRegistrationToken = await getRegistrationToken(clientId)
 
   // Already registered device.
   // No need to spam echo
-  if(existingRegistrationToken === token) {
+  if (existingRegistrationToken === token) {
     return Promise.resolve()
   }
 
@@ -34,17 +33,14 @@ const registerWithEcho = async (clientId: string, token: string) => {
       token
     })
   })
-  
+
   console.log({ echoResponse: await echoResponse.text(), status: echoResponse.status })
 
-
-  // Is a 200 type response. Redirects (300s) shouldn't occur 
-  if(echoResponse.status >= 200 && echoResponse.status < 300) {
+  // Is a 200 type response. Redirects (300s) shouldn't occur
+  if (echoResponse.status >= 200 && echoResponse.status < 300) {
     // Store info to prevent re-registration
-    await putRegistrationToken(clientId, token);
+    await putRegistrationToken(clientId, token)
   }
-
-
 }
 
 const setupSubscriptionSymkey = async (topic: string, symkey: string) => {

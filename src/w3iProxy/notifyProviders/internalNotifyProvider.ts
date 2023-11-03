@@ -3,7 +3,8 @@ import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-clie
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 import type { W3iNotifyProvider } from './types'
-import { registerWithEcho, setupPushSymkey } from '../../utils/notifications'
+import { registerWithEcho, setupPushSymkey, userEnabledNotification } from '../../utils/notifications'
+import { getDbEchoRegistrations } from '../../utils/idb'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined
@@ -50,6 +51,24 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
   }
 
   // ------------------------ Provider-specific methods ------------------------
+
+  private async ensureEchoRegistration() {
+    // impossible case, just here to please typescript
+    if(!this.notifyClient) {
+      return;
+    }
+
+    // No need to register with echo if user does not want notifications
+    if(!userEnabledNotification()) {
+      return;
+    }
+    
+    const isRegistered = await this.getRegisteredWithEcho();
+
+    if(!isRegistered) {
+      await registerWithEcho(this.notifyClient);
+    }
+  }
 
   private formatClientRelatedError(method: string) {
     return `An initialized NotifyClient is required for method: [${method}].`
@@ -100,12 +119,14 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
-    console.log('InternalNotifyProvider > NotifyClient.subscribe > params', params)
+    
 
     try {
       const subscribed = await this.notifyClient.subscribe({
         ...params
       })
+
+      await this.ensureEchoRegistration();
 
       return subscribed
     } catch (e: unknown) {
@@ -179,7 +200,14 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     return registerWithEcho(this.notifyClient)
   }
 
-  public async getEchoIsRegistered() {
-    return Promise.resolve(false)
+  public async getRegisteredWithEcho() {
+    if (!this.notifyClient) {
+      throw new Error(this.formatClientRelatedError('getRegisteredWithEcho'))
+    }
+
+    const [getEchoRegistration] = await getDbEchoRegistrations();
+    const existingRegistration = await getEchoRegistration(await this.notifyClient.core.crypto.getClientId())
+
+    return Boolean(existingRegistration);
   }
 }

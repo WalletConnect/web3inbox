@@ -113,7 +113,7 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
     return Promise.reject('External notify provider can not register with echo')
   }
 
-  public async getEchoIsRegistered() {
+  public async getRegisteredWithEcho() {
     return Promise.resolve(false)
   }
 }
