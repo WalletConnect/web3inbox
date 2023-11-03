@@ -81,6 +81,10 @@ class W3iNotifyFacade implements W3iNotify {
   public async deleteNotifyMessage(params: { id: number }) {
     return this.provider.deleteNotifyMessage(params)
   }
+
+  public async registerWithEcho() {
+    return this.provider.registerWithEcho()
+  }
 }
 
 export default W3iNotifyFacade

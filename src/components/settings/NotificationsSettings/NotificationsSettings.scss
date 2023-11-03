@@ -9,4 +9,17 @@
     flex-direction: column;
     width: 100%;
   }
+
+  &__push-enabled-true {
+    cursor: not-allowed;
+    opacity: 50%;
+
+    * {
+      pointer-events: none;
+    }
+  }
+
+  svg {
+    color: var(--fg-color-1);
+  }
 }

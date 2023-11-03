@@ -8,9 +8,19 @@ import PrivacyIcon from '../../general/Icon/Privacy'
 import SettingsContext from '../../../contexts/SettingsContext/context'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
+import {
+  notificationsEnabledInBrowser,
+  requireNotifyPermission,
+  userEnabledNotification,
+  useNotificationPermissionState
+} from '../../../utils/notifications'
+import NotificationIcon from '../../general/Icon/Notification'
+import cn from 'classnames'
 
 const NotificationsSettings: React.FC = () => {
   const { isDevModeEnabled, updateSettings } = useContext(SettingsContext)
+
+  const notificationsEnabled = useNotificationPermissionState()
 
   return (
     <AnimatePresence>
@@ -37,6 +47,30 @@ const NotificationsSettings: React.FC = () => {
               active={true}
             />
           </SettingsItem>
+          <div
+            title={
+              notificationsEnabled
+                ? 'To disable notifications, use native browser settings next to URL'
+                : ''
+            }
+          >
+            <SettingsItem
+              title="Enable Push Notifications"
+              subtitle="Get push notifications on your desktop or phone when Web3Inbox is added to your homescreen"
+              className={cn(
+                'NotificationsSettings__notifications',
+                `NotificationsSettings__push-enabled-${notificationsEnabled ? 'true' : 'false'}`
+              )}
+            >
+              <SettingsToggle
+                checked={notificationsEnabled}
+                setChecked={requireNotifyPermission}
+                icon={<NotificationIcon />}
+                title="Enable Push Notifications"
+                active={notificationsEnabledInBrowser() && !notificationsEnabled}
+              />
+            </SettingsItem>
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

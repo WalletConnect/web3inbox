@@ -108,4 +108,12 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
   public async deleteNotifyMessage(params: { id: number }) {
     return this.postToExternalProvider('deleteNotifyMessage', params)
   }
+
+  public async registerWithEcho() {
+    return Promise.reject('External notify provider can not register with echo')
+  }
+
+  public async getEchoIsRegistered() {
+    return Promise.resolve(false)
+  }
 }

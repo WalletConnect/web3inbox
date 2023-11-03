@@ -1,8 +1,35 @@
 import { NotifyClient } from '@walletconnect/notify-client'
 import { getFirebaseToken } from './firebase'
+import { SERVICE_WORKER_ACTIONS } from './constants'
+import { useState } from 'react'
+
+export const getEchoRegistrationToken = () => {}
+
+export const notificationsEnabledInBrowser = () => {
+  return 'Notification' in window
+}
+
+export const userEnabledNotification = () => {
+  if (notificationsEnabledInBrowser()) {
+    return Notification?.permission === 'granted'
+  }
+  return false
+}
+
+export const useNotificationPermissionState = () => {
+  const [enabled, setEnabled] = useState(userEnabledNotification())
+
+  navigator.permissions?.query({ name: 'notifications' }).then(permissionStatus => {
+    permissionStatus.onchange = () => {
+      setEnabled(userEnabledNotification())
+    }
+  })
+
+  return enabled
+}
 
 export const requireNotifyPermission = async () => {
-  if (!('Notification' in window)) {
+  if (!notificationsEnabledInBrowser()) {
     throw new Error('This browser does not support desktop push notifications')
   }
 
@@ -18,30 +45,17 @@ export const requireNotifyPermission = async () => {
   }
 }
 
-export const installSymkeyInServiceWorker = async (
-  clientId: string,
-  symkey: string,
-  vapidToken: string,
-  topic: string
-) => {
+const postMessageToServiceWorkerRegistration = async (message: Record<string, any>) => {
   const registration = await navigator.serviceWorker.ready
 
   if (!registration || !registration.active) {
     throw new Error('No service worker registered and active')
   }
 
-  registration.active.postMessage({
-    type: 'INSTALL_SYMKEY_CLIENT',
-    clientId,
-    topic,
-    token: vapidToken,
-    symkey
-  })
+  registration.active.postMessage(message)
 }
 
-export const setupPushNotifications = async (notifyClient: NotifyClient, subAppDomain: string) => {
-  const isSecureContext = window.location.protocol === 'https:'
-
+export const setupPushSymkey = async (notifyClient: NotifyClient, subAppDomain: string) => {
   const sub = Object.values(notifyClient.getActiveSubscriptions()).find(
     sub => sub.metadata.appDomain === subAppDomain
   )
@@ -49,6 +63,16 @@ export const setupPushNotifications = async (notifyClient: NotifyClient, subAppD
   if (!sub) {
     throw new Error('Invalid sub topic provided, no associated subscription found')
   }
+
+  postMessageToServiceWorkerRegistration({
+    type: SERVICE_WORKER_ACTIONS.SET_SUBS_SYMKEYS,
+    topic: sub.topic,
+    symkey: sub.symKey
+  })
+}
+
+export const registerWithEcho = async (notifyClient: NotifyClient) => {
+  const isSecureContext = window.location.protocol === 'https:'
 
   if (!isSecureContext) {
     throw new Error('Can not set up notification in unsecure context')
@@ -58,5 +82,9 @@ export const setupPushNotifications = async (notifyClient: NotifyClient, subAppD
 
   const token = await getFirebaseToken()
 
-  await installSymkeyInServiceWorker(clientId, sub.symKey, token, sub.topic)
+  postMessageToServiceWorkerRegistration({
+    type: SERVICE_WORKER_ACTIONS.REGISTER_WITH_ECHO,
+    clientId,
+    token
+  })
 }

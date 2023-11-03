@@ -3,7 +3,7 @@ import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-clie
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 import type { W3iNotifyProvider } from './types'
-import { setupPushNotifications } from '../../utils/notifications'
+import { registerWithEcho, setupPushSymkey } from '../../utils/notifications'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined
@@ -20,15 +20,27 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
    * to allow the observers in the facade to work seamlessly.
    */
   public initState(notifyClient: NotifyClient) {
+    const subsChangedListener = async (ev: {
+      params: { subscriptions: NotifyClientTypes.NotifySubscription[] }
+    }) => {
+      const subs = Object.values(await this.getActiveSubscriptions())
+
+      if (this.notifyClient) {
+        for (const sub of subs) {
+          await setupPushSymkey(this.notifyClient, sub.metadata.appDomain)
+        }
+      }
+    }
     this.notifyClient = notifyClient
 
     this.notifyClient.on('notify_subscription', args =>
       this.emitter.emit('notify_subscription', args)
     )
     this.notifyClient.on('notify_message', args => this.emitter.emit('notify_message', args))
-    this.notifyClient.on('notify_subscriptions_changed', args =>
+    this.notifyClient.on('notify_subscriptions_changed', args => {
+      subsChangedListener(args)
       this.emitter.emit('notify_subscriptions_changed', args)
-    )
+    })
     this.notifyClient.on('notify_update', args => this.emitter.emit('notify_update', args))
     this.notifyClient.on('notify_delete', args => this.emitter.emit('notify_delete', args))
 
@@ -89,25 +101,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
     console.log('InternalNotifyProvider > NotifyClient.subscribe > params', params)
-
-    const subsChangedListener = async (ev: {
-      params: { subscriptions: NotifyClientTypes.NotifySubscription[] }
-    }) => {
-      const thisSub = ev.params.subscriptions.find(
-        sub => sub.metadata.appDomain === params.appDomain
-      )
-      if (thisSub && this.notifyClient) {
-        try {
-          await setupPushNotifications(this.notifyClient, params.appDomain)
-        } catch (e) {
-          console.error(e)
-        }
-
-        this.notifyClient.off('notify_subscriptions_changed', subsChangedListener)
-      }
-    }
-
-    this.notifyClient.on('notify_subscriptions_changed', subsChangedListener)
 
     try {
       const subscribed = await this.notifyClient.subscribe({
@@ -176,5 +169,17 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     this.notifyClient.deleteNotifyMessage(params)
 
     return Promise.resolve()
+  }
+
+  public async registerWithEcho() {
+    if (!this.notifyClient) {
+      throw new Error(this.formatClientRelatedError('registerWithEcho'))
+    }
+
+    return registerWithEcho(this.notifyClient)
+  }
+
+  public async getEchoIsRegistered() {
+    return Promise.resolve(false)
   }
 }

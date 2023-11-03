@@ -4,10 +4,9 @@ import { decryptMessage } from '@walletconnect/notify-message-decrypter'
 import { onBackgroundMessage } from 'firebase/messaging/sw'
 import { openDB } from 'idb'
 import { initializeApp } from 'firebase/app'
+import { getDbSymkeyStore } from './utils/idb'
 
 declare let self: ServiceWorkerGlobalScope
-
-const SYMKEY_OBJ_STORE = 'symkey-store'
 
 export const firebaseApp = initializeApp({
   apiKey: 'AIzaSyAtOP2BXP4RNK0pN_AEBMkVjgmYqklUlKc',
@@ -21,23 +20,12 @@ export const firebaseApp = initializeApp({
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages. Need to keep this alive
-
-const getDbSymkeyStore = async () => {
-  const db = await openDB('w3i-sw-db', 3, {
-    upgrade(database) {
-      const exists = database.objectStoreNames.contains(SYMKEY_OBJ_STORE)
-      if (!exists) {
-        database.createObjectStore(SYMKEY_OBJ_STORE)
-      }
-    }
-  })
-  return db
-}
+const messaging = getMessaging(firebaseApp)
 
 const getSymKey = async (topic: string) => {
-  const db = await getDbSymkeyStore()
+  const [getSymKeyUsingTopic] = await getDbSymkeyStore()
 
-  const result: string = await db.get(SYMKEY_OBJ_STORE, topic)
+  const result: string = await getSymKeyUsingTopic(topic)
 
   if (result) {
     return result
@@ -46,23 +34,21 @@ const getSymKey = async (topic: string) => {
   throw new Error(`No symkey exists for such topic: ${topic}`)
 }
 
-const messaging = getMessaging(firebaseApp)
 
-const triggerPn = async (data: { encodedData:string, topic: string}) => {
-  console.log(">>data", data);
+const triggerPn = async (data: { encodedData: string; topic: string }) => {
+  console.log('>>data', data)
 
-  const symkey = await getSymKey(data.topic);
+  const symkey = await getSymKey(data.topic)
 
-  const m = await decryptMessage({encoded: data.encodedData, symkey, topic: data.topic})
+  const m = await decryptMessage({ encoded: data.encodedData, symkey, topic: data.topic })
 
   self.registration.showNotification(m.title, {
     icon: m.icon,
-    body: m.body,
+    body: m.body
   })
 }
 
 onBackgroundMessage(messaging, ev => {
-
   const encodedData = ev.data?.blob
   const topic = ev.data?.topic
 
@@ -70,5 +56,5 @@ onBackgroundMessage(messaging, ev => {
     return
   }
 
-  triggerPn({encodedData, topic});
+  triggerPn({ encodedData, topic })
 })
