@@ -62,19 +62,11 @@ const postMessageToServiceWorkerRegistration = async (message: Record<string, an
   registration.active.postMessage(message)
 }
 
-export const setupPushSymkey = async (notifyClient: NotifyClient, subAppDomain: string) => {
-  const sub = Object.values(notifyClient.getActiveSubscriptions()).find(
-    sub => sub.metadata.appDomain === subAppDomain
-  )
-
-  if (!sub) {
-    throw new Error('Invalid sub topic provided, no associated subscription found')
-  }
-
+// trust input completely here
+export const setupPushSymkeys = async (subKeys: [[string, string]]) => {
   postMessageToServiceWorkerRegistration({
     type: SERVICE_WORKER_ACTIONS.SET_SUBS_SYMKEYS,
-    topic: sub.topic,
-    symkey: sub.symKey
+    topicSymkeyEntries: subKeys,
   })
 }
 

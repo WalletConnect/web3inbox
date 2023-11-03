@@ -27,9 +27,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       const subs = Object.values(await this.getActiveSubscriptions())
 
       if (this.notifyClient) {
-        for (const sub of subs) {
-          await setupPushSymkey(this.notifyClient, sub.metadata.appDomain)
-        }
+	setupPushSymkeys(subs.map(({topic, symKey}) => [topic, symKey]))
       }
     }
     this.notifyClient = notifyClient
