@@ -1,7 +1,18 @@
-import { IDBPDatabase, openDB } from 'idb'
+import { openDB } from 'idb'
 
+/*
+ * Key value store of:
+ * (string)           -> (string)
+ * Subscription Topic -> Symkey
+ */
 export const SYMKEY_OBJ_STORE = 'symkey-store'
-export const ECHO_REGISTRATION_STORE = 'symkey-store'
+
+/*
+ * Key value store of:
+ * (string)  -> (string)
+ * Client ID -> FCM Token
+ */
+export const ECHO_REGISTRATION_STORE = 'echo-registration-store'
 
 // Returns getter and setter for idb properties as it used as a key value store
 export const getIndexedDbStore = async (

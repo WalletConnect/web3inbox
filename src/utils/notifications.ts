@@ -1,10 +1,7 @@
 import { NotifyClient } from '@walletconnect/notify-client'
 import { getFirebaseToken } from './firebase'
 import { SERVICE_WORKER_ACTIONS } from './constants'
-import { useContext, useState, useEffect } from 'react'
-import W3iContext from '../contexts/W3iContext/context'
-
-export const getEchoRegistrationToken = () => {}
+import { useState, useEffect } from 'react'
 
 export const notificationsEnabledInBrowser = () => {
   return 'Notification' in window
