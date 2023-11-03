@@ -25,27 +25,29 @@ export const useNotificationPermissionState = () => {
         setNotificationPermissionGranted(userEnabledNotification())
       }
     })
-
   }, [])
-
 
   return notificationPermissionGranted
 }
 
+/*
+ * Trigger notification dialogue if supported
+ * Returns true if permissions were granted
+ */
 export const requireNotifyPermission = async () => {
   if (!notificationsEnabledInBrowser()) {
-    throw new Error('This browser does not support desktop push notifications')
+    console.error('This browser does not support desktop push notifications')
+    return false
   }
 
   switch (Notification.permission) {
     case 'granted':
-      return Promise.resolve()
+      return true
     case 'denied':
-      throw new Error('User denied permissions')
+      console.error('User denied permissions')
+      return false
     default:
-      if ((await Notification.requestPermission()) === 'granted') {
-        return Promise.resolve(new Error('User denied permissions'))
-      }
+      return (await Notification.requestPermission()) === 'granted'
   }
 }
 
@@ -63,7 +65,7 @@ const postMessageToServiceWorkerRegistration = async (message: Record<string, an
 export const setupPushSymkeys = async (subKeys: [string, string][]) => {
   postMessageToServiceWorkerRegistration({
     type: SERVICE_WORKER_ACTIONS.SET_SUBS_SYMKEYS,
-    topicSymkeyEntries: subKeys,
+    topicSymkeyEntries: subKeys
   })
 }
 

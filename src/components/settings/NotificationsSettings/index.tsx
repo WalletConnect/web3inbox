@@ -11,7 +11,6 @@ import { motion } from 'framer-motion'
 import {
   notificationsEnabledInBrowser,
   requireNotifyPermission,
-  userEnabledNotification,
   useNotificationPermissionState
 } from '../../../utils/notifications'
 import NotificationIcon from '../../general/Icon/Notification'
@@ -28,9 +27,10 @@ const NotificationsSettings: React.FC = () => {
     if (!notifyClientProxy) {
       return
     }
-    await requireNotifyPermission()
 
-    await notifyClientProxy.registerWithEcho()
+    if (await requireNotifyPermission()) {
+      await notifyClientProxy.registerWithEcho()
+    }
   }
 
   return (

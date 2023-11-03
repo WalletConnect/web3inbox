@@ -3,7 +3,11 @@ import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-clie
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 import type { W3iNotifyProvider } from './types'
-import { registerWithEcho, setupPushSymkeys, userEnabledNotification } from '../../utils/notifications'
+import {
+  registerWithEcho,
+  setupPushSymkeys,
+  userEnabledNotification
+} from '../../utils/notifications'
 import { getDbEchoRegistrations } from '../../utils/idb'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
@@ -27,9 +31,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       const subs = Object.values(await this.getActiveSubscriptions())
 
       if (this.notifyClient) {
-
-
-	setupPushSymkeys(subs.map(({topic, symKey}) => [topic, symKey]))
+        setupPushSymkeys(subs.map(({ topic, symKey }) => [topic, symKey]))
       }
     }
     this.notifyClient = notifyClient
@@ -50,7 +52,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     })
 
     // Ensure we have a registration with echo (if we need it)
-    this.ensureEchoRegistration();
+    this.ensureEchoRegistration()
   }
 
   // ------------------------ Provider-specific methods ------------------------
@@ -63,19 +65,19 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
    */
   private async ensureEchoRegistration() {
     // impossible case, just here to please typescript
-    if(!this.notifyClient) {
-      return;
+    if (!this.notifyClient) {
+      return
     }
 
     // No need to register with echo if user does not want notifications
-    if(!userEnabledNotification()) {
-      return;
+    if (!userEnabledNotification()) {
+      return
     }
-    
-    const isRegistered = await this.getRegisteredWithEcho();
 
-    if(!isRegistered) {
-      await registerWithEcho(this.notifyClient);
+    const isRegistered = await this.getRegisteredWithEcho()
+
+    if (!isRegistered) {
+      await registerWithEcho(this.notifyClient)
     }
   }
 
@@ -128,16 +130,14 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
-    
 
     try {
       const subscribed = await this.notifyClient.subscribe({
         ...params
       })
 
-
       // Ensure we have a registration with echo (if we need it)
-      await this.ensureEchoRegistration();
+      await this.ensureEchoRegistration()
 
       return subscribed
     } catch (e: unknown) {
@@ -216,9 +216,11 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('getRegisteredWithEcho'))
     }
 
-    const [getEchoRegistration] = await getDbEchoRegistrations();
-    const existingRegistration = await getEchoRegistration(await this.notifyClient.core.crypto.getClientId())
+    const [getEchoRegistration] = await getDbEchoRegistrations()
+    const existingRegistration = await getEchoRegistration(
+      await this.notifyClient.core.crypto.getClientId()
+    )
 
-    return Boolean(existingRegistration);
+    return Boolean(existingRegistration)
   }
 }
