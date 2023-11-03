@@ -27,6 +27,8 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       const subs = Object.values(await this.getActiveSubscriptions())
 
       if (this.notifyClient) {
+
+
 	setupPushSymkeys(subs.map(({topic, symKey}) => [topic, symKey]))
       }
     }
@@ -46,10 +48,19 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     this.notifyClient.subscriptions.core.on('sync_store_update', () => {
       this.emitter.emit('sync_update', {})
     })
+
+    // Ensure we have a registration with echo (if we need it)
+    this.ensureEchoRegistration();
   }
 
   // ------------------------ Provider-specific methods ------------------------
 
+  /**
+   * This method can be safely spammed because it is idempotent on 2 levels
+   * 1. It checks if a registration is needed with `getRegisteredWithEcho`
+   * 2. Even if this check didn't exist, and a message is posted to the service worker,
+   * the service worker echo registration logic is also idempotent
+   */
   private async ensureEchoRegistration() {
     // impossible case, just here to please typescript
     if(!this.notifyClient) {
@@ -124,6 +135,8 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
         ...params
       })
 
+
+      // Ensure we have a registration with echo (if we need it)
       await this.ensureEchoRegistration();
 
       return subscribed

@@ -22,6 +22,9 @@ const App = () => {
         <m.div ref={ref} data-path={location.pathname} className="App">
           {notifyClientProxy && (
             <Fragment>
+	      <div className="Banner">
+		Enable push notifications
+		</div>
               {uiEnabled.sidebar ? <Sidebar isLoggedIn={true} /> : null}
               <Outlet />
               <AnimatePresence mode="wait"></AnimatePresence>
