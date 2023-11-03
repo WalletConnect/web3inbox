@@ -3,7 +3,7 @@ import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-clie
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 import type { W3iNotifyProvider } from './types'
-import { registerWithEcho, setupPushSymkey, userEnabledNotification } from '../../utils/notifications'
+import { registerWithEcho, setupPushSymkeys, userEnabledNotification } from '../../utils/notifications'
 import { getDbEchoRegistrations } from '../../utils/idb'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
