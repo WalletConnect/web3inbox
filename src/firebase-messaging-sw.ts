@@ -2,7 +2,6 @@
 import { getMessaging } from 'firebase/messaging/sw'
 import { decryptMessage } from '@walletconnect/notify-message-decrypter'
 import { onBackgroundMessage } from 'firebase/messaging/sw'
-import { openDB } from 'idb'
 import { initializeApp } from 'firebase/app'
 import { getDbSymkeyStore } from './utils/idb'
 
@@ -35,8 +34,6 @@ const getSymKey = async (topic: string) => {
 }
 
 const triggerPn = async (data: { encodedData: string; topic: string }) => {
-  console.log('>>data', data)
-
   const symkey = await getSymKey(data.topic)
 
   const m = await decryptMessage({ encoded: data.encodedData, symkey, topic: data.topic })

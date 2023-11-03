@@ -9,7 +9,6 @@ import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
 import VerifiedIcon from '../../../general/Icon/VerifiedIcon'
 import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
-import { requireNotifyPermission } from '../../../../utils/notifications'
 
 interface AppCardProps {
   name: string
@@ -47,10 +46,6 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-
-      if (notifyProvider === 'internal') {
-        await requireNotifyPermission()
-      }
 
       if (!userPubkey) {
         return
