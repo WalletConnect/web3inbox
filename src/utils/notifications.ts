@@ -63,7 +63,7 @@ const postMessageToServiceWorkerRegistration = async (message: Record<string, an
 }
 
 // trust input completely here
-export const setupPushSymkeys = async (subKeys: [[string, string]]) => {
+export const setupPushSymkeys = async (subKeys: [string, string][]) => {
   postMessageToServiceWorkerRegistration({
     type: SERVICE_WORKER_ACTIONS.SET_SUBS_SYMKEYS,
     topicSymkeyEntries: subKeys,
