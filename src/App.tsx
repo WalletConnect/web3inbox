@@ -1,7 +1,6 @@
 import { Fragment, useContext } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-
 import './App.scss'
 import Sidebar from './components/layout/Sidebar'
 import AuthProtectedPage from './components/utils/AuthProtectedPage'

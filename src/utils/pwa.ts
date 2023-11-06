@@ -5,3 +5,7 @@ export const isInstalledOnHomescreen = () => {
 
   return displayIsStandalone;
 }
+
+export const isMobileBrowser = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+export const isMobileButNotInstalledOnHomescreen = () => isMobileBrowser() && !isInstalledOnHomescreen();
