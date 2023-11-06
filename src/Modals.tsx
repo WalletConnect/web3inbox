@@ -43,7 +43,7 @@ export const Modals = () => {
 
         {isMobileButNotInstalledOnHomescreen() && <PwaModal />}
 
-	{!notificationsEnabled && <NotificationPwaModal />}
+	{!isMobileButNotInstalledOnHomescreen() && !notificationsEnabled && <NotificationPwaModal />}
       </AnimatePresence>
     </>
   )
