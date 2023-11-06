@@ -82,10 +82,10 @@ export const registerWithEcho = async (notifyClient: NotifyClient) => {
 
 
   const clientId = await notifyClient.core.crypto.getClientId()
+  
+  console.log(">> registerWithEcho: clientId :", clientId)
 
   const token = await getFirebaseToken()
-
-  console.log(">> registerWithEcho: clientId :", clientId)
 
   console.log(">> registerWithEcho: token :", token)
 
