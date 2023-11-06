@@ -95,5 +95,5 @@ export const registerWithEcho = async (notifyClient: NotifyClient) => {
     token
   })
   
-  console.log(">> registerWithEcho: posted to SW")
+  console.log(">> registerWithEcho: posted to SW") 
 }
