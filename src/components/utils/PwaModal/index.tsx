@@ -20,12 +20,12 @@ export const PwaModal: React.FC = () => {
 	  <Text variant={"large-500"}>Install Web3Inbox</Text>
 	</div>
 	<div className="PwaModal__description">
-	  <Text variant="paragraph-400">
+	  <Text variant="small-500">
 To receive push notifications and enjoy a  better experience install Web3Inbox on your Home screen.
 </Text>
 	</div>
         <div className="PwaModal_cta">
-	  <Text variant="paragraph-400">
+	  <Text variant="small-500">
 	  Just tap settings and “Add to Home Screen”
 	</Text>
 	</div>
