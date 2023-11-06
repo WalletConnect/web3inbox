@@ -7,6 +7,8 @@ import W3iContext from './contexts/W3iContext/context'
 import { signatureModalService } from './utils/store'
 import { AnimatePresence } from 'framer-motion'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { isMobileButNotInstalledOnHomescreen } from './utils/pwa'
+import PwaModal from './components/utils/PwaModal'
 
 export const Modals = () => {
   const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen } = useModals()
@@ -34,6 +36,12 @@ export const Modals = () => {
         {isSignatureModalOpen && (
           <SignatureModal message={notifyRegisterMessage ?? ''} sender={'notify'} />
         )}
+
+	{
+	  isMobileButNotInstalledOnHomescreen() && (
+	    <PwaModal />
+	  )
+	}
       </AnimatePresence>
     </>
   )

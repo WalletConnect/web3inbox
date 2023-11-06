@@ -8,4 +8,13 @@ export const isInstalledOnHomescreen = () => {
 
 export const isMobileBrowser = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
+export const getMobilePlatform = () => {
+  if(/Android/i.test(navigator.userAgent)) {
+    return 'android'
+  }
+  if(/iPad|iPhone/i.test(navigator.userAgent)) {
+    return 'ios'
+  }
+}
+
 export const isMobileButNotInstalledOnHomescreen = () => isMobileBrowser() && !isInstalledOnHomescreen();
