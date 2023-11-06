@@ -9,12 +9,16 @@ import { AnimatePresence } from 'framer-motion'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { isMobileButNotInstalledOnHomescreen } from './utils/pwa'
 import PwaModal from './components/utils/PwaModal'
+import { useNotificationPermissionState } from './utils/notifications'
+import NotificationPwaModal from './components/utils/NotificationPwaModal'
 
 export const Modals = () => {
   const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen } = useModals()
   const { close: closeWeb3Modal } = useWeb3Modal()
 
   const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
+
+  const notificationsEnabled = useNotificationPermissionState();
 
   useEffect(() => {
     const notifySignatureRequired = Boolean(notifyRegisterMessage)
@@ -37,11 +41,9 @@ export const Modals = () => {
           <SignatureModal message={notifyRegisterMessage ?? ''} sender={'notify'} />
         )}
 
-	{
-	  isMobileButNotInstalledOnHomescreen() && (
-	    <PwaModal />
-	  )
-	}
+        {isMobileButNotInstalledOnHomescreen() && <PwaModal />}
+
+	{!notificationsEnabled && <NotificationPwaModal />}
       </AnimatePresence>
     </>
   )

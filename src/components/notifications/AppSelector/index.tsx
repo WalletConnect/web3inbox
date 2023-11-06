@@ -56,8 +56,8 @@ const AppSelector: React.FC = () => {
   }, [search, filterApps, activeSubscriptions])
 
   useEffect(() => {
-    if(activeSubscriptions.length === 0) {
-      nav("/notifications/new-app")
+    if (activeSubscriptions.length === 0) {
+      nav('/notifications/new-app')
     }
   }, [nav, activeSubscriptions])
 

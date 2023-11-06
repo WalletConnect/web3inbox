@@ -72,28 +72,27 @@ export const setupPushSymkeys = async (subKeys: [string, string][]) => {
 export const registerWithEcho = async (notifyClient: NotifyClient) => {
   const isSecureContext = window.location.protocol === 'https:'
 
-  console.log(">> registerWithEcho")
+  console.log('>> registerWithEcho')
 
-  console.log(">> registerWithEcho: isSecureContext :", isSecureContext)
+  console.log('>> registerWithEcho: isSecureContext :', isSecureContext)
 
   if (!isSecureContext) {
     throw new Error('Can not set up notification in unsecure context')
   }
 
-
   const clientId = await notifyClient.core.crypto.getClientId()
-  
-  console.log(">> registerWithEcho: clientId :", clientId)
+
+  console.log('>> registerWithEcho: clientId :', clientId)
 
   const token = await getFirebaseToken()
 
-  console.log(">> registerWithEcho: token :", token)
+  console.log('>> registerWithEcho: token :', token)
 
   postMessageToServiceWorkerRegistration({
     type: SERVICE_WORKER_ACTIONS.REGISTER_WITH_ECHO,
     clientId,
     token
   })
-  
-  console.log(">> registerWithEcho: posted to SW") 
+
+  console.log('>> registerWithEcho: posted to SW')
 }

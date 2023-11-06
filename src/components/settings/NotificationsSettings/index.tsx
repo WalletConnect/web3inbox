@@ -18,14 +18,13 @@ import cn from 'classnames'
 import W3iContext from '../../../contexts/W3iContext/context'
 
 const getHelperTooltip = () => {
-  switch(Notification.permission) {
-  case 'denied':
-    return 'You have explicitly disabled notifications. Please enable them via your browser or system settings'
-  case 'granted':
-    return 'To disable notifications, use your browser or system settings'
-  default:
-    return ''
-    
+  switch (Notification.permission) {
+    case 'denied':
+      return 'You have explicitly disabled notifications. Please enable them via your browser or system settings'
+    case 'granted':
+      return 'To disable notifications, use your browser or system settings'
+    default:
+      return ''
   }
 }
 
@@ -70,9 +69,7 @@ const NotificationsSettings: React.FC = () => {
               active={true}
             />
           </SettingsItem>
-          <div
-            title={getHelperTooltip()}
-          >
+          <div title={getHelperTooltip()}>
             <SettingsItem
               title="Enable Push Notifications"
               subtitle="Get push notifications on your desktop or phone when Web3Inbox is added to your homescreen"

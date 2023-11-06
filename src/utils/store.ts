@@ -104,7 +104,7 @@ export const signatureModalService = {
 export const pwaModalService = {
   toggleModal: () => pwaModalSubject.next(!pwaModalSubject.value),
   openModal: () => pwaModalSubject.next(true),
-  closeModal: () => pwaModalSubject.next(false),
+  closeModal: () => pwaModalSubject.next(false)
 }
 
 export const preferencesModalService = {
