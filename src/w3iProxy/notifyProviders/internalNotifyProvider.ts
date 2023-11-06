@@ -70,14 +70,22 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       return
     }
 
+    console.log(">> ensureEchoRegistration")
+
     // No need to register with echo if user does not want notifications
     if (!userEnabledNotification()) {
       return
     }
 
+    console.log(">> ensureEchoRegistration: user has enabled notifications")
+
     const isRegistered = await this.getRegisteredWithEcho()
 
+    console.log(">> ensureEchoRegistration: user is ", isRegistered? "" : "not ", "registrered")
+
     if (!isRegistered) {
+
+      console.log(">> ensureEchoRegistration: registering user with echo")
       await registerWithEcho(this.notifyClient)
     }
   }
@@ -217,10 +225,15 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('getRegisteredWithEcho'))
     }
 
+    console.log(">> getRegisteredWithEcho")
+
     const [getEchoRegistration] = await getDbEchoRegistrations()
+
     const existingRegistration = await getEchoRegistration(
       await this.notifyClient.core.crypto.getClientId()
     )
+
+    console.log(">> getRegisteredWithEcho: existingRegistration: ", existingRegistration, "with clientId", await this.notifyClient.core.crypto.getClientId() )
 
     return Boolean(existingRegistration)
   }
