@@ -35,6 +35,7 @@ const ConfiguredRoutes: React.FC = () => {
           <Route path="/notifications" element={<NotificationsLayout />}>
             <Route path="/notifications/new-app" element={<AppExplorer />} />
             <Route path="/notifications/:topic" element={<AppNotifications />} />
+	    <Route index element={<Navigate to="/notifications/new-app" />} />
           </Route>
         ) : null}
         {uiEnabled.settings ? (
