@@ -17,6 +17,18 @@ import NotificationIcon from '../../general/Icon/Notification'
 import cn from 'classnames'
 import W3iContext from '../../../contexts/W3iContext/context'
 
+const getHelperTooltip = () => {
+  switch(Notification.permission) {
+  case 'denied':
+    return 'You have explicitly disabled notifications. Please enable them via your browser or system settings'
+  case 'granted':
+    return 'To disable notifications, use your browser or system settings'
+  default:
+    return ''
+    
+  }
+}
+
 const NotificationsSettings: React.FC = () => {
   const { isDevModeEnabled, updateSettings } = useContext(SettingsContext)
   const { notifyClientProxy } = useContext(W3iContext)
@@ -59,11 +71,7 @@ const NotificationsSettings: React.FC = () => {
             />
           </SettingsItem>
           <div
-            title={
-              notificationsEnabled
-                ? 'To disable notifications, use native browser settings next to URL'
-                : ''
-            }
+            title={getHelperTooltip()}
           >
             <SettingsItem
               title="Enable Push Notifications"
