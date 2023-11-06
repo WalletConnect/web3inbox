@@ -20,7 +20,7 @@ export const getIndexedDbStore = async (
 ): Promise<
   [(key: string) => Promise<any>, (key: string, value: string) => Promise<IDBValidKey>]
 > => {
-  const db = await openDB('w3i-push-db', 3, {
+  const db = await openDB('w3i-push-db', 4, {
     upgrade(database) {
       const exists = database.objectStoreNames.contains(storeName)
       if (!exists) {
