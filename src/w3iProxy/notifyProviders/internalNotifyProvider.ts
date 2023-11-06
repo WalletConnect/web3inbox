@@ -26,9 +26,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
    */
   public initState(notifyClient: NotifyClient) {
 
-    const subsChangedListener = async (ev: {
-      params: { subscriptions: NotifyClientTypes.NotifySubscription[] }
-    }) => {
+    const updateSymkeyState = async () => {
       const subs = Object.values(await this.getActiveSubscriptions())
 
       if (this.notifyClient) {
@@ -42,7 +40,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     )
     this.notifyClient.on('notify_message', args => this.emitter.emit('notify_message', args))
     this.notifyClient.on('notify_subscriptions_changed', args => {
-      subsChangedListener(args)
+      updateSymkeyState()
       this.emitter.emit('notify_subscriptions_changed', args)
     })
     this.notifyClient.on('notify_update', args => this.emitter.emit('notify_update', args))
@@ -54,6 +52,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
     // Ensure we have a registration with echo (if we need it)
     this.ensureEchoRegistration()
+    updateSymkeyState();
   }
 
   // ------------------------ Provider-specific methods ------------------------
@@ -228,6 +227,8 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     console.log(">> getRegisteredWithEcho")
 
     const [getEchoRegistration] = await getDbEchoRegistrations()
+
+    console.log(">> getRegisteredWithEcho: got db")
 
     const existingRegistration = await getEchoRegistration(
       await this.notifyClient.core.crypto.getClientId()
