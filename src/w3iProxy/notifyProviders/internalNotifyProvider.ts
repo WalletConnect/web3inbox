@@ -75,14 +75,9 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
     console.log('>> ensureEchoRegistration: user has enabled notifications')
 
-    const isRegistered = await this.getRegisteredWithEcho()
 
-    console.log('>> ensureEchoRegistration: user is ', isRegistered ? '' : 'not ', 'registrered')
-
-    if (!isRegistered) {
-      console.log('>> ensureEchoRegistration: registering user with echo')
-      await registerWithEcho(this.notifyClient)
-    }
+    console.log('>> ensureEchoRegistration: registering user with echo')
+    await registerWithEcho(this.notifyClient)
   }
 
   private formatClientRelatedError(method: string) {

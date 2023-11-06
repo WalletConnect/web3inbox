@@ -10,13 +10,16 @@ const ECHO_URL = 'https://echo.walletconnect.com'
 const registerWithEcho = async (clientId: string, token: string) => {
   const [getRegistrationToken, putRegistrationToken] = await getDbEchoRegistrations()
 
+
   // Check for existing registration to prevent spamming echo
   const existingRegistrationToken = await getRegistrationToken(clientId)
 
   // Already registered device.
   // No need to spam echo
   if (existingRegistrationToken === token) {
-    return Promise.resolve()
+    // DO not check for existing registration token.
+    // Echo is meant to be called repeatedly to refresh PN token
+    console.log("main-sw > registerWithEcho > user already registered with token", token, "re-registering anyway")
   }
 
   //TODO: Make this an env var
