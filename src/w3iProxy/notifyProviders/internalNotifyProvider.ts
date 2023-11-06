@@ -25,6 +25,9 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
    * to allow the observers in the facade to work seamlessly.
    */
   public initState(notifyClient: NotifyClient) {
+    // Ensure we have a registration with echo (if we need it)
+    this.ensureEchoRegistration()
+
     const subsChangedListener = async (ev: {
       params: { subscriptions: NotifyClientTypes.NotifySubscription[] }
     }) => {
@@ -51,8 +54,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       this.emitter.emit('sync_update', {})
     })
 
-    // Ensure we have a registration with echo (if we need it)
-    this.ensureEchoRegistration()
   }
 
   // ------------------------ Provider-specific methods ------------------------
