@@ -14,18 +14,22 @@ export const SYMKEY_OBJ_STORE = 'symkey-store'
  */
 export const ECHO_REGISTRATION_STORE = 'echo-registration-store'
 
+const STORE_NAMES = [SYMKEY_OBJ_STORE, ECHO_REGISTRATION_STORE]
+
 // Returns getter and setter for idb properties as it used as a key value store
 export const getIndexedDbStore = async (
   storeName: string
 ): Promise<
   [(key: string) => Promise<any>, (key: string, value: string) => Promise<IDBValidKey>]
 > => {
-  const db = await openDB('w3i-push-db', 4, {
+  const db = await openDB('w3i-push-db', 5, {
     upgrade(database) {
-      const exists = database.objectStoreNames.contains(storeName)
-      if (!exists) {
-        database.createObjectStore(storeName)
-      }
+      STORE_NAMES.forEach((store) => {
+	const exists = database.objectStoreNames.contains(store)
+	if (!exists) {
+	    database.createObjectStore(store)
+	}
+      })
     }
   })
 
