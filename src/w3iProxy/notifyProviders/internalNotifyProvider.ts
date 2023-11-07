@@ -30,6 +30,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
       if (this.notifyClient) {
         await setupSubscriptionsSymkeys(subs.map(({ topic, symKey }) => [topic, symKey]))
+      }
     }
     this.notifyClient = notifyClient
 

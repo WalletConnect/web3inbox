@@ -64,7 +64,6 @@ const callEcho = async (clientId: string, token: string) => {
   }
 }
 
-
 export const notificationsEnabledInBrowser = () => {
   return 'Notification' in window
 }
@@ -132,7 +131,7 @@ export const registerWithEcho = async (notifyClient: NotifyClient) => {
 
   console.log('>> registerWithEcho: token :', token)
 
-  await callEcho(clientId, token);
+  await callEcho(clientId, token)
 
   console.log('>> registerWithEcho: called echo')
 }
