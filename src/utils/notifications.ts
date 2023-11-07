@@ -3,7 +3,6 @@ import { getFirebaseToken } from './firebase'
 import { useState, useEffect } from 'react'
 import { getDbEchoRegistrations, getDbSymkeyStore } from './idb'
 
-declare const __VITE_PROJECT_ID__: string
 const ECHO_URL = 'https://echo.walletconnect.com'
 
 const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
@@ -38,8 +37,7 @@ const callEcho = async (clientId: string, token: string) => {
     )
   }
 
-  // coming from `define` in vite.config.js
-  const projectId = __VITE_PROJECT_ID__
+  const projectId = import.meta.env.VITE_PROJECT_ID;
 
   const echoUrl = `${ECHO_URL}/${projectId}/clients`
 
