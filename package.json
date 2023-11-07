@@ -36,6 +36,7 @@
     "react-select": "^5.7.0",
     "rxjs": "^7.6.0",
     "viem": "^1.11.0",
+    "vite-plugin-pwa": "^0.16.7",
     "wagmi": "^1.4.2"
   },
   "devDependencies": {
