@@ -13,11 +13,13 @@ export const NotificationPwaModal: React.FC = () => {
   const { notifyClientProxy } = useContext(W3iContext)
 
   const handleEnableNotifications = async () => {
+    const notificationPermissionGranted = await requireNotifyPermission();
+
     if (!notifyClientProxy) {
       return
     }
 
-    if (await requireNotifyPermission()) {
+    if (notificationPermissionGranted) {
       await notifyClientProxy.registerWithEcho()
     }
   }
