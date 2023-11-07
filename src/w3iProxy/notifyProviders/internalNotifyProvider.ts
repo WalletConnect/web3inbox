@@ -1,11 +1,11 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-client'
+import type { NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 import type { W3iNotifyProvider } from './types'
 import {
   registerWithEcho,
-  setupPushSymkeys,
+  setupSubscriptionsSymkeys,
   userEnabledNotification
 } from '../../utils/notifications'
 import { getDbEchoRegistrations } from '../../utils/idb'
@@ -29,8 +29,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       const subs = Object.values(await this.getActiveSubscriptions())
 
       if (this.notifyClient) {
-        setupPushSymkeys(subs.map(({ topic, symKey }) => [topic, symKey]))
-      }
+        await setupSubscriptionsSymkeys(subs.map(({ topic, symKey }) => [topic, symKey]))
     }
     this.notifyClient = notifyClient
 

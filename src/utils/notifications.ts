@@ -1,7 +1,69 @@
 import { NotifyClient } from '@walletconnect/notify-client'
 import { getFirebaseToken } from './firebase'
-import { SERVICE_WORKER_ACTIONS } from './constants'
 import { useState, useEffect } from 'react'
+import { getDbEchoRegistrations, getDbSymkeyStore } from './idb'
+
+declare const __VITE_PROJECT_ID__: string
+const ECHO_URL = 'https://echo.walletconnect.com'
+
+const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
+  const [, putSymkey] = await getDbSymkeyStore()
+
+  await putSymkey(topic, symkey)
+}
+
+export const setupSubscriptionsSymkeys = async (topicSymkeyEntries: [string, string][]) => {
+  topicSymkeyEntries.forEach(([topic, symkey]) => setupSubscriptionSymkey(topic, symkey))
+
+  for (const [topic, symkey] of topicSymkeyEntries) {
+    setupSubscriptionSymkey(topic, symkey)
+  }
+}
+
+const callEcho = async (clientId: string, token: string) => {
+  const [getRegistrationToken, putRegistrationToken] = await getDbEchoRegistrations()
+
+  // Check for existing registration to prevent spamming echo
+  const existingRegistrationToken = await getRegistrationToken(clientId)
+
+  // Already registered device.
+  // No need to spam echo
+  if (existingRegistrationToken === token) {
+    // DO not check for existing registration token.
+    // Echo is meant to be called repeatedly to refresh PN token
+    console.log(
+      'main-sw > registerWithEcho > user already registered with token',
+      token,
+      're-registering anyway'
+    )
+  }
+
+  // coming from `define` in vite.config.js
+  const projectId = __VITE_PROJECT_ID__
+
+  const echoUrl = `${ECHO_URL}/${projectId}/clients`
+
+  const echoResponse = await fetch(echoUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      client_id: clientId,
+      type: 'FCM',
+      token
+    })
+  })
+
+  console.log({ echoResponse: await echoResponse.text(), status: echoResponse.status })
+
+  // Is a 200 type response. Redirects (300s) shouldn't occur
+  if (echoResponse.status >= 200 && echoResponse.status < 300) {
+    // Store info to prevent re-registration
+    await putRegistrationToken(clientId, token)
+  }
+}
+
 
 export const notificationsEnabledInBrowser = () => {
   return 'Notification' in window
@@ -51,24 +113,6 @@ export const requireNotifyPermission = async () => {
   }
 }
 
-const postMessageToServiceWorkerRegistration = async (message: Record<string, any>) => {
-  const registration = await navigator.serviceWorker.ready
-
-  if (!registration || !registration.active) {
-    throw new Error('No service worker registered and active')
-  }
-
-  registration.active.postMessage(message)
-}
-
-// trust input completely here
-export const setupPushSymkeys = async (subKeys: [string, string][]) => {
-  postMessageToServiceWorkerRegistration({
-    type: SERVICE_WORKER_ACTIONS.SET_SUBS_SYMKEYS,
-    topicSymkeyEntries: subKeys
-  })
-}
-
 export const registerWithEcho = async (notifyClient: NotifyClient) => {
   const isSecureContext = window.location.protocol === 'https:'
 
@@ -88,11 +132,7 @@ export const registerWithEcho = async (notifyClient: NotifyClient) => {
 
   console.log('>> registerWithEcho: token :', token)
 
-  postMessageToServiceWorkerRegistration({
-    type: SERVICE_WORKER_ACTIONS.REGISTER_WITH_ECHO,
-    clientId,
-    token
-  })
+  await callEcho(clientId, token);
 
-  console.log('>> registerWithEcho: posted to SW')
+  console.log('>> registerWithEcho: called echo')
 }
