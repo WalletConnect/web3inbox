@@ -44,22 +44,21 @@ export const NotificationPwaModal: React.FC = () => {
             notifications.
           </Text>
         </div>
-        <div className="NotificationPwaModal_subtitle">
         {explicitlyDeniedPermissionForNotifications ? (
           <Text variant="small-700" className="NotificationPwaModal__warning">
             You have explicitly denied notification permission. Please adjust in OS settings.
           </Text>
         ) : (
           <Fragment>
+        <div className="NotificationPwaModal_subtitle">
             <Text variant="small-500">
               You can always adjust your permissions in your OS settings.
             </Text>
+	  </div>
             <Button onClick={handleEnableNotifications}>Enable Notifications</Button>
           </Fragment>
         )}
 	</div>
-
-      </div>
     </Modal>
   )
 }
