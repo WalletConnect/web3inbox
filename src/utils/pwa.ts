@@ -10,10 +10,10 @@ export const isMobileBrowser = () => /iPhone|iPad|iPod|Android/i.test(navigator.
 
 export const getMobilePlatform = () => {
   if (/Android/i.test(navigator.userAgent)) {
-    return 'android'
+    return 'android' as const
   }
   if (/iPad|iPhone/i.test(navigator.userAgent)) {
-    return 'ios'
+    return 'ios' as const
   }
 }
 

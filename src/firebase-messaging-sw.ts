@@ -3,7 +3,8 @@ import { getMessaging } from 'firebase/messaging/sw'
 import { decryptMessage } from '@walletconnect/notify-message-decrypter'
 import { onBackgroundMessage } from 'firebase/messaging/sw'
 import { initializeApp } from 'firebase/app'
-import { getDbSymkeyStore } from './utils/idb'
+import { getFirebaseToken } from './utils/firebase'
+import { getDbEchoRegistrations, getDbSymkeyStore } from './utils/idb'
 
 declare let self: ServiceWorkerGlobalScope
 
@@ -31,6 +32,24 @@ const getSymKey = async (topic: string) => {
   }
 
   throw new Error(`No symkey exists for such topic: ${topic}`)
+}
+
+const refreshFcmToken = async () => {
+  console.log('>> refreshFcmToken')
+  const token = await getFirebaseToken()
+
+  console.log('>> refreshFcmToken > token:', token)
+
+  const [, , getAllRegistredClientIds] = await getDbEchoRegistrations()
+
+  const clientIds = await getAllRegistredClientIds()
+
+  console.log('>> refreshFcmToken > clientIds:', JSON.stringify(clientIds))
+
+  for (const id of clientIds) {
+    console.log('>> refreshFcmToken > registering clientId:', id)
+    // await registerWithEcho(id as string, token)
+  }
 }
 
 const triggerPushNotification = async (data: { encodedData: string; topic: string }) => {

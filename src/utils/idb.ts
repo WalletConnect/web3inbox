@@ -20,7 +20,11 @@ const STORE_NAMES = [SYMKEY_OBJ_STORE, ECHO_REGISTRATION_STORE]
 export const getIndexedDbStore = async (
   storeName: string
 ): Promise<
-  [(key: string) => Promise<any>, (key: string, value: string) => Promise<IDBValidKey>]
+  [
+    (key: string) => Promise<any>,
+    (key: string, value: string) => Promise<IDBValidKey>,
+    () => Promise<IDBValidKey[]>
+  ]
 > => {
   const db = await openDB('w3i-push-db', 5, {
     upgrade(database) {
@@ -39,6 +43,9 @@ export const getIndexedDbStore = async (
     },
     (key: string, value: string) => {
       return db.put(storeName, value, key)
+    },
+    () => {
+      return db.getAllKeys(storeName)
     }
   ]
 }

@@ -5,6 +5,18 @@ import BackgroundImage from '../../../assets/IntroBackground.png'
 import WalletConnectIcon from '../../general/Icon/WalletConnectIcon'
 import './PwaModal.scss'
 import Text from '../../general/Text'
+import AndroidShareIcon from '../../../components/general/Icon/AndroidShare'
+import IShareIcon from '../../../components/general/Icon/IShare'
+import { getMobilePlatform } from '../../../utils/pwa'
+
+export const getMobilePlatformIcon = () => {
+  switch (getMobilePlatform()) {
+    case 'android':
+      return <AndroidShareIcon />
+    case 'ios':
+      return <IShareIcon />
+  }
+}
 
 export const PwaModal: React.FC = () => {
   return (
@@ -25,8 +37,10 @@ export const PwaModal: React.FC = () => {
             Home screen.
           </Text>
         </div>
-        <div className="PwaModal_cta">
-          <Text variant="small-500">Just tap settings and “Add to Home Screen”</Text>
+        <div className="PwaModal__cta">
+          <Text variant="small-500">Just tap </Text>
+          <span className="PwaModal__share-icon">{getMobilePlatformIcon()}</span>
+          <Text variant="small-500"> and “Add to Home Screen”</Text>
         </div>
       </div>
     </Modal>

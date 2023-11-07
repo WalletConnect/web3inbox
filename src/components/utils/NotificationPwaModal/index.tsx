@@ -9,9 +9,7 @@ import Button from '../../general/Button'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { requireNotifyPermission } from '../../../utils/notifications'
 
-
 export const NotificationPwaModal: React.FC = () => {
-
   const { notifyClientProxy } = useContext(W3iContext)
 
   const handleEnableNotifications = async () => {
@@ -47,9 +45,7 @@ export const NotificationPwaModal: React.FC = () => {
           </Text>
         </div>
 
-	<Button onClick={handleEnableNotifications}>
-	  Enable Notifications
-	</Button>
+        <Button onClick={handleEnableNotifications}>Enable Notifications</Button>
       </div>
     </Modal>
   )

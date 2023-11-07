@@ -18,7 +18,7 @@ export const Modals = () => {
 
   const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
 
-  const notificationsEnabled = useNotificationPermissionState();
+  const notificationsEnabled = useNotificationPermissionState()
 
   useEffect(() => {
     const notifySignatureRequired = Boolean(notifyRegisterMessage)
@@ -43,7 +43,9 @@ export const Modals = () => {
 
         {isMobileButNotInstalledOnHomescreen() && <PwaModal />}
 
-	{!isMobileButNotInstalledOnHomescreen() && !notificationsEnabled && <NotificationPwaModal />}
+        {!isMobileButNotInstalledOnHomescreen() && !notificationsEnabled && (
+          <NotificationPwaModal />
+        )}
       </AnimatePresence>
     </>
   )
