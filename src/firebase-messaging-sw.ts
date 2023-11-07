@@ -32,25 +32,21 @@ const getSymKey = async (topic: string) => {
   throw new Error(`No symkey exists for such topic: ${topic}`)
 }
 
-const triggerPushNotification = async (data: { encodedData: string; topic: string }) => {
-  const symkey = await getSymKey(data.topic)
 
-  const m = await decryptMessage({ encoded: data.encodedData, symkey, topic: data.topic })
+onBackgroundMessage(messaging, async ev => {
+  const encoded = ev.data?.blob
+  const topic = ev.data?.topic
+
+  if (!encoded|| !topic) {
+    return
+  }
+
+  const symkey = await getSymKey(topic)
+
+  const m = await decryptMessage({ encoded, symkey, topic})
 
   self.registration.showNotification(m.title, {
     icon: m.icon,
     body: m.body
   })
-}
-
-
-onBackgroundMessage(messaging, ev => {
-  const encodedData = ev.data?.blob
-  const topic = ev.data?.topic
-
-  if (!encodedData || !topic) {
-    return
-  }
-
-  triggerPushNotification({ encodedData, topic })
 })
