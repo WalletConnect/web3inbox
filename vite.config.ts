@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
@@ -48,9 +48,19 @@ const pwaOptions: Partial<VitePWAOptions> = {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({mode }) => {
+  const env = loadEnv(mode, process.cwd());
+  console.log({env})
+  return (
+    {
   build: {
     target: 'es2020'
+  },
+// using define for vite pwa, as it uses the define build prop
+// taken from https://github.com/vite-pwa/vite-plugin-pwa/blob/main/src/modules.ts#L94
+      // and this https://vitejs.dev/config/shared-options.html#define
+  define: {
+    '__VITE_PROJECT_ID__': JSON.stringify(env.VITE_PROJECT_ID)
   },
   optimizeDeps: {
     esbuildOptions: {
@@ -63,7 +73,7 @@ export default defineConfig({
       protocolImports: true
     }),
     VitePWA({
-      ...pwaOptions
+      ...pwaOptions,
     })
   ],
   css: {
@@ -71,4 +81,6 @@ export default defineConfig({
       plugins: [autoprefixer({})]
     }
   }
+    }
+  )
 })

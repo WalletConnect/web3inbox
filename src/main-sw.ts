@@ -2,6 +2,8 @@
 
 declare let self: ServiceWorkerGlobalScope
 
+declare const __VITE_PROJECT_ID__: string
+
 import { SERVICE_WORKER_ACTIONS } from './utils/constants'
 import { getDbEchoRegistrations, getDbSymkeyStore } from './utils/idb'
 
@@ -25,8 +27,8 @@ const registerWithEcho = async (clientId: string, token: string) => {
     )
   }
 
-  //TODO: Make this an env var
-  const projectId = '7cb67f700b96a290fb5bb73d9001d489'
+  // coming from `define` in vite.config.js
+  const projectId = __VITE_PROJECT_ID__
 
   const echoUrl = `${ECHO_URL}/${projectId}/clients`
 
