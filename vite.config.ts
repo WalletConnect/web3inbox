@@ -8,7 +8,12 @@ import type { VitePWAOptions } from 'vite-plugin-pwa'
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: 'production',
   base: '/',
-  strategies: 'generateSW',
+  strategies: 'injectManifest',
+  srcDir: 'src',
+  filename: 'main-sw.ts',
+  injectManifest: {
+    injectionPoint: undefined
+  },
   injectRegister: 'inline',
   registerType: 'autoUpdate',
   includeAssets: ['favicon.svg'],
