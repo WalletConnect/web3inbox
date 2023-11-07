@@ -4,7 +4,7 @@ const IShareIcon = () => {
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 50 50"
-      enable-background="new 0 0 50 50"
+      enableBackground="new 0 0 50 50"
     >
       <path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z" />
       <path d="M24 7h2v21h-2z" />
