@@ -37,7 +37,7 @@ const callEcho = async (clientId: string, token: string) => {
     )
   }
 
-  const projectId = import.meta.env.VITE_PROJECT_ID;
+  const projectId = import.meta.env.VITE_PROJECT_ID
 
   const echoUrl = `${ECHO_URL}/${projectId}/clients`
 
@@ -83,9 +83,9 @@ export const useNotificationPermissionState = () => {
 
   useEffect(() => {
     const permissionInterval = setInterval(() => {
-      if(userEnabledNotification()) {
-	setNotificationPermissionGranted(true)
-	clearInterval(permissionInterval)
+      if (userEnabledNotification()) {
+        setNotificationPermissionGranted(true)
+        clearInterval(permissionInterval)
       }
     }, 100)
 

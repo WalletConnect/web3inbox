@@ -53,13 +53,13 @@ export default defineConfig(() => {
         target: 'es2020'
       }
     },
- plugins: [
-    react(),
-    nodePolyfills({
-      protocolImports: true
-    }),
-   VitePWA(pwaOptions)
-  ],
+    plugins: [
+      react(),
+      nodePolyfills({
+        protocolImports: true
+      }),
+      VitePWA(pwaOptions)
+    ],
     css: {
       postcss: {
         plugins: [autoprefixer({})]

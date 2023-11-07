@@ -16,7 +16,7 @@ export const Modals = () => {
   const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen } = useModals()
   const { close: closeWeb3Modal } = useWeb3Modal()
 
-  const { notifyRegisterMessage, notifyRegisteredKey, userPubkey  } = useContext(W3iContext)
+  const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
 
@@ -43,9 +43,11 @@ export const Modals = () => {
 
         {isMobileButNotInstalledOnHomescreen() && <PwaModal />}
 
-        {!isMobileButNotInstalledOnHomescreen() && !notificationsEnabled && Boolean(userPubkey) && Boolean(notifyRegisteredKey) && !isSignatureModalOpen && (
-          <NotificationPwaModal />
-        )}
+        {!isMobileButNotInstalledOnHomescreen() &&
+          !notificationsEnabled &&
+          Boolean(userPubkey) &&
+          Boolean(notifyRegisteredKey) &&
+          !isSignatureModalOpen && <NotificationPwaModal />}
       </AnimatePresence>
     </>
   )

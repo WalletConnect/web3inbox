@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { Modal } from '../../general/Modal/Modal'
 import { pwaModalService } from '../../../utils/store'
 import BackgroundImage from '../../../assets/IntroBackground.png'
@@ -13,7 +13,7 @@ export const NotificationPwaModal: React.FC = () => {
   const { notifyClientProxy } = useContext(W3iContext)
 
   const handleEnableNotifications = async () => {
-    const notificationPermissionGranted = await requireNotifyPermission();
+    const notificationPermissionGranted = await requireNotifyPermission()
 
     if (!notifyClientProxy) {
       return
@@ -23,6 +23,9 @@ export const NotificationPwaModal: React.FC = () => {
       await notifyClientProxy.registerWithEcho()
     }
   }
+
+  const explicitlyDeniedPermissionForNotifications = Notification.permission === 'denied'
+
   return (
     <Modal onToggleModal={pwaModalService.toggleModal}>
       <div className="NotificationPwaModal">
@@ -42,12 +45,20 @@ export const NotificationPwaModal: React.FC = () => {
           </Text>
         </div>
         <div className="NotificationPwaModal_subtitle">
-          <Text variant="small-500">
-            You can always adjust your permissions in your OS settings.
+        {explicitlyDeniedPermissionForNotifications ? (
+          <Text variant="small-700" className="NotificationPwaModal__warning">
+            You have explicitly denied notification permission. Please adjust in OS settings.
           </Text>
-        </div>
+        ) : (
+          <Fragment>
+            <Text variant="small-500">
+              You can always adjust your permissions in your OS settings.
+            </Text>
+            <Button onClick={handleEnableNotifications}>Enable Notifications</Button>
+          </Fragment>
+        )}
+	</div>
 
-        <Button onClick={handleEnableNotifications}>Enable Notifications</Button>
       </div>
     </Modal>
   )
