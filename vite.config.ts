@@ -12,8 +12,6 @@ const pwaOptions: Partial<VitePWAOptions> = {
   injectRegister: 'inline',
   registerType: 'autoUpdate',
   includeAssets: ['favicon.svg'],
-  srcDir: 'src',
-  filename: 'main-sw.ts',
   manifest: {
     name: 'Web3Inbox',
     short_name: 'Web3Inbox',
