@@ -26,13 +26,12 @@ export const Modals = () => {
   const shouldShowNotificationModal = useMemo(
     () =>
       !explicitlyDeniedOnDesktop &&
-      !isMobileButNotInstalledOnHomescreen &&
+      !isMobileButNotInstalledOnHomescreen() &&
       !notificationsEnabled &&
       Boolean(notifyRegisteredKey) &&
       !isSignatureModalOpen,
     [
       explicitlyDeniedOnDesktop,
-      isMobileButNotInstalledOnHomescreen,
       notificationsEnabled,
       notifyRegisteredKey,
       isSignatureModalOpen
