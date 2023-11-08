@@ -2,7 +2,7 @@ import { useModals } from './utils/hooks'
 import { PreferencesModal } from './components/notifications/NotificationsLayout/PreferencesModal'
 import { UnsubscribeModal } from './components/notifications/NotificationsLayout/UnsubscribeModal'
 import { SignatureModal } from './pages/Login/SignatureModal'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import W3iContext from './contexts/W3iContext/context'
 import { signatureModalService } from './utils/store'
 import { AnimatePresence } from 'framer-motion'
@@ -11,6 +11,7 @@ import { isMobileButNotInstalledOnHomescreen } from './utils/pwa'
 import PwaModal from './components/utils/PwaModal'
 import { useNotificationPermissionState } from './utils/notifications'
 import NotificationPwaModal from './components/utils/NotificationPwaModal'
+import { isMobile } from './utils/ui'
 
 export const Modals = () => {
   const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen } = useModals()
@@ -19,6 +20,24 @@ export const Modals = () => {
   const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
+
+  const explicitlyDeniedOnDesktop = !isMobile() && Notification.permission === 'denied'
+
+  const shouldShowNotificationModal = useMemo(
+    () =>
+      !explicitlyDeniedOnDesktop &&
+      !isMobileButNotInstalledOnHomescreen &&
+      !notificationsEnabled &&
+      Boolean(notifyRegisteredKey) &&
+      !isSignatureModalOpen,
+    [
+      explicitlyDeniedOnDesktop,
+      isMobileButNotInstalledOnHomescreen,
+      notificationsEnabled,
+      notifyRegisteredKey,
+      isSignatureModalOpen
+    ]
+  )
 
   useEffect(() => {
     const notifySignatureRequired = Boolean(notifyRegisterMessage)
@@ -43,11 +62,7 @@ export const Modals = () => {
 
         {isMobileButNotInstalledOnHomescreen() && <PwaModal />}
 
-        {!isMobileButNotInstalledOnHomescreen() &&
-          !notificationsEnabled &&
-          Boolean(userPubkey) &&
-          Boolean(notifyRegisteredKey) &&
-          !isSignatureModalOpen && <NotificationPwaModal />}
+        {shouldShowNotificationModal && <NotificationPwaModal />}
       </AnimatePresence>
     </>
   )

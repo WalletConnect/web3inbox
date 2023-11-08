@@ -8,6 +8,8 @@ import Text from '../../general/Text'
 import Button from '../../general/Button'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { requireNotifyPermission } from '../../../utils/notifications'
+import { isMobile } from '../../../utils/ui'
+import CrossIcon from '../../general/Icon/CrossIcon'
 
 export const NotificationPwaModal: React.FC = () => {
   const { notifyClientProxy } = useContext(W3iContext)
@@ -50,15 +52,15 @@ export const NotificationPwaModal: React.FC = () => {
           </Text>
         ) : (
           <Fragment>
-        <div className="NotificationPwaModal_subtitle">
-            <Text variant="small-500">
-              You can always adjust your permissions in your OS settings.
-            </Text>
-	  </div>
+            <div className="NotificationPwaModal_subtitle">
+              <Text variant="small-500">
+                You can always adjust your permissions in your OS settings.
+              </Text>
+            </div>
             <Button onClick={handleEnableNotifications}>Enable Notifications</Button>
           </Fragment>
         )}
-	</div>
+      </div>
     </Modal>
   )
 }

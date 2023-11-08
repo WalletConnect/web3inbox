@@ -1,5 +1,5 @@
 /// <reference lib="WebWorker" />
-import { getMessaging, onBackgroundMessage,  } from 'firebase/messaging/sw'
+import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw'
 import { decryptMessage } from '@walletconnect/notify-message-decrypter'
 import { initializeApp } from 'firebase/app'
 import { getDbSymkeyStore } from './utils/idb'
@@ -32,18 +32,17 @@ const getSymKey = async (topic: string) => {
   throw new Error(`No symkey exists for such topic: ${topic}`)
 }
 
-
 onBackgroundMessage(messaging, async ev => {
   const encoded = ev.data?.blob
   const topic = ev.data?.topic
 
-  if (!encoded|| !topic) {
+  if (!encoded || !topic) {
     return
   }
 
   const symkey = await getSymKey(topic)
 
-  const m = await decryptMessage({ encoded, symkey, topic})
+  const m = await decryptMessage({ encoded, symkey, topic })
 
   self.registration.showNotification(m.title, {
     icon: m.icon,
