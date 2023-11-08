@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './NotificationsSettings.scss'
 import SettingsHeader from '../SettingsHeader'
 import SettingsItem from '../SettingsItem'
@@ -16,6 +16,7 @@ import {
 import NotificationIcon from '../../general/Icon/Notification'
 import cn from 'classnames'
 import W3iContext from '../../../contexts/W3iContext/context'
+import { getDbEchoRegistrations } from '../../../utils/idb'
 
 const getHelperTooltip = () => {
   switch (Notification.permission) {
@@ -33,6 +34,19 @@ const NotificationsSettings: React.FC = () => {
   const { notifyClientProxy } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
+
+  const [tokenEntries, setTokenEntries] = useState<[IDBValidKey, any][]>([])
+
+  useEffect(() => {
+    const getEntries = async () => {
+      const [, , , getTokenIdEntries] = await getDbEchoRegistrations()
+      getTokenIdEntries().then(tokenIds => {
+        console.log(tokenIds)
+        setTokenEntries(tokenIds)
+      })
+    }
+    getEntries()
+  }, [])
 
   const handleEnableNotifications = async () => {
     if (!notifyClientProxy) {
@@ -86,6 +100,22 @@ const NotificationsSettings: React.FC = () => {
                 active={notificationsEnabledInBrowser() && !notificationsEnabled}
               />
             </SettingsItem>
+          </div>
+
+          <div className="NotificationsSettings__debug">
+            {tokenEntries.map(([clientId, fcmToken], idx) => {
+              return (
+                <div className="NotificationsSettings__debug-row">
+                  <span>Entry {idx + 1} </span>
+                  <span>
+                    <span style={{ fontWeight: 800 }}>ClientId</span>: {JSON.stringify(clientId)}{' '}
+                  </span>
+                  <span>
+                    <span style={{ fontWeight: 800 }}>FCM Token</span>: {JSON.stringify(fcmToken)}{' '}
+                  </span>
+                </div>
+              )
+            })}
           </div>
         </div>
       </motion.div>

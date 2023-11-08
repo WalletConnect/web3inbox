@@ -54,7 +54,6 @@ const ConfiguredRoutes: React.FC = () => {
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
-
     </Routes>
   )
 }

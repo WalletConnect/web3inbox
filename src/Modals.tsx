@@ -30,12 +30,7 @@ export const Modals = () => {
       !notificationsEnabled &&
       Boolean(notifyRegisteredKey) &&
       !isSignatureModalOpen,
-    [
-      explicitlyDeniedOnDesktop,
-      notificationsEnabled,
-      notifyRegisteredKey,
-      isSignatureModalOpen
-    ]
+    [explicitlyDeniedOnDesktop, notificationsEnabled, notifyRegisteredKey, isSignatureModalOpen]
   )
 
   useEffect(() => {

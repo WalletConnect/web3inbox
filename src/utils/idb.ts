@@ -23,7 +23,8 @@ export const getIndexedDbStore = async (
   [
     (key: string) => Promise<any>,
     (key: string, value: string) => Promise<IDBValidKey>,
-    () => Promise<IDBValidKey[]>
+    () => Promise<IDBValidKey[]>,
+    () => Promise<[IDBValidKey, any][]>
   ]
 > => {
   const db = await openDB('w3i-push-db', 5, {
@@ -46,6 +47,16 @@ export const getIndexedDbStore = async (
     },
     () => {
       return db.getAllKeys(storeName)
+    },
+    async () => {
+      const transaction = db.transaction(storeName, 'readonly')
+
+      const keys = await transaction.objectStore(storeName).getAllKeys()
+      const values = await transaction.objectStore(storeName).getAll()
+
+      transaction.commit()
+
+      return keys.map((key, idx) => [key, values[idx]])
     }
   ]
 }

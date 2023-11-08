@@ -22,4 +22,21 @@
   svg {
     color: var(--fg-color-1);
   }
+
+  &__debug {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    font-size: 0.5em;
+    color: violet;
+    padding: 1em;
+
+    &-row {
+      display: flex;
+      padding: 1em;
+      flex-direction: column;
+      gap: 0.5em;
+      border: solid 1px blue;
+    }
+  }
 }

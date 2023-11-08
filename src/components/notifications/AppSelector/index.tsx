@@ -16,6 +16,7 @@ import Text from '../../general/Text'
 import MobileHeader from '../../layout/MobileHeader'
 import { AnimatePresence, motion } from 'framer-motion'
 import { handleImageFallback } from '../../../utils/ui'
+import { getDbEchoRegistrations } from '../../../utils/idb'
 
 const AppSelector: React.FC = () => {
   const { pathname } = useLocation()

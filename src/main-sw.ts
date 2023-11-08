@@ -6,7 +6,7 @@ import { SERVICE_WORKER_ACTIONS } from './utils/constants'
 
 const clearCache = () => {
   self.caches.keys().then(cacheKeys => {
-    cacheKeys.forEach(cacheKey => self.caches.delete(cacheKey));
+    cacheKeys.forEach(cacheKey => self.caches.delete(cacheKey))
   })
 }
 
