@@ -4,12 +4,23 @@ declare let self: ServiceWorkerGlobalScope
 
 import { SERVICE_WORKER_ACTIONS } from './utils/constants'
 
+const clearCache = () => {
+  self.caches.keys().then(cacheKeys => {
+    cacheKeys.forEach(cacheKey => self.caches.delete(cacheKey));
+  })
+}
 
 // Clear any cache
 self.oninstall = () => {
-    self.caches.keys().then(cacheKeys => {
-	cacheKeys.forEach(cacheKey => self.caches.delete(cacheKey));
-    })
+  clearCache()
+}
+
+self.onactivate = () => {
+  clearCache()
+}
+
+self.ononline = () => {
+  clearCache()
 }
 
 self.addEventListener('message', event => {
