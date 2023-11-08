@@ -4,6 +4,14 @@ declare let self: ServiceWorkerGlobalScope
 
 import { SERVICE_WORKER_ACTIONS } from './utils/constants'
 
+
+// Clear any cache
+self.oninstall = () => {
+    self.caches.keys().then(cacheKeys => {
+	cacheKeys.forEach(cacheKey => self.caches.delete(cacheKey));
+    })
+}
+
 self.addEventListener('message', event => {
   if (!event.data) return
 

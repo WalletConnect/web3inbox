@@ -51,7 +51,8 @@ const pwaOptions: Partial<VitePWAOptions> = {
 export default defineConfig(() => {
   return {
     build: {
-      target: 'es2020'
+      target: 'es2020',
+      
     },
     optimizeDeps: {
       esbuildOptions: {
