@@ -52,6 +52,9 @@ const ConfiguredRoutes: React.FC = () => {
         <Route path="/widget/subscribe" element={<WidgetSubscribe />} />
         <Route path="/widget/connect" element={<WidgetConnect />} />
       </Route>
+
+      <Route path="*" element={<Navigate to="/" />} />
+
     </Routes>
   )
 }
