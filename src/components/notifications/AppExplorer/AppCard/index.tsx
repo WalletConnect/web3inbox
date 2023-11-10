@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import SettingsContext from '../../../../contexts/SettingsContext/context'
 import './AppCard.scss'
 import Button from '../../../general/Button'
 import W3iContext from '../../../../contexts/W3iContext/context'
@@ -27,7 +26,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
-  const { notifyClientProxy, userPubkey, notifyProvider } = useContext(W3iContext)
+  const { notifyClientProxy, userPubkey } = useContext(W3iContext)
 
   const { activeSubscriptions } = useContext(W3iContext)
 
@@ -109,7 +108,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           <Text className="" variant="large-600">
             {name}
           </Text>
-          {isVerified? <VerifiedIcon /> : null}
+          <VerifiedIcon /> 
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
           {isVerified? "Official app" : new URL(url).host}
