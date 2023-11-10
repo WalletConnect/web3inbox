@@ -22,18 +22,18 @@ const pwaOptions: Partial<VitePWAOptions> = {
     short_name: 'Web3Inbox',
     icons: [
       {
-        src: 'pwa-192x192.png',
-        sizes: '192x192',
+        src: 'pwa-196x196.png',
+        sizes: '196x196',
         type: 'image/png'
       },
       {
-        src: 'pwa-512x512.png',
-        sizes: '512x512',
+        src: 'pwa-270x270.png',
+        sizes: '270x270',
         type: 'image/png'
       },
       {
-        src: 'pwa-512x512.png',
-        sizes: '512x512',
+        src: 'pwa-270x270.png',
+        sizes: '270x270',
         type: 'image/png',
         purpose: 'any maskable'
       }
