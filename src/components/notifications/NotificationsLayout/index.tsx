@@ -1,10 +1,16 @@
 import React, { Fragment } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import AppSelector from '../AppSelector'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 
 const NotificationsLayout: React.FC = () => {
+  const { pathname } = useLocation()
+
+  if(pathname === '/notifications'){
+    return <Navigate to="/notifications/new-app" />
+  }
+
   return (
     <Fragment>
       <div className="TargetSelector">
