@@ -12,6 +12,7 @@
     padding: 1rem;
   }
 
+  // Blur out the image from the top left, ending to 75% of the width/height of the image
   &__background {
     z-index: -2;
     position: absolute;

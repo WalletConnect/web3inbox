@@ -59,6 +59,7 @@
         opacity: 0.7;
       }
 
+      // This adds the little blue bar on the left of sidebar nav links
       &-active::before {
         position: absolute;
         border-radius: 0px 12px 12px 0px;
