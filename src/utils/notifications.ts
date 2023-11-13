@@ -30,6 +30,8 @@ const callEcho = async (clientId: string, token: string) => {
   if (existingRegistrationToken === token) {
     // DO not check for existing registration token.
     // Echo is meant to be called repeatedly to refresh PN token
+    // Console log for purposes of debugging if an error relating to echo
+    // happens
     console.log(
       'main-sw > registerWithEcho > user already registered with token',
       token,
@@ -52,8 +54,6 @@ const callEcho = async (clientId: string, token: string) => {
       token
     })
   })
-
-  console.log({ echoResponse: await echoResponse.text(), status: echoResponse.status })
 
   // Is a 200 type response. Redirects (300s) shouldn't occur
   if (echoResponse.status >= 200 && echoResponse.status < 300) {
@@ -119,23 +119,13 @@ export const requireNotifyPermission = async () => {
 export const registerWithEcho = async (notifyClient: NotifyClient) => {
   const isSecureContext = window.location.protocol === 'https:'
 
-  console.log('>> registerWithEcho')
-
-  console.log('>> registerWithEcho: isSecureContext :', isSecureContext)
-
   if (!isSecureContext) {
     throw new Error('Can not set up notification in unsecure context')
   }
 
   const clientId = await notifyClient.core.crypto.getClientId()
 
-  console.log('>> registerWithEcho: clientId :', clientId)
-
   const token = await getFirebaseToken()
 
-  console.log('>> registerWithEcho: token :', token)
-
   await callEcho(clientId, token)
-
-  console.log('>> registerWithEcho: called echo')
 }

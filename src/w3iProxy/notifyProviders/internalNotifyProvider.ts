@@ -75,9 +75,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
     await Notification.requestPermission()
 
-    console.log('>> ensureEchoRegistration: user has enabled notifications')
-
-    console.log('>> ensureEchoRegistration: registering user with echo')
     await registerWithEcho(this.notifyClient)
   }
 
@@ -216,20 +213,9 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('getRegisteredWithEcho'))
     }
 
-    console.log('>> getRegisteredWithEcho')
-
     const [getEchoRegistration] = await getDbEchoRegistrations()
 
-    console.log('>> getRegisteredWithEcho: got db')
-
     const existingRegistration = await getEchoRegistration(
-      await this.notifyClient.core.crypto.getClientId()
-    )
-
-    console.log(
-      '>> getRegisteredWithEcho: existingRegistration: ',
-      existingRegistration,
-      'with clientId',
       await this.notifyClient.core.crypto.getClientId()
     )
 

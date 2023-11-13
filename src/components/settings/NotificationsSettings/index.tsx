@@ -41,7 +41,6 @@ const NotificationsSettings: React.FC = () => {
     const getEntries = async () => {
       const [, , , getTokenIdEntries] = await getDbEchoRegistrations()
       getTokenIdEntries().then(tokenIds => {
-        console.log(tokenIds)
         setTokenEntries(tokenIds)
       })
     }
