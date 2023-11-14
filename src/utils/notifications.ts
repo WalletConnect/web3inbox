@@ -48,7 +48,6 @@ const callEcho = async (clientId: string, token: string) => {
   }
 }
 
-
 const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
   const [, putSymkey] = await getDbSymkeyStore()
 
@@ -119,7 +118,9 @@ export const registerWithEcho = async (notifyClient: NotifyClient) => {
   const isSecureContext = window.location.protocol === 'https:'
 
   if (!isSecureContext) {
-    throw new Error('Can not set up notification in unsecure context')
+    throw new Error(
+      'Can not set up notification in unsecure context. Expected protocol to be https:'
+    )
   }
 
   const clientId = await notifyClient.core.crypto.getClientId()
