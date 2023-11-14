@@ -40,9 +40,10 @@ const NotificationsSettings: React.FC = () => {
   useEffect(() => {
     const getEntries = async () => {
       const [, , , getTokenIdEntries] = await getDbEchoRegistrations()
-      getTokenIdEntries().then(tokenIds => {
-        setTokenEntries(tokenIds)
-      })
+      const tokenEntries = await getTokenIdEntries();
+      if(tokenEntries.length) {
+	setTokenEntries(tokenEntries)
+      }
     }
     getEntries()
   }, [])
