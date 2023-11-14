@@ -14,7 +14,7 @@ const callEcho = async (clientId: string, token: string) => {
   // Already registered device.
   // No need to spam echo
   if (existingRegistrationToken === token) {
-    // DO not check for existing registration token.
+    // Do not check for existing registration token.
     // Echo is meant to be called repeatedly to refresh PN token
     // Console log for purposes of debugging if an error relating to echo
     // happens
