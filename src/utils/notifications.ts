@@ -41,8 +41,7 @@ const callEcho = async (clientId: string, token: string) => {
     })
   })
 
-  // Is a 200 type response. Redirects (300s) shouldn't occur
-  if (echoResponse.status >= 200 && echoResponse.status < 300) {
+  if (echoResponse.status === 200) {
     // Store info to prevent re-registration
     await putRegistrationToken(clientId, token)
   }
