@@ -29,6 +29,7 @@ export const getIndexedDbStore = async (
 > => {
   const db = await openDB('w3i-push-db', 5, {
     upgrade(database) {
+      // Create required access stores if they do not exist
       STORE_NAMES.forEach(store => {
         const exists = database.objectStoreNames.contains(store)
         if (!exists) {
