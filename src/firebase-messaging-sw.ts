@@ -39,7 +39,7 @@ onBackgroundMessage(messaging, async ev => {
   if (!encoded || !topic) {
     // Console Errors can be viewed via Chrome and Firefox devtools
     console.error(`Received incorrect payload > blob: ${encoded} | topic: ${topic}`)
-    return;
+    return
   }
 
   const symkey = await getSymKey(topic)
