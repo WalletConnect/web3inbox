@@ -38,27 +38,30 @@ export const getIndexedDbStore = async (
     }
   })
 
-  return [
-    (key: string) => {
-      return db.get(storeName, key)
-    },
-    (key: string, value: string) => {
-      return db.put(storeName, value, key)
-    },
-    () => {
-      return db.getAllKeys(storeName)
-    },
-    async () => {
-      const transaction = db.transaction(storeName, 'readonly')
+  const getItem = (key: string): Promise<any> => {
+    return db.get(storeName, key)
+  }
 
-      const keys = await transaction.objectStore(storeName).getAllKeys()
-      const values = await transaction.objectStore(storeName).getAll()
+  const setItem = (key: string, value: string): Promise<IDBValidKey> => {
+    return db.put(storeName, value, key)
+  }
 
-      transaction.commit()
+  const getAllKeys = (): Promise<IDBValidKey[]> => {
+    return db.getAllKeys(storeName)
+  }
 
-      return keys.map((key, idx) => [key, values[idx]])
-    }
-  ]
+  const getAllEntries = async (): Promise<[IDBValidKey, any][]> => {
+    const transaction = db.transaction(storeName, 'readonly')
+
+    const keys = await transaction.objectStore(storeName).getAllKeys()
+    const values = await transaction.objectStore(storeName).getAll()
+
+    transaction.commit()
+
+    return keys.map((key, idx) => [key, values[idx]])
+  }
+
+  return [getItem, setItem, getAllKeys, getAllEntries]
 }
 
 export const getDbSymkeyStore = async () => {
