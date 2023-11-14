@@ -56,8 +56,6 @@ const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
 }
 
 export const setupSubscriptionsSymkeys = async (topicSymkeyEntries: [string, string][]) => {
-  topicSymkeyEntries.forEach(([topic, symkey]) => setupSubscriptionSymkey(topic, symkey))
-
   for (const [topic, symkey] of topicSymkeyEntries) {
     setupSubscriptionSymkey(topic, symkey)
   }
