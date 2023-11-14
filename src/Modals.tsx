@@ -9,7 +9,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { isMobileButNotInstalledOnHomescreen } from './utils/pwa'
 import PwaModal from './components/utils/PwaModal'
-import { useNotificationPermissionState } from './utils/notifications'
+import { useNotificationPermissionState } from './utils/hooks/notificationHooks'
 import NotificationPwaModal from './components/utils/NotificationPwaModal'
 import { isMobile } from './utils/ui'
 

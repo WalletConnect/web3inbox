@@ -10,13 +10,13 @@ import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import {
   notificationsEnabledInBrowser,
-  requireNotifyPermission,
-  useNotificationPermissionState
+  requireNotifyPermission
 } from '../../../utils/notifications'
 import NotificationIcon from '../../general/Icon/Notification'
 import cn from 'classnames'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { getDbEchoRegistrations } from '../../../utils/idb'
+import { useNotificationPermissionState } from '../../../utils/hooks/notificationHooks'
 
 const getHelperTooltip = () => {
   switch (Notification.permission) {
