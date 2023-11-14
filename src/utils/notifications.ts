@@ -5,20 +5,6 @@ import { getDbEchoRegistrations, getDbSymkeyStore } from './idb'
 
 const ECHO_URL = 'https://echo.walletconnect.com'
 
-const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
-  const [, putSymkey] = await getDbSymkeyStore()
-
-  await putSymkey(topic, symkey)
-}
-
-export const setupSubscriptionsSymkeys = async (topicSymkeyEntries: [string, string][]) => {
-  topicSymkeyEntries.forEach(([topic, symkey]) => setupSubscriptionSymkey(topic, symkey))
-
-  for (const [topic, symkey] of topicSymkeyEntries) {
-    setupSubscriptionSymkey(topic, symkey)
-  }
-}
-
 const callEcho = async (clientId: string, token: string) => {
   const [getRegistrationToken, putRegistrationToken] = await getDbEchoRegistrations()
 
@@ -59,6 +45,21 @@ const callEcho = async (clientId: string, token: string) => {
   if (echoResponse.status >= 200 && echoResponse.status < 300) {
     // Store info to prevent re-registration
     await putRegistrationToken(clientId, token)
+  }
+}
+
+
+const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
+  const [, putSymkey] = await getDbSymkeyStore()
+
+  await putSymkey(topic, symkey)
+}
+
+export const setupSubscriptionsSymkeys = async (topicSymkeyEntries: [string, string][]) => {
+  topicSymkeyEntries.forEach(([topic, symkey]) => setupSubscriptionSymkey(topic, symkey))
+
+  for (const [topic, symkey] of topicSymkeyEntries) {
+    setupSubscriptionSymkey(topic, symkey)
   }
 }
 
