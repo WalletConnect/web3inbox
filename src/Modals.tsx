@@ -29,13 +29,12 @@ export const Modals = () => {
       !explicitlyDeniedOnDesktop &&
       !isMobileButNotInstalledOnHomescreen() &&
       !notificationsEnabled &&
-      Boolean(notifyRegisteredKey) &&
-      !isSignatureModalOpen,
+      Boolean(notifyRegisteredKey),
     [explicitlyDeniedOnDesktop, notificationsEnabled, notifyRegisteredKey, isSignatureModalOpen]
   )
 
   useEffect(() => {
-    const notifySignatureRequired = Boolean(notifyRegisterMessage)
+    const notifySignatureRequired = Boolean(notifyRegisterMessage) && !notifyRegisteredKey
     if (userPubkey && notifySignatureRequired) {
       closeWeb3Modal() // close web3modal in case user is switching accounts
       signatureModalService.openModal()
@@ -55,9 +54,9 @@ export const Modals = () => {
           <SignatureModal message={notifyRegisterMessage ?? ''} sender={'notify'} />
         )}
 
-        {isMobileButNotInstalledOnHomescreen() && <PwaModal />}
+        {!isSignatureModalOpen && isMobileButNotInstalledOnHomescreen() && <PwaModal />}
 
-        {shouldShowNotificationModal && <NotificationPwaModal />}
+        {!isSignatureModalOpen && shouldShowNotificationModal && <NotificationPwaModal />}
       </AnimatePresence>
     </>
   )
