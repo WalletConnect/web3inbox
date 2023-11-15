@@ -14,7 +14,12 @@ import NotificationPwaModal from './components/utils/NotificationPwaModal'
 import { isMobile } from './utils/ui'
 
 export const Modals = () => {
-  const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen, isNotificationPwaModalOpen } = useModals()
+  const {
+    isPreferencesModalOpen,
+    isUnsubscribeModalOpen,
+    isSignatureModalOpen,
+    isNotificationPwaModalOpen
+  } = useModals()
   const { close: closeWeb3Modal } = useWeb3Modal()
 
   const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
@@ -46,13 +51,12 @@ export const Modals = () => {
 
   useEffect(() => {
     // Set it in a timeout to prevent modals to be spammed one after the other
-    if(shouldShowNotificationModal) {
+    if (shouldShowNotificationModal) {
       setTimeout(() => {
-	notificationPwaModalService.openModal()
+        notificationPwaModalService.openModal()
       }, 500)
-    }
-    else {
-	notificationPwaModalService.closeModal()
+    } else {
+      notificationPwaModalService.closeModal()
     }
   }, [shouldShowNotificationModal])
 

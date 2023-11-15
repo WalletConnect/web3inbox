@@ -10,9 +10,8 @@ import IShareIcon from '../../../components/general/Icon/IShare'
 import { detect } from 'detect-browser'
 
 export const getMobilePlatformIcon = () => {
-
   const browser = detect()
-  switch(browser?.name) {
+  switch (browser?.name) {
     case 'safari':
     case 'ios':
       return <IShareIcon />
@@ -24,25 +23,24 @@ export const getMobilePlatformIcon = () => {
 
 export const getPlatformInstallText = () => {
   const browser = detect()
-  switch(browser?.name) {
-  case 'firefox':
-  // Firefox on iOS is called Fxios
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent/Firefox#focus_for_ios
-  case 'fxios':
-    return 'Install'
-  case 'chrome':
-  // Chrome on iOS is called Crios
-  // https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/ios/user_agent.md
-  case 'crios':
-  case 'edge-chromium':
-    return 'Install App'
-  case 'safari':
-  case 'ios':
-    return 'Add to homescreen'
-  default:
-    return 'Install'
+  switch (browser?.name) {
+    case 'firefox':
+    // Firefox on iOS is called Fxios
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent/Firefox#focus_for_ios
+    case 'fxios':
+      return 'Install'
+    case 'chrome':
+    // Chrome on iOS is called Crios
+    // https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/ios/user_agent.md
+    case 'crios':
+    case 'edge-chromium':
+      return 'Install App'
+    case 'safari':
+    case 'ios':
+      return 'Add to homescreen'
+    default:
+      return 'Install'
   }
-  
 }
 
 export const PwaModal: React.FC = () => {

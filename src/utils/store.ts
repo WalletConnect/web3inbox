@@ -30,7 +30,7 @@ const profileModalSubject = new BehaviorSubject(false)
 const shareModalSubject = new BehaviorSubject(false)
 const signatureModalSubject = new BehaviorSubject(false)
 const pwaModalSubject = new BehaviorSubject(false)
-const notificationPwaModalSubject = new BehaviorSubject(false) 
+const notificationPwaModalSubject = new BehaviorSubject(false)
 const contactsModalSubject = new BehaviorSubject(false)
 const subscribeModalSubject = new BehaviorSubject<ISubscribeModalState>({
   metadata: undefined,

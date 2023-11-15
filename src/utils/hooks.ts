@@ -165,7 +165,7 @@ export const useModals = () => {
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
-  const [isNotificationPwaModalOpen, setIsNotificationPwaModalOpen] = useState(false);
+  const [isNotificationPwaModalOpen, setIsNotificationPwaModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
   /*
@@ -193,9 +193,11 @@ export const useModals = () => {
     const shareSubscription = shareModalService.modalState.subscribe(isOpen => {
       setIsShareModalOpen(isOpen)
     })
-    const notificationPwaModalSubscription = notificationPwaModalService.modalState.subscribe(isOpen => {
-      setIsNotificationPwaModalOpen(isOpen)
-    })
+    const notificationPwaModalSubscription = notificationPwaModalService.modalState.subscribe(
+      isOpen => {
+        setIsNotificationPwaModalOpen(isOpen)
+      }
+    )
     const preferencesSubscription = preferencesModalService.modalState.subscribe(state => {
       setPreferencesModalAppId(state.preferencesModalAppId)
       setIsPreferencesModalOpen(state.isOpen)
