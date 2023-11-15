@@ -4,7 +4,7 @@ import { UnsubscribeModal } from './components/notifications/NotificationsLayout
 import { SignatureModal } from './pages/Login/SignatureModal'
 import { useContext, useEffect, useMemo } from 'react'
 import W3iContext from './contexts/W3iContext/context'
-import { signatureModalService } from './utils/store'
+import { notificationPwaModalService, signatureModalService } from './utils/store'
 import { AnimatePresence } from 'framer-motion'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { isMobileButNotInstalledOnHomescreen } from './utils/pwa'
@@ -14,7 +14,7 @@ import NotificationPwaModal from './components/utils/NotificationPwaModal'
 import { isMobile } from './utils/ui'
 
 export const Modals = () => {
-  const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen } = useModals()
+  const { isPreferencesModalOpen, isUnsubscribeModalOpen, isSignatureModalOpen, isNotificationPwaModalOpen } = useModals()
   const { close: closeWeb3Modal } = useWeb3Modal()
 
   const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
@@ -29,7 +29,8 @@ export const Modals = () => {
       !explicitlyDeniedOnDesktop &&
       !isMobileButNotInstalledOnHomescreen() &&
       !notificationsEnabled &&
-      Boolean(notifyRegisteredKey),
+      Boolean(notifyRegisteredKey) &&
+      !isSignatureModalOpen,
     [explicitlyDeniedOnDesktop, notificationsEnabled, notifyRegisteredKey, isSignatureModalOpen]
   )
 
@@ -43,6 +44,17 @@ export const Modals = () => {
     }
   }, [userPubkey, closeWeb3Modal, notifyRegisteredKey, notifyRegisterMessage])
 
+  useEffect(() => {
+    if(shouldShowNotificationModal) {
+      setTimeout(() => {
+	notificationPwaModalService.openModal()
+      }, 500)
+    }
+    else {
+	notificationPwaModalService.closeModal()
+    }
+  }, [shouldShowNotificationModal])
+
   return (
     <>
       <AnimatePresence mode="popLayout">
@@ -54,9 +66,9 @@ export const Modals = () => {
           <SignatureModal message={notifyRegisterMessage ?? ''} sender={'notify'} />
         )}
 
-        {!isSignatureModalOpen && isMobileButNotInstalledOnHomescreen() && <PwaModal />}
+        {isMobileButNotInstalledOnHomescreen() && <PwaModal />}
 
-        {!isSignatureModalOpen && shouldShowNotificationModal && <NotificationPwaModal />}
+        {isNotificationPwaModalOpen && <NotificationPwaModal />}
       </AnimatePresence>
     </>
   )

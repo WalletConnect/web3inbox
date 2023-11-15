@@ -30,6 +30,7 @@ const profileModalSubject = new BehaviorSubject(false)
 const shareModalSubject = new BehaviorSubject(false)
 const signatureModalSubject = new BehaviorSubject(false)
 const pwaModalSubject = new BehaviorSubject(false)
+const notificationPwaModalSubject = new BehaviorSubject(false) 
 const contactsModalSubject = new BehaviorSubject(false)
 const subscribeModalSubject = new BehaviorSubject<ISubscribeModalState>({
   metadata: undefined,
@@ -105,6 +106,13 @@ export const pwaModalService = {
   toggleModal: () => pwaModalSubject.next(!pwaModalSubject.value),
   openModal: () => pwaModalSubject.next(true),
   closeModal: () => pwaModalSubject.next(false)
+}
+
+export const notificationPwaModalService = {
+  toggleModal: () => notificationPwaModalSubject.next(!pwaModalSubject.value),
+  openModal: () => notificationPwaModalSubject.next(true),
+  closeModal: () => notificationPwaModalSubject.next(false),
+  modalState: notificationPwaModalSubject.asObservable()
 }
 
 export const preferencesModalService = {
