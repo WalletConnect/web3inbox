@@ -23,6 +23,7 @@
     "@web3modal/wagmi": "^3.1.0",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
+    "detect-browser": "^5.3.0",
     "firebase": "^10.1.0",
     "framer-motion": "^10.3.0",
     "idb": "^7.1.1",
