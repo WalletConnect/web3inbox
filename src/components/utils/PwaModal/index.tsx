@@ -11,11 +11,16 @@ import { getMobilePlatform } from '../../../utils/pwa'
 
 export const getMobilePlatformIcon = () => {
   switch (getMobilePlatform()) {
-    case 'android':
-      return <AndroidShareIcon />
     case 'ios':
       return <IShareIcon />
+    case 'android':
+    default:
+      return <AndroidShareIcon />
   }
+}
+
+export const getPlatformInstallText = () => {
+  
 }
 
 export const PwaModal: React.FC = () => {
