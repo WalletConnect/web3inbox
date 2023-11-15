@@ -8,8 +8,6 @@ import Text from '../../general/Text'
 import Button from '../../general/Button'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { requireNotifyPermission } from '../../../utils/notifications'
-import { isMobile } from '../../../utils/ui'
-import CrossIcon from '../../general/Icon/CrossIcon'
 
 export const NotificationPwaModal: React.FC = () => {
   const { notifyClientProxy } = useContext(W3iContext)
@@ -26,7 +24,7 @@ export const NotificationPwaModal: React.FC = () => {
     }
   }
 
-  const explicitlyDeniedPermissionForNotifications = Notification.permission === 'denied'
+  const explicitlyDeniedPermissionForNotifications = Notification?.permission === 'denied'
 
   return (
     <Modal onToggleModal={pwaModalService.toggleModal}>

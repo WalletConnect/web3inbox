@@ -80,6 +80,8 @@ export const requireNotifyPermission = async () => {
     return false
   }
 
+  // No need to explicitly check for Notifications here since
+  // the above check ensures it exists
   switch (Notification.permission) {
     case 'granted':
       return true

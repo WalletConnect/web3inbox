@@ -4,6 +4,7 @@ import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 import type { W3iNotifyProvider } from './types'
 import {
+  notificationsEnabledInBrowser,
   registerWithEcho,
   setupSubscriptionsSymkeys,
   userEnabledNotification
@@ -73,9 +74,11 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       return
     }
 
-    await Notification.requestPermission()
+    if (notificationsEnabledInBrowser()) {
+      await Notification.requestPermission()
 
-    await registerWithEcho(this.notifyClient)
+      await registerWithEcho(this.notifyClient)
+    }
   }
 
   private formatClientRelatedError(method: string) {

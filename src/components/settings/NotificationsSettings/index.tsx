@@ -19,7 +19,7 @@ import { getDbEchoRegistrations } from '../../../utils/idb'
 import { useNotificationPermissionState } from '../../../utils/hooks/notificationHooks'
 
 const getHelperTooltip = () => {
-  switch (Notification.permission) {
+  switch (Notification?.permission) {
     case 'denied':
       return 'You have explicitly disabled notifications. Please enable them via your browser or system settings'
     case 'granted':
