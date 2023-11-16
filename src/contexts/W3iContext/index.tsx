@@ -25,8 +25,8 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     activeSubscriptions,
     refreshNotifyState,
     registerMessage: notifyRegisterMessage,
-    registeredKey: notifyRegisteredKey
-  } = useNotifyState(w3iProxy, isW3iProxyReady, dappOrigin)
+    registeredKey: notifyRegisteredKey,
+  } = useNotifyState(w3iProxy, isW3iProxyReady)
 
   return (
     <W3iContext.Provider
@@ -49,7 +49,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         notifyClientProxy: notifyClient,
         sentInvites: [],
         threads: [],
-        invites: []
+        invites: [],
       }}
     >
       {children}

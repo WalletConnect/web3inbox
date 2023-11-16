@@ -17,6 +17,7 @@ import cn from 'classnames'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { getDbEchoRegistrations } from '../../../utils/idb'
 import { useNotificationPermissionState } from '../../../utils/hooks/notificationHooks'
+import Input from '../../general/Input'
 
 const getHelperTooltip = () => {
   switch (Notification?.permission) {
@@ -117,6 +118,13 @@ const NotificationsSettings: React.FC = () => {
               )
             })}
           </div>
+          <SettingsItem
+            title="Filter By App Domain"
+            subtitle="Display a specific project using a domain"
+            className="NotificationsSettings__notifications"
+          >
+	    <Input />
+          </SettingsItem>
         </div>
       </motion.div>
     </AnimatePresence>

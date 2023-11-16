@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { useColorModeValue } from '../../utils/hooks'
 import type { SettingsContextSimpleState, SettingsContextUpdate } from './context'
 import SettingsContext from './context'
@@ -19,6 +19,7 @@ const settingsReducer = (
 const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
   const localSettings = localStorage.getItem(LOCAL_SETTINGS_KEY)
 
+
   const initialState: SettingsContextSimpleState = localSettings
     ? JSON.parse(localSettings)
     : {
@@ -28,6 +29,9 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
       }
 
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
+
+  const [filterAppDomain, setFilterAppDomain] = useState("");
+
   const themeColors = useColorModeValue(settingsState.mode)
 
   useEffect(() => {
@@ -44,7 +48,9 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
     <SettingsContext.Provider
       value={{
         ...settingsState,
-        updateSettings
+        updateSettings,
+	filterAppDomain,
+	setFilterAppDomain
       }}
     >
       {children}
