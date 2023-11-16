@@ -123,7 +123,10 @@ const NotificationsSettings: React.FC = () => {
             subtitle="Display a specific project using a domain"
             className="NotificationsSettings__notifications"
           >
-	    <Input value={filterAppDomain} onChange={ev => updateSettings({filterAppDomain: ev.target.value})} />
+            <Input
+              value={filterAppDomain}
+              onChange={ev => updateSettings({ filterAppDomain: ev.target.value })}
+            />
           </SettingsItem>
         </div>
       </motion.div>

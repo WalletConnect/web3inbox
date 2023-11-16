@@ -54,7 +54,7 @@ const W3iContext = createContext<W3iContextState>({
   dappIcon: '',
   dappNotificationDescription: '',
   dappName: '',
-  chatClientProxy: null,
+  chatClientProxy: null
 })
 
 export default W3iContext

@@ -19,7 +19,7 @@ const SettingsContext = createContext<SettingsContextState>({
   newContacts: 'require-invite',
   isDevModeEnabled: true,
   updateSettings: noop,
-  filterAppDomain: ""
+  filterAppDomain: ''
 })
 
 export default SettingsContext

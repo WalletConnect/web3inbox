@@ -19,14 +19,13 @@ const settingsReducer = (
 const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
   const localSettings = localStorage.getItem(LOCAL_SETTINGS_KEY)
 
-
   const initialState: SettingsContextSimpleState = localSettings
     ? JSON.parse(localSettings)
     : {
         mode: 'light',
         newContacts: 'require-invite',
-      isDevModeEnabled: false,
-      filterAppDomain: ""
+        isDevModeEnabled: false,
+        filterAppDomain: ''
       }
 
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
@@ -47,7 +46,7 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
     <SettingsContext.Provider
       value={{
         ...settingsState,
-        updateSettings,
+        updateSettings
       }}
     >
       {children}

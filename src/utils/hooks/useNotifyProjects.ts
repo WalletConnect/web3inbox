@@ -43,8 +43,8 @@ const useNotifyProjects = () => {
     fetchNotifyProjects()
   }, [isDevModeEnabled, setProjects])
 
-  if(filterAppDomain) {
-    return projects.filter(project => new URL(project.url).host === filterAppDomain);
+  if (filterAppDomain) {
+    return projects.filter(project => new URL(project.url).host === filterAppDomain)
   }
 
   return projects
