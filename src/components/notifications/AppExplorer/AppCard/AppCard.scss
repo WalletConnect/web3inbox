@@ -1,5 +1,6 @@
 .AppCard {
   padding: 2rem;
+  background: white;
   border-radius: 1.875em;
   position: relative;
   text-decoration: none;
@@ -14,7 +15,7 @@
 
   // Blur out the image from the top left, ending to 75% of the width/height of the image
   &__background {
-    z-index: -2;
+    z-index: 0;
     position: absolute;
     border-radius: 1.875em;
     background-repeat: no-repeat;
@@ -30,6 +31,7 @@
   }
 
   &__mobile__button__subscribe {
+    z-index: 2;
     &:disabled {
       background-color: var(--accent-color-1) !important;
 
@@ -80,6 +82,7 @@
   &__body {
     display: flex;
     justify-content: flex-start;
+    z-index: 2;
     flex-direction: column;
     color: var(--fg-color-1);
 
@@ -137,6 +140,8 @@
       @media only screen and (max-width: 700px) {
         display: none;
       }
+
+      z-index: 2;
 
       &:disabled {
         background-color: var(--accent-color-1) !important;
