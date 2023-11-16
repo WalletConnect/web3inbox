@@ -16,6 +16,12 @@ export const ECHO_REGISTRATION_STORE = 'echo-registration-store'
 
 const STORE_NAMES = [SYMKEY_OBJ_STORE, ECHO_REGISTRATION_STORE]
 
+/* DATABASE_VERSION should be incremented if and when any schema changes occur
+ * This involves changing store names above, adding stores, or changing the schema
+ * in any other way.
+ */
+const DATABASE_VERSION = 5;
+
 // Returns getter and setter for idb properties as it used as a key value store
 export const getIndexedDbStore = async (
   storeName: string
@@ -27,7 +33,7 @@ export const getIndexedDbStore = async (
     () => Promise<[IDBValidKey, any][]>
   ]
 > => {
-  const db = await openDB('w3i-push-db', 5, {
+  const db = await openDB('w3i-push-db', DATABASE_VERSION, {
     upgrade(database) {
       // Create required access stores if they do not exist
       STORE_NAMES.forEach(store => {
