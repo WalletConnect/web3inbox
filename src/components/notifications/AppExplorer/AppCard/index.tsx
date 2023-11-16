@@ -108,10 +108,10 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           <Text className="" variant="large-600">
             {name}
           </Text>
-          <VerifiedIcon /> 
+          <VerifiedIcon />
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
-          {isVerified? "Official app" : new URL(url).host}
+          {isVerified ? 'Official app' : new URL(url).host}
         </Text>
         <Text className="AppCard__body__description" variant="paragraph-500">
           {description}

@@ -28,7 +28,7 @@ const useNotifyProjects = () => {
           dapp_url,
           image_url,
           metadata,
-	  is_verified
+          is_verified
         }: Omit<INotifyProject, 'app'>) => ({
           id,
           name,
@@ -36,7 +36,7 @@ const useNotifyProjects = () => {
           url: dapp_url,
           icons: image_url ? [image_url.md] : [],
           colors: metadata?.colors,
-	  isVerified: is_verified
+          isVerified: is_verified
         })
       )
 

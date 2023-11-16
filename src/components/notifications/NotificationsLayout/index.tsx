@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 const NotificationsLayout: React.FC = () => {
   const { pathname } = useLocation()
 
-  if(pathname === '/notifications'){
+  if (pathname === '/notifications') {
     return <Navigate to="/notifications/new-app" />
   }
 
