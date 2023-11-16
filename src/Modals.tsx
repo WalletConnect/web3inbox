@@ -50,7 +50,7 @@ export const Modals = () => {
   }, [userPubkey, closeWeb3Modal, notifyRegisteredKey, notifyRegisterMessage])
 
   useEffect(() => {
-    // Set it in a timeout to prevent modals to be spammed one after the other
+    // Create an artificial delay to prevent modals being spammed one after the other
     if (shouldShowNotificationModal) {
       setTimeout(() => {
         notificationPwaModalService.openModal()
