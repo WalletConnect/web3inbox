@@ -15,6 +15,10 @@
 
   // Blur out the image from the top left, ending to 75% of the width/height of the image
   &__background {
+    /* Explicitly specify a 0 z-index to allow the other components to have a higher index and
+     * show over the background gradient. The reason this is not a negative index is to overlay the white
+     * background of AppCard
+     */
     z-index: 0;
     position: absolute;
     border-radius: 1.875em;
@@ -31,7 +35,7 @@
   }
 
   &__mobile__button__subscribe {
-    z-index: 2;
+    z-index: 1;
     &:disabled {
       background-color: var(--accent-color-1) !important;
 
@@ -82,7 +86,7 @@
   &__body {
     display: flex;
     justify-content: flex-start;
-    z-index: 2;
+    z-index: 1;
     flex-direction: column;
     color: var(--fg-color-1);
 
@@ -141,7 +145,7 @@
         display: none;
       }
 
-      z-index: 2;
+      z-index: 1;
 
       &:disabled {
         background-color: var(--accent-color-1) !important;
@@ -164,6 +168,8 @@
       @media only screen and (max-width: 700px) {
         display: none;
       }
+
+      z-index: 1;
 
       min-width: 84px;
       width: max-content;
