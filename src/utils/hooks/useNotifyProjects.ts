@@ -4,7 +4,7 @@ import type { INotifyApp, INotifyProject } from '../types'
 
 const useNotifyProjects = () => {
   const [projects, setProjects] = useState<INotifyApp[]>([])
-  const { isDevModeEnabled } = useContext(SettingsContext)
+  const { isDevModeEnabled, filterAppDomain } = useContext(SettingsContext)
 
   useEffect(() => {
     const fetchNotifyProjects = async () => {
@@ -42,6 +42,10 @@ const useNotifyProjects = () => {
     }
     fetchNotifyProjects()
   }, [isDevModeEnabled, setProjects])
+
+  if(filterAppDomain) {
+    return projects.filter(project => new URL(project.url).host === filterAppDomain);
+  }
 
   return projects
 }

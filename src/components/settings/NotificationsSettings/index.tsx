@@ -31,7 +31,7 @@ const getHelperTooltip = () => {
 }
 
 const NotificationsSettings: React.FC = () => {
-  const { isDevModeEnabled, updateSettings } = useContext(SettingsContext)
+  const { isDevModeEnabled, updateSettings, filterAppDomain } = useContext(SettingsContext)
   const { notifyClientProxy } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
@@ -123,7 +123,7 @@ const NotificationsSettings: React.FC = () => {
             subtitle="Display a specific project using a domain"
             className="NotificationsSettings__notifications"
           >
-	    <Input />
+	    <Input value={filterAppDomain} onChange={ev => updateSettings({filterAppDomain: ev.target.value})} />
           </SettingsItem>
         </div>
       </motion.div>

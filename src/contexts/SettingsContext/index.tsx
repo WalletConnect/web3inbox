@@ -25,12 +25,11 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
     : {
         mode: 'light',
         newContacts: 'require-invite',
-        isDevModeEnabled: false
+      isDevModeEnabled: false,
+      filterAppDomain: ""
       }
 
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
-
-  const [filterAppDomain, setFilterAppDomain] = useState("");
 
   const themeColors = useColorModeValue(settingsState.mode)
 
@@ -49,8 +48,6 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
       value={{
         ...settingsState,
         updateSettings,
-	filterAppDomain,
-	setFilterAppDomain
       }}
     >
       {children}

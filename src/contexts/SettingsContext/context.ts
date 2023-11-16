@@ -5,8 +5,7 @@ export interface SettingsContextUpdate {
   mode?: 'dark' | 'light' | 'system'
   newContacts?: 'accept-new' | 'reject-new' | 'require-invite'
   isDevModeEnabled?: boolean
-  filterAppDomain: string
-  setFilterAppDomain: (newFilter: string) => void
+  filterAppDomain?: string
 }
 
 export type SettingsContextSimpleState = Required<SettingsContextUpdate>
@@ -20,7 +19,6 @@ const SettingsContext = createContext<SettingsContextState>({
   newContacts: 'require-invite',
   isDevModeEnabled: true,
   updateSettings: noop,
-  setFilterAppDomain: noop,
   filterAppDomain: ""
 })
 
