@@ -102,7 +102,7 @@ const NotificationsSettings: React.FC = () => {
             </SettingsItem>
           </div>
 
-          <div className="NotificationsSettings__debug">
+          <div className="NotificationsSettings__debug" style={{opacity: isDevModeEnabled? 1 : 0}}>
             {tokenEntries.map(([clientId, fcmToken], idx) => {
               return (
                 <div className="NotificationsSettings__debug-row">
