@@ -3,6 +3,13 @@ import type { NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 import type { W3iNotifyProvider } from './types'
+import {
+  notificationsEnabledInBrowser,
+  registerWithEcho,
+  setupSubscriptionsSymkeys,
+  userEnabledNotification
+} from '../../utils/notifications'
+import { getDbEchoRegistrations } from '../../utils/idb'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined
@@ -19,24 +26,60 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
    * to allow the observers in the facade to work seamlessly.
    */
   public initState(notifyClient: NotifyClient) {
+    const updateSymkeyState = async () => {
+      const subs = Object.values(await this.getActiveSubscriptions())
+
+      if (this.notifyClient) {
+        await setupSubscriptionsSymkeys(subs.map(({ topic, symKey }) => [topic, symKey]))
+      }
+    }
     this.notifyClient = notifyClient
 
     this.notifyClient.on('notify_subscription', args =>
       this.emitter.emit('notify_subscription', args)
     )
     this.notifyClient.on('notify_message', args => this.emitter.emit('notify_message', args))
-    this.notifyClient.on('notify_subscriptions_changed', args =>
+    this.notifyClient.on('notify_subscriptions_changed', args => {
+      updateSymkeyState()
       this.emitter.emit('notify_subscriptions_changed', args)
-    )
+    })
     this.notifyClient.on('notify_update', args => this.emitter.emit('notify_update', args))
     this.notifyClient.on('notify_delete', args => this.emitter.emit('notify_delete', args))
 
     this.notifyClient.subscriptions.core.on('sync_store_update', () => {
       this.emitter.emit('sync_update', {})
     })
+
+    // Ensure we have a registration with echo (if we need it)
+    this.ensureEchoRegistration()
+    updateSymkeyState()
   }
 
   // ------------------------ Provider-specific methods ------------------------
+
+  /**
+   * This method can be safely spammed because it is idempotent on 2 levels
+   * 1. It checks if a registration is needed with `getRegisteredWithEcho`
+   * 2. Even if this check didn't exist, and a message is posted to the service worker,
+   * the service worker echo registration logic is also idempotent
+   */
+  private async ensureEchoRegistration() {
+    // impossible case, just here to please typescript
+    if (!this.notifyClient) {
+      return
+    }
+
+    // No need to register with echo if user does not want notifications
+    if (!userEnabledNotification()) {
+      return
+    }
+
+    if (notificationsEnabledInBrowser()) {
+      await Notification.requestPermission()
+
+      await registerWithEcho(this.notifyClient)
+    }
+  }
 
   private formatClientRelatedError(method: string) {
     return `An initialized NotifyClient is required for method: [${method}].`
@@ -87,18 +130,14 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
-    console.log('InternalNotifyProvider > NotifyClient.subscribe > params', params)
-
-    /*
-     * To prevent subscribing in local/dev environemntns failing,
-     * no calls to the service worker or firebase messager worker
-     * will be made.
-     */
 
     try {
       const subscribed = await this.notifyClient.subscribe({
         ...params
       })
+
+      // Ensure we have a registration with echo (if we need it)
+      await this.ensureEchoRegistration()
 
       return subscribed
     } catch (e: unknown) {
@@ -162,5 +201,27 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     this.notifyClient.deleteNotifyMessage(params)
 
     return Promise.resolve()
+  }
+
+  public async registerWithEcho() {
+    if (!this.notifyClient) {
+      throw new Error(this.formatClientRelatedError('registerWithEcho'))
+    }
+
+    return registerWithEcho(this.notifyClient)
+  }
+
+  public async getRegisteredWithEcho() {
+    if (!this.notifyClient) {
+      throw new Error(this.formatClientRelatedError('getRegisteredWithEcho'))
+    }
+
+    const [getEchoRegistration] = await getDbEchoRegistrations()
+
+    const existingRegistration = await getEchoRegistration(
+      await this.notifyClient.core.crypto.getClientId()
+    )
+
+    return Boolean(existingRegistration)
   }
 }

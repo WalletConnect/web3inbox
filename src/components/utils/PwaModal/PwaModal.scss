@@ -1,0 +1,50 @@
+.PwaModal {
+  padding: 3em;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: 2em;
+  position: relative;
+
+  &__background {
+    position: absolute;
+    z-index: -999;
+    top: -50%;
+    left: -50%;
+  }
+
+  &__icon {
+    display: block;
+    width: 3em;
+    background: white;
+    width: 4em;
+    height: 4em;
+    display: grid;
+    place-items: center;
+    padding: 0.5em;
+    border-radius: 13px;
+    box-shadow: 0px 8px 32px 17.5px hsla(0, 0%, 0%, 0.12);
+  }
+
+  &__cta {
+    display: flex;
+    gap: 0.25em;
+    align-items: center;
+    position: relative;
+    position: relative;
+  }
+
+  &__share-icon {
+    display: inline-block;
+    position: relative;
+    color: var(--accent-color-1);
+    svg {
+      position: relative;
+      top: 0.15em;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+    }
+  }
+}

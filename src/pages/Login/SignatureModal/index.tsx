@@ -8,7 +8,6 @@ import Spinner from '../../../components/general/Spinner'
 import Text from '../../../components/general/Text'
 import SignatureIcon from '../../../components/general/Icon/SignatureIcon'
 import CrossIcon from '../../../components/general/Icon/CrossIcon'
-import W3iContext from '../../../contexts/W3iContext/context'
 import { useDisconnect } from 'wagmi'
 
 export const SignatureModal: React.FC<{

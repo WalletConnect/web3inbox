@@ -16,6 +16,7 @@ import Text from '../../general/Text'
 import MobileHeader from '../../layout/MobileHeader'
 import { AnimatePresence, motion } from 'framer-motion'
 import { handleImageFallback } from '../../../utils/ui'
+import { getDbEchoRegistrations } from '../../../utils/idb'
 
 const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
@@ -23,7 +24,7 @@ const AppSelector: React.FC = () => {
   const isMobile = useIsMobile()
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
-  const { activeSubscriptions, dappOrigin, notifyRegisterMessage } = useContext(W3iContext)
+  const { activeSubscriptions } = useContext(W3iContext)
   const nav = useNavigate()
 
   const filterApps = useCallback(
@@ -56,16 +57,10 @@ const AppSelector: React.FC = () => {
   }, [search, filterApps, activeSubscriptions])
 
   useEffect(() => {
-    if (dappOrigin) {
-      const dappSub = activeSubscriptions.find(sub => sub.metadata.appDomain === dappOrigin)
-
-      if (dappSub?.topic) {
-        nav(`/notifications/${dappSub.topic}`)
-      } else {
-        nav(`/widget/subscribe`)
-      }
+    if (activeSubscriptions.length === 0) {
+      nav('/notifications/new-app')
     }
-  }, [dappOrigin, nav, activeSubscriptions, notifyRegisterMessage])
+  }, [nav, activeSubscriptions])
 
   return (
     <div className="AppSelector">

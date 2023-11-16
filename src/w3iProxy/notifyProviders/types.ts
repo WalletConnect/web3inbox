@@ -50,6 +50,8 @@ interface ModifiedNotifyClientFunctions {
   getMessageHistory: (
     ...params: Parameters<NotifyClient['getMessageHistory']>
   ) => Promise<ReturnType<NotifyClient['getMessageHistory']>>
+  registerWithEcho: () => Promise<void>
+  getRegisteredWithEcho: () => Promise<boolean>
 }
 
 export type NotifyClientFunctions = Omit<NotifyClient, NonMethodNotifyClientKeys>
