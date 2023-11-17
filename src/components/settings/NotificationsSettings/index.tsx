@@ -20,7 +20,7 @@ import { useNotificationPermissionState } from '../../../utils/hooks/notificatio
 import Input from '../../general/Input'
 
 const getHelperTooltip = () => {
-  switch (Notification?.permission) {
+  switch (window.Notification?.permission) {
     case 'denied':
       return 'You have explicitly disabled notifications. Please enable them via your browser or system settings'
     case 'granted':
