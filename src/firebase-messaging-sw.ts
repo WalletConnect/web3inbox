@@ -46,7 +46,7 @@ onBackgroundMessage(messaging, async ev => {
 
   const m = await decryptMessage({ encoded, symkey, topic })
 
-  self.registration.showNotification(m.title, {
+  return self.registration.showNotification(m.title, {
     icon: m.icon,
     body: m.body
   })
