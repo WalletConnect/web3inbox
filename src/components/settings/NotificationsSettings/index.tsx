@@ -72,18 +72,17 @@ const NotificationsSettings: React.FC = () => {
         <MobileHeader title="Notifications" back="/settings" />
         <div className="NotificationsSettings__wrapper">
           <SettingsItem
-            title="Developer Mode"
-            subtitle="Display all projects that enabled Notify API"
+            title="Display App on Discover Page"
+            subtitle="Provide domain of your app"
             className="NotificationsSettings__notifications"
           >
-            <SettingsToggle
-              checked={isDevModeEnabled}
-              setChecked={isEnabled => updateSettings({ isDevModeEnabled: isEnabled })}
-              icon={<PrivacyIcon />}
-              title="Display all projects that enabled Notify API"
-              active={true}
+            <Input
+              value={filterAppDomain}
+	      placeholder="app.example.com"
+              onChange={ev => updateSettings({ filterAppDomain: ev.target.value })}
             />
           </SettingsItem>
+
           <div title={getHelperTooltip()}>
             <SettingsItem
               title="Enable Push Notifications"
@@ -118,15 +117,18 @@ const NotificationsSettings: React.FC = () => {
               )
             })}
           </div>
+
           <SettingsItem
-            title="Display App on Discover Page"
-            subtitle="Provide domain of your app"
+            title="Developer Mode"
+            subtitle="Display all projects that enabled Notify API"
             className="NotificationsSettings__notifications"
           >
-            <Input
-              value={filterAppDomain}
-	      placeholder="app.example.com"
-              onChange={ev => updateSettings({ filterAppDomain: ev.target.value })}
+            <SettingsToggle
+              checked={isDevModeEnabled}
+              setChecked={isEnabled => updateSettings({ isDevModeEnabled: isEnabled })}
+              icon={<PrivacyIcon />}
+              title="Display all projects that enabled Notify API"
+              active={true}
             />
           </SettingsItem>
         </div>
