@@ -16,9 +16,9 @@
     margin-right: 0%;
   }
 
-  @media only screen and (max-width: 700px) {
-    margin-bottom: 20%;
-    overflow-x: hidden;
+  @media only screen and (min-width: 700px) {
+    margin-right: 10%;
+    margin-left: 10%;
   }
 
   .IntroContent {
@@ -27,7 +27,9 @@
 
   &__apps {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    // 2 columns, of equal width, at least 20em wide each
+    // If there is not enough space for the above, go to a one column layout.
+    grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
     gap: 1.5rem;
     padding: 5rem 0rem;
 

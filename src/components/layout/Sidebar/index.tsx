@@ -36,7 +36,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
     if (uiEnabled.notify) {
       items.push([
         <NotificationIcon isFilled={pathname.includes('/notifications')} />,
-        'notifications/new-app'
+        'notifications'
       ])
     }
 
@@ -63,13 +63,13 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
           </Link>
         </SidebarItem>
       )}
-
       <SidebarItem isDisabled={!isLoggedIn}>
         <div className="Sidebar__Navigation">
           {navItems.map(([icon, itemName]) => (
             <Link
               className={cn(
-                `Sidebar__Navigation__Link`,
+                'Sidebar__Navigation__Link',
+                pathname.includes(itemName) && 'Sidebar__Navigation__Link-active',
                 !isLoggedIn && `Sidebar__Navigation__Link-disabled`
               )}
               key={itemName}

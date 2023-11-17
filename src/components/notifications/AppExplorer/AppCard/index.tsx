@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import SettingsContext from '../../../../contexts/SettingsContext/context'
 import './AppCard.scss'
 import Button from '../../../general/Button'
 import W3iContext from '../../../../contexts/W3iContext/context'
@@ -9,11 +8,13 @@ import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
 import VerifiedIcon from '../../../general/Icon/VerifiedIcon'
 import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
+import { useNavigate } from 'react-router-dom'
 
 interface AppCardProps {
   name: string
   description: string
   logo: string
+  isVerified: boolean
   bgColor: {
     dark: string
     light: string
@@ -21,17 +22,11 @@ interface AppCardProps {
   url: string
 }
 
-const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
+const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url, isVerified }) => {
   const [subscribing, setSubscribing] = useState(false)
-  const { mode } = useContext(SettingsContext)
+  const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
-  const { notifyClientProxy, userPubkey, notifyProvider } = useContext(W3iContext)
-  const cardBgColor = useMemo(() => {
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    const specifiedMode = mode === 'system' ? systemTheme : mode
-
-    return specifiedMode === 'dark' ? bgColor.dark : bgColor.light
-  }, [mode, bgColor])
+  const { notifyClientProxy, userPubkey } = useContext(W3iContext)
 
   const { activeSubscriptions } = useContext(W3iContext)
 
@@ -71,22 +66,35 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
     [userPubkey, name, description, logo, bgColor, url, setSubscribing, subscribed]
   )
 
+  const handleNavigateApp = () => {
+    if (subscribed) {
+      try {
+        const appDomain = new URL(url).host
+        const topic = activeSubscriptions.find(sub => sub.metadata.appDomain === appDomain)?.topic
+        if (topic) {
+          nav(`/notifications/${topic}`)
+        } else {
+          throw new Error(`No matching subscription found to domain, ${appDomain}`)
+        }
+      } catch (e: any) {
+        console.error(`Failed to navigate to app: ${e.message}`)
+      }
+    }
+  }
+
   return (
     <div
       ref={ref}
-      style={{
-        background: `
-        linear-gradient(0deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
-        radial-gradient(
-          140.74% 145.41% at 7.1% 2.28%,
-          ${cardBgColor} 0%,
-          rgba(255, 255, 255, 0) 80%
-        )
-      `
-      }}
       className="AppCard"
       rel="noopener noreferrer"
+      style={{ cursor: subscribed ? 'pointer' : 'default' }}
+      onClick={handleNavigateApp}
     >
+      <div
+        className="AppCard__background"
+        style={{ backgroundImage: `url("${logo ?? './fallback.svg'}"), url("./fallback.svg")` }}
+      />
+
       <div className="AppCard__header">
         <img
           className="AppCard__header__logo"
@@ -94,22 +102,6 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           alt={`${name} logo`}
           onError={handleImageFallback}
         />
-        {subscribed ? (
-          <>
-            <Button disabled className="AppCard__mobile__button__subscribed">
-              Subscribed
-              <CheckMarkIcon />
-            </Button>
-          </>
-        ) : (
-          <Button
-            disabled={subscribing}
-            className="AppCard__mobile__button__subscribe"
-            onClick={handleSubscription}
-          >
-            {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
-          </Button>
-        )}
       </div>
       <div className="AppCard__body">
         <div className="AppCard__body__title">
@@ -119,7 +111,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           <VerifiedIcon />
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
-          Official app
+          {isVerified ? 'Official app' : new URL(url).host}
         </Text>
         <Text className="AppCard__body__description" variant="paragraph-500">
           {description}
