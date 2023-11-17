@@ -119,12 +119,13 @@ const NotificationsSettings: React.FC = () => {
             })}
           </div>
           <SettingsItem
-            title="Filter By App Domain"
-            subtitle="Display a specific project using a domain"
+            title="Display App on Discover Page"
+            subtitle="Provide domain of your app"
             className="NotificationsSettings__notifications"
           >
             <Input
               value={filterAppDomain}
+	      placeholder="app.example.com"
               onChange={ev => updateSettings({ filterAppDomain: ev.target.value })}
             />
           </SettingsItem>
