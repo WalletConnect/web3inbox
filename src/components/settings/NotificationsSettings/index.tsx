@@ -73,7 +73,7 @@ const NotificationsSettings: React.FC = () => {
         <div className="NotificationsSettings__wrapper">
           <SettingsItem
             title="Display App on Discover Page"
-            subtitle="Provide domain of your app"
+            subtitle="Provide the domain of your app"
             className="NotificationsSettings__notifications"
           >
             <Input
