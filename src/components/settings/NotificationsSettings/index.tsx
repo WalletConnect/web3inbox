@@ -17,6 +17,7 @@ import cn from 'classnames'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { getDbEchoRegistrations } from '../../../utils/idb'
 import { useNotificationPermissionState } from '../../../utils/hooks/notificationHooks'
+import Input from '../../general/Input'
 
 const getHelperTooltip = () => {
   switch (Notification?.permission) {
@@ -30,7 +31,7 @@ const getHelperTooltip = () => {
 }
 
 const NotificationsSettings: React.FC = () => {
-  const { isDevModeEnabled, updateSettings } = useContext(SettingsContext)
+  const { isDevModeEnabled, updateSettings, filterAppDomain } = useContext(SettingsContext)
   const { notifyClientProxy } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
@@ -117,6 +118,16 @@ const NotificationsSettings: React.FC = () => {
               )
             })}
           </div>
+          <SettingsItem
+            title="Filter By App Domain"
+            subtitle="Display a specific project using a domain"
+            className="NotificationsSettings__notifications"
+          >
+            <Input
+              value={filterAppDomain}
+              onChange={ev => updateSettings({ filterAppDomain: ev.target.value })}
+            />
+          </SettingsItem>
         </div>
       </motion.div>
     </AnimatePresence>

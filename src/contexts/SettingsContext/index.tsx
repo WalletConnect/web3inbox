@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { useColorModeValue } from '../../utils/hooks'
 import type { SettingsContextSimpleState, SettingsContextUpdate } from './context'
 import SettingsContext from './context'
@@ -24,10 +24,12 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
     : {
         mode: 'light',
         newContacts: 'require-invite',
-        isDevModeEnabled: false
+        isDevModeEnabled: false,
+        filterAppDomain: ''
       }
 
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
+
   const themeColors = useColorModeValue(settingsState.mode)
 
   useEffect(() => {

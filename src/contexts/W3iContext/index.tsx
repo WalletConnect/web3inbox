@@ -26,7 +26,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     refreshNotifyState,
     registerMessage: notifyRegisterMessage,
     registeredKey: notifyRegisteredKey
-  } = useNotifyState(w3iProxy, isW3iProxyReady, dappOrigin)
+  } = useNotifyState(w3iProxy, isW3iProxyReady)
 
   return (
     <W3iContext.Provider

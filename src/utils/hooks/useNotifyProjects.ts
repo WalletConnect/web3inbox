@@ -4,20 +4,20 @@ import type { INotifyApp, INotifyProject } from '../types'
 
 const useNotifyProjects = () => {
   const [projects, setProjects] = useState<INotifyApp[]>([])
-  const { isDevModeEnabled } = useContext(SettingsContext)
+  const { isDevModeEnabled, filterAppDomain } = useContext(SettingsContext)
 
   useEffect(() => {
     const fetchNotifyProjects = async () => {
       const explorerApiBaseUrl: string = import.meta.env.VITE_EXPLORER_API_URL
       const projectId: string = import.meta.env.VITE_PROJECT_ID
 
-      const explorerUrl = `${explorerApiBaseUrl}/w3i/v1/projects?projectId=${projectId}&is_verified=${
+      const explorerUrl = filterAppDomain? `${explorerApiBaseUrl}/w3i/v1/notify-config?projectId=${projectId}&appDomain=${filterAppDomain}` : `${explorerApiBaseUrl}/w3i/v1/projects?projectId=${projectId}&is_verified=${
         isDevModeEnabled ? 'false' : 'true'
       }`
       const allProjectsRawRes = await fetch(explorerUrl)
-      const allNotifyProjectsRes = await allProjectsRawRes.json()
+      const allNotifyProjectsRes =  await allProjectsRawRes.json()
 
-      const notifyProjects: Omit<INotifyProject, 'app'>[] = Object.values(
+      const notifyProjects: Omit<INotifyProject, 'app'>[] = filterAppDomain? [allNotifyProjectsRes.data] : Object.values(
         allNotifyProjectsRes.projects
       )
       const notifyApps: INotifyApp[] = notifyProjects.map(
@@ -41,7 +41,8 @@ const useNotifyProjects = () => {
       setProjects(notifyApps)
     }
     fetchNotifyProjects()
-  }, [isDevModeEnabled, setProjects])
+  }, [isDevModeEnabled, setProjects, filterAppDomain])
+
 
   return projects
 }

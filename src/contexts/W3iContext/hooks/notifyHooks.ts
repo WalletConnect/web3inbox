@@ -1,18 +1,12 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
-import { EventEmitter } from 'events'
 import { useCallback, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { noop } from 'rxjs'
 import type Web3InboxProxy from '../../../w3iProxy'
 import type { W3iNotifyClient } from '../../../w3iProxy'
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
 
-export const useNotifyState = (
-  w3iProxy: Web3InboxProxy,
-  proxyReady: boolean,
-  dappOrigin: string
-) => {
+export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
     NotifyClientTypes.NotifySubscription[]
   >([])
