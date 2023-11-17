@@ -75,7 +75,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     }
 
     if (notificationsEnabledInBrowser()) {
-      await Notification.requestPermission()
+      await window.Notification?.requestPermission()
 
       await registerWithEcho(this.notifyClient)
     }

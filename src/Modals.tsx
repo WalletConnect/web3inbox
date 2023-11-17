@@ -12,6 +12,7 @@ import PwaModal from './components/utils/PwaModal'
 import { useNotificationPermissionState } from './utils/hooks/notificationHooks'
 import NotificationPwaModal from './components/utils/NotificationPwaModal'
 import { isMobile } from './utils/ui'
+import { notificationsEnabledInBrowser } from './utils/notifications'
 
 export const Modals = () => {
   const {
@@ -26,11 +27,11 @@ export const Modals = () => {
 
   const notificationsEnabled = useNotificationPermissionState()
 
-  const explicitlyDeniedOnDesktop = !isMobile() && Notification?.permission === 'denied'
+  const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
 
   const shouldShowNotificationModal = useMemo(
     () =>
-      Boolean(Notification) &&
+      notificationsEnabledInBrowser() &&
       !explicitlyDeniedOnDesktop &&
       !isMobileButNotInstalledOnHomescreen() &&
       !notificationsEnabled &&

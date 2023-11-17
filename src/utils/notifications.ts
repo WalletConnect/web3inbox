@@ -65,7 +65,7 @@ export const notificationsEnabledInBrowser = () => {
 
 export const userEnabledNotification = () => {
   if (notificationsEnabledInBrowser()) {
-    return Notification?.permission === 'granted'
+    return window.Notification?.permission === 'granted'
   }
   return false
 }
@@ -82,14 +82,14 @@ export const requireNotifyPermission = async () => {
 
   // No need to explicitly check for Notifications here since
   // the above check ensures it exists
-  switch (Notification.permission) {
+  switch (window.Notification?.permission) {
     case 'granted':
       return true
     case 'denied':
       console.error('User denied permissions')
       return false
     default:
-      return (await Notification.requestPermission()) === 'granted'
+      return (await window.Notification?.requestPermission()) === 'granted'
   }
 }
 

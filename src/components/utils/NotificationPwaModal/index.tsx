@@ -24,7 +24,7 @@ export const NotificationPwaModal: React.FC = () => {
     }
   }
 
-  const explicitlyDeniedPermissionForNotifications = Notification?.permission === 'denied'
+  const explicitlyDeniedPermissionForNotifications = window.Notification?.permission === 'denied'
 
   return (
     <Modal onToggleModal={pwaModalService.toggleModal}>
