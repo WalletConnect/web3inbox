@@ -4,15 +4,13 @@ import AppSelector from '../AppSelector'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import W3iContext from '../../../contexts/W3iContext/context'
-import { useIsMobile } from '../../../utils/hooks'
 
 const NotificationsLayout: React.FC = () => {
   const { activeSubscriptions } = useContext(W3iContext)
   const { pathname } = useLocation()
-  const isMobile = useIsMobile()
 
   if (pathname === '/notifications') {
-    if (isMobile && !activeSubscriptions.length) {
+    if (!activeSubscriptions.length) {
       return <Navigate to="/notifications/new-app" />
     }
   }
