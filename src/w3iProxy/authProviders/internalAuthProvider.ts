@@ -3,14 +3,11 @@ import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import type { EventEmitter } from 'events'
 import { getChainString } from '../../utils/chain'
 
-const chainId = getNetwork().chain?.id
-const accountAddress = getAccount().address
-
 export default class InternalAuthProvider {
   private readonly methodsListenedTo = ['auth_set_account']
   public providerName = 'InternalAuthProvider'
-  public account?: string = accountAddress
-  public chain?: string = getChainString(chainId)
+  public account?: string = getAccount().address
+  public chain?: string = getChainString(getNetwork().chain?.id)
   protected readonly emitter: EventEmitter
 
   public constructor(emitter: EventEmitter, _name = 'InternalAuthProvider') {
@@ -31,7 +28,7 @@ export default class InternalAuthProvider {
         return
       }
 
-      const caip10Chain = getChainString()
+      const caip10Chain = getChainString(getNetwork().chain?.id)
       this.emitter.emit('auth_set_account', { account: account.address, chain: caip10Chain })
       this.chain = caip10Chain
       this.account = account.address
@@ -56,7 +53,7 @@ export default class InternalAuthProvider {
   public async initState() {
     this.account = getAccount().address
     if (this.account) {
-      this.emitter.emit('auth_set_account', { account: this.account })
+      this.emitter.emit('auth_set_account', { account: this.account, chain: this.chain })
     }
 
     return Promise.resolve()

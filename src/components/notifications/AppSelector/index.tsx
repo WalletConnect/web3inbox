@@ -14,45 +14,61 @@ import AllAppsIcon from '../../../assets/AllApps.svg'
 import Label from '../../general/Label'
 import Text from '../../general/Text'
 import MobileHeader from '../../layout/MobileHeader'
+import { handleImageFallback } from '../../../utils/ui'
 import { AnimatePresence, motion } from 'framer-motion'
+
+const SUBSCRIPTION_LOADER_TIMEOUT = 3000
 
 const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
-  const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
+  const [loading, setLoading] = useState(true)
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const { activeSubscriptions } = useContext(W3iContext)
   const nav = useNavigate()
 
-  const filterApps = useCallback(
-    debounce((searchQuery: string) => {
-      if (!searchQuery) {
-        setFilteredApps(activeSubscriptions)
+  const fetchApps = async (searchQuery: string) => {
+    const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
 
-        return
-      }
-
-      const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
-
-      from(activeSubscriptions).subscribe({
-        next: app => {
-          const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
-          if (isAppNameMatch) {
-            newFilteredApps.push(app)
-          }
-        },
-        complete: () => {
-          setFilteredApps(newFilteredApps)
+    from(activeSubscriptions).subscribe({
+      next: app => {
+        if (!loading) {
+          setLoading(false)
         }
-      })
-    }, 50),
-    [activeSubscriptions]
-  )
+        const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
+        if (isAppNameMatch) {
+          newFilteredApps.push(app)
+        }
+      },
+      complete: () => {
+        setFilteredApps(newFilteredApps)
+      }
+    })
+  }
+
+  const searchApps = debounce((searchQuery: string) => {
+    if (!searchQuery) {
+      setFilteredApps(activeSubscriptions)
+      return
+    }
+
+    fetchApps(searchQuery)
+  }, 100)
 
   useEffect(() => {
-    filterApps(search)
-  }, [search, filterApps, activeSubscriptions])
+    fetchApps(search)
+  }, [activeSubscriptions])
+
+  useEffect(() => {
+    searchApps(search)
+  }, [search])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, SUBSCRIPTION_LOADER_TIMEOUT)
+  }, [])
 
   return (
     <div className="AppSelector">
@@ -98,11 +114,21 @@ const AppSelector: React.FC = () => {
             </>
           )}
         </div>
-        {filteredApps.length > 0 && (
-          <div className="AppSelector__wrapper">
-            <Label color="main">Subscribed</Label>
-            <ul className="AppSelector__list">
-              {filteredApps.map(app => (
+        <div className="AppSelector__wrapper">
+          <Label color="main">Subscribed</Label>
+          <ul className="AppSelector__list">
+            {loading
+              ? Array(3)
+                  .fill(
+                    <div className="AppSelector__link-item-skeleton">
+                      <div className="AppSelector__link-item-skeleton__icon"></div>
+                      <div className="AppSelector__link-item-skeleton__description"></div>
+                    </div>
+                  )
+                  .map(x => x)
+              : null}
+            {!loading &&
+              filteredApps?.map(app => (
                 <AnimatePresence key={app.topic}>
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -113,18 +139,16 @@ const AppSelector: React.FC = () => {
                       key={app.topic}
                       to={`/notifications/${app.topic}`}
                       className="AppSelector__link-item"
-                      onMouseEnter={() => setDropdownToShow(app.topic)}
-                      onMouseLeave={() => setDropdownToShow(undefined)}
                     >
                       <div className="AppSelector__notifications">
                         <div className="AppSelector__notifications-link">
-                          <div className="AppSelector__link-logo">
-                            <img
-                              src={app.metadata.icons?.[0] || '/fallback.svg'}
-                              alt={`${app.metadata.name} logo`}
-                              loading="lazy"
-                            />
-                          </div>
+                          <img
+                            className="AppSelector__link-logo"
+                            src={app.metadata.icons?.[0] || '/fallback.svg'}
+                            alt={`${app.metadata.name} logo`}
+                            onError={handleImageFallback}
+                            loading="lazy"
+                          />
                           <div className="AppSelector__link__wrapper">
                             <Text className="AppSelector__link__title" variant="small-500">
                               {app.metadata.name}
@@ -139,9 +163,8 @@ const AppSelector: React.FC = () => {
                   </motion.div>
                 </AnimatePresence>
               ))}
-            </ul>
-          </div>
-        )}
+          </ul>
+        </div>
       </div>
       {/* <EmptyApps /> */}
     </div>

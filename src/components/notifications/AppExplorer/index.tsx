@@ -8,7 +8,7 @@ import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 
 const AppExplorer = () => {
-  const projects = useNotifyProjects()
+  const { projects, loading } = useNotifyProjects()
 
   return (
     <AnimatePresence>

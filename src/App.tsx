@@ -11,7 +11,7 @@ import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import MobileFooter from './components/layout/MobileFooter'
 
 const App = () => {
-  const { uiEnabled, notifyClientProxy } = useContext(W3iContext)
+  const { uiEnabled } = useContext(W3iContext)
   const location = useLocation()
 
   const ref = useMobileResponsiveGrid()
@@ -20,13 +20,11 @@ const App = () => {
     <AuthProtectedPage>
       <LazyMotion features={domAnimation}>
         <m.div ref={ref} data-path={location.pathname} className="App">
-          {notifyClientProxy && (
-            <Fragment>
-              {uiEnabled.sidebar ? <Sidebar isLoggedIn={true} /> : null}
-              <Outlet />
-              <AnimatePresence mode="wait"></AnimatePresence>
-            </Fragment>
-          )}
+          <Fragment>
+            {uiEnabled.sidebar ? <Sidebar isLoggedIn={true} /> : null}
+            <Outlet />
+            <AnimatePresence mode="wait"></AnimatePresence>
+          </Fragment>
         </m.div>
       </LazyMotion>
       <MobileFooter />

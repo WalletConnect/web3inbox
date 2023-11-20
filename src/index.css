@@ -9,6 +9,10 @@ body {
   overflow-y: hidden;
 }
 
+*::selection {
+  background: rgba(0, 0, 0, 0.1);
+}
+
 @media only screen and (max-width: 700px) {
   body {
     overflow-y: unset;
