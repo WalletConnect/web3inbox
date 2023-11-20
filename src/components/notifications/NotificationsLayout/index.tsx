@@ -1,14 +1,18 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import AppSelector from '../AppSelector'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
+import W3iContext from '../../../contexts/W3iContext/context'
 
 const NotificationsLayout: React.FC = () => {
+  const { activeSubscriptions } = useContext(W3iContext)
   const { pathname } = useLocation()
 
   if (pathname === '/notifications') {
-    return <Navigate to="/notifications/new-app" />
+    if (!activeSubscriptions.length) {
+      return <Navigate to="/notifications/new-app" />
+    }
   }
 
   return (

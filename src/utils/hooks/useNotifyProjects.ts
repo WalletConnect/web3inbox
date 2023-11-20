@@ -11,15 +11,17 @@ const useNotifyProjects = () => {
       const explorerApiBaseUrl: string = import.meta.env.VITE_EXPLORER_API_URL
       const projectId: string = import.meta.env.VITE_PROJECT_ID
 
-      const explorerUrl = filterAppDomain? `${explorerApiBaseUrl}/w3i/v1/notify-config?projectId=${projectId}&appDomain=${filterAppDomain}` : `${explorerApiBaseUrl}/w3i/v1/projects?projectId=${projectId}&is_verified=${
-        isDevModeEnabled ? 'false' : 'true'
-      }`
+      const explorerUrl = filterAppDomain
+        ? `${explorerApiBaseUrl}/w3i/v1/notify-config?projectId=${projectId}&appDomain=${filterAppDomain}`
+        : `${explorerApiBaseUrl}/w3i/v1/projects?projectId=${projectId}&is_verified=${
+            isDevModeEnabled ? 'false' : 'true'
+          }`
       const allProjectsRawRes = await fetch(explorerUrl)
-      const allNotifyProjectsRes =  await allProjectsRawRes.json()
+      const allNotifyProjectsRes = await allProjectsRawRes.json()
 
-      const notifyProjects: Omit<INotifyProject, 'app'>[] = filterAppDomain? [allNotifyProjectsRes.data] : Object.values(
-        allNotifyProjectsRes.projects
-      )
+      const notifyProjects: Omit<INotifyProject, 'app'>[] = filterAppDomain
+        ? [allNotifyProjectsRes.data]
+        : Object.values(allNotifyProjectsRes.projects)
       const notifyApps: INotifyApp[] = notifyProjects.map(
         ({
           id,
@@ -44,7 +46,6 @@ const useNotifyProjects = () => {
     }
     fetchNotifyProjects()
   }, [isDevModeEnabled, setProjects, filterAppDomain])
-
 
   return projects
 }

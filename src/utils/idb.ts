@@ -20,7 +20,7 @@ const STORE_NAMES = [SYMKEY_OBJ_STORE, ECHO_REGISTRATION_STORE]
  * This involves changing store names above, adding stores, or changing the schema
  * in any other way.
  */
-const DATABASE_VERSION = 5;
+const DATABASE_VERSION = 5
 
 // Returns getter and setter for idb properties as it used as a key value store
 export const getIndexedDbStore = async (
