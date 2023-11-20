@@ -12,9 +12,7 @@ const SearchHistoryContacts: React.FC = () => {
     setHistoryContacts(['vitalik.eth', 'clinenerd.eth'])
   }, [setIsSearchingContacts])
 
-  const handleInviteSelectedContact = useCallback((selectedContact: string) => {
-    console.log(`Inviting ${selectedContact}`)
-  }, [])
+  const handleInviteSelectedContact = useCallback((selectedContact: string) => {}, [])
 
   return (
     <div className="SearchHistoryContacts">

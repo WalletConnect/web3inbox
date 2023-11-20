@@ -14,8 +14,6 @@ const Invite: React.FC<InviteProps> = ({ address, onSuccessfulAccept, id, messag
   const { chatClientProxy } = useContext(W3iContext)
   const evmAddress = address.split(':')[2] as `0x${string}`
 
-  console.log('Id is: ', id)
-
   return (
     <div
       onClick={() => chatClientProxy?.accept({ id }).then(onSuccessfulAccept)}

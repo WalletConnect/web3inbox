@@ -44,7 +44,6 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
   const handleRegistration = useCallback(
     async (key: string) => {
       if (notifyClient && key && uiEnabled.notify) {
-        console.log('Calling register with', key)
         try {
           const identityKey = await notifyClient.register({
             account: key,

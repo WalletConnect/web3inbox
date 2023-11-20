@@ -55,17 +55,9 @@ const ThreadWindow: React.FC = () => {
   )
 
   const refreshMessages = useCallback(() => {
-    console.log(
-      `Calling refreshMessages with topic ${topic} and a ${
-        chatClientProxy ? 'truthy' : 'falsy'
-      } client`
-    )
-
     if (!chatClientProxy || !topic) {
       return
     }
-
-    console.log(`Retreiving messages for topic ${topic}`)
 
     chatClientProxy
       .getMessages({

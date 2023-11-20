@@ -58,7 +58,6 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
   }
 
   public handleMessage(request: JsonRpcRequest<unknown>) {
-    console.log({ request })
     switch (request.method) {
       case 'notify_subscription':
       case 'notify_subscriptions_changed':
