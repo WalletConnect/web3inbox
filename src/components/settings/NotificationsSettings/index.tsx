@@ -78,7 +78,7 @@ const NotificationsSettings: React.FC = () => {
           >
             <Input
               value={filterAppDomain}
-	      placeholder="app.example.com"
+              placeholder="app.example.com"
               onChange={ev => updateSettings({ filterAppDomain: ev.target.value })}
             />
           </SettingsItem>
@@ -102,7 +102,10 @@ const NotificationsSettings: React.FC = () => {
             </SettingsItem>
           </div>
 
-          <div className="NotificationsSettings__debug" style={{opacity: isDevModeEnabled? 1 : 0}}>
+          <div
+            className="NotificationsSettings__debug"
+            style={{ opacity: isDevModeEnabled ? 1 : 0 }}
+          >
             {tokenEntries.map(([clientId, fcmToken], idx) => {
               return (
                 <div className="NotificationsSettings__debug-row">

@@ -56,12 +56,6 @@ const AppSelector: React.FC = () => {
     filterApps(search)
   }, [search, filterApps, activeSubscriptions])
 
-  useEffect(() => {
-    if (activeSubscriptions.length === 0) {
-      nav('/notifications/new-app')
-    }
-  }, [nav, activeSubscriptions])
-
   return (
     <div className="AppSelector">
       {isMobile && pathname.endsWith('/notifications') ? (
