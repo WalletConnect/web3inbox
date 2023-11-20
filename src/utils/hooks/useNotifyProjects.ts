@@ -11,16 +11,18 @@ const useNotifyProjects = () => {
     const fetchNotifyProjects = async () => {
       const projectId: string = import.meta.env.VITE_PROJECT_ID
 
-      const explorerUrl = new URL(filterAppDomain? EXPLORER_ENDPOINTS.notifyConfig : EXPLORER_ENDPOINTS.projects, EXPLORER_API_BASE_URL);
+      const explorerUrl = new URL(
+        filterAppDomain ? EXPLORER_ENDPOINTS.notifyConfig : EXPLORER_ENDPOINTS.projects,
+        EXPLORER_API_BASE_URL
+      )
       explorerUrl.searchParams.set('projectId', projectId)
 
-      if(filterAppDomain) {
+      if (filterAppDomain) {
         explorerUrl.searchParams.set('appDomain', filterAppDomain)
-      }
-      else {
+      } else {
         explorerUrl.searchParams.set('is_verified', isDevModeEnabled ? 'false' : 'true')
       }
-      
+
       const allProjectsRawRes = await fetch(explorerUrl)
       const allNotifyProjectsRes = await allProjectsRawRes.json()
 
