@@ -1,3 +1,11 @@
+:root {
+  /* Colors */
+  --skeleton: rgba(125, 125, 125, 0.08);
+
+  /* Animations */
+  --pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 html {
   color-scheme: dark light;
 }
@@ -45,4 +53,14 @@ video {
 ::-webkit-scrollbar-thumb:hover {
   border-radius: 10px;
   background: var(--fg-color-2);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }

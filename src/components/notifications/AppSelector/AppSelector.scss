@@ -178,28 +178,18 @@
       padding: 0.75rem 1rem 0.75rem 0.75rem;
       border-radius: 1em;
       position: relative;
-      transition: all 250ms ease-in-out;
 
       @media only screen and (max-width: 700px) {
         border-radius: 0px;
         padding: 1rem 1.25rem;
       }
 
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
-      }
-
       &__icon {
-        background: rgba(125, 125, 125, 0.08);
+        animation: var(--pulse);
+        will-change: opacity;
+        background: var(--skeleton);
         width: 0.75em;
         height: 0.75em;
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
         @media only screen and (min-width: 700px) {
           border-radius: 50%;
@@ -210,10 +200,11 @@
       }
 
       &__description {
-        background: rgba(125, 125, 125, 0.08);
-        width: 100px;
+        animation: var(--pulse);
+        will-change: opacity;
+        background: var(--skeleton);
+        width: 50%;
         height: 18px;
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
       }
     }
 
