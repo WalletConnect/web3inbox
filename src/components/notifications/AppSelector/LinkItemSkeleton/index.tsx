@@ -1,7 +1,7 @@
 import React from 'react'
-import './ListItemSkeleton.scss'
+import './LinkItemSkeleton.scss'
 
-const ListItemSkeleton: React.FC = () => {
+const LinkItemSkeleton: React.FC = () => {
   return (
     <div className="AppSelector__link-item-skeleton">
       <div className="AppSelector__link-item-skeleton__icon"></div>
@@ -10,4 +10,4 @@ const ListItemSkeleton: React.FC = () => {
   )
 }
 
-export default ListItemSkeleton
+export default LinkItemSkeleton

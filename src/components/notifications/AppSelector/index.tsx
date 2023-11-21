@@ -14,7 +14,7 @@ import Label from '../../general/Label'
 import Text from '../../general/Text'
 import MobileHeader from '../../layout/MobileHeader'
 import { handleImageFallback } from '../../../utils/ui'
-import ListItemSkeleton from './ListItemSkeleton'
+import LinkItemSkeleton from './LinkItemSkeleton'
 import { AnimatePresence, m } from 'framer-motion'
 import './AppSelector.scss'
 
@@ -124,7 +124,7 @@ const AppSelector: React.FC = () => {
           <ul className="AppSelector__list">
             {loading
               ? Array(3)
-                  .fill(<ListItemSkeleton />)
+                  .fill(<LinkItemSkeleton />)
                   .map(x => x)
               : null}
             {!loading &&
