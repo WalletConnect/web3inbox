@@ -1,21 +1,22 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import debounce from 'lodash.debounce'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { from } from 'rxjs'
 import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { useIsMobile } from '../../../utils/hooks'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
-import './AppSelector.scss'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import TargetTitle from '../../general/TargetTitle'
 import AllAppsIcon from '../../../assets/AllApps.svg'
 import Label from '../../general/Label'
 import Text from '../../general/Text'
 import MobileHeader from '../../layout/MobileHeader'
 import { handleImageFallback } from '../../../utils/ui'
-import { AnimatePresence, motion } from 'framer-motion'
+import ListItemSkeleton from './ListItemSkeleton'
+import { AnimatePresence, m } from 'framer-motion'
+import './AppSelector.scss'
 
 const SUBSCRIPTION_LOADER_TIMEOUT = 3000
 
@@ -23,10 +24,9 @@ const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
-  const [loading, setLoading] = useState(true)
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
+  const [loading, setLoading] = useState(true)
   const { activeSubscriptions } = useContext(W3iContext)
-  const nav = useNavigate()
 
   const fetchApps = async (searchQuery: string) => {
     const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
@@ -65,10 +65,15 @@ const AppSelector: React.FC = () => {
   }, [search])
 
   useEffect(() => {
+    if (filteredApps?.length) {
+      setLoading(false)
+      return
+    }
+
     setTimeout(() => {
       setLoading(false)
     }, SUBSCRIPTION_LOADER_TIMEOUT)
-  }, [])
+  }, [filteredApps?.length])
 
   return (
     <div className="AppSelector">
@@ -119,22 +124,13 @@ const AppSelector: React.FC = () => {
           <ul className="AppSelector__list">
             {loading
               ? Array(3)
-                  .fill(
-                    <div className="AppSelector__link-item-skeleton">
-                      <div className="AppSelector__link-item-skeleton__icon"></div>
-                      <div className="AppSelector__link-item-skeleton__description"></div>
-                    </div>
-                  )
+                  .fill(<ListItemSkeleton />)
                   .map(x => x)
               : null}
             {!loading &&
               filteredApps?.map(app => (
-                <AnimatePresence key={app.topic}>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    exit={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
+                <AnimatePresence>
+                  <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <NavLink
                       key={app.topic}
                       to={`/notifications/${app.topic}`}
@@ -160,7 +156,7 @@ const AppSelector: React.FC = () => {
                         </div>
                       </div>
                     </NavLink>
-                  </motion.div>
+                  </m.div>
                 </AnimatePresence>
               ))}
           </ul>

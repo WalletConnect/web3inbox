@@ -1,0 +1,51 @@
+.AppSelector {
+  &__link {
+    &-item-skeleton {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      height: 56px;
+      padding: 0.75rem 1rem 0.75rem 0.75rem;
+      border-radius: 1em;
+      position: relative;
+
+      @media only screen and (max-width: 700px) {
+        border-radius: 0px;
+        padding: 1rem 1.25rem;
+      }
+
+      &__icon {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        will-change: opacity;
+        background: var(--skeleton);
+        width: 0.75em;
+        height: 0.75em;
+
+        @media only screen and (min-width: 700px) {
+          border-radius: 50%;
+          padding: 0.5em;
+          width: 2em;
+          height: 2em;
+        }
+      }
+
+      &__description {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        will-change: opacity;
+        background: var(--skeleton);
+        width: 50%;
+        height: 18px;
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
