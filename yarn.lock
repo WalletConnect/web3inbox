@@ -3439,19 +3439,7 @@
     "@walletconnect/logger" "^2.0.1"
     events "^3.3.0"
 
-"@walletconnect/types@2.10.1-665f0a23":
-  version "2.10.1-665f0a23"
-  resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-2.10.1-665f0a23.tgz#85430f0bf1ec97defa0ca6d9cbf21df457ba446f"
-  integrity sha512-+9UzDh6nx9N2xPq5sXEid/qWefVb8VCLIM4bMGm3tuRdeEo5o9kEC1N1lRuEcI67uS8Ge6AP1MZWzwT23iVuIw==
-  dependencies:
-    "@walletconnect/events" "^1.0.1"
-    "@walletconnect/heartbeat" "1.2.1"
-    "@walletconnect/jsonrpc-types" "1.0.3"
-    "@walletconnect/keyvaluestorage" "^1.0.2"
-    "@walletconnect/logger" "^2.0.1"
-    events "^3.3.0"
-
-"@walletconnect/types@2.10.5":
+"@walletconnect/types@2.10.5", "@walletconnect/types@^2.10.5":
   version "2.10.5"
   resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-2.10.5.tgz#bf4e692cf736b6e71423f96a106d7a96089245de"
   integrity sha512-N8xaN7/Kob93rKxKDaT6oy6symgIkAwyLqq0/dLJEhXfv7S/gyNvDka4SosjVVTc4oTvE1+OmxNIR8pB1DuwJw==
