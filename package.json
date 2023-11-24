@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@sentry/react": "^7.64.0",
-    "@walletconnect/core": "2.10.2",
+    "@walletconnect/core": "^2.10.5",
     "@walletconnect/identity-keys": "^0.2.2",
     "@walletconnect/notify-client": "^0.14.5",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
