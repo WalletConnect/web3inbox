@@ -21,7 +21,7 @@ const useNotifyProjects = () => {
         explorerUrl.searchParams.set('appDomain', filterAppDomain)
       } else {
         explorerUrl.searchParams.set('isVerified', isDevModeEnabled ? 'false' : 'true')
-        explorerUrl.searchParams.set('isFeatured', isDevModeEnabled ? 'true' : 'false')
+        explorerUrl.searchParams.set('isFeatured', isDevModeEnabled ? 'false' : 'true')
       }
 
       const allProjectsRawRes = await fetch(explorerUrl)
