@@ -15,6 +15,7 @@ interface AppCardProps {
   description: string
   logo: string
   isVerified: boolean
+  isFeatured: boolean
   bgColor: {
     dark: string
     light: string
@@ -22,7 +23,7 @@ interface AppCardProps {
   url: string
 }
 
-const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url, isVerified }) => {
+const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url, isVerified, isFeatured }) => {
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
@@ -108,7 +109,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           <Text className="" variant="large-600">
             {name}
           </Text>
-          <VerifiedIcon />
+          {isFeatured? <VerifiedIcon /> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
           {isVerified ? 'Official app' : new URL(url).host}

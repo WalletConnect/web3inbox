@@ -28,6 +28,8 @@ export interface INotifyProject {
     browser: string
   }
   is_verified: boolean
+  is_featured: boolean
+  order: number | null
   image_url?: {
     sm: string
     md: string
@@ -45,5 +47,6 @@ export interface INotifyApp {
   url: string
   icons: string[]
   isVerified: boolean
+  isFeatured: boolean
   colors?: { primary?: string; secondary?: string }
 }
