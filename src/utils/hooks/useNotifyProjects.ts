@@ -3,8 +3,6 @@ import SettingsContext from '../../contexts/SettingsContext/context'
 import type { INotifyApp, INotifyProject } from '../types'
 import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '../constants'
 
-const USE_CURATED_PROJECTS = false
-
 const useNotifyProjects = () => {
   const [projects, setProjects] = useState<INotifyApp[]>([])
   const { isDevModeEnabled, filterAppDomain } = useContext(SettingsContext)
@@ -23,10 +21,7 @@ const useNotifyProjects = () => {
         explorerUrl.searchParams.set('appDomain', filterAppDomain)
       } else {
         explorerUrl.searchParams.set('isVerified', isDevModeEnabled ? 'false' : 'true')
-
-        if (USE_CURATED_PROJECTS) {
-          explorerUrl.searchParams.set('isFeatured', USE_CURATED_PROJECTS ? 'true' : 'false')
-        }
+        explorerUrl.searchParams.set('isFeatured', isDevModeEnabled ? 'true' : 'false')
       }
 
       const allProjectsRawRes = await fetch(explorerUrl)
