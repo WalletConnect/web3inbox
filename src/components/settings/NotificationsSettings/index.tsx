@@ -123,14 +123,14 @@ const NotificationsSettings: React.FC = () => {
 
           <SettingsItem
             title="Developer Mode"
-            subtitle="Display all projects that enabled Notify API"
+            subtitle="Enable developer mode"
             className="NotificationsSettings__notifications"
           >
             <SettingsToggle
               checked={isDevModeEnabled}
               setChecked={isEnabled => updateSettings({ isDevModeEnabled: isEnabled })}
               icon={<PrivacyIcon />}
-              title="Display all projects that enabled Notify API"
+              title="Display tokens for debugging"
               active={true}
             />
           </SettingsItem>

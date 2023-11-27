@@ -5,7 +5,7 @@ import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '../constants'
 
 const useNotifyProjects = () => {
   const [projects, setProjects] = useState<INotifyApp[]>([])
-  const { isDevModeEnabled, filterAppDomain } = useContext(SettingsContext)
+  const { filterAppDomain } = useContext(SettingsContext)
 
   useEffect(() => {
     const fetchNotifyProjects = async () => {
@@ -20,8 +20,8 @@ const useNotifyProjects = () => {
       if (filterAppDomain) {
         explorerUrl.searchParams.set('appDomain', filterAppDomain)
       } else {
-        explorerUrl.searchParams.set('isVerified', isDevModeEnabled ? 'false' : 'true')
-        explorerUrl.searchParams.set('isFeatured', isDevModeEnabled ? 'false' : 'true')
+        explorerUrl.searchParams.set('isVerified', 'true')
+        explorerUrl.searchParams.set('isFeatured', 'true')
       }
 
       const allProjectsRawRes = await fetch(explorerUrl)
