@@ -1,4 +1,4 @@
-const VerifiedIcon = () => {
+const FeaturedIcon = () => {
   return (
     <svg fill="none" viewBox="0 0 16 18">
       <path fill="#fff" d="M3.43 5.93h9.14v9.14H3.43z" />
@@ -10,4 +10,4 @@ const VerifiedIcon = () => {
   )
 }
 
-export default VerifiedIcon
+export default FeaturedIcon

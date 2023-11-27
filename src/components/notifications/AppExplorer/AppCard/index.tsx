@@ -6,7 +6,7 @@ import { showErrorMessageToast, showSuccessMessageToast } from '../../../../util
 import { handleImageFallback } from '../../../../utils/ui'
 import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
-import VerifiedIcon from '../../../general/Icon/VerifiedIcon'
+import FeaturedIcon from '../../../general/Icon/VerifiedIcon'
 import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
 import { useNavigate } from 'react-router-dom'
 
@@ -15,6 +15,7 @@ interface AppCardProps {
   description: string
   logo: string
   isVerified: boolean
+  isFeatured: boolean
   bgColor: {
     dark: string
     light: string
@@ -22,7 +23,15 @@ interface AppCardProps {
   url: string
 }
 
-const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url, isVerified }) => {
+const AppCard: React.FC<AppCardProps> = ({
+  name,
+  description,
+  logo,
+  bgColor,
+  url,
+  isVerified,
+  isFeatured
+}) => {
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
@@ -108,7 +117,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           <Text className="" variant="large-600">
             {name}
           </Text>
-          <VerifiedIcon />
+          {isFeatured ? <FeaturedIcon /> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
           {isVerified ? 'Official app' : new URL(url).host}
