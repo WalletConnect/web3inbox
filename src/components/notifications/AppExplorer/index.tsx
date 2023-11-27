@@ -35,7 +35,7 @@ const AppExplorer = () => {
               .map(app => (
                 <AppCard
                   isVerified={app.isVerified}
-		  isFeatured={app.isFeatured}
+                  isFeatured={app.isFeatured}
                   key={app.name}
                   name={app.name}
                   description={app.description}
@@ -54,7 +54,7 @@ const AppExplorer = () => {
               .map(app => (
                 <AppCard
                   isVerified={app.isVerified}
-		  isFeatured={app.isFeatured}
+                  isFeatured={app.isFeatured}
                   key={app.name}
                   name={app.name}
                   description={app.description}

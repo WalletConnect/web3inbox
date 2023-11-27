@@ -3,7 +3,7 @@ import SettingsContext from '../../contexts/SettingsContext/context'
 import type { INotifyApp, INotifyProject } from '../types'
 import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '../constants'
 
-const USE_CURATED_PROJECTS = false;
+const USE_CURATED_PROJECTS = false
 
 const useNotifyProjects = () => {
   const [projects, setProjects] = useState<INotifyApp[]>([])
@@ -24,9 +24,9 @@ const useNotifyProjects = () => {
       } else {
         explorerUrl.searchParams.set('isVerified', isDevModeEnabled ? 'false' : 'true')
 
-	if(USE_CURATED_PROJECTS) {
+        if (USE_CURATED_PROJECTS) {
           explorerUrl.searchParams.set('isFeatured', USE_CURATED_PROJECTS ? 'true' : 'false')
-	}
+        }
       }
 
       const allProjectsRawRes = await fetch(explorerUrl)
@@ -36,29 +36,29 @@ const useNotifyProjects = () => {
         ? [allNotifyProjectsRes.data]
         : Object.values(allNotifyProjectsRes.projects)
       const notifyApps: INotifyApp[] = notifyProjects
-	// Lower order indicates higher priority, thus sorting ascending
-	.sort((a, b) => (b.order ?? 0) - (a.order ?? 0))
-	.map(
-        ({
-          id,
-          name,
-          description,
-          dapp_url,
-          image_url,
-          metadata,
-          is_verified,
-	  is_featured,
-        }: Omit<INotifyProject, 'app'>) => ({
-          id,
-          name,
-          description,
-          url: dapp_url,
-          icons: image_url ? [image_url.md] : [],
-          colors: metadata?.colors,
-          isVerified: is_verified,
-	  isFeatured: is_featured
-        })
-      )
+        // Lower order indicates higher priority, thus sorting ascending
+        .sort((a, b) => (b.order ?? 0) - (a.order ?? 0))
+        .map(
+          ({
+            id,
+            name,
+            description,
+            dapp_url,
+            image_url,
+            metadata,
+            is_verified,
+            is_featured
+          }: Omit<INotifyProject, 'app'>) => ({
+            id,
+            name,
+            description,
+            url: dapp_url,
+            icons: image_url ? [image_url.md] : [],
+            colors: metadata?.colors,
+            isVerified: is_verified,
+            isFeatured: is_featured
+          })
+        )
 
       setProjects(notifyApps)
     }
