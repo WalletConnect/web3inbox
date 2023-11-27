@@ -60,8 +60,6 @@ const useNotifyProjects = () => {
         })
       )
 
-
-
       setProjects(notifyApps)
     }
     fetchNotifyProjects()
