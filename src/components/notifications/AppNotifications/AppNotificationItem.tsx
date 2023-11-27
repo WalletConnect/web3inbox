@@ -1,17 +1,10 @@
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { useFormattedTime, useIsMobile } from '../../../utils/hooks'
+import { useFormattedTime } from '../../../utils/hooks'
+import { useEffect, useRef, useState } from 'react'
+import cn from 'classnames'
 import CircleIcon from '../../general/Icon/CircleIcon'
-import './AppNotifications.scss'
-import type { PanInfo } from 'framer-motion'
-import { motion } from 'framer-motion'
-import { LazyMotion, domMax, m, useAnimationControls } from 'framer-motion'
-import type { AppNotificationsDragContext } from '.'
-import { AppNotificationDragContext } from '.'
-import ClearIcon from '../../../assets/ClearIcon.png'
-import UnreadIcon from '../../../assets/UnreadIcon.png'
-import W3iContext from '../../../contexts/W3iContext/context'
-import ExternalLink from '../../general/ExternalLink'
+import { LazyMotion, domMax } from 'framer-motion'
 import Text from '../../general/Text'
+import './AppNotifications.scss'
 
 export interface IAppNotification {
   id: string
@@ -28,116 +21,31 @@ interface IAppNotificationProps {
   appLogo: string
 }
 
-const DRAG_OFFSET = 150
-
-const AppNotificationItem: React.FC<IAppNotificationProps> = ({
-  notification,
-  appLogo,
-  onClear
-}) => {
+const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, appLogo }) => {
   const formattedTime = useFormattedTime(notification.timestamp)
-  const { notifyClientProxy } = useContext(W3iContext)
-  const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [textClamped, setTextClamped] = useState<boolean>(false)
   const [show, setShow] = useState<boolean>(false)
-  const [elementHeight, setElementHeight] = useState<number>(0)
-  const [animating, setAnimating] = useState<boolean>(false)
 
   const messageRef = useRef<HTMLSpanElement | null>(null)
 
-  const [notificationsDrag, setNotificationsDrag] = useContext<AppNotificationsDragContext>(
-    AppNotificationDragContext
-  )
-
-  const dragControls = useAnimationControls()
-  const actionControls = useAnimationControls()
-
   useEffect(() => {
     if (messageRef.current) {
-      setElementHeight(messageRef.current.scrollHeight)
       setTextClamped(messageRef.current.scrollHeight > messageRef.current.clientHeight)
     }
   }, [])
 
-  useEffect(() => {
-    const currentNotificationItem = notificationsDrag?.find(
-      n => n.id.toString() === notification.id
-    )
-
-    if (!currentNotificationItem?.isDragged) {
-      if (currentNotificationItem) {
-        dragControls.start('hidden')
-        actionControls.start('hidden')
-      }
-    }
-  }, [notificationsDrag])
-
-  const handleClearClick = useCallback(() => {
-    dragControls.start('hidden')
-    notifyClientProxy?.deleteNotifyMessage({ id: Number(notification.id) }).then(onClear)
-    actionControls.start('hidden')
-  }, [notifyClientProxy, onClear])
-
-  const handleUnreadClick = () => {
-    dragControls.start('hidden')
-    actionControls.start('hidden')
-  }
-
-  const handleDragEnd = (_: never, info: PanInfo) => {
-    const shouldShowControls = info.velocity.x >= 50 || info.offset.x > DRAG_OFFSET / 2
-    if (shouldShowControls) {
-      dragControls.start('visible')
-    } else {
-      dragControls.start('hidden')
-    }
-  }
-
-  const handleDrag = (_: never, info: PanInfo) => {
-    const shouldShowActions = info.velocity.x >= 0 || info.offset.x > DRAG_OFFSET / 2
-    if (shouldShowActions) {
-      actionControls.start('visible')
-    } else {
-      actionControls.start('hidden')
-    }
-  }
-
-  const handleDragStart = () => {
-    setNotificationsDrag(currentNotifications =>
-      currentNotifications?.map(n => {
-        return {
-          ...n,
-          isDragged: n.id.toString() === notification.id
-        }
-      })
-    )
+  const handleToggleDescription = () => {
+    setShow(prevState => !prevState)
   }
 
   return (
     <LazyMotion features={domMax}>
       <div
-        className={`AppNotifications__item ${
+        className={cn(
+          'AppNotifications__item',
           notification.isRead ? '' : 'AppNotifications__item--blue'
-        }`}
+        )}
       >
-        <m.div
-          animate={actionControls}
-          initial="hidden"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { opacity: 1 }
-          }}
-          className="AppNotificationsActions"
-        >
-          <button onClick={handleClearClick} className="AppNotificationsActions__clear">
-            <img src={ClearIcon} />
-            <div className="AppNotificationsActions__clear--text">Clear</div>
-          </button>
-          <button onClick={handleUnreadClick} className="AppNotificationsActions__unread">
-            <img src={UnreadIcon} />
-            <div className="AppNotificationsActions__clear--text">Unread</div>
-          </button>
-        </m.div>
-
         <img
           src={notification.image || appLogo || '/fallback.svg'}
           loading="lazy"
@@ -156,35 +64,21 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
               </div>
             </div>
           </div>
-          <motion.span
+          <Text
             ref={messageRef}
-            transition={{ duration: 0.33, ease: 'easeInOut' }}
-            initial={{ maxHeight: 44 }}
-            animate={{ maxHeight: show ? elementHeight : 44 }}
-            onAnimationStart={() => {
-              setAnimating(true)
-              if (show) {
-                if (messageRef.current) {
-                  messageRef.current.style.webkitLineClamp = 'unset'
-                }
-              }
-            }}
-            onAnimationComplete={() => {
-              setAnimating(false)
-              if (!show) {
-                if (messageRef.current) {
-                  messageRef.current.style.webkitLineClamp = '2'
-                }
-              }
-            }}
-            className="AppNotifications__item__message"
+            className={cn('AppNotifications__item__message', show ? 'show_more' : '')}
+            variant="small-400"
           >
-            <Text variant="small-500">{notification.message}</Text>
-          </motion.span>
+            {notification.message}
+          </Text>
           {textClamped && (
-            <p className="AppNotifications__item__show">{show ? 'Show less' : 'Show more'}</p>
+            <button
+              onClick={handleToggleDescription}
+              className="AppNotifications__item__show_button"
+            >
+              <Text variant="small-400">{show ? 'Show less' : 'Show more'}</Text>
+            </button>
           )}
-          {notification.url && <ExternalLink link={notification.url}>Visit Link</ExternalLink>}
         </div>
       </div>
     </LazyMotion>

@@ -24,8 +24,14 @@ interface ITextProps {
   className?: string
 }
 
-const Text: React.FC<ITextProps> = ({ children, variant, className }) => {
-  return <span className={`Text Text__${variant} ${className ? className : ''}`}>{children}</span>
-}
+const Text = React.forwardRef<HTMLSpanElement, ITextProps>(
+  ({ children, className, variant, ...props }, ref) => {
+    return (
+      <span className={`Text Text__${variant} ${className ? className : ''}`} ref={ref} {...props}>
+        {children}
+      </span>
+    )
+  }
+)
 
 export default Text
