@@ -1,4 +1,5 @@
 import React from 'react'
+import cn from 'classnames'
 import './Text.scss'
 
 interface ITextProps {
@@ -27,7 +28,7 @@ interface ITextProps {
 const Text = React.forwardRef<HTMLSpanElement, ITextProps>(
   ({ children, className, variant, ...props }, ref) => {
     return (
-      <span className={`Text Text__${variant} ${className ? className : ''}`} ref={ref} {...props}>
+      <span className={cn('Text', `Text__${variant}`, className)} ref={ref} {...props}>
         {children}
       </span>
     )
