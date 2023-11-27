@@ -36,7 +36,7 @@ const callEcho = async (clientId: string, token: string) => {
     },
     body: JSON.stringify({
       client_id: clientId,
-      type: 'FCM',
+      type: 'fcm',
       token
     })
   })
