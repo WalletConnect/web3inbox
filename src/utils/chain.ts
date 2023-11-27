@@ -6,5 +6,9 @@ export const EIPNumberPrefix = 'eip155:'
  * @returns string
  */
 export const getEIPChainString = (chainId?: number) => {
+  if (!chainId) {
+    return undefined
+  }
+
   return EIPNumberPrefix.concat(chainId?.toString() || '')
 }

@@ -14,7 +14,7 @@ export default class InternalAuthProvider {
     this.emitter = emitter
 
     watchNetwork(network => {
-      const caip10Chain = `eip155:${network.chain?.id}`
+      const caip10Chain = getEIPChainString(getNetwork().chain?.id)
       this.chain = caip10Chain
 
       this.emitter.emit('auth_set_account', { account: this.account, chain: caip10Chain })
