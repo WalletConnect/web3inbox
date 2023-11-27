@@ -5,6 +5,6 @@ export const EIPNumberPrefix = 'eip155:'
  * @param chainId - chain number
  * @returns string
  */
-export const getChainString = (chainId?: number) => {
+export const getEIPChainString = (chainId?: number) => {
   return EIPNumberPrefix.concat(chainId?.toString() || '')
 }
