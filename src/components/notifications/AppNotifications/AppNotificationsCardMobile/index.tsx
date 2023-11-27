@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import W3iContext from '../../../../contexts/W3iContext/context'
 import { handleImageFallback } from '../../../../utils/ui'
 import Text from '../../../general/Text'
-import VerifiedIcon from '../../../general/Icon/VerifiedIcon'
 import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
 import Button from '../../../general/Button'
 import './AppNotificationsCardMobile.scss'
@@ -41,7 +40,6 @@ const AppNotificationsCardMobile: React.FC = () => {
         <div className="AppNotificationsCardMobile__wrapper">
           <div className="AppNotificationsCardMobile__title">
             <Text variant="large-600">{app?.metadata.name}</Text>
-            <VerifiedIcon />
           </div>
           <Text className="AppNotificationsCardMobile__url" variant="paragraph-500">
             {app?.metadata.appDomain}
