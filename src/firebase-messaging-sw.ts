@@ -2,8 +2,8 @@
 import { decryptMessage } from '@walletconnect/notify-message-decrypter'
 import { initializeApp } from 'firebase/app'
 import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw'
-
-import { getDbSymkeyStore } from '@/utils/idb'
+import { getDbSymkeyStore } from './utils/idb'
+import mixpanel from 'mixpanel-browser'
 
 declare let self: ServiceWorkerGlobalScope
 
