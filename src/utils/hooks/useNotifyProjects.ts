@@ -58,7 +58,7 @@ const useNotifyProjects = () => {
       setProjects(notifyApps)
     }
     fetchNotifyProjects()
-  }, [isDevModeEnabled, setProjects, filterAppDomain])
+  }, [setProjects, filterAppDomain])
 
   return projects
 }
