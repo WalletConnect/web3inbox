@@ -36,6 +36,7 @@ const useNotifyProjects = () => {
         ? [allNotifyProjectsRes.data]
         : Object.values(allNotifyProjectsRes.projects)
       const notifyApps: INotifyApp[] = notifyProjects
+	// Lower order indicates higher priority, thus sorting ascending
 	.sort((a, b) => (b.order ?? 0) - (a.order ?? 0))
 	.map(
         ({
