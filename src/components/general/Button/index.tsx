@@ -1,13 +1,18 @@
 import React from 'react'
-import './Button.scss'
+import cn from 'classnames'
 import Text from '../Text'
+import type { TextVariant } from '../Text'
+import './Button.scss'
 
-type THTMLButtonProps = React.DetailedHTMLProps<
+type HTMLButtonProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 >
-type TButtonProps = THTMLButtonProps & {
+type TButtonProps = HTMLButtonProps & {
   customType?: 'action-icon' | 'action' | 'danger' | 'primary' | 'secondary'
+  textVariant?: TextVariant
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
 }
 
 const Button: React.FC<TButtonProps> = ({
@@ -15,7 +20,10 @@ const Button: React.FC<TButtonProps> = ({
   disabled,
   onClick,
   className,
+  textVariant = 'small-500',
   customType = 'primary',
+  leftIcon,
+  rightIcon,
   ...props
 }) => {
   return (
@@ -23,9 +31,11 @@ const Button: React.FC<TButtonProps> = ({
       {...props}
       onClick={onClick}
       disabled={disabled}
-      className={`Button Button__${customType} ${className ?? ''}`}
+      className={cn('Button', `Button__${customType}`, className)}
     >
-      <Text variant="small-500">{children}</Text>
+      {leftIcon}
+      <Text variant={textVariant}>{children}</Text>
+      {rightIcon}
     </button>
   )
 }

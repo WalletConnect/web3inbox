@@ -41,10 +41,10 @@ const Login: React.FC = () => {
           scale={3}
           button={
             <Button
+              className="connect-button"
               onClick={() => {
                 modal.open()
               }}
-              style={{ minWidth: 'fit-content' }}
             >
               {'Connect Wallet'}
             </Button>

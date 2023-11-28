@@ -4,12 +4,13 @@ import { Modal } from '../../../components/general/Modal/Modal'
 import { signatureModalService, subscribeModalService } from '../../../utils/store'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import './SignatureModal.scss'
-import Spinner from '../../../components/general/Spinner'
 import Text from '../../../components/general/Text'
 import SignatureIcon from '../../../components/general/Icon/SignatureIcon'
 import CrossIcon from '../../../components/general/Icon/CrossIcon'
 import { useDisconnect } from 'wagmi'
 import { useModals } from '../../../utils/hooks'
+import Wallet from '../../../components/general/Icon/Wallet'
+import { SignatureLoadingVisual } from './SignatureLoadingVisual'
 
 export const SignatureModal: React.FC<{
   message: string
@@ -53,10 +54,13 @@ export const SignatureModal: React.FC<{
             <CrossIcon />
           </div>
         </div>
-        <div className="SignatureModal__icon">
-          <SignatureIcon />
-        </div>
-
+        {isSigning ? (
+          <SignatureLoadingVisual />
+        ) : (
+          <div className="SignatureModal__icon">
+            <SignatureIcon />
+          </div>
+        )}
         <Text className="SignatureModal__title" variant="large-600">
           {isSigning ? 'Requesting sign-in' : 'Sign in to enable notifications'}
         </Text>
@@ -67,8 +71,14 @@ export const SignatureModal: React.FC<{
           To fully use Web3Inbox, please sign into app.web3inbox.com with your wallet.
         </Text>
         <div className="SignatureModal__button">
-          <Button disabled={isSigning} onClick={onSign}>
-            {isSigning ? <Spinner width="1em" /> : 'Sign in with wallet'}
+          <Button
+            className="sign-button"
+            disabled={isSigning}
+            textVariant="paragraph-600"
+            rightIcon={isSigning ? null : <Wallet />}
+            onClick={onSign}
+          >
+            {isSigning ? 'Waiting for wallet...' : 'Sign in with wallet'}
           </Button>
         </div>
       </div>

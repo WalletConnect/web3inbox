@@ -1,8 +1,9 @@
 import React from 'react'
+import cn from 'classnames'
 
-const Wallet: React.FC = () => {
+const Wallet: React.FC = ({ className }: React.SVGProps<SVGSVGElement>) => {
   return (
-    <svg fill="none" viewBox="0 0 14 14">
+    <svg className={cn(className)} fill="none" viewBox="0 0 14 14">
       <path
         fill="currentColor"
         fillRule="evenodd"

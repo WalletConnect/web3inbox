@@ -68,12 +68,14 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       border1: 'hsla(0, 0%, 0%, 0.5)',
       border2: 'hsla(0, 0%, 100%, 0.1)',
       accent1: 'hsla(211, 90%, 50%, 1)',
+      accent2: 'hsla(211, 90%, 50%, 0.1)',
       error1: 'hsla(5, 85%, 60%, 1)',
       icon1: 'hsla(180, 6%, 80%, 1)',
       qr1: '#e4e7e7',
       brightness: '0.66',
       shimmer1: 'rgba(255, 255, 255, 0.05)',
-      shimmer2: 'rgba(255, 255, 255, 0.1)'
+      shimmer2: 'rgba(255, 255, 255, 0.1)',
+      modalOverlay: 'rgba(0, 0, 0, 0.6)'
     },
     light: {
       bg1: 'hsla(0, 0%, 100%, 1)',
@@ -93,12 +95,14 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       border1: 'hsla(0, 0%, 0%, 0.5)',
       border2: 'hsla(0, 0%, 0%, 0.1)',
       accent1: 'hsla(211, 100%, 60%, 1)',
+      accent2: 'hsla(211, 100%, 60%, 0.1)',
       error1: 'hsla(5, 85%, 60%, 1)',
       icon1: 'hsla(180, 4%, 16%, 1)',
       qr1: '#141414',
       brightness: '1.33',
       shimmer1: 'rgba(0, 0, 0, 0.05)',
-      shimmer2: 'rgba(0, 0, 0, 0.1)'
+      shimmer2: 'rgba(0, 0, 0, 0.1)',
+      modalOverlay: 'rgba(139, 151, 151, 0.3)'
     }
   }
 
@@ -120,12 +124,14 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--border-color-1': colors[specifiedMode].border1,
     '--border-color-2': colors[specifiedMode].border2,
     '--accent-color-1': colors[specifiedMode].accent1,
+    '--accent-color-2': colors[specifiedMode].accent2,
     '--error-color-1': colors[specifiedMode].error1,
     '--icon-color-1': colors[specifiedMode].icon1,
     '--qr-color-1': colors[specifiedMode].qr1,
     '--brightness-multiplier': colors[specifiedMode].brightness,
     '--shimmer-color-1': colors[specifiedMode].shimmer1,
-    '--shimmer-color-2': colors[specifiedMode].shimmer2
+    '--shimmer-color-2': colors[specifiedMode].shimmer2,
+    '--modal-overlay': colors[specifiedMode].modalOverlay
   }
 
   return colorModeVariables
