@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && yarn buildMessager",
+    "build": "tsc && vite build --config vite.main.config.ts && yarn buildMessager",
     "buildMessager": "vite build --config vite.messaging.config.ts",
     "buildMessagerOld": "esbuild ./src/firebase-messaging-sw.ts --bundle --minify --outfile=./dist/firebase-messaging-sw.js",
     "preview": "vite preview",

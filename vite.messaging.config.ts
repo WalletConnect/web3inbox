@@ -7,13 +7,17 @@ export default defineConfig(() => {
       rollupOptions: {
 	input: 'src/firebase-messaging-sw.ts',
 	output: {
-	  format: 'iife',
+	  format: 'iife'
+
+	  ,
 	  file: 'firebase-messaging-sw.js',
+	  name: 'firebase-messaging-sw.js',
 	  inlineDynamicImports: true
 	},
+	  inlineDynamicImports: true
       },
       emptyOutDir: false,
-      
+      assetsDir: '.'
     },
   }
 })
