@@ -31,7 +31,6 @@ const App = () => {
       <Toaster
         toastOptions={{
           position: 'bottom-right',
-
           duration: 5000,
           style: {
             border: '1px solid rgba(0, 0, 0, 0.1)',

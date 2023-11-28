@@ -6,7 +6,8 @@
   left: 50%;
   transform: translateX(-50%);
   gap: 1em;
-  height: 3em;
+  width: 60px;
+  height: 100vh;
 
   @include padding-y(2em);
   display: none;
