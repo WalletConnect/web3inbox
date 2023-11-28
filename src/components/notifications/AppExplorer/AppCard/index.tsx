@@ -12,7 +12,6 @@ interface AppCardProps {
   name: string
   description: string
   logo: string
-  isVerified: boolean
   bgColor: {
     dark: string
     light: string
@@ -20,7 +19,7 @@ interface AppCardProps {
   url: string
 }
 
-const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url, isVerified }) => {
+const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
