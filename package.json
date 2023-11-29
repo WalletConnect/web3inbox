@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "yarn buildWeb && yarn buildMessager",
-    "buildWeb": "tsc && vite build --config vite.main.config.ts ", 
+    "buildWeb": "tsc && vite build --config vite.main.config.ts ",
     "buildMessager": "vite build --config vite.messaging.config.ts",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -58,7 +58,6 @@
     "@vitejs/plugin-react": "^2.2.0",
     "@walletconnect/types": "2.11.0",
     "autoprefixer": "^10.4.14",
-    "esbuild": "^0.18.17",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.3",
