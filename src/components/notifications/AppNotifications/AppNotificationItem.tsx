@@ -1,5 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { handleImageFallback } from '../../../utils/ui'
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useFormattedTime, useIsMobile } from '../../../utils/hooks'
 import CircleIcon from '../../general/Icon/CircleIcon'
 import './AppNotifications.scss'
@@ -52,8 +51,6 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
 
   const dragControls = useAnimationControls()
   const actionControls = useAnimationControls()
-
-  const isMobile = useIsMobile()
 
   useEffect(() => {
     if (messageRef.current) {
@@ -142,9 +139,8 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({
         </m.div>
 
         <img
-          src={notification.image ?? appLogo}
+          src={notification.image || appLogo || '/fallback.svg'}
           loading="lazy"
-          onError={handleImageFallback}
           alt="image corresponding to the notification"
         />
 

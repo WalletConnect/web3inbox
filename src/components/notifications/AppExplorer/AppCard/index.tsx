@@ -3,7 +3,6 @@ import './AppCard.scss'
 import Button from '../../../general/Button'
 import W3iContext from '../../../../contexts/W3iContext/context'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
-import { handleImageFallback } from '../../../../utils/ui'
 import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
 import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
@@ -21,14 +20,7 @@ interface AppCardProps {
   url: string
 }
 
-const AppCard: React.FC<AppCardProps> = ({
-  name,
-  description,
-  logo,
-  bgColor,
-  url,
-  isVerified,
-}) => {
+const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url, isVerified }) => {
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
@@ -43,6 +35,7 @@ const AppCard: React.FC<AppCardProps> = ({
 
   const subscribed =
     userPubkey && activeSubscriptions.some(element => element.metadata.name === name)
+  const logoURL = logo || '/fallback.svg'
 
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -96,18 +89,11 @@ const AppCard: React.FC<AppCardProps> = ({
       style={{ cursor: subscribed ? 'pointer' : 'default' }}
       onClick={handleNavigateApp}
     >
-      <div
-        className="AppCard__background"
-        style={{ backgroundImage: `url("${logo ?? './fallback.svg'}"), url("./fallback.svg")` }}
-      />
-
+      <div className="AppCard__background" style={{ backgroundImage: `url(${logoURL})` }} />
       <div className="AppCard__header">
-        <img
-          className="AppCard__header__logo"
-          src={logo}
-          alt={`${name} logo`}
-          onError={handleImageFallback}
-        />
+        <div className="AppCard__header__logo">
+          <img src={logo || '/fallback.svg'} alt={`${name} logo`} />
+        </div>
       </div>
       <div className="AppCard__body">
         <div className="AppCard__body__title">

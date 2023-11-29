@@ -27,7 +27,7 @@
     background-size: 75%;
     opacity: 50%;
     filter: blur(120px);
-    overflow: hide;
+    overflow: hidden;
     top: 0;
     left: 0;
     width: 100%;
@@ -64,12 +64,30 @@
     @media only screen and (max-width: 700px) {
       align-items: center;
     }
+
     &__logo {
-      border-radius: 50%;
+      border-radius: 2em;
       width: 3.75em;
       height: 3.75em;
+      overflow: hidden;
       margin-bottom: 0.75em;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      position: relative;
+
+      &::after {
+        border-radius: 2em;
+        box-shadow: inset 0 0 0 1px var(--border-color-2);
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
 
       @media only screen and (max-width: 700px) {
         width: 3rem;
