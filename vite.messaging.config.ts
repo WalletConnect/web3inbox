@@ -4,17 +4,16 @@ import { defineConfig } from 'vite'
 export default defineConfig(() => {
   return {
     build: {
+      lib: {
+	entry: 'src/firebase-messaging-sw.ts',
+	name: 'firebase-messaging-sw.js',
+	fileName: () => `firebase-messaging-sw.js`
+      },
       rollupOptions: {
-	input: 'src/firebase-messaging-sw.ts',
 	output: {
-	  format: 'iife'
-
-	  ,
-	  file: 'firebase-messaging-sw.js',
-	  name: 'firebase-messaging-sw.js',
-	  inlineDynamicImports: true
+	  format: 'iife',
 	},
-	  inlineDynamicImports: true
+	inlineDynamicImports: true
       },
       emptyOutDir: false,
       assetsDir: '.'
