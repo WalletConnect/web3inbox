@@ -36,19 +36,22 @@ const getSymKey = async (topic: string) => {
 mixpanel.init(import.meta.env.VITE_PROJECT_ID)
 
 onBackgroundMessage(messaging, async ev => {
+  mixpanel.track("onBackgroundMessage > received_push_event")
+
   const encoded = ev.data?.blob
   const topic = ev.data?.topic
 
   if (!encoded || !topic) {
-    // Console Errors can be viewed via Chrome and Firefox devtools
-    console.error(`Received incorrect payload > blob: ${encoded} | topic: ${topic}`)
+    mixpanel.track(`Received incorrect payload > blob: ${encoded} | topic: ${topic}`)
     return
   }
 
   const symkey = await getSymKey(topic)
+  mixpanel.track(`Decoded symkey: ${symkey}`)
 
   const m = await decryptMessage({ encoded, symkey, topic })
 
+  mixpanel.track(`Decrypted Message: ${m.title}`)
   return self.registration.showNotification(m.title, {
     icon: m.icon,
     body: m.body,
