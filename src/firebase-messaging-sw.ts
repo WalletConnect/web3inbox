@@ -33,7 +33,7 @@ const getSymKey = async (topic: string) => {
   throw new Error(`No symkey exists for such topic: ${topic}`)
 }
 
-mixpanel.init(import.meta.env.VITE_PROJECT_ID)
+mixpanel.init(import.meta.env.VITE_MIXPANEL_TOKEN)
 
 onBackgroundMessage(messaging, async ev => {
   mixpanel.track("onBackgroundMessage > received_push_event")
