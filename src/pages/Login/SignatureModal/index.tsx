@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback } from 'react'
 import Button from '../../../components/general/Button'
 import { Modal } from '../../../components/general/Modal/Modal'
-import { signatureModalService } from '../../../utils/store'
+import { signatureModalService, subscribeModalService } from '../../../utils/store'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import './SignatureModal.scss'
 import Spinner from '../../../components/general/Spinner'
@@ -9,6 +9,7 @@ import Text from '../../../components/general/Text'
 import SignatureIcon from '../../../components/general/Icon/SignatureIcon'
 import CrossIcon from '../../../components/general/Icon/CrossIcon'
 import { useDisconnect } from 'wagmi'
+import { useModals } from '../../../utils/hooks'
 
 export const SignatureModal: React.FC<{
   message: string
@@ -18,12 +19,11 @@ export const SignatureModal: React.FC<{
    * If identity was already signed, and sync was requested then we are in the
    * final step.
    */
-  const [signing, setSigning] = useState(false)
-
+  const { isSigning } = useModals()
   const { disconnect } = useDisconnect()
 
   const onSign = useCallback(() => {
-    setSigning(true)
+    signatureModalService.startSigning()
     window.web3inbox
       .signMessage(message)
       .then(signature => {
@@ -41,15 +41,9 @@ export const SignatureModal: React.FC<{
         }
       })
       .catch(() => {
-        setSigning(false)
+        signatureModalService.stopSigning()
       })
-      .finally(() => {
-        signatureModalService.closeModal()
-        setTimeout(() => {
-          setSigning(false)
-        }, 300)
-      })
-  }, [message, sender, setSigning])
+  }, [message, sender])
 
   return (
     <Modal onToggleModal={signatureModalService.toggleModal}>
@@ -64,7 +58,7 @@ export const SignatureModal: React.FC<{
         </div>
 
         <Text className="SignatureModal__title" variant="large-600">
-          {signing ? 'Requesting sign-in' : 'Sign in to enable notifications'}
+          {isSigning ? 'Requesting sign-in' : 'Sign in to enable notifications'}
         </Text>
         <Text className="SignatureModal__url" variant="small-400">
           app.web3inbox.com
@@ -73,8 +67,8 @@ export const SignatureModal: React.FC<{
           To fully use Web3Inbox, please sign into app.web3inbox.com with your wallet.
         </Text>
         <div className="SignatureModal__button">
-          <Button disabled={signing} onClick={onSign}>
-            {signing ? <Spinner width="1em" /> : 'Sign in with wallet'}
+          <Button disabled={isSigning} onClick={onSign}>
+            {isSigning ? <Spinner width="1em" /> : 'Sign in with wallet'}
           </Button>
         </div>
       </div>

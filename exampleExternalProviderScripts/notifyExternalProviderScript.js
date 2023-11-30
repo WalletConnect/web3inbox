@@ -1,6 +1,4 @@
 this.web3inbox.notify.on('getActiveSubscriptions', ev => {
-  console.log('Received getActiveSubscriptions', ev, 'posting to', ev.id)
-
   const response = {
     id: ev.id,
     method: 'getActiveSubscriptions',
@@ -38,8 +36,6 @@ this.web3inbox.notify.on('getActiveSubscriptions', ev => {
 })
 
 this.web3inbox.notify.on('getMessageHistory', ev => {
-  console.log('Received getMessageHistory', ev, 'posting to', ev.id)
-
   const response = {
     id: ev.id,
     method: 'getMessageHistory',

@@ -1,58 +1,79 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import debounce from 'lodash.debounce'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { from } from 'rxjs'
 import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
 import { useIsMobile } from '../../../utils/hooks'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
-import './AppSelector.scss'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import TargetTitle from '../../general/TargetTitle'
 import AllAppsIcon from '../../../assets/AllApps.svg'
 import Label from '../../general/Label'
 import Text from '../../general/Text'
 import MobileHeader from '../../layout/MobileHeader'
-import { AnimatePresence, motion } from 'framer-motion'
+import { handleImageFallback } from '../../../utils/ui'
+import LinkItemSkeleton from './LinkItemSkeleton'
+import { AnimatePresence, m } from 'framer-motion'
+import './AppSelector.scss'
+
+const SUBSCRIPTION_LOADER_TIMEOUT = 3000
 
 const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
-  const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
+  const [loading, setLoading] = useState(true)
   const { activeSubscriptions } = useContext(W3iContext)
-  const nav = useNavigate()
 
-  const filterApps = useCallback(
-    debounce((searchQuery: string) => {
-      if (!searchQuery) {
-        setFilteredApps(activeSubscriptions)
+  const fetchApps = async (searchQuery: string) => {
+    const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
 
-        return
-      }
-
-      const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
-
-      from(activeSubscriptions).subscribe({
-        next: app => {
-          const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
-          if (isAppNameMatch) {
-            newFilteredApps.push(app)
-          }
-        },
-        complete: () => {
-          setFilteredApps(newFilteredApps)
+    from(activeSubscriptions).subscribe({
+      next: app => {
+        if (!loading) {
+          setLoading(false)
         }
-      })
-    }, 50),
-    [activeSubscriptions]
-  )
+        const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
+        if (isAppNameMatch) {
+          newFilteredApps.push(app)
+        }
+      },
+      complete: () => {
+        setFilteredApps(newFilteredApps)
+      }
+    })
+  }
+
+  const searchApps = debounce((searchQuery: string) => {
+    if (!searchQuery) {
+      setFilteredApps(activeSubscriptions)
+      return
+    }
+
+    fetchApps(searchQuery)
+  }, 100)
 
   useEffect(() => {
-    filterApps(search)
-  }, [search, filterApps, activeSubscriptions])
+    fetchApps(search)
+  }, [activeSubscriptions])
+
+  useEffect(() => {
+    searchApps(search)
+  }, [search])
+
+  useEffect(() => {
+    if (filteredApps?.length) {
+      setLoading(false)
+      return
+    }
+
+    setTimeout(() => {
+      setLoading(false)
+    }, SUBSCRIPTION_LOADER_TIMEOUT)
+  }, [filteredApps?.length])
 
   return (
     <div className="AppSelector">
@@ -98,33 +119,32 @@ const AppSelector: React.FC = () => {
             </>
           )}
         </div>
-        {filteredApps.length > 0 && (
-          <div className="AppSelector__wrapper">
-            <Label color="main">Subscribed</Label>
-            <ul className="AppSelector__list">
-              {filteredApps.map(app => (
-                <AnimatePresence key={app.topic}>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    exit={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
+        <div className="AppSelector__wrapper">
+          <Label color="main">Subscribed</Label>
+          <ul className="AppSelector__list">
+            {loading
+              ? Array(3)
+                  .fill(<LinkItemSkeleton />)
+                  .map(x => x)
+              : null}
+            {!loading &&
+              filteredApps?.map(app => (
+                <AnimatePresence>
+                  <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <NavLink
                       key={app.topic}
                       to={`/notifications/${app.topic}`}
                       className="AppSelector__link-item"
-                      onMouseEnter={() => setDropdownToShow(app.topic)}
-                      onMouseLeave={() => setDropdownToShow(undefined)}
                     >
                       <div className="AppSelector__notifications">
                         <div className="AppSelector__notifications-link">
-                          <div className="AppSelector__link-logo">
-                            <img
-                              src={app.metadata.icons?.[0] || '/fallback.svg'}
-                              alt={`${app.metadata.name} logo`}
-                              loading="lazy"
-                            />
-                          </div>
+                          <img
+                            className="AppSelector__link-logo"
+                            src={app.metadata.icons?.[0] || '/fallback.svg'}
+                            alt={`${app.metadata.name} logo`}
+                            onError={handleImageFallback}
+                            loading="lazy"
+                          />
                           <div className="AppSelector__link__wrapper">
                             <Text className="AppSelector__link__title" variant="small-500">
                               {app.metadata.name}
@@ -136,12 +156,11 @@ const AppSelector: React.FC = () => {
                         </div>
                       </div>
                     </NavLink>
-                  </motion.div>
+                  </m.div>
                 </AnimatePresence>
               ))}
-            </ul>
-          </div>
-        )}
+          </ul>
+        </div>
       </div>
       {/* <EmptyApps /> */}
     </div>

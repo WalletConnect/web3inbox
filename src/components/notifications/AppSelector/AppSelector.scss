@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-width: 17.5em;
 
   &__mobile-header {
     display: flex;
@@ -168,6 +167,44 @@
         @media (hover: hover) {
           background: rgba(51, 150, 255, 0.08);
         }
+      }
+    }
+
+    &-item-skeleton {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      height: 56px;
+      padding: 0.75rem 1rem 0.75rem 0.75rem;
+      border-radius: 1em;
+      position: relative;
+
+      @media only screen and (max-width: 700px) {
+        border-radius: 0px;
+        padding: 1rem 1.25rem;
+      }
+
+      &__icon {
+        animation: var(--pulse);
+        will-change: opacity;
+        background: var(--skeleton);
+        width: 0.75em;
+        height: 0.75em;
+
+        @media only screen and (min-width: 700px) {
+          border-radius: 50%;
+          padding: 0.5em;
+          width: 2em;
+          height: 2em;
+        }
+      }
+
+      &__description {
+        animation: var(--pulse);
+        will-change: opacity;
+        background: var(--skeleton);
+        width: 50%;
+        height: 18px;
       }
     }
 

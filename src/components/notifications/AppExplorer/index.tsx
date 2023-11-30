@@ -6,9 +6,10 @@ import IntroContent from '../../general/IntroContent'
 import IntroApps from '../../general/Icon/IntroApps'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
+import AppCardSkeleton from './AppCardSkeleton'
 
 const AppExplorer = () => {
-  const projects = useNotifyProjects()
+  const { projects, loading } = useNotifyProjects()
 
   return (
     <AnimatePresence>
@@ -27,45 +28,62 @@ const AppExplorer = () => {
           scale={2.5}
           icon={<IntroApps />}
         />
-        <div className="AppExplorer__apps">
-          <div className="AppExplorer__apps__column">
-            {projects
-              .filter((_, i) => i % 2 === 0)
-              .filter(app => Boolean(app.name))
-              .map(app => (
-                <AppCard
-                  isVerified={app.isVerified}
-                  key={app.name}
-                  name={app.name}
-                  description={app.description}
-                  bgColor={{
-                    dark: app.colors?.primary ?? '#00FF00',
-                    light: app.colors?.primary ?? '#00FF00'
-                  }}
-                  logo={app?.icons?.[0]}
-                  url={app.url}
-                />
-              ))}
+        {loading ? (
+          <div className="AppExplorer__apps">
+            <div className="AppExplorer__apps__column">
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+            </div>
+            <div className="AppExplorer__apps__column">
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+            </div>
           </div>
-          <div className="AppExplorer__apps__column">
-            {projects
-              .filter((_, i) => i % 2 !== 0)
-              .map(app => (
-                <AppCard
-                  isVerified={app.isVerified}
-                  key={app.name}
-                  name={app.name}
-                  description={app.description}
-                  bgColor={{
-                    dark: app.colors?.primary ?? '#00FF00',
-                    light: app.colors?.primary ?? '#00FF00'
-                  }}
-                  logo={app?.icons?.[0]}
-                  url={app.url}
-                />
-              ))}
+        ) : (
+          <div className="AppExplorer__apps">
+            <div className="AppExplorer__apps__column">
+              {projects
+                .filter((_, i) => i % 2 === 0)
+                .filter(app => Boolean(app.name))
+                .map(app => (
+                  <AppCard
+                    isVerified={app.isVerified}
+                    key={app.name}
+                    name={app.name}
+                    description={app.description}
+                    bgColor={{
+                      dark: app.colors?.primary ?? '#00FF00',
+                      light: app.colors?.primary ?? '#00FF00'
+                    }}
+                    logo={app.icons?.[0] || '/fallback.svg'}
+                    url={app.url}
+                  />
+                ))}
+            </div>
+            <div className="AppExplorer__apps__column">
+              {projects
+                .filter((_, i) => i % 2 !== 0)
+                .map(app => (
+                  <AppCard
+                    isVerified={app.isVerified}
+                    key={app.name}
+                    name={app.name}
+                    description={app.description}
+                    bgColor={{
+                      dark: app.colors?.primary ?? '#00FF00',
+                      light: app.colors?.primary ?? '#00FF00'
+                    }}
+                    logo={app.icons?.[0] || '/fallback.svg'}
+                    url={app.url}
+                  />
+                ))}
+            </div>
           </div>
-        </div>
+        )}
       </motion.div>
     </AnimatePresence>
   )

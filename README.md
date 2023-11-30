@@ -1,6 +1,6 @@
 # Web3Inbox
 
-Web3Inbox is a dapp that showcases the WalletConnect Notify and Chat API's. 
+Web3Inbox is a dapp that showcases the WalletConnect Notify and Chat API's.
 
 ## Installation
 

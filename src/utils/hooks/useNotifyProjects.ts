@@ -3,13 +3,16 @@ import SettingsContext from '../../contexts/SettingsContext/context'
 import type { INotifyApp, INotifyProject } from '../types'
 import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '../constants'
 
+const projectId: string = import.meta.env.VITE_PROJECT_ID
+
 const useNotifyProjects = () => {
+  const [loading, setLoading] = useState(false)
   const [projects, setProjects] = useState<INotifyApp[]>([])
   const { filterAppDomain } = useContext(SettingsContext)
 
   useEffect(() => {
     const fetchNotifyProjects = async () => {
-      const projectId: string = import.meta.env.VITE_PROJECT_ID
+      setLoading(true)
 
       const explorerUrl = new URL(
         filterAppDomain ? EXPLORER_ENDPOINTS.notifyConfig : EXPLORER_ENDPOINTS.projects,
@@ -26,6 +29,8 @@ const useNotifyProjects = () => {
 
       const allProjectsRawRes = await fetch(explorerUrl)
       const allNotifyProjectsRes = await allProjectsRawRes.json()
+
+      setLoading(false)
 
       const notifyProjects: Omit<INotifyProject, 'app'>[] = filterAppDomain
         ? [allNotifyProjectsRes.data]
@@ -54,13 +59,14 @@ const useNotifyProjects = () => {
             isFeatured: is_featured
           })
         )
+        .filter(app => Boolean(app.name))
 
       setProjects(notifyApps)
     }
     fetchNotifyProjects()
   }, [setProjects, filterAppDomain])
 
-  return projects
+  return { projects, loading }
 }
 
 export default useNotifyProjects

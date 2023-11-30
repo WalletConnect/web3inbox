@@ -173,11 +173,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
     const subscriptions = this.notifyClient.getActiveSubscriptions(params)
 
-    console.log(
-      'InternalNotifyProvider > NotifyClient.getActiveSubscriptions > subscriptions',
-      subscriptions
-    )
-
     return Promise.resolve(subscriptions)
   }
 
@@ -187,8 +182,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     }
 
     const messages = this.notifyClient.getMessageHistory(params)
-
-    console.log('InternalNotifyProvider > NotifyClient.getMessageHistory > messages', messages)
 
     return Promise.resolve(messages)
   }

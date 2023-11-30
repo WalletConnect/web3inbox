@@ -1,5 +1,4 @@
 this.web3inbox.chat.on('getMessages', ev => {
-  console.log('Received getMessage', ev, 'posting to', ev.id)
   this.web3inbox.chat.postMessage(ev.id.toString(), {
     method: 'getMessages',
     result: [
@@ -24,6 +23,5 @@ this.web3inbox.chat.on('getThreads', ev => {
       }
     ]
   }
-  console.log('Received getThreads', ev, 'posting to', ev.id, 'sending', response)
   this.web3inbox.chat.postMessage(ev.id.toString(), response)
 })

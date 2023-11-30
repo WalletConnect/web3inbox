@@ -1,19 +1,20 @@
 import { getAccount, watchAccount, watchNetwork, getNetwork } from '@wagmi/core'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import type { EventEmitter } from 'events'
+import { getEIPChainString } from '../../utils/chain'
 
 export default class InternalAuthProvider {
   private readonly methodsListenedTo = ['auth_set_account']
   public providerName = 'InternalAuthProvider'
-  public account?: string
-  public chain?: string
+  public account?: string = getAccount().address
+  public chain?: string = getEIPChainString(getNetwork().chain?.id)
   protected readonly emitter: EventEmitter
 
   public constructor(emitter: EventEmitter, _name = 'InternalAuthProvider') {
     this.emitter = emitter
 
     watchNetwork(network => {
-      const caip10Chain = `eip155:${network.chain?.id}`
+      const caip10Chain = getEIPChainString(getNetwork().chain?.id)
       this.chain = caip10Chain
 
       this.emitter.emit('auth_set_account', { account: this.account, chain: caip10Chain })
@@ -27,7 +28,7 @@ export default class InternalAuthProvider {
         return
       }
 
-      const caip10Chain = `eip155:${getNetwork().chain?.id}`
+      const caip10Chain = getEIPChainString(getNetwork().chain?.id)
       this.emitter.emit('auth_set_account', { account: account.address, chain: caip10Chain })
       this.chain = caip10Chain
       this.account = account.address
@@ -52,7 +53,7 @@ export default class InternalAuthProvider {
   public async initState() {
     this.account = getAccount().address
     if (this.account) {
-      this.emitter.emit('auth_set_account', { account: this.account })
+      this.emitter.emit('auth_set_account', { account: this.account, chain: this.chain })
     }
 
     return Promise.resolve()

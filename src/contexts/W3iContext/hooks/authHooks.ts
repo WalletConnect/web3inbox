@@ -7,8 +7,14 @@ import { formatEthChainsAddress, getChain, getEthChainAddress } from '../../../u
 export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [accountQueryParam, setAccountQueryParam] = useState('')
 
-  const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
-  const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(null)
+  const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(w3iProxy.auth)
+
+  const account = authClient?.getAccount()
+  const chain = authClient?.getChain()
+
+  const [userPubkey, setUserPubkey] = useState<string | undefined>(
+    formatEthChainsAddress(account, chain)
+  )
 
   useEffect(() => {
     if (proxyReady) {
@@ -41,7 +47,7 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
     if (account) {
       setUserPubkey(formatEthChainsAddress(account, chain))
     }
-  }, [authClient, setUserPubkey])
+  }, [account, chain])
 
   useEffect(() => {
     const sub = authClient?.observe('auth_set_account', {
@@ -51,7 +57,7 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
     })
 
     return () => sub?.unsubscribe()
-  }, [authClient, userPubkey, setUserPubkey])
+  }, [authClient, userPubkey])
 
   return { userPubkey, setUserPubkey }
 }

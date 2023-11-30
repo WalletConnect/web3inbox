@@ -4,6 +4,7 @@ import AppSelector from '../AppSelector'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import W3iContext from '../../../contexts/W3iContext/context'
+import './NotificationsLayout.scss'
 
 const NotificationsLayout: React.FC = () => {
   const { activeSubscriptions } = useContext(W3iContext)

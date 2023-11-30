@@ -10,6 +10,8 @@ const AppExplorerHeader = () => {
   const isMobile = useIsMobile()
   const { isAppSearchOpen } = useSearch()
 
+  function handleSelectExplorer() {}
+
   return isMobile ? (
     <div className="AppExplorerHeader">
       {!isAppSearchOpen && <MobileHeading>Discover Apps</MobileHeading>}
@@ -30,7 +32,7 @@ const AppExplorerHeader = () => {
         <Select
           name="explorer-selector"
           id="explorer-selector"
-          onChange={console.log}
+          onChange={handleSelectExplorer}
           options={[{ label: 'All', value: 'all' }]}
         />
       </div>
