@@ -42,7 +42,7 @@ const AppExplorer = () => {
                     dark: app.colors?.primary ?? '#00FF00',
                     light: app.colors?.primary ?? '#00FF00'
                   }}
-                  logo={app.icons?.length ? app.icons[0] : '/fallback.svg'}
+                  logo={app?.icons?.[0]}
                   url={app.url}
                 />
               ))}
@@ -60,7 +60,7 @@ const AppExplorer = () => {
                     dark: app.colors?.primary ?? '#00FF00',
                     light: app.colors?.primary ?? '#00FF00'
                   }}
-                  logo={app.icons?.length ? app.icons[0] : '/fallback.svg'}
+                  logo={app?.icons?.[0]}
                   url={app.url}
                 />
               ))}

@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { from } from 'rxjs'
 import SearchIcon from '../../../assets/Search.svg'
 import W3iContext from '../../../contexts/W3iContext/context'
-import { useIsMobile, useSearch } from '../../../utils/hooks'
+import { useIsMobile } from '../../../utils/hooks'
 import Input from '../../general/Input'
 import NavLink from '../../general/NavLink'
 import './AppSelector.scss'
@@ -15,8 +15,6 @@ import Label from '../../general/Label'
 import Text from '../../general/Text'
 import MobileHeader from '../../layout/MobileHeader'
 import { AnimatePresence, motion } from 'framer-motion'
-import { handleImageFallback } from '../../../utils/ui'
-import { getDbEchoRegistrations } from '../../../utils/idb'
 
 const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
@@ -120,15 +118,13 @@ const AppSelector: React.FC = () => {
                     >
                       <div className="AppSelector__notifications">
                         <div className="AppSelector__notifications-link">
-                          <img
-                            className="AppSelector__link-logo"
-                            src={
-                              app.metadata.icons?.length ? app.metadata.icons[0] : '/fallback.svg'
-                            }
-                            alt={`${app.metadata.name} logo`}
-                            onError={handleImageFallback}
-                            loading="lazy"
-                          />
+                          <div className="AppSelector__link-logo">
+                            <img
+                              src={app.metadata.icons?.[0] || '/fallback.svg'}
+                              alt={`${app.metadata.name} logo`}
+                              loading="lazy"
+                            />
+                          </div>
                           <div className="AppSelector__link__wrapper">
                             <Text className="AppSelector__link__title" variant="small-500">
                               {app.metadata.name}

@@ -3,14 +3,21 @@ import './AppNotificationsEmpty.scss'
 import Text from '../../../general/Text'
 import { useEffect, useRef } from 'react'
 
-const AppNotificationsEmpty: React.FC<{ icon: string; name: string }> = ({ icon, name }) => {
+interface IAppNotificationsEmptyProps {
+  icon: string | undefined
+  name: string
+}
+
+const AppNotificationsEmpty: React.FC<IAppNotificationsEmptyProps> = ({ icon, name }) => {
   const backgroundRef = useRef<HTMLDivElement>(null)
+
+  const iconURL = icon || '/fallback.svg'
 
   useEffect(() => {
     if (backgroundRef.current) {
-      backgroundRef.current.style.setProperty('--local-bg-url', `url(${icon})`)
+      backgroundRef.current.style.setProperty('--local-bg-url', `url(${iconURL})`)
     }
-  }, [icon])
+  }, [iconURL])
 
   return (
     <div className="AppNotificationsEmpty">
@@ -19,8 +26,8 @@ const AppNotificationsEmpty: React.FC<{ icon: string; name: string }> = ({ icon,
           <div className="AppNotificationsEmpty__visual__item">
             <img
               className="AppNotificationsEmpty__visual__item__logo"
-              src={icon}
               alt={`${name} logo`}
+              src={iconURL}
             />
             <div className="AppNotificationsEmpty__visual__item__container">
               <div className="AppNotificationsEmpty__visual__item__skeleton"></div>
