@@ -72,7 +72,6 @@ export const SignatureModal: React.FC<{
         </Text>
         <div className="SignatureModal__button">
           <Button
-            className="sign-button"
             disabled={isSigning}
             textVariant="paragraph-600"
             rightIcon={isSigning ? null : <Wallet />}

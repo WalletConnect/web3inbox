@@ -26,10 +26,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
 
-  .connect-button {
-    min-width: fit-content;
+    &__connect-button {
+      min-width: fit-content;
+    }
   }
 }
 
