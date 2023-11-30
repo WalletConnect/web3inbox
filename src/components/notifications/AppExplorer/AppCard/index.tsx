@@ -12,7 +12,6 @@ interface AppCardProps {
   name: string
   description: string
   logo: string
-  isVerified: boolean
   bgColor: {
     dark: string
     light: string
@@ -20,13 +19,14 @@ interface AppCardProps {
   url: string
 }
 
-const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url, isVerified }) => {
+const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
   const { notifyClientProxy, userPubkey } = useContext(W3iContext)
-
   const { activeSubscriptions } = useContext(W3iContext)
+
+  const host = new URL(url).host
 
   useEffect(() => {
     // If the account changes, the subscribing flow has broken.
@@ -102,7 +102,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
           </Text>
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
-          {isVerified ? 'Official app' : new URL(url).host}
+          {host}
         </Text>
         <Text className="AppCard__body__description" variant="paragraph-500">
           {description}

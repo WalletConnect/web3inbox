@@ -51,7 +51,6 @@ const AppExplorer = () => {
                 .filter(app => Boolean(app.name))
                 .map(app => (
                   <AppCard
-                    isVerified={app.isVerified}
                     key={app.name}
                     name={app.name}
                     description={app.description}
@@ -69,7 +68,6 @@ const AppExplorer = () => {
                 .filter((_, i) => i % 2 !== 0)
                 .map(app => (
                   <AppCard
-                    isVerified={app.isVerified}
                     key={app.name}
                     name={app.name}
                     description={app.description}
