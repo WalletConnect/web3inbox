@@ -21,9 +21,12 @@ import Text from '../../general/Text'
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
+  const nav = useNavigate()
   const { search } = useLocation()
   const { chatClientProxy, userPubkey, threads, sentInvites } = useContext(W3iContext)
   const { data: ensName } = useEnsName({ address: peerAddress })
+  const [pendingMessages, setPendingMessages] = useState<ReplayMessage[]>([])
+
   const topic = useMemo(
     () =>
       new URLSearchParams(search).get('topic') ??
@@ -32,13 +35,9 @@ const ThreadWindow: React.FC = () => {
     [threads, search]
   )
 
-  const [pendingMessages, setPendingMessages] = useState<ReplayMessage[]>([])
-
   if (!topic) {
     return <Navigate to="/messages" />
   }
-
-  const nav = useNavigate()
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 

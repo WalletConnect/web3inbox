@@ -28,7 +28,10 @@ const appSearchSubject = new BehaviorSubject<IAppSearchState>({
 
 const profileModalSubject = new BehaviorSubject(false)
 const shareModalSubject = new BehaviorSubject(false)
-const signatureModalSubject = new BehaviorSubject(false)
+const signatureModalSubject = new BehaviorSubject({
+  isOpen: false,
+  signing: false
+})
 const pwaModalSubject = new BehaviorSubject(false)
 const notificationPwaModalSubject = new BehaviorSubject(false)
 const contactsModalSubject = new BehaviorSubject(false)
@@ -96,9 +99,38 @@ export const shareModalService = {
 }
 
 export const signatureModalService = {
-  toggleModal: () => signatureModalSubject.next(!signatureModalSubject.value),
-  openModal: () => signatureModalSubject.next(true),
-  closeModal: () => signatureModalSubject.next(false),
+  toggleModal: () =>
+    signatureModalSubject.next({
+      ...signatureModalSubject.value,
+      isOpen: !signatureModalSubject.value.isOpen
+    }),
+  openModal: () =>
+    signatureModalSubject.next({
+      ...signatureModalSubject.value,
+      isOpen: true
+    }),
+  startSigning: () =>
+    signatureModalSubject.next({
+      ...signatureModalSubject.value,
+      signing: true
+    }),
+  stopSigning: () =>
+    signatureModalSubject.next({
+      ...signatureModalSubject.value,
+      signing: false
+    }),
+  closeModal: () => {
+    signatureModalSubject.next({
+      ...signatureModalSubject.value,
+      isOpen: false
+    })
+    setTimeout(() => {
+      signatureModalSubject.next({
+        ...signatureModalSubject.value,
+        signing: false
+      })
+    }, 500)
+  },
   modalState: signatureModalSubject.asObservable()
 }
 

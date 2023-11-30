@@ -165,6 +165,7 @@ export const useModals = () => {
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
+  const [isSigning, setIsSigning] = useState(false)
   const [isNotificationPwaModalOpen, setIsNotificationPwaModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
@@ -184,8 +185,11 @@ export const useModals = () => {
      *   setIsSubscribeModalOpen(state.isOpen)
      * })
      */
-    const signatureSubscription = signatureModalService.modalState.subscribe(isOpen => {
-      setIsSignatureModalOpen(isOpen)
+    const signatureSubscription = signatureModalService.modalState.subscribe(next => {
+      setIsSignatureModalOpen(next.isOpen)
+    })
+    const isSigningSubscription = signatureModalService.modalState.subscribe(next => {
+      setIsSigning(next.signing)
     })
     const contactsSubscription = contactsModalService.modalState.subscribe(isOpen => {
       setIsContactModalOpen(isOpen)
@@ -212,6 +216,7 @@ export const useModals = () => {
       shareSubscription.unsubscribe()
       contactsSubscription.unsubscribe()
       signatureSubscription.unsubscribe()
+      isSigningSubscription.unsubscribe()
       preferencesSubscription.unsubscribe()
       unsubscribeSubscription.unsubscribe()
       notificationPwaModalSubscription.unsubscribe()
@@ -222,6 +227,7 @@ export const useModals = () => {
     isProfileModalOpen,
     isShareModalOpen,
     isSignatureModalOpen,
+    isSigning,
     isContactModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,

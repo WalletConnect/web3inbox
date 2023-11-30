@@ -5,6 +5,7 @@ import type Web3InboxProxy from '../../../w3iProxy'
 import type { W3iNotifyClient } from '../../../w3iProxy'
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
+import { useNavigate } from 'react-router-dom'
 
 export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
@@ -16,6 +17,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
 
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
+  const nav = useNavigate()
 
   const [notifyClient, setNotifyClient] = useState<W3iNotifyClient | null>(null)
 
@@ -24,6 +26,11 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
       setNotifyClient(w3iProxy.notify)
     }
   }, [w3iProxy, proxyReady])
+
+  const updateSignatureModalState = useCallback(({ message }: { message: string }) => {
+    setRegisterMessage(message)
+    setRegistered(null)
+  }, [])
 
   const refreshNotifyState = useCallback(() => {
     if (!proxyReady || !notifyClient || !userPubkey) {
@@ -77,12 +84,18 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
   }, [userPubkey, setRegistered])
 
   useEffect(() => {
+    if (registerMessage && !registeredKey) {
+      nav('/login')
+    }
+  }, [registerMessage, registeredKey])
+
+  useEffect(() => {
     if (!notifyClient) {
       return noop
     }
 
     const notifySignatureRequestedSub = notifyClient.observe('notify_signature_requested', {
-      next: ({ message }) => setRegisterMessage(message)
+      next: updateSignatureModalState
     })
 
     const notifySignatureRequestCancelledSub = notifyClient.observe(
