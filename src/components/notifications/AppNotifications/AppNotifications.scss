@@ -111,12 +111,12 @@
   &__item {
     position: relative;
     display: flex;
-    gap: 12px;
+    gap: 0.75rem;
     width: 100%;
     border: 1px solid var(--border-color-2);
     align-items: center;
-    padding: 16px 20px;
-    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
 
     &--blue {
       background: rgba(51, 150, 255, 0.08);
