@@ -5,13 +5,12 @@ import { WagmiConfig } from 'wagmi'
 import { arbitrum, avalanche, bsc, mainnet, polygon } from 'wagmi/chains'
 import SettingsContextProvider from './contexts/SettingsContext'
 import W3iContextProvider from './contexts/W3iContext'
-import './index.css'
-import './styles/fonts.css'
 import ConfiguredRoutes from './routes'
 import { Modals } from './Modals'
 import { initSentry } from './utils/sentry'
 import { polyfill } from './utils/polyfill'
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
+import './index.css'
 
 polyfill()
 initSentry()
