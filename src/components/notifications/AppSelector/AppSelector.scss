@@ -192,7 +192,7 @@
       &__icon {
         animation: var(--pulse);
         will-change: opacity;
-        background: var(--skeleton);
+        background: var(--shimmer-fg);
         width: 0.75em;
         height: 0.75em;
 
@@ -207,7 +207,7 @@
       &__description {
         animation: var(--pulse);
         will-change: opacity;
-        background: var(--skeleton);
+        background: var(--shimmer-fg);
         width: 50%;
         height: 18px;
       }

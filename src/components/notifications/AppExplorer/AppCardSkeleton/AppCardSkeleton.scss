@@ -1,6 +1,7 @@
 .AppCardSkeleton {
   padding: 2rem;
-  background: white;
+  background: var(--shimmer-bg);
+  backdrop-filter: blur(1rem);
   border-radius: 1.875em;
   position: relative;
   outline: 1px solid rgba(0, 0, 0, 0.05);
@@ -18,7 +19,7 @@
 
     &__logo {
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      background: var(--skeleton);
+      background: var(--shimmer-fg);
       border-radius: 50%;
       width: 3.75em;
       height: 3.75em;
@@ -50,7 +51,7 @@
 
     &__title {
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      background: var(--skeleton);
+      background: var(--shimmer-fg);
       height: 26px;
       width: 40%;
       display: flex;
@@ -60,7 +61,7 @@
 
     &__subtitle {
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      background: var(--skeleton);
+      background: var(--shimmer-fg);
       height: 16px;
       width: 70%;
       margin-top: 4px;
@@ -68,14 +69,14 @@
 
     &__description {
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      background: var(--skeleton);
+      background: var(--shimmer-fg);
       height: 20px;
       margin-top: 1rem;
     }
 
     &__subscribed {
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      background: var(--skeleton);
+      background: var(--shimmer-fg);
       border-radius: 14px;
       height: 28px;
       min-width: 84px;
