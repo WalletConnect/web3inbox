@@ -2,11 +2,11 @@ import React from 'react'
 import './ExternalLink.scss'
 import Text from '../Text'
 
-type THTMLAnchorProps = React.DetailedHTMLProps<
+type HTMLAnchorProps = React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
   HTMLAnchorElement
 >
-type TAnchorProps = THTMLAnchorProps & {
+type TAnchorProps = HTMLAnchorProps & {
   link: string
 }
 

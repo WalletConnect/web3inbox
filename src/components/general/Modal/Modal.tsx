@@ -1,7 +1,7 @@
 import React, { Fragment, useRef, useCallback } from 'react'
 import { useOnClickOutside, useResizeObserver } from '../../../utils/hooks'
-import './Modal.scss'
 import { LazyMotion, domMax, m } from 'framer-motion'
+import './Modal.scss'
 
 interface IModalProps {
   onToggleModal: () => void
@@ -26,10 +26,10 @@ export const Modal: React.FC<IModalProps> = ({ children, onToggleModal, width, h
       <Fragment>
         <m.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
-          className="blur"
+          className="overlay"
         />
         <m.div
           initial={{ opacity: 0, y: '-50%', x: '-50%', scale: 0.95 }}

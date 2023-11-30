@@ -46,6 +46,12 @@
     .Button {
       width: 100%;
       padding: 10px 0px;
+
+      svg {
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+      }
     }
   }
 }

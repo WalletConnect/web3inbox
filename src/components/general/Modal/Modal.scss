@@ -1,15 +1,15 @@
 @import '../../../styles/mixins.scss';
 
-.blur {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
-  background: #000;
-
+  background: var(--modal-overlay);
   z-index: 1;
   width: 100vw;
   height: 100vh;
 }
+
 .modal {
   position: fixed;
   top: 50%;
@@ -27,10 +27,12 @@
   box-shadow: 0px 8px 22px -6px rgba(0, 0, 0, 0.12), 0px 14px 64px -4px rgba(0, 0, 0, 0.12);
   overflow: hidden;
   transition: height 0.15s;
+
   &__content {
     width: 100%;
     color: var(--fg-color-1);
   }
+
   &__container {
     height: fit-content;
     width: fit-content;
