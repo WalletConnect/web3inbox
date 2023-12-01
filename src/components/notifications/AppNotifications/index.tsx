@@ -90,6 +90,7 @@ const AppNotifications = () => {
             id={app.topic}
             name={app.metadata.name}
             logo={app.metadata?.icons?.[0]}
+            domain={app.metadata.appDomain}
           />
           <MobileHeader
             back="/notifications"
