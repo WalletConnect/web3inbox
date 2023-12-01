@@ -39,6 +39,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 0.5rem;
   }
   &__secondary__actions {
     display: flex;
@@ -51,6 +52,7 @@
     }
   }
   &__app {
+    flex: 1;
     display: flex;
     align-items: center;
     gap: 0.5em;
@@ -67,6 +69,19 @@
       font-weight: 500;
       line-height: 130%;
       letter-spacing: -0.32px;
+
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+    }
+    &__description {
+      color: var(--fg-color-2);
+
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
     }
   }
   &__actions {

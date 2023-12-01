@@ -6,13 +6,20 @@ import BackButton from '../../../general/BackButton'
 import Button from '../../../general/Button'
 import AppNotificationDropdown from '../AppNotificationDropdown'
 import './AppNotificationsHeader.scss'
+import Text from '../../../general/Text'
 
 interface IAppNotificationsHeaderProps {
   id: string
   logo: string | undefined
   name: string
+  domain: string
 }
-const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, name, id }) => {
+const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
+  domain,
+  logo,
+  name,
+  id
+}) => {
   const isMobile = useIsMobile()
   const { dappOrigin } = useContext(W3iContext)
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
@@ -41,7 +48,12 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, 
                 alt={`${name} logo`}
                 loading="lazy"
               />
-              <h2 className="AppNotificationsHeader__app__name">{name}</h2>
+              <div className="AppNotificationsHeader__app__name_container">
+                <h2 className="AppNotificationsHeader__app__name">{name}</h2>
+                <Text variant="link-500" className="AppNotificationsHeader__app__description">
+                  {domain}
+                </Text>
+              </div>
             </div>
             <div className="AppNotificationsHeader__wrapper">
               <AppNotificationDropdown
