@@ -38,6 +38,10 @@ textarea {
   box-sizing: border-box;
 }
 
+*::selection {
+  background: rgba(0, 0, 0, 0.1);
+}
+
 img,
 picture,
 svg,
