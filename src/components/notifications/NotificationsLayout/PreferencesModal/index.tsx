@@ -15,7 +15,6 @@ import Text from '../../../general/Text'
 export const PreferencesModal: React.FC = () => {
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const { mode } = useContext(SettingsContext)
-  const themeColors = useColorModeValue(mode)
   const { preferencesModalAppId } = useModals()
   const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
 
@@ -105,6 +104,7 @@ export const PreferencesModal: React.FC = () => {
               </div>
             ))}
         </div>
+        <div className="PreferencesModal__overflow-gradient" />
         <div className="PreferencesModal__action">
           <Button className="PreferencesModal__action__btn" onClick={handleUpdatePreferences}>
             Update

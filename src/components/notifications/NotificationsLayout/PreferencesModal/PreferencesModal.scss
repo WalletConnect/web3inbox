@@ -1,6 +1,8 @@
 .PreferencesModal {
   display: flex;
   flex-direction: column;
+  max-height: 96vh;
+
   &__header {
     width: 100%;
     display: flex;
@@ -14,6 +16,7 @@
       color: var(--fg-color-1);
     }
   }
+
   &__close {
     width: 2rem;
     height: 2rem;
@@ -39,7 +42,8 @@
     padding: 0.625rem 1.25rem;
     gap: 0.625rem;
     width: 100%;
-    border-bottom: 1px solid #eaf1f1;
+    overflow: auto;
+    position: relative;
 
     &__item {
       display: flex;
@@ -66,8 +70,21 @@
     }
   }
 
+  &__overflow-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 6rem;
+    background: linear-gradient(180deg, transparent 0%, var(--bg-color-1) 1.75rem);
+    z-index: 5;
+  }
+
   &__action {
-    margin: 1.25rem;
+    border-top: 1px solid #eaf1f1;
+    padding: 1.25rem;
+    z-index: 10;
+
     &__btn {
       padding: 0.625rem 0px 0.6875rem 0px;
       border-radius: 100px !important;
