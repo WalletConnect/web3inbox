@@ -73,8 +73,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       icon1: 'hsla(180, 6%, 80%, 1)',
       qr1: '#e4e7e7',
       brightness: '0.66',
-      shimmer1: 'rgba(255, 255, 255, 0.05)',
-      shimmer2: 'rgba(255, 255, 255, 0.1)',
+      shimmerFg: 'rgba(255, 255, 255, 0.05)',
+      shimmerBg: 'rgba(0, 0, 0, 0.7)',
       modalOverlay: 'rgba(0, 0, 0, 0.6)'
     },
     light: {
@@ -100,8 +100,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       icon1: 'hsla(180, 4%, 16%, 1)',
       qr1: '#141414',
       brightness: '1.33',
-      shimmer1: 'rgba(0, 0, 0, 0.05)',
-      shimmer2: 'rgba(0, 0, 0, 0.1)',
+      shimmerFg: 'rgba(0, 0, 0, 0.1)',
+      shimmerBg: 'rgba(255, 255, 255, 0.7)',
       modalOverlay: 'rgba(139, 151, 151, 0.3)'
     }
   }
@@ -129,8 +129,8 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--icon-color-1': colors[specifiedMode].icon1,
     '--qr-color-1': colors[specifiedMode].qr1,
     '--brightness-multiplier': colors[specifiedMode].brightness,
-    '--shimmer-color-1': colors[specifiedMode].shimmer1,
-    '--shimmer-color-2': colors[specifiedMode].shimmer2,
+    '--shimmer-fg': colors[specifiedMode].shimmerFg,
+    '--shimmer-bg': colors[specifiedMode].shimmerBg,
     '--modal-overlay': colors[specifiedMode].modalOverlay
   }
 
