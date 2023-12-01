@@ -1,5 +1,5 @@
 import { useFormattedTime } from '../../../utils/hooks'
-import { createRef, useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import CircleIcon from '../../general/Icon/CircleIcon'
 import { LazyMotion, domMax } from 'framer-motion'
