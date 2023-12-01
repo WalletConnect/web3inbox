@@ -2,10 +2,8 @@ import { useCallback, useContext } from 'react'
 import W3iContext from '../../../../contexts/W3iContext/context'
 import { preferencesModalService, unsubscribeModalService } from '../../../../utils/store'
 import Dropdown from '../../../general/Dropdown/Dropdown'
-import NotificationMuteIcon from '../../../general/Icon/NotificationMuteIcon'
-import SettingIcon from '../../../general/Icon/SettingIcon'
 import './AppNotificationDropdown.scss'
-import CrossIcon from '../../../general/Icon/CrossIcon'
+import CrossIcon2 from '../../../general/Icon/CrossIcon2'
 import PreferencesIcon from '../../../general/Icon/PreferencesIcon'
 
 interface IAppNotificationDropdownProps {
@@ -46,7 +44,7 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
           className="AppNotificationDropdown__actions__unsubscribe"
           onClick={handleUnsubscribe}
         >
-          <CrossIcon />
+          <CrossIcon2 />
           <span>Unsubscribe</span>
         </button>
       </div>
