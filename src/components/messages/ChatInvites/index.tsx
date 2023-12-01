@@ -1,10 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+
 import CrossIcon from '@/assets/Cross.svg'
-import W3iContext from '@/contexts/W3iContext/context'
 import BackButton from '@/components/general/BackButton'
 import Button from '@/components/general/Button'
 import Checkbox from '@/components/general/Checkbox'
 import CheckIcon from '@/components/general/Icon/CheckIcon'
+import W3iContext from '@/contexts/W3iContext/context'
+
 import PeerAndMessage from '../PeerAndMessage'
 import ChatInvitesHeader from './ChatInvitesHeader'
 import './Invites.scss'

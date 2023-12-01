@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Web3InboxProxy from '@/w3iProxy'
+
+import Web3InboxProxy from '../../../w3iProxy'
 import { useDappOrigin } from './dappOrigin'
 import { useProviderQueries } from './providerQueryHooks'
 import { useUiState } from './uiHooks'

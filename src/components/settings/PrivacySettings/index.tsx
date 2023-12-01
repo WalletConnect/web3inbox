@@ -1,15 +1,17 @@
 import React from 'react'
-import './PrivacySettings.scss'
-import SettingsHeader from '../SettingsHeader'
-import SettingsItem from '../SettingsItem'
-import SettingsToggle from '../SettingsToggle/Index'
+
+import MessageCheckmarkIcon from '@/components/general/Icon/MessageCheckmarkIcon'
+import ProfileCheckIcon from '@/components/general/Icon/ProfileCheckIcon'
+import ProfileDeclineIcon from '@/components/general/Icon/ProfileDeclineIcon'
+import ProfileLoadingIcon from '@/components/general/Icon/ProfileLoadingIcon'
 import Radio from '@/components/general/Radio'
 import Text from '@/components/general/Text'
 import MobileHeader from '@/components/layout/MobileHeader'
-import MessageCheckmarkIcon from '@/components/general/Icon/MessageCheckmarkIcon'
-import ProfileLoadingIcon from '@/components/general/Icon/ProfileLoadingIcon'
-import ProfileCheckIcon from '@/components/general/Icon/ProfileCheckIcon'
-import ProfileDeclineIcon from '@/components/general/Icon/ProfileDeclineIcon'
+
+import SettingsHeader from '../SettingsHeader'
+import SettingsItem from '../SettingsItem'
+import SettingsToggle from '../SettingsToggle/Index'
+import './PrivacySettings.scss'
 
 const radios = [
   {

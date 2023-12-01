@@ -1,6 +1,8 @@
 import React from 'react'
-import './SettingsThemeButton.scss'
+
 import Text from '@/components/general/Text'
+
+import './SettingsThemeButton.scss'
 
 interface IProps {
   title: string

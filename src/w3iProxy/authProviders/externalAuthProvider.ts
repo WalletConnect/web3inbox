@@ -1,5 +1,6 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import type { EventEmitter } from 'events'
+
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
 import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'

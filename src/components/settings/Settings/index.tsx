@@ -1,5 +1,9 @@
-import cn from 'classnames'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+
+import { useWeb3ModalTheme } from '@web3modal/wagmi/react'
+import cn from 'classnames'
+import { useLocation } from 'react-router-dom'
+
 import ArtistPalette from '@/assets/ArtistPalette.png'
 import ColoredNotificationBell from '@/assets/ColoredNotificationBell.png'
 import DarkCity from '@/assets/DarkCity.png'
@@ -7,21 +11,20 @@ import HalfHalfCity from '@/assets/HalfHalfCity.png'
 import Handshake from '@/assets/Handshake.png'
 import LightCity from '@/assets/LightCity.png'
 import MoneyWithWings from '@/assets/MoneyWithWings.png'
+import CircleBadge from '@/components/general/Badge/CircleBadge'
+import ArrowRightIcon from '@/components/general/Icon/ArrowRightIcon'
+import IconWrapper from '@/components/general/Icon/IconWrapper/IconWrapper'
+import Radio from '@/components/general/Radio'
+import Toggle from '@/components/general/Toggle'
+import MobileHeader from '@/components/layout/MobileHeader'
 import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/context'
 // eslint-disable-next-line no-duplicate-imports
 import SettingsContext from '@/contexts/SettingsContext/context'
 import W3iContext from '@/contexts/W3iContext/context'
 import { useIsMobile, useModals } from '@/utils/hooks'
-import CircleBadge from '@/components/general/Badge/CircleBadge'
-import ArrowRightIcon from '@/components/general/Icon/ArrowRightIcon'
-import IconWrapper from '@/components/general/Icon/IconWrapper/IconWrapper'
-import Radio from '@/components/general/Radio'
+
 import ContactsModal from '../ContactsModal'
 import './Settings.scss'
-import Toggle from '@/components/general/Toggle'
-import { useWeb3ModalTheme } from '@web3modal/wagmi/react'
-import { useLocation } from 'react-router-dom'
-import MobileHeader from '@/components/layout/MobileHeader'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
   { id: 'light', icon: LightCity },

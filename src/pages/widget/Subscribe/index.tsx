@@ -1,13 +1,16 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+
 import { EventEmitter } from 'events'
-import Button from '@/components/general/Button'
-import W3iContext from '@/contexts/W3iContext/context'
+import { useNavigate } from 'react-router-dom'
+
 import W3iBellIcon from '@/assets/W3iBell.svg'
-import './Subscribe.scss'
-import { showErrorMessageToast } from '@/utils/toasts'
+import Button from '@/components/general/Button'
 import Spinner from '@/components/general/Spinner'
+import W3iContext from '@/contexts/W3iContext/context'
+import { showErrorMessageToast } from '@/utils/toasts'
 import { JsCommunicator } from '@/w3iProxy/externalCommunicators/jsCommunicator'
+
+import './Subscribe.scss'
 
 const WidgetSubscribe: React.FC = () => {
   const {

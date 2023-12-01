@@ -1,10 +1,12 @@
 import { useCallback, useContext } from 'react'
-import W3iContext from '@/contexts/W3iContext/context'
-import { preferencesModalService, unsubscribeModalService } from '@/utils/store'
+
 import Dropdown from '@/components/general/Dropdown/Dropdown'
-import './AppNotificationDropdown.scss'
 import CrossIcon2 from '@/components/general/Icon/CrossIcon2'
 import PreferencesIcon from '@/components/general/Icon/PreferencesIcon'
+import W3iContext from '@/contexts/W3iContext/context'
+import { preferencesModalService, unsubscribeModalService } from '@/utils/store'
+
+import './AppNotificationDropdown.scss'
 
 interface IAppNotificationDropdownProps {
   notificationId: string

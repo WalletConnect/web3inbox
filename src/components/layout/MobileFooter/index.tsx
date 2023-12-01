@@ -1,11 +1,13 @@
 import React, { useContext, useMemo } from 'react'
-import './MobileFooter.scss'
-import W3iContext from '@/contexts/W3iContext/context'
 
 import { Link, useLocation } from 'react-router-dom'
+
+import NewAppIcon from '@/components/general/Icon/NewAppIcon'
 import NotificationIcon from '@/components/general/Icon/NotificationIcon'
 import SettingIcon from '@/components/general/Icon/SettingIcon'
-import NewAppIcon from '@/components/general/Icon/NewAppIcon'
+import W3iContext from '@/contexts/W3iContext/context'
+
+import './MobileFooter.scss'
 
 const MobileFooter: React.FC = () => {
   const { pathname } = useLocation()

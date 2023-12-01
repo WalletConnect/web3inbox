@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { userEnabledNotification } from '../notifications'
+
+import { userEnabledNotification } from '@/utils/notifications'
 
 export const useNotificationPermissionState = () => {
   const [notificationPermissionGranted, setNotificationPermissionGranted] = useState(

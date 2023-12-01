@@ -1,14 +1,17 @@
 import React from 'react'
-import './AppearanceSettings.scss'
+
+import { AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+
+import MoonIcon from '@/components/general/Icon/MoonIcon'
+import SunIcon from '@/components/general/Icon/SunIcon'
+import SystemIcon from '@/components/general/Icon/SystemIcon'
+import MobileHeader from '@/components/layout/MobileHeader'
 import SettingsHeader from '@/components/settings/SettingsHeader'
 import SettingsItem from '@/components/settings/SettingsItem'
 import SettingsThemeButton from '@/components/settings/SettingsThemeButton'
-import SunIcon from '@/components/general/Icon/SunIcon'
-import MoonIcon from '@/components/general/Icon/MoonIcon'
-import SystemIcon from '@/components/general/Icon/SystemIcon'
-import MobileHeader from '@/components/layout/MobileHeader'
-import { AnimatePresence } from 'framer-motion'
-import { motion } from 'framer-motion'
+
+import './AppearanceSettings.scss'
 
 const AppearanceSettings: React.FC = () => {
   return (

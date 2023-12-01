@@ -1,14 +1,16 @@
 import { Fragment, useContext } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { Toaster } from 'react-hot-toast'
+import { Outlet, useLocation } from 'react-router-dom'
+
+import MobileFooter from '@/components/layout/MobileFooter'
+import Sidebar from '@/components/layout/Sidebar'
+import AuthProtectedPage from '@/components/utils/AuthProtectedPage'
+import W3iContext from '@/contexts/W3iContext/context'
+import { useMobileResponsiveGrid } from '@/utils/hooks'
 
 import './App.scss'
-import Sidebar from './components/layout/Sidebar'
-import AuthProtectedPage from './components/utils/AuthProtectedPage'
-import W3iContext from './contexts/W3iContext/context'
-import { useMobileResponsiveGrid } from './utils/hooks'
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
-import MobileFooter from './components/layout/MobileFooter'
 
 const App = () => {
   const { uiEnabled } = useContext(W3iContext)

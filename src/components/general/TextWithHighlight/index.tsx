@@ -1,6 +1,7 @@
 import React from 'react'
-import './TextWithHighlight.scss'
+
 import Text from '../Text'
+import './TextWithHighlight.scss'
 
 interface TextWithHighlightProps {
   text: string

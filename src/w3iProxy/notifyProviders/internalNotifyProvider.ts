@@ -2,14 +2,16 @@ import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
-import type { W3iNotifyProvider } from './types'
+
+import { getDbEchoRegistrations } from '@/utils/idb'
 import {
   notificationsEnabledInBrowser,
   registerWithEcho,
   setupSubscriptionsSymkeys,
   userEnabledNotification
 } from '@/utils/notifications'
-import { getDbEchoRegistrations } from '@/utils/idb'
+
+import type { W3iNotifyProvider } from './types'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined

@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react'
 import React from 'react'
-import './SettingsToggle.scss'
+
 import Text from '@/components/general/Text'
 import Toggle from '@/components/general/Toggle'
+
+import './SettingsToggle.scss'
 
 interface IProps {
   title: string

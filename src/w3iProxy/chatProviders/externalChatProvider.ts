@@ -1,14 +1,15 @@
 /* eslint-disable*/
 // @ts-nocheck
 //
-import type { ChatClientTypes } from './types'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { EventEmitter } from 'events'
+
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
 import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
 import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
 import { ReactNativeCommunicator } from '../externalCommunicators/reactNativeCommunicator'
+import type { ChatClientTypes } from './types'
 import type { ChatClientFunctions, W3iChatProvider } from './types'
 
 export default class ExternalChatProvider implements W3iChatProvider {

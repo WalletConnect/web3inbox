@@ -1,17 +1,20 @@
-import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { noop } from 'rxjs'
-import W3iContext from '@/contexts/W3iContext/context'
-import AppNotificationItem from './AppNotificationItem'
-import './AppNotifications.scss'
-import AppNotificationsHeader from './AppNotificationsHeader'
-import AppNotificationsEmpty from './AppNotificationsEmpty'
-import Label from '@/components/general/Label'
-import MobileHeader from '@/components/layout/MobileHeader'
-import AppNotificationsCardMobile from './AppNotificationsCardMobile'
+
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
+import { useParams } from 'react-router-dom'
+import { noop } from 'rxjs'
+
+import Label from '@/components/general/Label'
+import MobileHeader from '@/components/layout/MobileHeader'
+import W3iContext from '@/contexts/W3iContext/context'
+
+import AppNotificationItem from './AppNotificationItem'
+import './AppNotifications.scss'
+import AppNotificationsCardMobile from './AppNotificationsCardMobile'
+import AppNotificationsEmpty from './AppNotificationsEmpty'
+import AppNotificationsHeader from './AppNotificationsHeader'
 
 export interface AppNotificationsDragProps {
   id: number

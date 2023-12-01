@@ -1,11 +1,12 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NotifyClient } from '@walletconnect/notify-client'
 import { EventEmitter } from 'events'
+
 import type { NotifyFacadeEvents } from './listenerTypes'
-import { ObservablesController } from './observablesController'
 import ExternalNotifyProvider from './notifyProviders/externalNotifyProvider'
 import InternalNotifyProvider from './notifyProviders/internalNotifyProvider'
 import type { W3iNotify } from './notifyProviders/types'
+import { ObservablesController } from './observablesController'
 
 class W3iNotifyFacade implements W3iNotify {
   private readonly providerMap = {

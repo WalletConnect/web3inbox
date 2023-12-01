@@ -1,14 +1,16 @@
 import React, { useCallback, useContext, useMemo } from 'react'
-import Spinner from '@/components/general/Spinner'
-import CrossIcon from '@/components/general/Icon/CrossIcon'
-import './InviteMessage.scss'
-import { useColorModeValue } from '@/utils/hooks'
-import SettingsContext from '@/contexts/SettingsContext/context'
+
 import ChatInviteHandEmoji from '@/assets/ChatInviteHandEmoji.svg'
 import ChatRejectedHandEmoji from '@/assets/ChatRejectedHandEmoji.svg'
 import CheckIcon from '@/components/general/Icon/CheckIcon'
-import type { ChatClientTypes } from '@/w3iProxy/chatProviders/types'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
+import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import { useColorModeValue } from '@/utils/hooks'
+import type { ChatClientTypes } from '@/w3iProxy/chatProviders/types'
+
+import './InviteMessage.scss'
 
 interface InviteMessageProps {
   status: ChatClientTypes.SentInvite['status']

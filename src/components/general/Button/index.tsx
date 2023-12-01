@@ -1,5 +1,7 @@
 import React from 'react'
+
 import cn from 'classnames'
+
 import Text from '../Text'
 import type { TextVariant } from '../Text'
 import './Button.scss'

@@ -1,12 +1,14 @@
 import { useContext, useState } from 'react'
+
+import BackButton from '@/components/general/BackButton'
+import Button from '@/components/general/Button'
+import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
 import { noop } from '@/utils/general'
 import { useIsMobile } from '@/utils/hooks'
-import BackButton from '@/components/general/BackButton'
-import Button from '@/components/general/Button'
+
 import AppNotificationDropdown from '../AppNotificationDropdown'
 import './AppNotificationsHeader.scss'
-import Text from '@/components/general/Text'
 
 interface IAppNotificationsHeaderProps {
   id: string

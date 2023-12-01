@@ -1,7 +1,8 @@
-import type { ExternalCommunicator } from './communicatorType'
-import type { EventEmitter } from 'events'
 import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import type { EventEmitter } from 'events'
+
+import type { ExternalCommunicator } from './communicatorType'
 
 export class JsCommunicator implements ExternalCommunicator {
   private readonly emitter: EventEmitter

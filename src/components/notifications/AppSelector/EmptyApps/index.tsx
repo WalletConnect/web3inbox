@@ -1,4 +1,5 @@
 import React from 'react'
+
 import Alarm from '@/assets/Alarm.png'
 import Chart from '@/assets/Chart.png'
 import ColoredNotificationBell from '@/assets/ColoredNotificationBell.png'
@@ -6,8 +7,8 @@ import FramedPicture from '@/assets/FramedPicture.png'
 import Inbox from '@/assets/Inbox.png'
 import MobilePhone from '@/assets/MobilePhone.png'
 import Toggle from '@/assets/Toggle.png'
-import type { ISection } from '@/utils/types'
 import FeatureInfoBox from '@/components/general/FeatureInfoBox'
+import type { ISection } from '@/utils/types'
 
 const sections: ISection[] = [
   {

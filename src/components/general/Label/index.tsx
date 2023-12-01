@@ -1,6 +1,7 @@
 import React from 'react'
-import './Label.scss'
+
 import Text from '../Text'
+import './Label.scss'
 
 interface ILabelProps {
   children: React.ReactNode | React.ReactNode[]

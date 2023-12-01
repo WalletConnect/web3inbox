@@ -1,15 +1,18 @@
 import React, { useCallback, useContext } from 'react'
+
 import capitalize from 'lodash/capitalize'
-import SettingsContext from '@/contexts/SettingsContext/context'
+
 import SearchSvg from '@/assets/Search.svg'
-import { useColorModeValue } from '@/utils/hooks'
-import { contactsModalService } from '@/utils/store'
 import Button from '@/components/general/Button'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
+import Input from '@/components/general/Input'
 import { Modal } from '@/components/general/Modal/Modal'
 import PeerAndMessage from '@/components/messages/PeerAndMessage'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import { useColorModeValue } from '@/utils/hooks'
+import { contactsModalService } from '@/utils/store'
+
 import './ContactsModal.scss'
-import Input from '@/components/general/Input'
 
 interface ContactsModalProps {
   status: 'blocked' | 'muted'

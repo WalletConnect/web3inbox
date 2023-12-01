@@ -1,11 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import W3iContext from '@/contexts/W3iContext/context'
+
 import Dropdown from '@/components/general/Dropdown/Dropdown'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
 import NotificationMuteIcon from '@/components/general/Icon/NotificationMuteIcon'
-import './ThreadDropdown.scss'
-import { useColorModeValue } from '@/utils/hooks'
 import SettingsContext from '@/contexts/SettingsContext/context'
+import W3iContext from '@/contexts/W3iContext/context'
+import { useColorModeValue } from '@/utils/hooks'
+
+import './ThreadDropdown.scss'
 
 interface ThreadDropdownProps {
   threadId: string

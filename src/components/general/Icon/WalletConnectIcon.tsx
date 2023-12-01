@@ -1,4 +1,5 @@
 import React from 'react'
+
 import cn from 'classnames'
 
 const WalletConnectIcon: React.FC<{ hoverable: boolean }> = ({ hoverable }) => {

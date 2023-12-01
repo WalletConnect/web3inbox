@@ -1,15 +1,18 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react'
-import W3iContext from '@/contexts/W3iContext/context'
-import { useModals } from '@/utils/hooks'
-import { unsubscribeModalService } from '@/utils/store'
+
+import { useNavigate } from 'react-router-dom'
+
 import Button from '@/components/general/Button'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
 import { Modal } from '@/components/general/Modal/Modal'
-import './UnsubscribeModal.scss'
-import Text from '@/components/general/Text'
 import Spinner from '@/components/general/Spinner'
+import Text from '@/components/general/Text'
+import W3iContext from '@/contexts/W3iContext/context'
+import { useModals } from '@/utils/hooks'
+import { unsubscribeModalService } from '@/utils/store'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
-import { useNavigate } from 'react-router-dom'
+
+import './UnsubscribeModal.scss'
 
 export const UnsubscribeModal: React.FC = () => {
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)

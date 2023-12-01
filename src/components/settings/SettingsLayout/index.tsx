@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react'
-import { Outlet } from 'react-router-dom'
-import SettingsSelector from '../SettingsSelector'
+
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
+import { Outlet } from 'react-router-dom'
+
+import SettingsSelector from '../SettingsSelector'
 
 const SettingsLayout: React.FC = () => {
   return (

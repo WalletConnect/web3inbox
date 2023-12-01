@@ -6,6 +6,7 @@ import type { ICore } from '@walletconnect/types'
 import mixpanel from 'mixpanel-browser'
 import type { Logger } from 'pino'
 import pino from 'pino'
+
 import type { UiEnabled } from '../contexts/W3iContext/context'
 import { identifyMixpanelUserAndInit } from '../utils/mixpanel'
 import W3iAuthFacade from './w3iAuthFacade'

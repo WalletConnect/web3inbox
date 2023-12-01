@@ -1,4 +1,5 @@
 import React from 'react'
+
 import './Web3InboxPlaceholder.scss'
 
 const Web3InboxPlaceholder: React.FC = () => {

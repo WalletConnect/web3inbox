@@ -1,16 +1,18 @@
 import React from 'react'
+
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { WagmiConfig } from 'wagmi'
 import { arbitrum, avalanche, bsc, mainnet, polygon } from 'wagmi/chains'
+
+import { Modals } from './Modals'
 import SettingsContextProvider from './contexts/SettingsContext'
 import W3iContextProvider from './contexts/W3iContext'
-import ConfiguredRoutes from './routes'
-import { Modals } from './Modals'
-import { initSentry } from './utils/sentry'
-import { polyfill } from './utils/polyfill'
-import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import './index.css'
+import ConfiguredRoutes from './routes'
+import { polyfill } from './utils/polyfill'
+import { initSentry } from './utils/sentry'
 
 polyfill()
 initSentry()

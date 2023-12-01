@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import React from 'react'
+
 import type { IIconWrapper } from '@/utils/types'
+
 import './IconWrapper.scss'
 
 interface IIconWrapperProps extends IIconWrapper {

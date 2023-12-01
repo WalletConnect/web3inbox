@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+
 import { noop } from '@/utils/general'
 
 export interface SettingsContextUpdate {

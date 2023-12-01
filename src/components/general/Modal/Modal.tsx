@@ -1,6 +1,9 @@
-import React, { Fragment, useRef, useCallback } from 'react'
-import { useOnClickOutside, useResizeObserver } from '@/utils/hooks'
+import React, { Fragment, useCallback, useRef } from 'react'
+
 import { LazyMotion, domMax, m } from 'framer-motion'
+
+import { useOnClickOutside, useResizeObserver } from '@/utils/hooks'
+
 import './Modal.scss'
 
 interface IModalProps {

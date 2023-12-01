@@ -1,16 +1,19 @@
 import React, { useCallback } from 'react'
-import Button from '@/components/general/Button'
-import { Modal } from '@/components/general/Modal/Modal'
-import { signatureModalService } from '@/utils/store'
+
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import './SignatureModal.scss'
-import Text from '@/components/general/Text'
-import SignatureIcon from '@/components/general/Icon/SignatureIcon'
-import CrossIcon from '@/components/general/Icon/CrossIcon'
 import { useDisconnect } from 'wagmi'
-import { useModals } from '@/utils/hooks'
+
+import Button from '@/components/general/Button'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
+import SignatureIcon from '@/components/general/Icon/SignatureIcon'
 import Wallet from '@/components/general/Icon/Wallet'
+import { Modal } from '@/components/general/Modal/Modal'
+import Text from '@/components/general/Text'
+import { useModals } from '@/utils/hooks'
+import { signatureModalService } from '@/utils/store'
+
 import { SignatureLoadingVisual } from './SignatureLoadingVisual'
+import './SignatureModal.scss'
 
 export const SignatureModal: React.FC<{
   message: string

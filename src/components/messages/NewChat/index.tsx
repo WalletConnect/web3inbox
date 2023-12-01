@@ -1,21 +1,24 @@
-import { fetchEnsAddress } from '@wagmi/core'
 import React, { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import SettingsContext from '@/contexts/SettingsContext/context'
-import W3iContext from '@/contexts/W3iContext/context'
-import { isValidAddressOrEnsDomain, isValidEnsDomain } from '@/utils/address'
-import { useColorModeValue, useIsMobile } from '@/utils/hooks'
+
+import { fetchEnsAddress } from '@wagmi/core'
+import debounce from 'lodash.debounce'
+import { NavLink, useNavigate } from 'react-router-dom'
+
+import QrIcon from '@/assets/QrCodeScan.svg'
 import BackButton from '@/components/general/BackButton'
 import Button from '@/components/general/Button'
 import SendIcon from '@/components/general/Icon/SendIcon'
 import Input from '@/components/general/Input'
 import MobileHeading from '@/components/layout/MobileHeading'
-import SearchSuggestions from './SearchSuggestions'
-import debounce from 'lodash.debounce'
-import './NewChat.scss'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import W3iContext from '@/contexts/W3iContext/context'
+import { isValidAddressOrEnsDomain, isValidEnsDomain } from '@/utils/address'
+import { useColorModeValue, useIsMobile } from '@/utils/hooks'
 import { truncate } from '@/utils/string'
-import QrIcon from '@/assets/QrCodeScan.svg'
-import { NavLink, useNavigate } from 'react-router-dom'
 import { showErrorMessageToast } from '@/utils/toasts'
+
+import './NewChat.scss'
+import SearchSuggestions from './SearchSuggestions'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)

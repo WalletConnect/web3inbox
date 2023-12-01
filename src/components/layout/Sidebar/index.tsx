@@ -1,16 +1,19 @@
 import React, { useContext, useMemo } from 'react'
+
+import cn from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
-import W3iContext from '@/contexts/W3iContext/context'
-import { useIsMobile } from '@/utils/hooks'
+
 import Avatar from '@/components/account/Avatar'
 import MessageIcon from '@/components/general/Icon/MessageIcon'
 import NotificationIcon from '@/components/general/Icon/NotificationIcon'
 import SettingIcon from '@/components/general/Icon/SettingIcon'
-import './Sidebar.scss'
 import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
 import ConnectWalletButton from '@/components/login/ConnectWalletButton'
+import W3iContext from '@/contexts/W3iContext/context'
 import { getEthChainAddress } from '@/utils/address'
-import cn from 'classnames'
+import { useIsMobile } from '@/utils/hooks'
+
+import './Sidebar.scss'
 
 const SidebarItem: React.FC<{ children?: React.ReactNode; isDisabled?: boolean }> = ({
   children,

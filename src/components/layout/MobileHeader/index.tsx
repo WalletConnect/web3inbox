@@ -1,13 +1,16 @@
 import React, { useContext, useState } from 'react'
-import './MobileHeader.scss'
-import Avatar from '@/components/account/Avatar'
-import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
+
 import { Link, useNavigate } from 'react-router-dom'
-import Text from '@/components/general/Text'
-import W3iContext from '@/contexts/W3iContext/context'
+
+import Avatar from '@/components/account/Avatar'
 import ArrowLeftIcon from '@/components/general/Icon/ArrowLeftIcon'
+import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
+import Text from '@/components/general/Text'
 import AppNotificationDropdown from '@/components/notifications/AppNotifications/AppNotificationDropdown'
+import W3iContext from '@/contexts/W3iContext/context'
 import { getEthChainAddress } from '@/utils/address'
+
+import './MobileHeader.scss'
 
 interface IMobileHeaderProps {
   title: string

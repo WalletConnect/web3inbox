@@ -1,8 +1,8 @@
+import { SERVICE_WORKER_ACTIONS } from '@/utils/constants'
+
 /// <reference lib="WebWorker" />
 
 declare let self: ServiceWorkerGlobalScope
-
-import { SERVICE_WORKER_ACTIONS } from './utils/constants'
 
 const clearCache = () => {
   self.caches.keys().then(cacheKeys => {

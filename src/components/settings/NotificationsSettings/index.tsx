@@ -1,20 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react'
-import './NotificationsSettings.scss'
+
+import cn from 'classnames'
+import { AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+
+import NotificationIcon from '@/components/general/Icon/Notification'
+import PrivacyIcon from '@/components/general/Icon/Privacy'
+import Input from '@/components/general/Input'
+import MobileHeader from '@/components/layout/MobileHeader'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import W3iContext from '@/contexts/W3iContext/context'
+import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
+import { getDbEchoRegistrations } from '@/utils/idb'
+import { notificationsEnabledInBrowser, requireNotifyPermission } from '@/utils/notifications'
+
 import SettingsHeader from '../SettingsHeader'
 import SettingsItem from '../SettingsItem'
 import SettingsToggle from '../SettingsToggle/Index'
-import MobileHeader from '@/components/layout/MobileHeader'
-import PrivacyIcon from '@/components/general/Icon/Privacy'
-import SettingsContext from '@/contexts/SettingsContext/context'
-import { AnimatePresence } from 'framer-motion'
-import { motion } from 'framer-motion'
-import { notificationsEnabledInBrowser, requireNotifyPermission } from '@/utils/notifications'
-import NotificationIcon from '@/components/general/Icon/Notification'
-import cn from 'classnames'
-import W3iContext from '@/contexts/W3iContext/context'
-import { getDbEchoRegistrations } from '@/utils/idb'
-import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
-import Input from '@/components/general/Input'
+import './NotificationsSettings.scss'
 
 const getHelperTooltip = () => {
   switch (window.Notification?.permission) {

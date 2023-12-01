@@ -1,12 +1,14 @@
-import AppCard from './AppCard'
-import './AppExplorer.scss'
-import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
-import MobileHeader from '@/components/layout/MobileHeader'
-import IntroContent from '@/components/general/IntroContent'
-import IntroApps from '@/components/general/Icon/IntroApps'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
+
+import IntroApps from '@/components/general/Icon/IntroApps'
+import IntroContent from '@/components/general/IntroContent'
+import MobileHeader from '@/components/layout/MobileHeader'
+import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
+
+import AppCard from './AppCard'
 import AppCardSkeleton from './AppCardSkeleton'
+import './AppExplorer.scss'
 
 const AppExplorer = () => {
   const { projects, loading } = useNotifyProjects()

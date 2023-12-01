@@ -1,18 +1,18 @@
 /* eslint-disable */
 // @ts-nocheck
-
 import { getAccount } from '@wagmi/core'
-import type { ChatClientTypes } from './types'
-import type { EventEmitter } from 'events'
 // eslint-disable-next-line no-duplicate-imports
 import { Core, Store } from '@walletconnect/core'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { Logger } from '@walletconnect/logger'
-import type { ICore, IStore } from '@walletconnect/types'
-import type { W3iChatProvider } from './types'
 // eslint-disable-next-line no-duplicate-imports
 import { getDefaultLoggerOptions } from '@walletconnect/logger'
+import type { ICore, IStore } from '@walletconnect/types'
+import type { EventEmitter } from 'events'
 import pino from 'pino'
+
+import type { ChatClientTypes } from './types'
+import type { W3iChatProvider } from './types'
 
 export default class InternalChatProvider implements W3iChatProvider {
   // eslint-disable-next-line

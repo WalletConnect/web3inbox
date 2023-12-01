@@ -1,9 +1,10 @@
 import ExplorerIcon from '@/assets/Explorer.svg'
-import { useIsMobile, useSearch } from '@/utils/hooks'
-import { appSearchService } from '@/utils/store'
 import Search from '@/components/general/Search'
 import Select from '@/components/general/Select/Select'
 import MobileHeading from '@/components/layout/MobileHeading'
+import { useIsMobile, useSearch } from '@/utils/hooks'
+import { appSearchService } from '@/utils/store'
+
 import './AppExplorerHeader.scss'
 
 const AppExplorerHeader = () => {

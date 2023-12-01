@@ -1,7 +1,9 @@
-import cn from 'classnames'
 import React from 'react'
+
+import cn from 'classnames'
 import type { NavLinkProps } from 'react-router-dom'
 import { NavLink as RouterNavLink } from 'react-router-dom'
+
 import './NavLink.scss'
 
 interface INavLinkProps extends NavLinkProps {

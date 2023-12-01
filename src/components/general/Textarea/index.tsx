@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+
 import './Textarea.scss'
 
 interface ITextareaProps {

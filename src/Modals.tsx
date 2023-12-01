@@ -1,18 +1,20 @@
-import { useModals } from './utils/hooks'
-import { PreferencesModal } from './components/notifications/NotificationsLayout/PreferencesModal'
-import { UnsubscribeModal } from './components/notifications/NotificationsLayout/UnsubscribeModal'
-import { SignatureModal } from './pages/Login/SignatureModal'
 import { useContext, useEffect, useMemo } from 'react'
-import W3iContext from './contexts/W3iContext/context'
-import { notificationPwaModalService, signatureModalService } from './utils/store'
-import { AnimatePresence } from 'framer-motion'
+
 import { useWeb3Modal } from '@web3modal/wagmi/react'
-import { isMobileButNotInstalledOnHomescreen } from './utils/pwa'
-import PwaModal from './components/utils/PwaModal'
-import { useNotificationPermissionState } from './utils/hooks/notificationHooks'
-import NotificationPwaModal from './components/utils/NotificationPwaModal'
-import { isMobile } from './utils/ui'
-import { notificationsEnabledInBrowser } from './utils/notifications'
+import { AnimatePresence } from 'framer-motion'
+
+import { PreferencesModal } from '@/components/notifications/NotificationsLayout/PreferencesModal'
+import { UnsubscribeModal } from '@/components/notifications/NotificationsLayout/UnsubscribeModal'
+import NotificationPwaModal from '@/components/utils/NotificationPwaModal'
+import PwaModal from '@/components/utils/PwaModal'
+import W3iContext from '@/contexts/W3iContext/context'
+import { SignatureModal } from '@/pages/Login/SignatureModal'
+import { useModals } from '@/utils/hooks'
+import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
+import { notificationsEnabledInBrowser } from '@/utils/notifications'
+import { isMobileButNotInstalledOnHomescreen } from '@/utils/pwa'
+import { notificationPwaModalService, signatureModalService } from '@/utils/store'
+import { isMobile } from '@/utils/ui'
 
 export const Modals = () => {
   const {

@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
+
 import SettingsContext from '@/contexts/SettingsContext/context'
-import type { INotifyApp, INotifyProject } from '../types'
-import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '../constants'
+import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '@/utils/constants'
+import type { INotifyApp, INotifyProject } from '@/utils/types'
 
 const projectId: string = import.meta.env.VITE_PROJECT_ID
 

@@ -1,13 +1,16 @@
 import React from 'react'
-import { Modal } from '@/components/general/Modal/Modal'
-import { pwaModalService } from '@/utils/store'
+
+import { detect } from 'detect-browser'
+
 import BackgroundImage from '@/assets/IntroBackground.png'
-import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
-import './PwaModal.scss'
-import Text from '@/components/general/Text'
 import AndroidShareIcon from '@/components/general/Icon/AndroidShare'
 import IShareIcon from '@/components/general/Icon/IShare'
-import { detect } from 'detect-browser'
+import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
+import { Modal } from '@/components/general/Modal/Modal'
+import Text from '@/components/general/Text'
+import { pwaModalService } from '@/utils/store'
+
+import './PwaModal.scss'
 
 export const getMobilePlatformIcon = () => {
   const browser = detect()

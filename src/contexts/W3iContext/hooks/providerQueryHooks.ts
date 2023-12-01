@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 import type Web3InboxProxy from '@/w3iProxy'
 
 export const useProviderQueries = () => {

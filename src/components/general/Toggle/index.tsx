@@ -1,4 +1,5 @@
 import React from 'react'
+
 import './Toggle.scss'
 
 interface ToggleProps {

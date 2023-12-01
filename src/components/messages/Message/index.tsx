@@ -1,7 +1,10 @@
 import React from 'react'
-import './Message.scss'
-import { m, LazyMotion, domAnimation } from 'framer-motion'
+
+import { LazyMotion, domAnimation, m } from 'framer-motion'
+
 import Text from '@/components/general/Text'
+
+import './Message.scss'
 
 interface MessageProps {
   text: string

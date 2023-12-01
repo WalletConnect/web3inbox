@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react'
+
 import './Input.scss'
 
 interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {

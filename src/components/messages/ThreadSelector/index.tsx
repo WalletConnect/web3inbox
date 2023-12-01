@@ -1,22 +1,24 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+
 import PlusIcon from '@/assets/Plus.svg'
 import SearchIcon from '@/assets/Search.svg'
+import Avatar from '@/components/account/Avatar'
+import CircleBadge from '@/components/general/Badge/CircleBadge'
+import PencilIcon from '@/components/general/Icon/PencilIcon'
+import Input from '@/components/general/Input'
+import NavLink from '@/components/general/NavLink'
+import Search from '@/components/general/Search'
+import TargetTitle from '@/components/general/TargetTitle'
+import Text from '@/components/general/Text'
+import MobileHeading from '@/components/layout/MobileHeading'
 import W3iContext from '@/contexts/W3iContext/context'
 import { getEthChainAddress } from '@/utils/address'
 import { useIsMobile, useSearch } from '@/utils/hooks'
 import { chatSearchService } from '@/utils/store'
-import Avatar from '@/components/account/Avatar'
-import CircleBadge from '@/components/general/Badge/CircleBadge'
-import Input from '@/components/general/Input'
-import NavLink from '@/components/general/NavLink'
-import Search from '@/components/general/Search'
-import MobileHeading from '@/components/layout/MobileHeading'
+
 import EmptyThreads from './EmptyThreads'
 import Thread from './Thread'
 import './ThreadSelector.scss'
-import TargetTitle from '@/components/general/TargetTitle'
-import PencilIcon from '@/components/general/Icon/PencilIcon'
-import Text from '@/components/general/Text'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')

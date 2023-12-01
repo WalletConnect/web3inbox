@@ -1,11 +1,14 @@
 import React, { Fragment, useCallback, useContext, useState } from 'react'
+
 import SettingsContext from '@/contexts/SettingsContext/context'
 import { useColorModeValue } from '@/utils/hooks'
 import type { IIcon, ISection } from '@/utils/types'
+
+import './FeatureInfoBox.scss'
+
 import Button from '../Button'
 import CrossIcon from '../Icon/CrossIcon'
 import IconWrapper from '../Icon/IconWrapper/IconWrapper'
-import './FeatureInfoBox.scss'
 import Text from '../Text'
 
 interface IFeatureInfoBoxProps {

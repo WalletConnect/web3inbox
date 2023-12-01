@@ -1,4 +1,5 @@
 import React from 'react'
+
 import './LinkItemSkeleton.scss'
 
 const LinkItemSkeleton: React.FC = () => {

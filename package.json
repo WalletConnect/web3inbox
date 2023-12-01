@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "license": "Apache-2.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && yarn buildMessager",
@@ -41,6 +40,7 @@
     "wagmi": "^1.4.2"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/lodash.debounce": "^4.0.7",
     "@types/mixpanel-browser": "^2.47.1",
     "@types/react": "^18.0.24",

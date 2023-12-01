@@ -1,16 +1,19 @@
-import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
+
+import Button from '@/components/general/Button'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
+import { Modal } from '@/components/general/Modal/Modal'
+import Text from '@/components/general/Text'
+import Toggle from '@/components/general/Toggle'
 import SettingsContext from '@/contexts/SettingsContext/context'
 import W3iContext from '@/contexts/W3iContext/context'
 import { useColorModeValue, useModals } from '@/utils/hooks'
 import { preferencesModalService } from '@/utils/store'
-import Button from '@/components/general/Button'
-import CrossIcon from '@/components/general/Icon/CrossIcon'
-import { Modal } from '@/components/general/Modal/Modal'
-import Toggle from '@/components/general/Toggle'
-import './PreferencesModal.scss'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
-import Text from '@/components/general/Text'
+
+import './PreferencesModal.scss'
 
 export const PreferencesModal: React.FC = () => {
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)

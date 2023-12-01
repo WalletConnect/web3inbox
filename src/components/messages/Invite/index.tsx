@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
+
 import Avatar from '@/components/account/Avatar'
 import W3iContext from '@/contexts/W3iContext/context'
+
 import './Invite.scss'
 
 interface InviteProps {
