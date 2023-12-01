@@ -96,7 +96,7 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       border2: 'hsla(0, 0%, 0%, 0.1)',
       accent1: 'hsla(211, 100%, 60%, 1)',
       accent2: 'hsla(211, 100%, 60%, 0.08)',
-      error1: 'hsla(5, 85%, 60%, 1)',
+      error1: '#ED4747',
       icon1: 'hsla(180, 4%, 16%, 1)',
       qr1: '#141414',
       brightness: '1.33',
