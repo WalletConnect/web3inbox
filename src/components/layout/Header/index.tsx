@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 import { useEnsName } from 'wagmi'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { truncate } from '../../../utils/string'
-import Avatar from '../../account/Avatar'
+import W3iContext from '@/contexts/W3iContext/context'
+import { truncate } from '@/utils/string'
+import Avatar from '@/components/account/Avatar'
 import './Header.scss'
-import { getEthChainAddress } from '../../../utils/address'
+import { getEthChainAddress } from '@/utils/address'
 
 const Header: React.FC = () => {
   const { userPubkey } = useContext(W3iContext)

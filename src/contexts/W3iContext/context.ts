@@ -1,10 +1,10 @@
-import type { ChatClientTypes } from '../../w3iProxy/chatProviders/types'
+import type { ChatClientTypes } from '@/w3iProxy/chatProviders/types'
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import type { Dispatch, SetStateAction } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import { createContext } from 'react'
 import { noop } from 'rxjs'
-import type { W3iChatClient, W3iNotifyClient } from '../../w3iProxy'
+import type { W3iChatClient, W3iNotifyClient } from '@/w3iProxy'
 
 export interface UiEnabled {
   chat: boolean

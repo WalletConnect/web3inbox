@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import SettingsContext from '../../../contexts/SettingsContext/context'
-import { useColorModeValue } from '../../../utils/hooks'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import { useColorModeValue } from '@/utils/hooks'
 
 const DotsIcon: React.FC = () => {
   const { mode } = useContext(SettingsContext)

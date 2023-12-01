@@ -1,11 +1,11 @@
-import type { ChatClientTypes } from '../../../w3iProxy/chatProviders/types'
+import type { ChatClientTypes } from '@/w3iProxy/chatProviders/types'
 import React, { useCallback, useContext } from 'react'
-import W3iContext from '../../../contexts/W3iContext/context'
-import type { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'
-import CheckIcon from '../../general/Icon/CheckIcon'
-import RetryIcon from '../../general/Icon/RetryIcon'
-import Spinner from '../../general/Spinner'
-import Text from '../../general/Text'
+import W3iContext from '@/contexts/W3iContext/context'
+import type { ReplayMessage } from '@/w3iProxy/w3iChatFacade'
+import CheckIcon from '@/components/general/Icon/CheckIcon'
+import RetryIcon from '@/components/general/Icon/RetryIcon'
+import Spinner from '@/components/general/Spinner'
+import Text from '@/components/general/Text'
 
 interface MessageStatusProps {
   status: ReplayMessage['status']

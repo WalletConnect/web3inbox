@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import SettingsContext from '../../contexts/SettingsContext/context'
+import SettingsContext from '@/contexts/SettingsContext/context'
 import type { INotifyApp, INotifyProject } from '../types'
 import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '../constants'
 

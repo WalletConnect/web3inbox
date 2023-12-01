@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import SearchSvg from '../../../assets/Search.svg'
+import SearchSvg from '@/assets/Search.svg'
 import Button from '../Button'
 import SearchIcon from '../Icon/SearchIcon'
 import Input from '../Input'

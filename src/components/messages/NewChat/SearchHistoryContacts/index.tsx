@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
-import Ledger from '../../../../assets/Ledger.svg'
-import Button from '../../../general/Button'
+import Ledger from '@/assets/Ledger.svg'
+import Button from '@/components/general/Button'
 import './SearchHistoryContacts.scss'
 
 const SearchHistoryContacts: React.FC = () => {

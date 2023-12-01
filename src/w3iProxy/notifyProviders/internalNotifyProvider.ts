@@ -8,8 +8,8 @@ import {
   registerWithEcho,
   setupSubscriptionsSymkeys,
   userEnabledNotification
-} from '../../utils/notifications'
-import { getDbEchoRegistrations } from '../../utils/idb'
+} from '@/utils/notifications'
+import { getDbEchoRegistrations } from '@/utils/idb'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined

@@ -1,8 +1,8 @@
-import TransitionDiv from '../../components/general/TransitionDiv'
+import TransitionDiv from '@/components/general/TransitionDiv'
 import QrReader from 'react-qr-reader-es6'
 import './ScanQrCode.scss'
 import { useEffect, useState } from 'react'
-import BackButton from '../../components/general/BackButton'
+import BackButton from '@/components/general/BackButton'
 import { useNavigate } from 'react-router-dom'
 
 const ScanQrCode: React.FC = () => {

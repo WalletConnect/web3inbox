@@ -2,9 +2,9 @@ import type { ReactNode } from 'react'
 import { useContext } from 'react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useColorModeValue, useIsMobile } from '../../../utils/hooks'
+import { useColorModeValue, useIsMobile } from '@/utils/hooks'
 import './BackButton.scss'
-import SettingsContext from '../../../contexts/SettingsContext/context'
+import SettingsContext from '@/contexts/SettingsContext/context'
 
 /*
  * Using backTo instead of something like `history.back` to

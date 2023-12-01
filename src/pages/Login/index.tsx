@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import W3iContext from '../../contexts/W3iContext/context'
+import W3iContext from '@/contexts/W3iContext/context'
 import './Login.scss'
-import TransitionDiv from '../../components/general/TransitionDiv'
+import TransitionDiv from '@/components/general/TransitionDiv'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
-import Button from '../../components/general/Button'
-import Sidebar from '../../components/layout/Sidebar'
-import IntroContent from '../../components/general/IntroContent'
-import IntroWallet from '../../components/general/Icon/IntroWallet'
+import Button from '@/components/general/Button'
+import Sidebar from '@/components/layout/Sidebar'
+import IntroContent from '@/components/general/IntroContent'
+import IntroWallet from '@/components/general/Icon/IntroWallet'
 
 const Login: React.FC = () => {
   const { userPubkey, uiEnabled, notifyRegisteredKey } = useContext(W3iContext)

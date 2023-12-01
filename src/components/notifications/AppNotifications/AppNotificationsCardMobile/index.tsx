@@ -1,11 +1,11 @@
 import { useContext, useEffect, useMemo, useRef } from 'react'
 import { useParams } from 'react-router-dom'
-import W3iContext from '../../../../contexts/W3iContext/context'
-import Text from '../../../general/Text'
-import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
-import Button from '../../../general/Button'
+import W3iContext from '@/contexts/W3iContext/context'
+import Text from '@/components/general/Text'
+import CheckMarkIcon from '@/components/general/Icon/CheckMarkIcon'
+import Button from '@/components/general/Button'
 import './AppNotificationsCardMobile.scss'
-import SettingsContext from '../../../../contexts/SettingsContext/context'
+import SettingsContext from '@/contexts/SettingsContext/context'
 
 const AppNotificationsCardMobile: React.FC = () => {
   const { topic } = useParams<{ topic: string }>()

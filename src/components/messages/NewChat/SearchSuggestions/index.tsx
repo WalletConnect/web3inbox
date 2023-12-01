@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { isValidEnsDomain } from '../../../../utils/address'
-import Avatar from '../../../account/Avatar'
+import { isValidEnsDomain } from '@/utils/address'
+import Avatar from '@/components/account/Avatar'
 import './SearchSuggestions.scss'
 
 interface SearchSuggestionsProps {

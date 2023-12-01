@@ -1,7 +1,7 @@
 import { getAccount, watchAccount, watchNetwork, getNetwork } from '@wagmi/core'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import type { EventEmitter } from 'events'
-import { getEIPChainString } from '../../utils/chain'
+import { getEIPChainString } from '@/utils/chain'
 
 export default class InternalAuthProvider {
   private readonly methodsListenedTo = ['auth_set_account']

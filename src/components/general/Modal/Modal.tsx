@@ -1,5 +1,5 @@
 import React, { Fragment, useRef, useCallback } from 'react'
-import { useOnClickOutside, useResizeObserver } from '../../../utils/hooks'
+import { useOnClickOutside, useResizeObserver } from '@/utils/hooks'
 import { LazyMotion, domMax, m } from 'framer-motion'
 import './Modal.scss'
 
