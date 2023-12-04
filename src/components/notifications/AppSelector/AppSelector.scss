@@ -284,8 +284,13 @@
       }
 
       @media only screen and (max-width: 700px) {
+        border-radius: 1.5em;
         width: 3rem;
         height: 3rem;
+
+        &::after {
+          border-radius: 1.5rem;
+        }
       }
     }
   }

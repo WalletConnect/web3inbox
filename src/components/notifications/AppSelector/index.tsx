@@ -138,13 +138,15 @@ const AppSelector: React.FC = () => {
                     >
                       <div className="AppSelector__notifications">
                         <div className="AppSelector__notifications-link">
-                          <img
-                            className="AppSelector__link-logo"
-                            src={app.metadata.icons?.[0] || '/fallback.svg'}
-                            alt={`${app.metadata.name} logo`}
-                            onError={handleImageFallback}
-                            loading="lazy"
-                          />
+                          <div className="AppSelector__link-logo">
+                            <img
+                              src={app.metadata.icons?.[0] || '/fallback.svg'}
+                              alt={`${app.metadata.name} logo`}
+                              onError={handleImageFallback}
+                              loading="lazy"
+                            />
+                          </div>
+
                           <div className="AppSelector__link__wrapper">
                             <Text className="AppSelector__link__title" variant="small-500">
                               {app.metadata.name}
