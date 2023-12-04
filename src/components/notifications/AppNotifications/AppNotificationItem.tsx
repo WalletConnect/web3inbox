@@ -1,10 +1,12 @@
 import { useFormattedTime } from '../../../utils/hooks'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import CircleIcon from '../../general/Icon/CircleIcon'
 import { LazyMotion, domMax } from 'framer-motion'
 import Text from '../../general/Text'
 import './AppNotifications.scss'
+
+const MAX_BODY_LENGTH = 180
 
 export interface IAppNotification {
   id: string
@@ -23,20 +25,23 @@ interface IAppNotificationProps {
 
 const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, appLogo }) => {
   const formattedTime = useFormattedTime(notification.timestamp)
-  const [textClamped, setTextClamped] = useState<boolean>(false)
-  const [show, setShow] = useState<boolean>(false)
-
-  const messageRef = useRef<HTMLSpanElement | null>(null)
+  const [textClamped, setTextClamped] = useState<boolean>(
+    notification.message.length > MAX_BODY_LENGTH
+  )
+  const [showMore, setShowMore] = useState<boolean>(false)
 
   useEffect(() => {
-    if (messageRef.current) {
-      setTextClamped(messageRef.current.scrollHeight > messageRef.current.clientHeight)
-    }
-  }, [])
+    setTextClamped(notification.message.length > MAX_BODY_LENGTH)
+  }, [notification.message])
 
   const handleToggleDescription = () => {
-    setShow(prevState => !prevState)
+    setShowMore(prevState => !prevState)
   }
+
+  const body =
+    textClamped && !showMore
+      ? notification.message.slice(0, MAX_BODY_LENGTH) + '...'
+      : notification.message
 
   return (
     <LazyMotion features={domMax}>
@@ -65,18 +70,17 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
             </div>
           </div>
           <Text
-            ref={messageRef}
-            className={cn('AppNotifications__item__message', show ? 'show_more' : '')}
+            className={cn('AppNotifications__item__message', showMore ? 'show_more' : '')}
             variant="small-400"
           >
-            {notification.message}
+            {body}
           </Text>
           {textClamped && (
             <button
               onClick={handleToggleDescription}
               className="AppNotifications__item__show_button"
             >
-              <Text variant="small-400">{show ? 'Show less' : 'Show more'}</Text>
+              <Text variant="small-400">{showMore ? 'Show less' : 'Show more'}</Text>
             </button>
           )}
         </div>
