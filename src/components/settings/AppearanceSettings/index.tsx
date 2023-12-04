@@ -25,34 +25,36 @@ const AppearanceSettings: React.FC = () => {
       >
         <SettingsHeader title="Appearance" />
         <MobileHeader title="Appearance" back="/settings" />
-        <div className="AppearanceSettings__wrapper">
-          <SettingsItem
-            title="Interface theme"
-            subtitle="Select how you want Web3Inbox to look."
-            className="AppearanceSettings__modes"
-          >
-            <SettingsThemeButton
-              title="Light"
-              subtitle="For daytime, increased blue light exposure."
-              icon={<SunIcon />}
-              value="light"
-              checked={true}
-            />
-            <SettingsThemeButton
-              title="Dark"
-              subtitle="For night time and to reduce eye strain."
-              icon={<MoonIcon />}
-              value="dark"
-              disabled={true}
-            />
-            <SettingsThemeButton
-              title="System"
-              subtitle="Handled automatically by your browser or OS."
-              icon={<SystemIcon />}
-              value="system"
-              disabled={true}
-            />
-          </SettingsItem>
+        <div className="AppearanceSettings__content">
+          <div className="AppearanceSettings__content__container">
+            <SettingsItem
+              title="Interface theme"
+              subtitle="Select how you want Web3Inbox to look."
+              className="AppearanceSettings__modes"
+            >
+              <SettingsThemeButton
+                title="Light"
+                subtitle="For daytime, increased blue light exposure."
+                icon={<SunIcon />}
+                value="light"
+                checked={true}
+              />
+              <SettingsThemeButton
+                title="Dark"
+                subtitle="For night time and to reduce eye strain."
+                icon={<MoonIcon />}
+                value="dark"
+                disabled={true}
+              />
+              <SettingsThemeButton
+                title="System"
+                subtitle="Handled automatically by your browser or OS."
+                icon={<SystemIcon />}
+                value="system"
+                disabled={true}
+              />
+            </SettingsItem>
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

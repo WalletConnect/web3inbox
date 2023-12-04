@@ -71,70 +71,72 @@ const NotificationsSettings: React.FC = () => {
       >
         <SettingsHeader title="Notifications" />
         <MobileHeader title="Notifications" back="/settings" />
-        <div className="NotificationsSettings__wrapper">
-          <SettingsItem
-            title="Display App on Discover Page"
-            subtitle="Provide the domain of your app"
-            className="NotificationsSettings__notifications"
-          >
-            <Input
-              value={filterAppDomain}
-              placeholder="app.example.com"
-              onChange={ev => updateSettings({ filterAppDomain: ev.target.value })}
-            />
-          </SettingsItem>
-
-          <div title={getHelperTooltip()}>
+        <div className="NotificationsSettings__content">
+          <div className="NotificationsSettings__content__container">
             <SettingsItem
-              title="Enable Push Notifications"
-              subtitle="Get push notifications on your desktop or phone when Web3Inbox is added to your homescreen"
-              className={cn(
-                'NotificationsSettings__notifications',
-                `NotificationsSettings__push-enabled-${notificationsEnabled ? 'true' : 'false'}`
-              )}
+              title="Display App on Discover Page"
+              subtitle="Provide the domain of your app"
+              className="NotificationsSettings__notifications"
+            >
+              <Input
+                value={filterAppDomain}
+                placeholder="app.example.com"
+                onChange={ev => updateSettings({ filterAppDomain: ev.target.value })}
+              />
+            </SettingsItem>
+
+            <div title={getHelperTooltip()}>
+              <SettingsItem
+                title="Enable Push Notifications"
+                subtitle="Get push notifications on your desktop or phone when Web3Inbox is added to your homescreen"
+                className={cn(
+                  'NotificationsSettings__notifications',
+                  `NotificationsSettings__push-enabled-${notificationsEnabled ? 'true' : 'false'}`
+                )}
+              >
+                <SettingsToggle
+                  checked={notificationsEnabled}
+                  setChecked={handleEnableNotifications}
+                  icon={<NotificationIcon />}
+                  title="Enable Push Notifications"
+                  active={notificationsEnabledInBrowser() && !notificationsEnabled}
+                />
+              </SettingsItem>
+            </div>
+
+            <div
+              className="NotificationsSettings__debug"
+              style={{ opacity: isDevModeEnabled ? 1 : 0 }}
+            >
+              {tokenEntries.map(([clientId, fcmToken], idx) => {
+                return (
+                  <div className="NotificationsSettings__debug-row">
+                    <span>Entry {idx + 1} </span>
+                    <span>
+                      <span style={{ fontWeight: 800 }}>ClientId</span>: {JSON.stringify(clientId)}{' '}
+                    </span>
+                    <span>
+                      <span style={{ fontWeight: 800 }}>FCM Token</span>: {JSON.stringify(fcmToken)}{' '}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+
+            <SettingsItem
+              title="Developer Mode"
+              subtitle="Enable developer mode"
+              className="NotificationsSettings__notifications"
             >
               <SettingsToggle
-                checked={notificationsEnabled}
-                setChecked={handleEnableNotifications}
-                icon={<NotificationIcon />}
-                title="Enable Push Notifications"
-                active={notificationsEnabledInBrowser() && !notificationsEnabled}
+                checked={isDevModeEnabled}
+                setChecked={isEnabled => updateSettings({ isDevModeEnabled: isEnabled })}
+                icon={<PrivacyIcon />}
+                title="Display tokens for debugging"
+                active={true}
               />
             </SettingsItem>
           </div>
-
-          <div
-            className="NotificationsSettings__debug"
-            style={{ opacity: isDevModeEnabled ? 1 : 0 }}
-          >
-            {tokenEntries.map(([clientId, fcmToken], idx) => {
-              return (
-                <div className="NotificationsSettings__debug-row">
-                  <span>Entry {idx + 1} </span>
-                  <span>
-                    <span style={{ fontWeight: 800 }}>ClientId</span>: {JSON.stringify(clientId)}{' '}
-                  </span>
-                  <span>
-                    <span style={{ fontWeight: 800 }}>FCM Token</span>: {JSON.stringify(fcmToken)}{' '}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
-
-          <SettingsItem
-            title="Developer Mode"
-            subtitle="Enable developer mode"
-            className="NotificationsSettings__notifications"
-          >
-            <SettingsToggle
-              checked={isDevModeEnabled}
-              setChecked={isEnabled => updateSettings({ isDevModeEnabled: isEnabled })}
-              icon={<PrivacyIcon />}
-              title="Display tokens for debugging"
-              active={true}
-            />
-          </SettingsItem>
         </div>
       </motion.div>
     </AnimatePresence>
