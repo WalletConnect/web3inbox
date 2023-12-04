@@ -42,7 +42,7 @@ const DirectInvite: React.FC = () => {
     <div className="DirectInvite">
       <div className="DirectInvite__message">
         <span>Inviting {ensName ?? truncate(account ?? '', 4)}... </span>
-        <Spinner width="1em" />
+        <Spinner />
       </div>
     </div>
   )

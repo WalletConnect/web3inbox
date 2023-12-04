@@ -3,7 +3,7 @@ import cn from 'classnames'
 
 const Wallet = ({ className }: React.SVGProps<SVGSVGElement>) => {
   return (
-    <svg className={cn(className)} fill="none" viewBox="0 0 14 14">
+    <svg className={cn(className)} viewBox="0 0 14 14">
       <path
         fill="currentColor"
         fillRule="evenodd"

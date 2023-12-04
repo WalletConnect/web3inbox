@@ -22,7 +22,7 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
   const PendingStatus = useCallback(() => {
     return (
       <div className="InviteMessage__pending">
-        <Spinner width="1em" />
+        <Spinner />
         <span>Pending</span>
       </div>
     )

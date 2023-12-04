@@ -30,7 +30,7 @@ const getMessageStatusText = (status: ReplayMessage['status'], onRetry: () => vo
     case 'pending':
       return (
         <div>
-          <Spinner width="1em" /> Sending
+          <Spinner /> Sending
         </div>
       )
     default:

@@ -68,7 +68,7 @@ const WidgetSubscribe: React.FC = () => {
         <h1 className="WidgetSubscribe__title">Notifications from {dappName}</h1>
         <p className="WidgetSubscribe__description">{dappNotificationDescription}</p>
         <Button onClick={handleOnSubscribe} disabled={isSubscribing}>
-          {isSubscribing ? <Spinner width="1em" /> : <span>Enable (Subscribe in Wallet)</span>}
+          {isSubscribing ? <Spinner /> : <span>Enable (Subscribe in Wallet)</span>}
         </Button>
       </div>
     </div>

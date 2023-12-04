@@ -38,12 +38,12 @@
       }
     }
 
-    button:focus-visible {
+    & button:focus-visible {
       outline: none;
       background-color: var(--bg-color-4);
     }
 
-    button:not(&__unsubscribe) {
+    & button:not(&__unsubscribe) {
       color: var(--fg-color-1);
     }
 

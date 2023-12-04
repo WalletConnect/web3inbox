@@ -7,7 +7,7 @@
   z-index: 10;
   height: 3rem;
   align-items: center;
-  border-bottom: 0.5px solid rgba(6, 43, 43, 0.15);
+  border-bottom: 0.5px solid var(--light-overlay-015);
 
   @media only screen and (min-width: 700px) {
     display: none;

@@ -7,8 +7,8 @@
   padding: 0.625rem 3.375rem 3rem;
   display: flex;
   justify-content: space-between;
-  border-bottom: 0.5px solid rgba(6, 43, 43, 0.15);
-  border-top: 0.5px solid rgba(6, 43, 43, 0.15);
+  border-bottom: 0.5px solid var(--light-overlay-015);
+  border-top: 0.5px solid var(--light-overlay-015);
   height: 48px;
 
   &__link {

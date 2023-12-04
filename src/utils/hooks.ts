@@ -75,7 +75,11 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       brightness: '0.66',
       shimmerFg: 'rgba(255, 255, 255, 0.05)',
       shimmerBg: 'rgba(0, 0, 0, 0.7)',
-      modalOverlay: 'rgba(0, 0, 0, 0.6)'
+      modalOverlay: 'rgba(0, 0, 0, 0.6)',
+      lightOverlay002: 'rgba(6, 43, 43, 0.02)',
+      lightOverlay010: 'rgba(6, 43, 43, 0.1)',
+      lightOverlay015: 'rgba(6, 43, 43, 0.15)',
+      lightInverse: 'hsl(0, 0%, 100%)'
     },
     light: {
       bg1: 'hsla(0, 0%, 100%, 1)',
@@ -102,7 +106,11 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
       brightness: '1.33',
       shimmerFg: 'rgba(0, 0, 0, 0.1)',
       shimmerBg: 'rgba(255, 255, 255, 0.7)',
-      modalOverlay: 'rgba(139, 151, 151, 0.3)'
+      modalOverlay: 'rgba(139, 151, 151, 0.3)',
+      lightOverlay002: 'rgba(6, 43, 43, 0.02)',
+      lightOverlay010: 'rgba(6, 43, 43, 0.1)',
+      lightOverlay015: 'rgba(6, 43, 43, 0.15)',
+      lightInverse: 'hsl(0, 0%, 100%)'
     }
   }
 
@@ -131,7 +139,11 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
     '--brightness-multiplier': colors[specifiedMode].brightness,
     '--shimmer-fg': colors[specifiedMode].shimmerFg,
     '--shimmer-bg': colors[specifiedMode].shimmerBg,
-    '--modal-overlay': colors[specifiedMode].modalOverlay
+    '--modal-overlay': colors[specifiedMode].modalOverlay,
+    '--light-overlay-002': colors[specifiedMode].lightOverlay002,
+    '--light-overlay-010': colors[specifiedMode].lightOverlay010,
+    '--light-overlay-015': colors[specifiedMode].lightOverlay015,
+    '--light-inverse': colors[specifiedMode].lightInverse
   }
 
   return colorModeVariables
