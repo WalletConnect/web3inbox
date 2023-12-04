@@ -79,7 +79,7 @@ export const UnsubscribeModal: React.FC = () => {
           className="UnsubscribeModal__action"
           onClick={handleUnsubscribe}
         >
-          {loading ? <Spinner width="1.25em" /> : <Text variant="small-600">Unsubscribe</Text>}
+          {loading ? <Spinner /> : <Text variant="small-600">Unsubscribe</Text>}
         </Button>
       </div>
     </Modal>

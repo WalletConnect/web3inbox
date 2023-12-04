@@ -1,11 +1,9 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import './AppCard.scss'
-import Button from '../../../general/Button'
 import W3iContext from '../../../../contexts/W3iContext/context'
 import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
-import Spinner from '../../../general/Spinner'
 import Text from '../../../general/Text'
-import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
+import SubscribeButton from './SubscribeButton'
 import { useNavigate } from 'react-router-dom'
 
 interface AppCardProps {
@@ -94,6 +92,13 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         <div className="AppCard__header__logo">
           <img src={logo || '/fallback.svg'} alt={`${name} logo`} />
         </div>
+        <SubscribeButton
+          className="mobile"
+          subscribed={Boolean(subscribed)}
+          subscribing={subscribing}
+          onNavigateToApp={handleNavigateApp}
+          onSubscribe={handleSubscription}
+        />
       </div>
       <div className="AppCard__body">
         <div className="AppCard__body__title">
@@ -107,22 +112,12 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
         <Text className="AppCard__body__description" variant="paragraph-500">
           {description}
         </Text>
-        {subscribed ? (
-          <>
-            <Button disabled className="AppCard__body__subscribed">
-              Subscribed
-              <CheckMarkIcon />
-            </Button>
-          </>
-        ) : (
-          <Button
-            disabled={subscribing}
-            className="AppCard__body__subscribe"
-            onClick={handleSubscription}
-          >
-            {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
-          </Button>
-        )}
+        <SubscribeButton
+          subscribed={Boolean(subscribed)}
+          subscribing={subscribing}
+          onNavigateToApp={handleNavigateApp}
+          onSubscribe={handleSubscription}
+        />
       </div>
     </div>
   )

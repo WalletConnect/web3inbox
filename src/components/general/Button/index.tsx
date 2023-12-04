@@ -9,7 +9,7 @@ type HTMLButtonProps = React.DetailedHTMLProps<
   HTMLButtonElement
 >
 type TButtonProps = HTMLButtonProps & {
-  customType?: 'action-icon' | 'action' | 'danger' | 'primary' | 'secondary'
+  customType?: 'action-icon' | 'action' | 'danger' | 'primary'
   textVariant?: TextVariant
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
