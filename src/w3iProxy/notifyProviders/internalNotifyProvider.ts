@@ -10,8 +10,7 @@ import {
   setupSubscriptionsSymkeys,
   userEnabledNotification
 } from '@/utils/notifications'
-
-import type { W3iNotifyProvider } from './types'
+import { W3iNotifyProvider } from '@/w3iProxy/notifyProviders/types'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined

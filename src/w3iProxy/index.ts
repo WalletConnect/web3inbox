@@ -4,14 +4,14 @@ import { IdentityKeys } from '@walletconnect/identity-keys'
 import { NotifyClient } from '@walletconnect/notify-client'
 import type { ICore } from '@walletconnect/types'
 import mixpanel from 'mixpanel-browser'
-import type { Logger } from 'pino'
 import pino from 'pino'
+import type { Logger } from 'pino'
 
-import type { UiEnabled } from '../contexts/W3iContext/context'
-import { identifyMixpanelUserAndInit } from '../utils/mixpanel'
-import W3iAuthFacade from './w3iAuthFacade'
-import type W3iChatFacade from './w3iChatFacade'
-import W3iNotifyFacade from './w3iNotifyFacade'
+import type { UiEnabled } from '@/contexts/W3iContext/context'
+import { identifyMixpanelUserAndInit } from '@/utils/mixpanel'
+import W3iAuthFacade from '@/w3iProxy/w3iAuthFacade'
+import type W3iChatFacade from '@/w3iProxy/w3iChatFacade'
+import W3iNotifyFacade from '@/w3iProxy/w3iNotifyFacade'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 export type W3iNotifyClient = Omit<W3iNotifyFacade, 'initState'>

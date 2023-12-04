@@ -2,13 +2,13 @@ import React from 'react'
 
 import { noop } from 'rxjs'
 
-import W3iContext from './context'
-import { useAuthState } from './hooks/authHooks'
-import { useDappOrigin } from './hooks/dappOrigin'
-import { useNotifyState } from './hooks/notifyHooks'
-import { useProviderQueries } from './hooks/providerQueryHooks'
-import { useUiState } from './hooks/uiHooks'
-import { useW3iProxy } from './hooks/w3iProxyHooks'
+import W3iContext from '@/contexts/W3iContext/context'
+import { useAuthState } from '@/contexts/W3iContext/hooks/authHooks'
+import { useDappOrigin } from '@/contexts/W3iContext/hooks/dappOrigin'
+import { useNotifyState } from '@/contexts/W3iContext/hooks/notifyHooks'
+import { useProviderQueries } from '@/contexts/W3iContext/hooks/providerQueryHooks'
+import { useUiState } from '@/contexts/W3iContext/hooks/uiHooks'
+import { useW3iProxy } from '@/contexts/W3iContext/hooks/w3iProxyHooks'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]

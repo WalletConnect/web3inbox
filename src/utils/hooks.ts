@@ -4,7 +4,8 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { useLocation } from 'react-router-dom'
 
-import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
+import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/context'
+
 // eslint-disable-next-line no-duplicate-imports
 import {
   appSearchService,

@@ -1,9 +1,11 @@
 import React, { useEffect, useReducer, useState } from 'react'
 
+import type {
+  SettingsContextSimpleState,
+  SettingsContextUpdate
+} from '@/contexts/SettingsContext/context'
+import SettingsContext from '@/contexts/SettingsContext/context'
 import { useColorModeValue } from '@/utils/hooks'
-
-import type { SettingsContextSimpleState, SettingsContextUpdate } from './context'
-import SettingsContext from './context'
 
 const LOCAL_SETTINGS_KEY = 'w3i-settings'
 
