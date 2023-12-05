@@ -1,9 +1,13 @@
 import React, { Fragment, useContext } from 'react'
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import AppSelector from '../AppSelector'
+
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
-import W3iContext from '../../../contexts/W3iContext/context'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
+
+import W3iContext from '@/contexts/W3iContext/context'
+
+import AppSelector from '../AppSelector'
+
 import './NotificationsLayout.scss'
 
 const NotificationsLayout: React.FC = () => {

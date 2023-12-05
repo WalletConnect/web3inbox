@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react'
+
 import { Outlet } from 'react-router-dom'
+
 import ThreadSelector from '../ThreadSelector'
 
 const MessagesLayout: React.FC = () => {

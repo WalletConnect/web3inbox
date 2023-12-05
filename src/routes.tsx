@@ -1,18 +1,20 @@
 /* eslint-disable no-nested-ternary */
-import App from './App'
-import AppExplorer from './components/notifications/AppExplorer'
-import AppNotifications from './components/notifications/AppNotifications'
-import NotificationsLayout from './components/notifications/NotificationsLayout'
-import SettingsLayout from './components/settings/SettingsLayout'
-import Login from './pages/Login'
-import ScanQrCode from './pages/ScanQrCode'
-import { Navigate, Route, Routes } from 'react-router-dom'
 import { useContext } from 'react'
-import W3iContext from './contexts/W3iContext/context'
-import WidgetSubscribe from './pages/widget/Subscribe'
-import WidgetConnect from './pages/widget/Connect'
-import AppearanceSettings from './components/settings/AppearanceSettings'
-import NotificationsSettings from './components/settings/NotificationsSettings'
+
+import { Navigate, Route, Routes } from 'react-router-dom'
+
+import App from '@/App'
+import AppExplorer from '@/components/notifications/AppExplorer'
+import AppNotifications from '@/components/notifications/AppNotifications'
+import NotificationsLayout from '@/components/notifications/NotificationsLayout'
+import AppearanceSettings from '@/components/settings/AppearanceSettings'
+import NotificationsSettings from '@/components/settings/NotificationsSettings'
+import SettingsLayout from '@/components/settings/SettingsLayout'
+import W3iContext from '@/contexts/W3iContext/context'
+import Login from '@/pages/Login'
+import ScanQrCode from '@/pages/ScanQrCode'
+import WidgetConnect from '@/pages/widget/Connect'
+import WidgetSubscribe from '@/pages/widget/Subscribe'
 
 const ConfiguredRoutes: React.FC = () => {
   const { uiEnabled } = useContext(W3iContext)

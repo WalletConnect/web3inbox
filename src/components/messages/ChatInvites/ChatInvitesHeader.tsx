@@ -1,7 +1,9 @@
 import React from 'react'
-import WavingHand from '../../../assets/WavingHand.png'
-import { useIsMobile } from '../../../utils/hooks'
-import MobileHeading from '../../layout/MobileHeading'
+
+import WavingHand from '@/assets/WavingHand.png'
+import MobileHeading from '@/components/layout/MobileHeading'
+import { useIsMobile } from '@/utils/hooks'
+
 import './Invites.scss'
 
 interface IChatInvitesHeader {

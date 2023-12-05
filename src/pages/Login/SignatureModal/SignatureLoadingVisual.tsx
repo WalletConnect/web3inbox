@@ -1,5 +1,7 @@
 import React from 'react'
-import Wallet from '../../../components/general/Icon/Wallet'
+
+import Wallet from '@/components/general/Icon/Wallet'
+
 import './SignatureLoadingVisual.scss'
 
 interface SignatureLoadingVisualProps {

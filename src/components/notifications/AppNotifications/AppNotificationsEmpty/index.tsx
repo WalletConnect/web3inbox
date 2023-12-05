@@ -1,7 +1,8 @@
-import './AppNotificationsEmpty.scss'
-
-import Text from '../../../general/Text'
 import { useEffect, useRef } from 'react'
+
+import Text from '@/components/general/Text'
+
+import './AppNotificationsEmpty.scss'
 
 interface IAppNotificationsEmptyProps {
   icon: string | undefined

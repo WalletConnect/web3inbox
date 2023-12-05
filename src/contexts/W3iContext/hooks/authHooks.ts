@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+
 import { useLocation } from 'react-router-dom'
-import type Web3InboxProxy from '../../../w3iProxy'
-import type W3iAuthFacade from '../../../w3iProxy/w3iAuthFacade'
-import { formatEthChainsAddress, getChain, getEthChainAddress } from '../../../utils/address'
+
+import { formatEthChainsAddress, getChain, getEthChainAddress } from '@/utils/address'
+import type Web3InboxProxy from '@/w3iProxy'
+import type W3iAuthFacade from '@/w3iProxy/w3iAuthFacade'
 
 export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [accountQueryParam, setAccountQueryParam] = useState('')

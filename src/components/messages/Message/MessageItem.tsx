@@ -1,6 +1,9 @@
-import type { ChatClientTypes } from '../../../w3iProxy/chatProviders/types'
-import { differenceInHours } from 'date-fns'
 import { useEffect, useMemo, useRef } from 'react'
+
+import { differenceInHours } from 'date-fns'
+
+import type { ChatClientTypes } from '@/w3iProxy/chatProviders/types'
+
 import Message from '.'
 import MessageDateTag from './MessageDateTag'
 import MessageStatus from './MessageStatus'

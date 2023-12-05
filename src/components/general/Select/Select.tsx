@@ -1,9 +1,13 @@
 import React, { useContext } from 'react'
+
 import type { ActionMeta, MultiValue, SingleValue } from 'react-select'
 import ReactSelect from 'react-select'
-import SettingsContext from '../../../contexts/SettingsContext/context'
-import { useColorModeValue } from '../../../utils/hooks'
+
+import SettingsContext from '@/contexts/SettingsContext/context'
+import { useColorModeValue } from '@/utils/hooks'
+
 import DropdownIndicator from './DropdownIndicator'
+
 import './Select.scss'
 
 interface ISelectProps {

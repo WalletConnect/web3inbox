@@ -1,9 +1,12 @@
 import React, { useCallback, useContext, useState } from 'react'
-import Button from '../../../components/general/Button'
-import W3iContext from '../../../contexts/W3iContext/context'
+
 import { EventEmitter } from 'events'
+
+import Button from '@/components/general/Button'
+import W3iContext from '@/contexts/W3iContext/context'
+import { JsCommunicator } from '@/w3iProxy/externalCommunicators/jsCommunicator'
+
 import './Connect.scss'
-import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommunicator'
 
 const WidgetConnect: React.FC = () => {
   const { dappIcon, dappName } = useContext(W3iContext)

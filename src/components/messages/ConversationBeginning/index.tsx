@@ -1,8 +1,10 @@
 import React from 'react'
-import { truncate } from '../../../utils/string'
-import Avatar from '../../account/Avatar'
+
+import Avatar from '@/components/account/Avatar'
+import Text from '@/components/general/Text'
+import { truncate } from '@/utils/string'
+
 import './ConversationBeginning.scss'
-import Text from '../../general/Text'
 
 interface IConversationBeginningProps {
   peerAddress: `0x${string}`

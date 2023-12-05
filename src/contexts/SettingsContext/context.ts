@@ -1,5 +1,6 @@
 import { createContext } from 'react'
-import { noop } from '../../utils/general'
+
+import { noop } from '@/utils/general'
 
 export interface SettingsContextUpdate {
   mode?: 'dark' | 'light' | 'system'

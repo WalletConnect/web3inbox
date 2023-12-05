@@ -1,5 +1,6 @@
-import { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
+import { EventEmitter } from 'events'
+
 import ExternalAuthProvider from './authProviders/externalAuthProvider'
 import InternalAuthProvider from './authProviders/internalAuthProvider'
 import type { AuthFacadeEvents } from './authProviders/types'

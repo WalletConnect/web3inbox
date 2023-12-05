@@ -1,16 +1,16 @@
 /* eslint-disable */
 // @ts-nocheck
-
+import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
+import { ONE_DAY } from '@walletconnect/time'
 import { EventEmitter } from 'events'
+import { ReplaySubject, filter, from, scan, throwError, timeout } from 'rxjs'
+import { hashMessage } from 'viem'
+
+import ExternalChatProvider from './chatProviders/externalChatProvider'
 // eslint-disable-next-line no-duplicate-imports
 import type { ChatClientTypes } from './chatProviders/types'
-import type { ChatFacadeEvents } from './listenerTypes'
 import type { W3iChat } from './chatProviders/types'
-import ExternalChatProvider from './chatProviders/externalChatProvider'
-import { filter, from, ReplaySubject, scan, throwError, timeout } from 'rxjs'
-import { ONE_DAY } from '@walletconnect/time'
-import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
-import { hashMessage } from 'viem'
+import type { ChatFacadeEvents } from './listenerTypes'
 import { ObservablesController } from './observablesController'
 
 export type ReplayMessage = ChatClientTypes.Message & {

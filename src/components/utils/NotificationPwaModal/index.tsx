@@ -1,13 +1,15 @@
 import React, { Fragment, useContext } from 'react'
-import { Modal } from '../../general/Modal/Modal'
-import { pwaModalService } from '../../../utils/store'
-import BackgroundImage from '../../../assets/IntroBackground.png'
-import WalletConnectIcon from '../../general/Icon/WalletConnectIcon'
+
+import BackgroundImage from '@/assets/IntroBackground.png'
+import Button from '@/components/general/Button'
+import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
+import { Modal } from '@/components/general/Modal/Modal'
+import Text from '@/components/general/Text'
+import W3iContext from '@/contexts/W3iContext/context'
+import { requireNotifyPermission } from '@/utils/notifications'
+import { pwaModalService } from '@/utils/store'
+
 import './NotificationPwaModal.scss'
-import Text from '../../general/Text'
-import Button from '../../general/Button'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { requireNotifyPermission } from '../../../utils/notifications'
 
 export const NotificationPwaModal: React.FC = () => {
   const { notifyClientProxy } = useContext(W3iContext)

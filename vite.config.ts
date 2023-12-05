@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite'
-import autoprefixer from 'autoprefixer'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import react from '@vitejs/plugin-react'
+import autoprefixer from 'autoprefixer'
+import path from 'path'
+import { defineConfig } from 'vite'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { VitePWA } from 'vite-plugin-pwa'
 import type { VitePWAOptions } from 'vite-plugin-pwa'
 
@@ -50,6 +51,11 @@ const pwaOptions: Partial<VitePWAOptions> = {
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   return {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src')
+      }
+    },
     build: {
       target: 'es2020'
     },

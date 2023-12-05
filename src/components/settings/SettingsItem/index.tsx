@@ -1,6 +1,8 @@
 import React from 'react'
-import './SettingsItem.scss'
+
 import SettingsItemText from '../SettingsItemText'
+
+import './SettingsItem.scss'
 
 interface IProps {
   title: string

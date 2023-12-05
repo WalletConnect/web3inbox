@@ -1,9 +1,11 @@
 import React from 'react'
 
-import { generateAvatarColors } from '../../../utils/ui'
-import './Avatar.scss'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useEnsAvatar, useEnsName } from 'wagmi'
+
+import { generateAvatarColors } from '@/utils/ui'
+
+import './Avatar.scss'
 
 interface AvatarProps {
   address?: string

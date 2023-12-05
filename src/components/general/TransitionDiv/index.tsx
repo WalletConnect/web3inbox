@@ -1,7 +1,8 @@
+import React from 'react'
+
 import type { HTMLMotionProps } from 'framer-motion'
 // eslint-disable-next-line no-duplicate-imports
 import { LazyMotion, domAnimation, m } from 'framer-motion'
-import React from 'react'
 
 interface ITransitionDivProps extends HTMLMotionProps<'div'> {
   ref?: React.RefObject<HTMLDivElement>

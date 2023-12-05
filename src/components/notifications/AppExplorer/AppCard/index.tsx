@@ -1,10 +1,14 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import './AppCard.scss'
-import W3iContext from '../../../../contexts/W3iContext/context'
-import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
-import Text from '../../../general/Text'
-import SubscribeButton from './SubscribeButton'
+
 import { useNavigate } from 'react-router-dom'
+
+import Text from '@/components/general/Text'
+import W3iContext from '@/contexts/W3iContext/context'
+import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
+
+import SubscribeButton from './SubscribeButton'
+
+import './AppCard.scss'
 
 interface AppCardProps {
   name: string

@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
+
 import { NotifyClient } from '@walletconnect/notify-client'
+
 import { getFirebaseToken } from './firebase'
-import { useState, useEffect } from 'react'
 import { getDbEchoRegistrations, getDbSymkeyStore } from './idb'
 
 const ECHO_URL = 'https://echo.walletconnect.com'

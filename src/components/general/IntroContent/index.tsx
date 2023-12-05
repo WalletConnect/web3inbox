@@ -1,9 +1,13 @@
 import React from 'react'
-import './IntroContent.scss'
-import Text from '../Text'
-import BackgroundImage from '../../../assets/IntroBackground.png'
+
 import { motion } from 'framer-motion'
-import { useIsMobile } from '../../../utils/hooks'
+
+import BackgroundImage from '@/assets/IntroBackground.png'
+import { useIsMobile } from '@/utils/hooks'
+
+import Text from '../Text'
+
+import './IntroContent.scss'
 
 interface IIntroContent {
   icon: React.ReactNode

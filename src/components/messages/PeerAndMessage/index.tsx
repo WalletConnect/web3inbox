@@ -1,11 +1,14 @@
 import React from 'react'
-import { getEthChainAddress, isValidEnsDomain } from '../../../utils/address'
-import { useIsMobile } from '../../../utils/hooks'
-import { truncate } from '../../../utils/string'
-import Avatar from '../../account/Avatar'
-import TextWithHighlight from '../../general/TextWithHighlight'
-import './PeerAndMessage.scss'
+
+import Avatar from '@/components/account/Avatar'
+import TextWithHighlight from '@/components/general/TextWithHighlight'
+import { getEthChainAddress, isValidEnsDomain } from '@/utils/address'
+import { useIsMobile } from '@/utils/hooks'
+import { truncate } from '@/utils/string'
+
 import MessageDateTag from '../Message/MessageDateTag'
+
+import './PeerAndMessage.scss'
 
 interface PeerAndMessageProps {
   peer: string

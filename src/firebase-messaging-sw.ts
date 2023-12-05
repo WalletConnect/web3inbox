@@ -1,8 +1,9 @@
 /// <reference lib="WebWorker" />
-import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw'
 import { decryptMessage } from '@walletconnect/notify-message-decrypter'
 import { initializeApp } from 'firebase/app'
-import { getDbSymkeyStore } from './utils/idb'
+import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw'
+
+import { getDbSymkeyStore } from '@/utils/idb'
 
 declare let self: ServiceWorkerGlobalScope
 

@@ -1,10 +1,12 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { EventEmitter } from 'events'
-import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
-import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
-import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
-import { JsCommunicator } from '../externalCommunicators/jsCommunicator'
-import { ReactNativeCommunicator } from '../externalCommunicators/reactNativeCommunicator'
+
+import { AndroidCommunicator } from '@/w3iProxy/externalCommunicators/androidCommunicator'
+import type { ExternalCommunicator } from '@/w3iProxy/externalCommunicators/communicatorType'
+import { IOSCommunicator } from '@/w3iProxy/externalCommunicators/iosCommunicator'
+import { JsCommunicator } from '@/w3iProxy/externalCommunicators/jsCommunicator'
+import { ReactNativeCommunicator } from '@/w3iProxy/externalCommunicators/reactNativeCommunicator'
+
 import type { NotifyClientFunctions, W3iNotifyProvider } from './types'
 
 export default class ExternalNotifyProvider implements W3iNotifyProvider {

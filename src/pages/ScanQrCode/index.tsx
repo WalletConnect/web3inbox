@@ -1,9 +1,12 @@
-import TransitionDiv from '../../components/general/TransitionDiv'
-import QrReader from 'react-qr-reader-es6'
-import './ScanQrCode.scss'
 import { useEffect, useState } from 'react'
-import BackButton from '../../components/general/BackButton'
+
+import QrReader from 'react-qr-reader-es6'
 import { useNavigate } from 'react-router-dom'
+
+import BackButton from '@/components/general/BackButton'
+import TransitionDiv from '@/components/general/TransitionDiv'
+
+import './ScanQrCode.scss'
 
 const ScanQrCode: React.FC = () => {
   const [scanResult, setResult] = useState('')

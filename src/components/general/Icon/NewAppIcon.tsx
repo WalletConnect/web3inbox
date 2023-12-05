@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
-import SettingsContext from '../../../contexts/SettingsContext/context'
-import { useColorModeValue } from '../../../utils/hooks'
+
+import SettingsContext from '@/contexts/SettingsContext/context'
+import { useColorModeValue } from '@/utils/hooks'
 
 interface TNewAppIconProps {
   isFilled?: boolean

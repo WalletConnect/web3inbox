@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import NavLink from '../../../general/NavLink'
-import PeerAndMessage from '../../PeerAndMessage'
+
+import NavLink from '@/components/general/NavLink'
+import PeerAndMessage from '@/components/messages/PeerAndMessage'
+
 import './Thread.scss'
 
 interface ThreadProps {

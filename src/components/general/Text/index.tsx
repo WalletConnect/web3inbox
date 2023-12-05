@@ -1,5 +1,7 @@
 import React from 'react'
+
 import cn from 'classnames'
+
 import './Text.scss'
 
 export type TextVariant =

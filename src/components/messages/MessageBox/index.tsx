@@ -1,8 +1,10 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import W3iContext from '../../../contexts/W3iContext/context'
-import Textarea from '../../general/Textarea'
+
+import SendIcon from '@/components/general/Icon/SendIcon'
+import Textarea from '@/components/general/Textarea'
+import W3iContext from '@/contexts/W3iContext/context'
+
 import './MessageBox.scss'
-import SendIcon from '../../general/Icon/SendIcon'
 
 interface MessageBoxProps {
   topic: string

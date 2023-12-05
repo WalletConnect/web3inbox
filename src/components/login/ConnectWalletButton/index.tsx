@@ -1,5 +1,7 @@
 import { useWeb3Modal } from '@web3modal/wagmi/react'
-import Wallet from '../../general/Icon/Wallet'
+
+import Wallet from '@/components/general/Icon/Wallet'
+
 import './ConnectWalletButton.scss'
 
 const ConnectWalletButton: React.FC = () => {

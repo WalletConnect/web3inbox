@@ -1,9 +1,12 @@
-import { useFormattedTime } from '../../../utils/hooks'
 import { useEffect, useState } from 'react'
+
 import cn from 'classnames'
-import CircleIcon from '../../general/Icon/CircleIcon'
 import { LazyMotion, domMax } from 'framer-motion'
-import Text from '../../general/Text'
+
+import CircleIcon from '@/components/general/Icon/CircleIcon'
+import Text from '@/components/general/Text'
+import { useFormattedTime } from '@/utils/hooks'
+
 import './AppNotifications.scss'
 
 const MAX_BODY_LENGTH = 180

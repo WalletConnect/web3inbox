@@ -1,21 +1,23 @@
 import type { RefObject } from 'react'
-
 // eslint-disable-next-line no-duplicate-imports
-import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+
 import { useLocation } from 'react-router-dom'
-import type { SettingsContextSimpleState } from '../contexts/SettingsContext/context'
+
+import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/context'
+
 // eslint-disable-next-line no-duplicate-imports
 import {
   appSearchService,
   chatSearchService,
   contactsModalService,
+  notificationPwaModalService,
+  notifySearchService,
   preferencesModalService,
   profileModalService,
-  notifySearchService,
   shareModalService,
   signatureModalService,
-  unsubscribeModalService,
-  notificationPwaModalService
+  unsubscribeModalService
 } from './store'
 import { isMobile } from './ui'
 

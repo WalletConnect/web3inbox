@@ -1,4 +1,5 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
+
 import type { ChatClientTypes } from './chatProviders/types'
 
 export interface ChatFacadeEvents {
