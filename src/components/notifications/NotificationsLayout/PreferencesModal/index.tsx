@@ -63,6 +63,7 @@ export const PreferencesModal: React.FC = () => {
       } catch (error) {
         console.error(error)
         showErrorMessageToast('Failed to update preferences')
+        setLoading(false)
       }
     }
   }, [preferencesModalAppId, notifyClientProxy, scopes])
