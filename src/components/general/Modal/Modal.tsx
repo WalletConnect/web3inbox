@@ -7,14 +7,14 @@ import { useOnClickOutside, useResizeObserver } from '@/utils/hooks'
 import './Modal.scss'
 
 interface IModalProps {
-  onToggleModal: () => void
+  onCloseModal: () => void
   children: React.ReactNode
   width?: string
   height?: string
 }
-export const Modal: React.FC<IModalProps> = ({ children, onToggleModal, width, height }) => {
+export const Modal: React.FC<IModalProps> = ({ children, onCloseModal, width, height }) => {
   const ref = useRef<HTMLDivElement>(null)
-  useOnClickOutside(ref, onToggleModal)
+  useOnClickOutside(ref, onCloseModal)
 
   const onResize = useCallback((target: HTMLDivElement) => {
     if (ref.current) {

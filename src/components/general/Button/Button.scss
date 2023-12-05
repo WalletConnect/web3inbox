@@ -10,6 +10,7 @@
   box-shadow: inset 0 0 0 1px var(--light-overlay-010);
   border: none;
   transition: opacity 300ms ease;
+  height: 2.5rem;
 
   &:hover {
     opacity: 0.8;

@@ -29,7 +29,7 @@ export const NotificationPwaModal: React.FC = () => {
   const explicitlyDeniedPermissionForNotifications = window.Notification?.permission === 'denied'
 
   return (
-    <Modal onToggleModal={pwaModalService.toggleModal}>
+    <Modal onCloseModal={pwaModalService.closeModal}>
       <div className="NotificationPwaModal">
         <div className="NotificationPwaModal__background">
           <img src={BackgroundImage} />
