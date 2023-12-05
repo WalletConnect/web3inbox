@@ -18,6 +18,7 @@ import { chatSearchService } from '@/utils/store'
 
 import EmptyThreads from './EmptyThreads'
 import Thread from './Thread'
+
 import './ThreadSelector.scss'
 
 const ThreadSelector: React.FC = () => {

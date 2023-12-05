@@ -18,8 +18,9 @@ import W3iContext from '@/contexts/W3iContext/context'
 import { useIsMobile } from '@/utils/hooks'
 import { handleImageFallback } from '@/utils/ui'
 
-import './AppSelector.scss'
 import LinkItemSkeleton from './LinkItemSkeleton'
+
+import './AppSelector.scss'
 
 const SUBSCRIPTION_LOADER_TIMEOUT = 3000
 

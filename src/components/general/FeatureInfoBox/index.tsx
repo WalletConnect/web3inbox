@@ -4,12 +4,12 @@ import SettingsContext from '@/contexts/SettingsContext/context'
 import { useColorModeValue } from '@/utils/hooks'
 import type { IIcon, ISection } from '@/utils/types'
 
-import './FeatureInfoBox.scss'
-
 import Button from '../Button'
 import CrossIcon from '../Icon/CrossIcon'
 import IconWrapper from '../Icon/IconWrapper/IconWrapper'
 import Text from '../Text'
+
+import './FeatureInfoBox.scss'
 
 interface IFeatureInfoBoxProps {
   localStorageKey: string

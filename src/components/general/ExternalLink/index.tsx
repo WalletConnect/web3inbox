@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Text from '../Text'
+
 import './ExternalLink.scss'
 
 type HTMLAnchorProps = React.DetailedHTMLProps<

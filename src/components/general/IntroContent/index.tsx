@@ -6,6 +6,7 @@ import BackgroundImage from '@/assets/IntroBackground.png'
 import { useIsMobile } from '@/utils/hooks'
 
 import Text from '../Text'
+
 import './IntroContent.scss'
 
 interface IIntroContent {

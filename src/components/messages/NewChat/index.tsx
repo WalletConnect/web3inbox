@@ -17,8 +17,9 @@ import { useColorModeValue, useIsMobile } from '@/utils/hooks'
 import { truncate } from '@/utils/string'
 import { showErrorMessageToast } from '@/utils/toasts'
 
-import './NewChat.scss'
 import SearchSuggestions from './SearchSuggestions'
+
+import './NewChat.scss'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)

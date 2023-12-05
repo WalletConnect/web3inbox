@@ -1,8 +1,11 @@
-import ChevronRightIcon from '../../../general/Icon/ChevronRightIcon'
-import Spinner from '../../../general/Spinner'
-import './AppCard.scss'
-import cn from 'classnames'
 import React from 'react'
+
+import cn from 'classnames'
+
+import ChevronRightIcon from '@/components/general/Icon/ChevronRightIcon'
+import Spinner from '@/components/general/Spinner'
+
+import './AppCard.scss'
 
 interface SubscribeButtonProps {
   className?: string

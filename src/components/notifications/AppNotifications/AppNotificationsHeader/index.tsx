@@ -8,6 +8,7 @@ import { noop } from '@/utils/general'
 import { useIsMobile } from '@/utils/hooks'
 
 import AppNotificationDropdown from '../AppNotificationDropdown'
+
 import './AppNotificationsHeader.scss'
 
 interface IAppNotificationsHeaderProps {

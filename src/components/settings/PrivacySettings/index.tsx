@@ -11,6 +11,7 @@ import MobileHeader from '@/components/layout/MobileHeader'
 import SettingsHeader from '../SettingsHeader'
 import SettingsItem from '../SettingsItem'
 import SettingsToggle from '../SettingsToggle/Index'
+
 import './PrivacySettings.scss'
 
 const radios = [

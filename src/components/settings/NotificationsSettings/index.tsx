@@ -17,6 +17,7 @@ import { notificationsEnabledInBrowser, requireNotifyPermission } from '@/utils/
 import SettingsHeader from '../SettingsHeader'
 import SettingsItem from '../SettingsItem'
 import SettingsToggle from '../SettingsToggle/Index'
+
 import './NotificationsSettings.scss'
 
 const getHelperTooltip = () => {

@@ -24,6 +24,7 @@ import W3iContext from '@/contexts/W3iContext/context'
 import { useIsMobile, useModals } from '@/utils/hooks'
 
 import ContactsModal from '../ContactsModal'
+
 import './Settings.scss'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [

@@ -11,10 +11,11 @@ import MobileHeader from '@/components/layout/MobileHeader'
 import W3iContext from '@/contexts/W3iContext/context'
 
 import AppNotificationItem from './AppNotificationItem'
-import './AppNotifications.scss'
 import AppNotificationsCardMobile from './AppNotificationsCardMobile'
 import AppNotificationsEmpty from './AppNotificationsEmpty'
 import AppNotificationsHeader from './AppNotificationsHeader'
+
+import './AppNotifications.scss'
 
 export interface AppNotificationsDragProps {
   id: number

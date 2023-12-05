@@ -13,6 +13,7 @@ import { polyfill } from '@/utils/polyfill'
 import { initSentry } from '@/utils/sentry'
 
 import { Modals } from './Modals'
+
 import './index.css'
 
 polyfill()

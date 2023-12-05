@@ -13,6 +13,7 @@ import { useModals } from '@/utils/hooks'
 import { signatureModalService } from '@/utils/store'
 
 import { SignatureLoadingVisual } from './SignatureLoadingVisual'
+
 import './SignatureModal.scss'
 
 export const SignatureModal: React.FC<{

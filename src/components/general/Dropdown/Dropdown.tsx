@@ -8,6 +8,7 @@ import { useOnClickOutside } from '@/utils/hooks'
 
 import Button from '../Button'
 import DotsIcon from '../Icon/DotsIcon'
+
 import './Dropdown.scss'
 
 interface IDropdown {

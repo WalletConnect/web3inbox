@@ -7,6 +7,7 @@ import SettingsContext from '@/contexts/SettingsContext/context'
 import { useColorModeValue } from '@/utils/hooks'
 
 import DropdownIndicator from './DropdownIndicator'
+
 import './Select.scss'
 
 interface ISelectProps {

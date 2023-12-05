@@ -8,6 +8,7 @@ import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
 
 import AppCard from './AppCard'
 import AppCardSkeleton from './AppCardSkeleton'
+
 import './AppExplorer.scss'
 
 const AppExplorer = () => {

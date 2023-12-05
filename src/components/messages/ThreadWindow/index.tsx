@@ -19,6 +19,7 @@ import InviteMessage from '../InviteMessage'
 import { MessageItem } from '../Message/MessageItem'
 import MessageBox from '../MessageBox'
 import ThreadDropdown from './ThreadDropdown'
+
 import './ThreadWindow.scss'
 
 const ThreadWindow: React.FC = () => {

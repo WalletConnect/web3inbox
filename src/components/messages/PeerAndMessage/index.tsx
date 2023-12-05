@@ -7,6 +7,7 @@ import { useIsMobile } from '@/utils/hooks'
 import { truncate } from '@/utils/string'
 
 import MessageDateTag from '../Message/MessageDateTag'
+
 import './PeerAndMessage.scss'
 
 interface PeerAndMessageProps {

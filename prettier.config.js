@@ -2,8 +2,8 @@ const importOrder = [
   '^(react)$',
   '<THIRD_PARTY_MODULES>',
   '^@\\/c?(.*)$',
-  '^[./]',
-  '^(.*).(scss|css)$'
+  '^[./](?!.*.(scss|css)$).*$',
+  '^[./](.*.(scss|css)$).*$'
 ]
 
 const config = {

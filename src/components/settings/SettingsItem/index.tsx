@@ -1,6 +1,7 @@
 import React from 'react'
 
 import SettingsItemText from '../SettingsItemText'
+
 import './SettingsItem.scss'
 
 interface IProps {

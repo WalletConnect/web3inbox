@@ -9,6 +9,7 @@ import W3iContext from '@/contexts/W3iContext/context'
 
 import PeerAndMessage from '../PeerAndMessage'
 import ChatInvitesHeader from './ChatInvitesHeader'
+
 import './Invites.scss'
 
 const ChatInvites: React.FC = () => {
