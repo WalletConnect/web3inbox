@@ -5,6 +5,7 @@ import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import Button from '@/components/general/Button'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
 import { Modal } from '@/components/general/Modal/Modal'
+import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
 import Toggle from '@/components/general/Toggle'
 import SettingsContext from '@/contexts/SettingsContext/context'
@@ -17,9 +18,9 @@ import './PreferencesModal.scss'
 
 export const PreferencesModal: React.FC = () => {
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
-  const { mode } = useContext(SettingsContext)
   const { preferencesModalAppId } = useModals()
   const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
+  const [loading, setLoading] = useState(false)
 
   // Reduces the scopes mapping to only an array of enabled scopes
   const getEnabledScopes = (scopesMap: NotifyClientTypes.NotifySubscription['scope']) => {
@@ -43,6 +44,7 @@ export const PreferencesModal: React.FC = () => {
   }, [preferencesModalAppId, setScopes, activeSubscriptions])
 
   const handleUpdatePreferences = useCallback(async () => {
+    setLoading(true)
     if (preferencesModalAppId) {
       const topic = preferencesModalAppId
 
@@ -50,6 +52,7 @@ export const PreferencesModal: React.FC = () => {
         notifyClientProxy?.observeOne('notify_update', {
           next: () => {
             preferencesModalService.closeModal()
+            setLoading(false)
             showSuccessMessageToast('Preferences updated successfully')
           }
         })
@@ -60,12 +63,13 @@ export const PreferencesModal: React.FC = () => {
       } catch (error) {
         console.error(error)
         showErrorMessageToast('Failed to update preferences')
+        setLoading(false)
       }
     }
   }, [preferencesModalAppId, notifyClientProxy, scopes])
 
   return (
-    <Modal onToggleModal={preferencesModalService.toggleModal}>
+    <Modal onCloseModal={preferencesModalService.closeModal}>
       <div className="PreferencesModal">
         <div className="PreferencesModal__header">
           <Text variant="paragraph-600">Preferences</Text>
@@ -109,8 +113,12 @@ export const PreferencesModal: React.FC = () => {
         </div>
         <div className="PreferencesModal__overflow-gradient" />
         <div className="PreferencesModal__action">
-          <Button className="PreferencesModal__action__btn" onClick={handleUpdatePreferences}>
-            Update
+          <Button
+            disabled={loading}
+            className="PreferencesModal__action__btn"
+            onClick={handleUpdatePreferences}
+          >
+            {loading ? <Spinner /> : 'Update'}
           </Button>
         </div>
       </div>

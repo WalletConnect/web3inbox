@@ -51,7 +51,7 @@ export const SignatureModal: React.FC<{
   }, [message, sender])
 
   return (
-    <Modal onToggleModal={signatureModalService.toggleModal}>
+    <Modal onCloseModal={signatureModalService.closeModal}>
       <div className="SignatureModal">
         <div className="SignatureModal__header">
           <div onClick={() => disconnect()} className="SignatureModal__exit">

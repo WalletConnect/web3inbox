@@ -47,7 +47,7 @@ const ContactsModal: React.FC<ContactsModalProps> = ({
   )
 
   return (
-    <Modal onToggleModal={contactsModalService.toggleModal}>
+    <Modal onCloseModal={contactsModalService.closeModal}>
       <div className="ContactsModal">
         <div className="ContactsModal__header">
           <h2>{capitalize(status)} contacts</h2>

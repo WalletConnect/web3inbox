@@ -48,7 +48,7 @@ export const getPlatformInstallText = () => {
 
 export const PwaModal: React.FC = () => {
   return (
-    <Modal onToggleModal={pwaModalService.toggleModal}>
+    <Modal onCloseModal={pwaModalService.closeModal}>
       <div className="PwaModal">
         <div className="PwaModal__background">
           <img src={BackgroundImage} />

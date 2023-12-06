@@ -53,7 +53,7 @@ export const UnsubscribeModal: React.FC = () => {
   }
 
   return (
-    <Modal onToggleModal={unsubscribeModalService.toggleModal}>
+    <Modal onCloseModal={unsubscribeModalService.closeModal}>
       <div className="UnsubscribeModal">
         <div className="UnsubscribeModal__header">
           <Text variant="paragraph-600">Unsubscribe</Text>
