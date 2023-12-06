@@ -112,10 +112,10 @@ const AppSelector: React.FC = () => {
                       <img
                         className="AppSelector__link-apps"
                         src={AllAppsIcon}
-                        alt="Discover all apps logo"
+                        alt="Discover apps logo"
                         loading="lazy"
                       />
-                      <Text variant="small-500">Discover all apps</Text>
+                      <Text variant="small-500">Discover apps</Text>
                     </div>
                   </div>
                 </NavLink>
