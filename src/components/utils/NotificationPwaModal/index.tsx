@@ -57,7 +57,9 @@ export const NotificationPwaModal: React.FC = () => {
                 You can always adjust your permissions in your OS settings.
               </Text>
             </div>
-            <Button onClick={handleEnableNotifications}>Enable Notifications</Button>
+            <Button onClick={handleEnableNotifications} size="small">
+              Enable Notifications
+            </Button>
           </Fragment>
         )}
       </div>

@@ -28,7 +28,9 @@ const WidgetConnect: React.FC = () => {
           <span>To enable notifications, connect your wallet.</span>
         </div>
         <div className="WidgetConnect__connect">
-          <Button onClick={onConnect}>Connect Wallet</Button>
+          <Button onClick={onConnect} size="small">
+            Connect Wallet
+          </Button>
         </div>
       </div>
     </div>

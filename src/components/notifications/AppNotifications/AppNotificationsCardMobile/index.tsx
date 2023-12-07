@@ -48,7 +48,7 @@ const AppNotificationsCardMobile: React.FC = () => {
       <Text className="AppNotificationsCardMobile__description" variant="small-400">
         {app?.metadata.description}
       </Text>
-      <Button disabled className="AppNotificationsCardMobile__subscribed">
+      <Button disabled className="AppNotificationsCardMobile__subscribed" size="small">
         Subscribed
         <CheckMarkIcon />
       </Button>

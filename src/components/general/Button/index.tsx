@@ -13,6 +13,7 @@ type HTMLButtonProps = React.DetailedHTMLProps<
 >
 type TButtonProps = HTMLButtonProps & {
   customType?: 'action-icon' | 'action' | 'danger' | 'primary'
+  size?: 'small' | 'medium'
   textVariant?: TextVariant
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
@@ -27,6 +28,7 @@ const Button: React.FC<TButtonProps> = ({
   customType = 'primary',
   leftIcon,
   rightIcon,
+  size = 'medium',
   ...props
 }) => {
   return (
@@ -34,7 +36,7 @@ const Button: React.FC<TButtonProps> = ({
       {...props}
       onClick={onClick}
       disabled={disabled}
-      className={cn('Button', `Button__${customType}`, className)}
+      className={cn('Button', `Button__${customType} Button__${size}`, className)}
     >
       {leftIcon}
       <Text variant={textVariant}>{children}</Text>
