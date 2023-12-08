@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import PlusIcon from '@/assets/Plus.svg'
 import SearchIcon from '@/assets/Search.svg'
 import Avatar from '@/components/account/Avatar'
-import CircleBadge from '@/components/general/Badge/CircleBadge'
+import CircleBadge from '@/components/general/CircleBadge/CircleBadge'
 import PencilIcon from '@/components/general/Icon/PencilIcon'
 import Input from '@/components/general/Input'
 import NavLink from '@/components/general/NavLink'

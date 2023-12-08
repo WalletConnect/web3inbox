@@ -10,3 +10,16 @@ export const EXPLORER_ENDPOINTS = {
   projects: '/w3i/v1/projects',
   notifyConfig: '/w3i/v1/notify-config'
 }
+
+export const NAVIGATION = {
+  messages: {
+    index: '/messages'
+  },
+  notifications: {
+    index: '/notifications',
+    topic: (topic: string) => `/notifications/${topic}`
+  },
+  settings: {
+    index: '/settings'
+  }
+}
