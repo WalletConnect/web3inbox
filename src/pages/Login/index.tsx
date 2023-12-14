@@ -48,6 +48,7 @@ const Login: React.FC = () => {
               onClick={() => {
                 modal.open()
               }}
+              size="small"
             >
               Connect Wallet
             </Button>

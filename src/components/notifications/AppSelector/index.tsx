@@ -168,7 +168,6 @@ const AppSelector: React.FC = () => {
           </ul>
         </div>
       </div>
-      {/* <EmptyApps /> */}
     </div>
   )
 }
