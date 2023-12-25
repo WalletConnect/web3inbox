@@ -14,7 +14,7 @@
     "prettier": "prettier --check '**/*.{js,ts,jsx,tsx,scss}'",
     "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'",
     "playwright:install": "playwright install --with-deps",
-    "test": "playwright test"
+    "test:integration": "playwright test"
   },
   "dependencies": {
     "@sentry/react": "^7.64.0",
