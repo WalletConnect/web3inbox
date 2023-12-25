@@ -18,7 +18,7 @@ jobs:
     - name: Install Playwright Browsers
       run: yarn playwright:install
     - name: Run Playwright tests
-      run: yarn test
+      run: yarn playwright:test
       env:
         VITE_PROJECT_ID: ${{ secrets.VITE_DEV_PROJECT_ID }}
     - uses: actions/upload-artifact@v3

@@ -29,5 +29,5 @@ yarn dev
 
 ```bash
 yarn playwright:install
-yarn test
+yarn playwright:test
 ```
