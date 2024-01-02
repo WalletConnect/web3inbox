@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 import { LazyMotion, domMax } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
+import ArrowRightTopIcon from '@/components/general/Icon/ArrowRightTopIcon'
 import CircleIcon from '@/components/general/Icon/CircleIcon'
 import Text from '@/components/general/Text'
 import { useFormattedTime } from '@/utils/hooks'
@@ -24,6 +26,20 @@ interface IAppNotificationProps {
   notification: IAppNotification
   onClear: () => void
   appLogo: string
+}
+
+const AppNotificationItemLink: React.FC<{
+  children: React.ReactNode
+  url?: string
+  className?: string
+}> = ({ children, url, ...props }) => {
+  if (!url) return <div {...props}>{children}</div>
+
+  return (
+    <Link to={url} target="_blank" {...props}>
+      {children}
+    </Link>
+  )
 }
 
 const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, appLogo }) => {
@@ -48,10 +64,12 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
 
   return (
     <LazyMotion features={domMax}>
-      <div
+      <AppNotificationItemLink
+        url={notification.url}
         className={cn(
           'AppNotifications__item',
-          notification.isRead ? '' : 'AppNotifications__item--blue'
+          notification.isRead ? '' : 'AppNotifications__item--blue',
+          notification.url ? 'AppNotifications__item__link' : ''
         )}
       >
         <img
@@ -63,10 +81,23 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
         <div key={notification.id} className="AppNotifications__item__content">
           <div className="AppNotifications__item__header">
             <div className="AppNotifications__item__title">
-              <Text variant="paragraph-500"> {notification.title}</Text>
+              <Text variant="paragraph-500">{notification.title}</Text>
+              {notification.url ? (
+                <ArrowRightTopIcon className="AppNotifications__item__title__external-link-icon" />
+              ) : null}
             </div>
             <div className="AppNotifications__item__header__wrapper">
-              {formattedTime ? <Text variant="tiny-500">{formattedTime}</Text> : null}
+              {formattedTime ? (
+                <Text className="AppNotifications__item__header__wrapper__date" variant="tiny-500">
+                  {formattedTime}
+                </Text>
+              ) : null}
+              {notification.url ? (
+                <div className="AppNotifications__item__header__wrapper__visit-link">
+                  <Text variant="link-500">Visit Link</Text>
+                  <ArrowRightTopIcon />
+                </div>
+              ) : null}
               <div className="AppNotifications__item__status">
                 {!notification.isRead && <CircleIcon />}
               </div>
@@ -87,7 +118,7 @@ const AppNotificationItem: React.FC<IAppNotificationProps> = ({ notification, ap
             </button>
           )}
         </div>
-      </div>
+      </AppNotificationItemLink>
     </LazyMotion>
   )
 }

@@ -117,6 +117,7 @@
     align-items: center;
     padding: 1rem 1.25rem;
     border-radius: 0.75rem;
+    text-decoration: none;
 
     &--blue {
       background: var(--accent-color-2);
@@ -124,6 +125,20 @@
 
     &:hover {
       background: var(--bg-color-2);
+    }
+
+    @media only screen and (min-width: 700px) {
+      &__link {
+        &:hover {
+          .AppNotifications__item__header__wrapper__date {
+            display: none;
+          }
+
+          .AppNotifications__item__header__wrapper__visit-link {
+            display: flex;
+          }
+        }
+      }
     }
 
     @media only screen and (max-width: 700px) {
@@ -179,10 +194,38 @@
         span {
           color: var(--fg-color-3);
         }
+
+        &__visit-link {
+          text-decoration: none;
+          color: var(--accent-color-1);
+          display: none;
+          align-items: center;
+
+          span {
+            color: var(--accent-color-1);
+          }
+
+          svg {
+            display: inline-block;
+          }
+        }
       }
     }
     &__title {
       color: var(--fg-color-1);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+
+      &__external-link-icon {
+        display: none;
+      }
+
+      @media only screen and (max-width: 700px) {
+        &__external-link-icon {
+          display: inline-block;
+        }
+      }
     }
     &__message {
       color: var(--fg-color-1);
