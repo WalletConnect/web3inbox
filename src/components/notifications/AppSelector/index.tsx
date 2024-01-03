@@ -32,6 +32,8 @@ const AppSelector: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const { activeSubscriptions } = useContext(W3iContext)
 
+  const empty = !loading && filteredApps.length === 0
+
   const fetchApps = async (searchQuery: string) => {
     const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
 
@@ -124,7 +126,7 @@ const AppSelector: React.FC = () => {
           )}
         </div>
         <div className="AppSelector__wrapper">
-          <Label color="main">Subscribed</Label>
+          {!empty ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
             {loading
               ? Array(3)
