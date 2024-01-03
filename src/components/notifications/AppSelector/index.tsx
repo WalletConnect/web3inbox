@@ -8,6 +8,7 @@ import { from } from 'rxjs'
 
 import AllAppsIcon from '@/assets/AllApps.svg'
 import SearchIcon from '@/assets/Search.svg'
+import SpannerSVG from '@/assets/Spanner.svg'
 import Badge from '@/components/general/Badge'
 import Input from '@/components/general/Input'
 import Label from '@/components/general/Label'
@@ -19,7 +20,7 @@ import W3iContext from '@/contexts/W3iContext/context'
 import { NAVIGATION } from '@/utils/constants'
 import { useIsMobile } from '@/utils/hooks'
 import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
-import { isUnapproved } from '@/utils/project'
+import { isVerified } from '@/utils/project'
 import { handleImageFallback } from '@/utils/ui'
 
 import LinkItemSkeleton from './LinkItemSkeleton'
@@ -140,7 +141,7 @@ const AppSelector: React.FC = () => {
               : null}
             {!loading &&
               filteredApps?.map(app => {
-                const unapproved = isUnapproved(app, projects)
+                const verified = isVerified(app, projects)
 
                 return (
                   <AnimatePresence>
@@ -152,19 +153,26 @@ const AppSelector: React.FC = () => {
                       >
                         <div className="AppSelector__notifications">
                           <div className="AppSelector__notifications-link">
-                            <div className="AppSelector__link-logo">
+                            <div className="AppSelector__link__logo">
                               <img
+                                className="AppSelector__link__logo__image"
                                 src={app.metadata.icons?.[0] || '/fallback.svg'}
                                 alt={`${app.metadata.name} logo`}
                                 onError={handleImageFallback}
                                 loading="lazy"
                               />
+                              {verified ? null : (
+                                <img
+                                  src={SpannerSVG}
+                                  className="AppSelector__link__logo__dev-image"
+                                  alt="Dev mode icon"
+                                />
+                              )}
                             </div>
 
                             <div className="AppSelector__link__wrapper">
                               <Text className="AppSelector__link__title" variant="small-500">
                                 {app.metadata.name}
-                                {unapproved ? <Badge>Unapproved</Badge> : null}
                               </Text>
                               <Text className="AppSelector__link__subtitle" variant="small-500">
                                 {app.metadata.description}

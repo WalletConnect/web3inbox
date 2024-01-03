@@ -6,6 +6,8 @@ import type { INotifyApp, INotifyProject } from '@/utils/types'
 
 const projectId: string = import.meta.env.VITE_PROJECT_ID
 
+type NotifyProject = Omit<INotifyProject, 'app'>
+
 const useNotifyProjects = () => {
   const [loading, setLoading] = useState(false)
   const [projects, setProjects] = useState<INotifyApp[]>([])
@@ -33,9 +35,10 @@ const useNotifyProjects = () => {
 
       setLoading(false)
 
-      const notifyProjects: Omit<INotifyProject, 'app'>[] = filterAppDomain
+      const notifyProjects: NotifyProject[] = filterAppDomain
         ? [allNotifyProjectsRes.data]
         : Object.values(allNotifyProjectsRes.projects)
+
       const notifyApps: INotifyApp[] = notifyProjects
         // Lower order indicates higher priority, thus sorting ascending
         .sort((a, b) => (b.order ?? 0) - (a.order ?? 0))
@@ -48,15 +51,16 @@ const useNotifyProjects = () => {
             image_url,
             metadata,
             is_verified,
+            isVerified,
             is_featured
-          }: Omit<INotifyProject, 'app'>) => ({
+          }: NotifyProject) => ({
             id,
             name,
             description,
             url: dapp_url,
             icons: image_url ? [image_url.md] : [],
             colors: metadata?.colors,
-            isVerified: is_verified,
+            isVerified: is_verified || isVerified ? true : false,
             isFeatured: is_featured
           })
         )

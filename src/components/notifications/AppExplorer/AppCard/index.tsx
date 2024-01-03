@@ -25,15 +25,7 @@ interface AppCardProps {
   isDevMode?: boolean
 }
 
-const AppCard: React.FC<AppCardProps> = ({
-  name,
-  description,
-  isVerified,
-  isDevMode,
-  logo,
-  bgColor,
-  url
-}) => {
+const AppCard: React.FC<AppCardProps> = ({ name, description, isVerified, logo, bgColor, url }) => {
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
@@ -107,7 +99,7 @@ const AppCard: React.FC<AppCardProps> = ({
       <div className="AppCard__header">
         <div className="AppCard__header__logo">
           <img src={logo || '/fallback.svg'} alt={`${name} logo`} />
-          {isDevMode ? (
+          {!isVerified ? (
             <img src={SpannerSVG} className="AppCard__header__logo__dev-icon" alt="Dev mode icon" />
           ) : null}
         </div>
@@ -122,7 +114,7 @@ const AppCard: React.FC<AppCardProps> = ({
       <div className="AppCard__body">
         <div className="AppCard__body__title">
           <Text variant="large-600">{name}</Text>
-          {isDevMode ? <Badge>DEV</Badge> : null}
+          {!isVerified ? <Badge>DEV</Badge> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
           {host}
