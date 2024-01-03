@@ -68,7 +68,6 @@ const AppExplorer = () => {
                     logo={app.icons?.[0] || '/fallback.svg'}
                     url={app.url}
                     isVerified={app.isVerified}
-                    isDevMode={filterAppDomain && app.url.includes(filterAppDomain) ? true : false}
                   />
                 ))}
             </div>
@@ -87,7 +86,6 @@ const AppExplorer = () => {
                     logo={app.icons?.[0] || '/fallback.svg'}
                     url={app.url}
                     isVerified={app.isVerified}
-                    isDevMode={filterAppDomain && app.url.includes(filterAppDomain) ? true : false}
                   />
                 ))}
             </div>

@@ -22,7 +22,6 @@ interface AppCardProps {
   }
   url: string
   isVerified?: boolean
-  isDevMode?: boolean
 }
 
 const AppCard: React.FC<AppCardProps> = ({ name, description, isVerified, logo, bgColor, url }) => {
