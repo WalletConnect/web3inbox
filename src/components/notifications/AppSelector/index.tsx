@@ -20,7 +20,7 @@ import W3iContext from '@/contexts/W3iContext/context'
 import { NAVIGATION } from '@/utils/constants'
 import { useIsMobile } from '@/utils/hooks'
 import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
-import { isUnVerified } from '@/utils/project'
+import { checkIsUnVerified } from '@/utils/project'
 import { handleImageFallback } from '@/utils/ui'
 
 import LinkItemSkeleton from './LinkItemSkeleton'
@@ -141,7 +141,7 @@ const AppSelector: React.FC = () => {
               : null}
             {!loading &&
               filteredApps?.map(app => {
-                const unverified = isUnVerified(app, projects)
+                const isUnverified = checkIsUnVerified(app, projects)
 
                 return (
                   <AnimatePresence>
@@ -161,7 +161,7 @@ const AppSelector: React.FC = () => {
                                 onError={handleImageFallback}
                                 loading="lazy"
                               />
-                              {unverified ? (
+                              {isUnverified ? (
                                 <img
                                   src={SpannerSVG}
                                   className="AppSelector__link__logo__dev-image"
