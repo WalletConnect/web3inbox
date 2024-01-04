@@ -108,7 +108,7 @@ const AppCard: React.FC<AppCardProps> = ({
       <div className="AppCard__header">
         <div className="AppCard__header__logo">
           <img src={logo || '/fallback.svg'} alt={`${name} logo`} />
-          {!isVerified ? (
+          {!isVerified && !isComingSoon ? (
             <img src={SpannerSVG} className="AppCard__header__logo__dev-icon" alt="Dev mode icon" />
           ) : null}
         </div>
@@ -127,7 +127,7 @@ const AppCard: React.FC<AppCardProps> = ({
       <div className="AppCard__body">
         <div className="AppCard__body__title">
           <Text variant="large-600">{name}</Text>
-          {!isVerified ? <Badge>DEV</Badge> : null}
+          {!isVerified && !isComingSoon ? <Badge>DEV</Badge> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
           {host}
