@@ -6,8 +6,7 @@ export function checkIsUnVerified(
   app: NotifyClientTypes.NotifySubscription,
   projects: INotifyApp[]
 ) {
-  const project = projects.find(project => project.url.includes(app.metadata.appDomain))
-  const isVerified = project && project?.isVerified !== true
-
-  return isVerified
+  return projects.some(
+    project => project.url.includes(app.metadata.appDomain) && project.isVerified !== true
+  )
 }
