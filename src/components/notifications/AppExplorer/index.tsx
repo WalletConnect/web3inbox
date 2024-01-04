@@ -1,9 +1,12 @@
+import { useContext } from 'react'
+
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 
 import IntroApps from '@/components/general/Icon/IntroApps'
 import IntroContent from '@/components/general/IntroContent'
 import MobileHeader from '@/components/layout/MobileHeader'
+import SettingsContext from '@/contexts/SettingsContext/context'
 import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
 
 import AppCard from './AppCard'
@@ -13,6 +16,7 @@ import './AppExplorer.scss'
 
 const AppExplorer = () => {
   const { projects, loading } = useNotifyProjects()
+  const { filterAppDomain } = useContext(SettingsContext)
 
   return (
     <AnimatePresence>
@@ -63,6 +67,7 @@ const AppExplorer = () => {
                     }}
                     logo={app.icons?.[0] || '/fallback.svg'}
                     url={app.url}
+                    isVerified={app.isVerified}
                   />
                 ))}
             </div>
@@ -80,6 +85,7 @@ const AppExplorer = () => {
                     }}
                     logo={app.icons?.[0] || '/fallback.svg'}
                     url={app.url}
+                    isVerified={app.isVerified}
                   />
                 ))}
             </div>

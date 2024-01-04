@@ -8,6 +8,8 @@ import { from } from 'rxjs'
 
 import AllAppsIcon from '@/assets/AllApps.svg'
 import SearchIcon from '@/assets/Search.svg'
+import SpannerSVG from '@/assets/Spanner.svg'
+import Badge from '@/components/general/Badge'
 import Input from '@/components/general/Input'
 import Label from '@/components/general/Label'
 import NavLink from '@/components/general/NavLink'
@@ -15,7 +17,10 @@ import TargetTitle from '@/components/general/TargetTitle'
 import Text from '@/components/general/Text'
 import MobileHeader from '@/components/layout/MobileHeader'
 import W3iContext from '@/contexts/W3iContext/context'
+import { NAVIGATION } from '@/utils/constants'
 import { useIsMobile } from '@/utils/hooks'
+import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
+import { checkIsUnVerified } from '@/utils/project'
 import { handleImageFallback } from '@/utils/ui'
 
 import LinkItemSkeleton from './LinkItemSkeleton'
@@ -31,6 +36,7 @@ const AppSelector: React.FC = () => {
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const [loading, setLoading] = useState(true)
   const { activeSubscriptions } = useContext(W3iContext)
+  const { projects } = useNotifyProjects()
 
   const empty = !loading && filteredApps.length === 0
 
@@ -64,7 +70,7 @@ const AppSelector: React.FC = () => {
 
   useEffect(() => {
     fetchApps(search)
-  }, [activeSubscriptions])
+  }, [activeSubscriptions, projects])
 
   useEffect(() => {
     searchApps(search)
@@ -134,39 +140,51 @@ const AppSelector: React.FC = () => {
                   .map(x => x)
               : null}
             {!loading &&
-              filteredApps?.map(app => (
-                <AnimatePresence>
-                  <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <NavLink
-                      key={app.topic}
-                      to={`/notifications/${app.topic}`}
-                      className="AppSelector__link-item"
-                    >
-                      <div className="AppSelector__notifications">
-                        <div className="AppSelector__notifications-link">
-                          <div className="AppSelector__link-logo">
-                            <img
-                              src={app.metadata.icons?.[0] || '/fallback.svg'}
-                              alt={`${app.metadata.name} logo`}
-                              onError={handleImageFallback}
-                              loading="lazy"
-                            />
-                          </div>
+              filteredApps?.map(app => {
+                const isUnverified = checkIsUnVerified(app, projects)
 
-                          <div className="AppSelector__link__wrapper">
-                            <Text className="AppSelector__link__title" variant="small-500">
-                              {app.metadata.name}
-                            </Text>
-                            <Text className="AppSelector__link__subtitle" variant="small-500">
-                              {app.metadata.description}
-                            </Text>
+                return (
+                  <AnimatePresence>
+                    <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      <NavLink
+                        key={app.topic}
+                        to={NAVIGATION.notifications.topic(app.topic)}
+                        className="AppSelector__link-item"
+                      >
+                        <div className="AppSelector__notifications">
+                          <div className="AppSelector__notifications-link">
+                            <div className="AppSelector__link__logo">
+                              <img
+                                className="AppSelector__link__logo__image"
+                                src={app.metadata.icons?.[0] || '/fallback.svg'}
+                                alt={`${app.metadata.name} logo`}
+                                onError={handleImageFallback}
+                                loading="lazy"
+                              />
+                              {isUnverified ? (
+                                <img
+                                  src={SpannerSVG}
+                                  className="AppSelector__link__logo__dev-image"
+                                  alt="Dev mode icon"
+                                />
+                              ) : null}
+                            </div>
+
+                            <div className="AppSelector__link__wrapper">
+                              <Text className="AppSelector__link__title" variant="small-500">
+                                {app.metadata.name}
+                              </Text>
+                              <Text className="AppSelector__link__subtitle" variant="small-500">
+                                {app.metadata.description}
+                              </Text>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </NavLink>
-                  </m.div>
-                </AnimatePresence>
-              ))}
+                      </NavLink>
+                    </m.div>
+                  </AnimatePresence>
+                )
+              })}
           </ul>
         </div>
       </div>

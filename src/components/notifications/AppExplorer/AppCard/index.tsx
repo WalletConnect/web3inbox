@@ -2,6 +2,8 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 
 import { useNavigate } from 'react-router-dom'
 
+import SpannerSVG from '@/assets/Spanner.svg'
+import Badge from '@/components/general/Badge'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
@@ -19,9 +21,10 @@ interface AppCardProps {
     light: string
   }
   url: string
+  isVerified?: boolean
 }
 
-const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
+const AppCard: React.FC<AppCardProps> = ({ name, description, isVerified, logo, bgColor, url }) => {
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
@@ -95,6 +98,9 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       <div className="AppCard__header">
         <div className="AppCard__header__logo">
           <img src={logo || '/fallback.svg'} alt={`${name} logo`} />
+          {!isVerified ? (
+            <img src={SpannerSVG} className="AppCard__header__logo__dev-icon" alt="Dev mode icon" />
+          ) : null}
         </div>
         <SubscribeButton
           className="mobile"
@@ -106,9 +112,8 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url
       </div>
       <div className="AppCard__body">
         <div className="AppCard__body__title">
-          <Text className="" variant="large-600">
-            {name}
-          </Text>
+          <Text variant="large-600">{name}</Text>
+          {!isVerified ? <Badge>DEV</Badge> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
           {host}

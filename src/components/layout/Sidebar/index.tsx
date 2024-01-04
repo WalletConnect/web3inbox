@@ -11,6 +11,7 @@ import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
 import ConnectWalletButton from '@/components/login/ConnectWalletButton'
 import W3iContext from '@/contexts/W3iContext/context'
 import { getEthChainAddress } from '@/utils/address'
+import { NAVIGATION } from '@/utils/constants'
 import { useIsMobile } from '@/utils/hooks'
 
 import './Sidebar.scss'
@@ -29,22 +30,29 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
   const navigationPaths = useMemo(() => pathname.split('/'), [pathname])
   const { userPubkey, uiEnabled } = useContext(W3iContext)
   const isMobile = useIsMobile()
+
   const navItems = useMemo(() => {
     const items: [React.ReactNode, string][] = []
 
     if (uiEnabled.chat) {
-      items.push([<MessageIcon isFilled={pathname.includes('/messages')} />, 'messages'])
+      items.push([
+        <MessageIcon isFilled={pathname.startsWith(NAVIGATION.messages.index)} />,
+        NAVIGATION.messages.index
+      ])
     }
 
     if (uiEnabled.notify) {
       items.push([
-        <NotificationIcon isFilled={pathname.includes('/notifications')} />,
-        'notifications'
+        <NotificationIcon isFilled={pathname.startsWith(NAVIGATION.notifications.index)} />,
+        NAVIGATION.notifications.index
       ])
     }
 
     if (uiEnabled.settings) {
-      items.push([<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings/appearance'])
+      items.push([
+        <SettingIcon isFilled={pathname.startsWith(NAVIGATION.settings.index)} />,
+        NAVIGATION.settings.index
+      ])
     }
 
     return items
@@ -68,15 +76,15 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
       )}
       <SidebarItem isDisabled={!isLoggedIn}>
         <div className="Sidebar__Navigation">
-          {navItems.map(([icon, itemName]) => (
+          {navItems.map(([icon, path]) => (
             <Link
               className={cn(
                 'Sidebar__Navigation__Link',
-                pathname.includes(itemName) && 'Sidebar__Navigation__Link-active',
+                pathname.startsWith(path) && 'Sidebar__Navigation__Link-active',
                 !isLoggedIn && `Sidebar__Navigation__Link-disabled`
               )}
-              key={itemName}
-              to={`/${itemName}`}
+              key={path}
+              to={path}
             >
               {icon}
             </Link>

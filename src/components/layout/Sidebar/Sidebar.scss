@@ -47,7 +47,7 @@
     outline: solid 1px var(--bg-color-2);
     padding: 0.5em;
     border-radius: 44px;
-    gap: 1em;
+    gap: 0.125rem;
 
     &__Link {
       width: 4em;
@@ -55,10 +55,7 @@
       justify-content: center;
       align-items: center;
       transition: all 250ms ease-in-out;
-
-      &:hover {
-        opacity: 0.7;
-      }
+      padding: 1rem 0;
 
       // This adds the little blue bar on the left of sidebar nav links
       &-active::before {
@@ -107,7 +104,22 @@
       outline: unset;
       padding: unset;
       outline: unset;
-      gap: 2rem;
+      gap: 0.125rem;
+
+      &__Link {
+        &:not(&-active):hover {
+          &::before {
+            position: absolute;
+            border-radius: 0px 12px 12px 0px;
+            left: -2%;
+            display: inline-block;
+            content: '';
+            height: 3em;
+            width: 0.25em;
+            background: hsla(211, 100%, 60%, 0.5);
+          }
+        }
+      }
     }
   }
 }

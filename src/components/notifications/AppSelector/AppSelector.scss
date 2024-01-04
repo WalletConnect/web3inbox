@@ -260,11 +260,10 @@
       height: 1.5rem;
     }
 
-    &-logo {
+    &__logo {
       border-radius: 1em;
       width: 2em;
       height: 2em;
-      overflow: hidden;
       position: relative;
 
       &::after {
@@ -278,9 +277,18 @@
         width: 100%;
       }
 
-      img {
+      &__image {
         width: 100%;
         height: 100%;
+        border-radius: 1em;
+      }
+
+      &__dev-image {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 0;
+        right: 0;
       }
 
       @media only screen and (max-width: 700px) {

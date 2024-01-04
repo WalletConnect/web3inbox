@@ -27,7 +27,8 @@ export interface INotifyProject {
   app: {
     browser: string
   }
-  is_verified: boolean
+  isVerified?: boolean
+  is_verified?: boolean
   is_featured: boolean
   order: number | null
   image_url?: {
