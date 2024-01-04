@@ -1,30 +1,25 @@
-import { INotifyProjectWithComingSoon } from '@/utils/types'
+import { INotifyApp } from '@/utils/types'
 
-export const COMING_SOON_PROJECTS: Array<INotifyProjectWithComingSoon> = [
+export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
   {
-    id: 'peanut',
-    name: 'Peanut',
-    description: 'Get notified when friends receive and claim your payments.',
-    homepage: 'https://peanut.to',
-    dapp_url: 'https://peanut.to',
-    app: {
-      browser: 'https://peanut.to'
-    },
-    is_verified: false,
-    is_featured: false,
-    is_coming_soon: true,
-    order: 0,
-    image_url: {
-      sm: '',
-      md: '',
-      lg: ''
-    },
-    metadata: {
-      shortName: 'Peanut',
-      colors: {
-        primary: '#00FF00',
-        secondary: '#00FF00'
-      }
-    }
+    id: 'galxe',
+    name: 'Galxe',
+    description: 'Galxe is the leading platform for building Web3 community.',
+    url: 'https://galxe.com/',
+    isComingSoon: true,
+    isVerified: false,
+    isFeatured: false,
+    icon: '/galxe.png'
+  },
+  {
+    id: 'gempad',
+    name: 'GemPad',
+    description:
+      'Simple to use Multichain Launchpad where new and exciting projects host their presales and other sales before they get listed on exchanges.',
+    url: 'https://gempad.app/',
+    isComingSoon: true,
+    isVerified: false,
+    isFeatured: false,
+    icon: '/gempad.png'
   }
 ]

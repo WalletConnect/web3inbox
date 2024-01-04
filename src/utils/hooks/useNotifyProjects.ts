@@ -38,11 +38,7 @@ const useNotifyProjects = () => {
         domainProjects = [domainProjectsData.data] as INotifyProjectWithComingSoon[]
       }
 
-      setLoading(false)
-
-      const allProjects: INotifyProjectWithComingSoon[] = discoverProjects
-        .concat(domainProjects)
-        .concat(COMING_SOON_PROJECTS)
+      const allProjects: INotifyProjectWithComingSoon[] = discoverProjects.concat(domainProjects)
       const notifyApps: INotifyApp[] = allProjects
         // Lower order indicates higher priority, thus sorting ascending
         .sort((a, b) => (b.order ?? 0) - (a.order ?? 0))
@@ -63,7 +59,7 @@ const useNotifyProjects = () => {
             name,
             description,
             url: dapp_url,
-            icons: image_url ? [image_url.md] : [],
+            icon: image_url?.md ?? '/fallback.svg',
             colors: metadata?.colors,
             isVerified: is_verified || isVerified ? true : false,
             isFeatured: is_featured,
@@ -72,6 +68,9 @@ const useNotifyProjects = () => {
         )
         .filter(app => Boolean(app.name))
 
+      notifyApps.concat(COMING_SOON_PROJECTS)
+
+      setLoading(false)
       setProjects(notifyApps)
     }
     fetchNotifyProjects()

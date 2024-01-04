@@ -17,17 +17,12 @@ interface AppCardProps {
   name: string
   description: string
   logo: string
-  bgColor: {
-    dark: string
-    light: string
-  }
   url: string
   isVerified?: boolean
   isComingSoon: boolean
 }
 
 const AppCard: React.FC<AppCardProps> = ({
-  bgColor,
   description,
   isComingSoon,
   isVerified,
@@ -77,7 +72,7 @@ const AppCard: React.FC<AppCardProps> = ({
         showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
-    [userPubkey, name, description, logo, bgColor, url, setSubscribing, subscribed]
+    [userPubkey, name, description, logo, url, setSubscribing, subscribed]
   )
 
   const handleNavigateApp = () => {
