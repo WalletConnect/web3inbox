@@ -1,16 +1,19 @@
 import React from 'react'
 
+import cn from 'classnames'
+
 import Text from '@/components/general/Text'
 
 import './Badge.scss'
 
 interface IBadgeProps {
   children: React.ReactNode
+  variant?: 'default' | 'outline'
 }
 
-const Badge: React.FC<IBadgeProps> = ({ children }) => {
+const Badge: React.FC<IBadgeProps> = ({ children, variant = 'default' }) => {
   return (
-    <div className="Badge">
+    <div className={cn('Badge', variant)}>
       <Text variant="micro-600">{children}</Text>
     </div>
   )

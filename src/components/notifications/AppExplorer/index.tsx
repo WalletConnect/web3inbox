@@ -68,6 +68,7 @@ const AppExplorer = () => {
                     logo={app.icons?.[0] || '/fallback.svg'}
                     url={app.url}
                     isVerified={app.isVerified}
+                    isComingSoon={app.isComingSoon}
                   />
                 ))}
             </div>
@@ -86,6 +87,7 @@ const AppExplorer = () => {
                     logo={app.icons?.[0] || '/fallback.svg'}
                     url={app.url}
                     isVerified={app.isVerified}
+                    isComingSoon={app.isComingSoon}
                   />
                 ))}
             </div>

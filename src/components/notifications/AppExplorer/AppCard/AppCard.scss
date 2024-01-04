@@ -245,4 +245,10 @@
       }
     }
   }
+
+  &__coming-soon {
+    .AppCard__body__description {
+      margin-bottom: 0rem;
+    }
+  }
 }
