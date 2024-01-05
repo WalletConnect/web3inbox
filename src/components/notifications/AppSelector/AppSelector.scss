@@ -288,6 +288,10 @@
         width: 3rem;
         height: 3rem;
 
+        &__image {
+          border-radius: 1.5em;
+        }
+
         &::after {
           border-radius: 1.5rem;
         }
