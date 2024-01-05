@@ -35,13 +35,13 @@ const useNotifyProjects = () => {
         explorerUrlAppDomain.searchParams.set('appDomain', filterAppDomain)
         const domainProjectsResponse = await fetch(explorerUrlAppDomain)
         const domainProjectsData = await domainProjectsResponse.json()
-        domainProjects = [domainProjectsData.data] as INotifyProjectWithComingSoon[]
+        domainProjects = [...discoverProjects, domainProjectsData.data] as INotifyProjectWithComingSoon[]
       }
 
       const allProjects: INotifyProjectWithComingSoon[] = discoverProjects.concat(domainProjects)
       const notifyApps: INotifyApp[] = allProjects
         // Lower order indicates higher priority, thus sorting ascending
-        .sort((a, b) => (b.order ?? 0) - (a.order ?? 0))
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
         .map(
           ({
             id,
