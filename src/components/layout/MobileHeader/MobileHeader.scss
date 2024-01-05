@@ -13,6 +13,11 @@
     display: none;
   }
 
+  &__icon img {
+    width: 28px;
+    height: 28px;
+  }
+
   &__icon,
   &__arrow,
   .Dropdown,

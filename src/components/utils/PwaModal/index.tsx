@@ -54,14 +54,14 @@ export const PwaModal: React.FC = () => {
           <img src={BackgroundImage} />
         </div>
         <div className="PwaModal__icon">
-          <WalletConnectIcon hoverable={false} />
+          <img alt="Web3Inbox icon" className="wc-icon" src="/icon.png" />
         </div>
         <div className="PwaModal__header">
           <Text variant={'large-500'}>Install Web3Inbox</Text>
         </div>
         <div className="PwaModal__description">
           <Text variant="small-500">
-            To receive push notifications and enjoy a  better experience install Web3Inbox on your
+            To receive push notifications and enjoy a better experience install Web3Inbox on your
             Home screen.
           </Text>
         </div>
