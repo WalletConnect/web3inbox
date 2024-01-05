@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta
-      name="theme-color"
-      content="hsla(0, 0%, 100%, 1);"
-      media="(prefers-color-scheme: light)"
-    />
-    <meta name="theme-color" content="hsla(0, 0%, 8%, 1);" media="(prefers-color-scheme: dark)" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>
-      global = globalThis
-    </script>
-    <script
-      src="/stats/js/script.js"
-      data-api="/stats/api/event"
-      data-domain="app.web3inbox.com"
-    ></script>
-    <title>Web3Inbox</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="white" media="(prefers-color-scheme: light)" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    global = globalThis
+  </script>
+  <script src="/stats/js/script.js" data-api="/stats/api/event" data-domain="app.web3inbox.com"></script>
+  <title>Web3Inbox</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
