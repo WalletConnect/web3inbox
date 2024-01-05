@@ -2,10 +2,8 @@ import { useContext, useEffect, useState } from 'react'
 
 import { COMING_SOON_PROJECTS } from '@/constants/projects'
 import SettingsContext from '@/contexts/SettingsContext/context'
-import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '@/utils/constants'
-import type { INotifyApp, INotifyProjectWithComingSoon } from '@/utils/types'
-
-const projectId: string = import.meta.env.VITE_PROJECT_ID
+import { fetchDomainProjects, fetchFeaturedProjects } from '@/utils/projects'
+import type { INotifyApp, INotifyProject, INotifyProjectWithComingSoon } from '@/utils/types'
 
 const useNotifyProjects = () => {
   const [loading, setLoading] = useState(false)
@@ -16,65 +14,49 @@ const useNotifyProjects = () => {
     const fetchNotifyProjects = async () => {
       setLoading(true)
 
-      const explorerUrlFeatured = new URL(EXPLORER_ENDPOINTS.projects, EXPLORER_API_BASE_URL)
-      const explorerUrlAppDomain = new URL(EXPLORER_ENDPOINTS.notifyConfig, EXPLORER_API_BASE_URL)
+      try {
+        const { data: featuredProjects } = await fetchFeaturedProjects<INotifyProject[]>()
+        const { data: domainProject } = await fetchDomainProjects<INotifyProject>(filterAppDomain)
 
-      explorerUrlFeatured.searchParams.set('projectId', projectId)
-      explorerUrlFeatured.searchParams.set('isVerified', 'true')
-      explorerUrlFeatured.searchParams.set('isFeatured', 'true')
-      explorerUrlAppDomain.searchParams.set('projectId', projectId)
+        const allProjects: INotifyProjectWithComingSoon[] = featuredProjects.map(item => ({
+          ...item,
+          is_coming_soon: false
+        }))
 
-      const discoverProjectsResponse = await fetch(explorerUrlFeatured)
-      const discoverProjectsData = await discoverProjectsResponse.json()
-      const discoverProjects = Object.values(
-        discoverProjectsData.projects
-      ) as INotifyProjectWithComingSoon[]
-
-      let domainProjects: INotifyProjectWithComingSoon[] = []
-      if (filterAppDomain) {
-        explorerUrlAppDomain.searchParams.set('appDomain', filterAppDomain)
-        const domainProjectsResponse = await fetch(explorerUrlAppDomain)
-	if(domainProjectsResponse.ok) {
-          const domainProjectsData = await domainProjectsResponse.json()
-          domainProjects = [...discoverProjects, domainProjectsData.data] as INotifyProjectWithComingSoon[]
-	}
-      }
-
-      const allProjects: INotifyProjectWithComingSoon[] = discoverProjects.concat(domainProjects)
-      const notifyApps: INotifyApp[] = allProjects
-        // Lower order indicates higher priority, thus sorting ascending
-        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-        .map(
-          ({
-            id,
-            name,
-            description,
-            dapp_url,
-            image_url,
-            metadata,
-            is_verified,
-            is_featured,
-            isVerified,
-            is_coming_soon
-          }: INotifyProjectWithComingSoon) => ({
-            id,
-            name,
-            description,
-            url: dapp_url,
-            icon: image_url?.md ?? '/fallback.svg',
-            colors: metadata?.colors,
-            isVerified: is_verified || isVerified ? true : false,
-            isFeatured: is_featured,
-            isComingSoon: is_coming_soon
-          })
+        const haveDevProject = allProjects.some(
+          ({ id }: INotifyProjectWithComingSoon) => id === domainProject?.id
         )
-        .filter(app => Boolean(app.name))
 
-      notifyApps.concat(COMING_SOON_PROJECTS)
+        if (!haveDevProject && domainProject) {
+          allProjects.push(domainProject as INotifyProjectWithComingSoon)
+        }
 
-      setLoading(false)
-      setProjects(notifyApps)
+        const notifyApps: INotifyApp[] = allProjects
+          // Lower order indicates higher priority, thus sorting ascending
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+          .map((item: INotifyProjectWithComingSoon) => ({
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            url: item.dapp_url,
+            icon: item.image_url?.md ?? '/fallback.svg',
+            colors: item.metadata?.colors,
+            isVerified: item.is_verified || item.isVerified ? true : false,
+            isFeatured: item.is_featured,
+            isComingSoon: item.is_coming_soon
+          }))
+          .filter(app => Boolean(app.name))
+
+        notifyApps.concat(COMING_SOON_PROJECTS)
+
+        setLoading(false)
+        setProjects(notifyApps)
+      } catch (error) {
+        setLoading(false)
+        setProjects([])
+      }
     }
+
     fetchNotifyProjects()
   }, [setProjects, filterAppDomain])
 
