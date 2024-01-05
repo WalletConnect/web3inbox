@@ -70,7 +70,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
       {!isMobile && (
         <SidebarItem>
           <Link to={`/notifications/new-app`}>
-            <WalletConnectIcon hoverable={isLoggedIn} />
+            <img alt="Web3Inbox icon" className="wc-icon" src="/icon.png" />
           </Link>
         </SidebarItem>
       )}

@@ -36,7 +36,7 @@ const MobileHeader: React.FC<IMobileHeaderProps> = ({ title, back, notificationI
         </div>
       ) : (
         <Link className="MobileHeader__icon" to={`/notifications/new-app`}>
-          <WalletConnectIcon hoverable={false} />
+          <img alt="Web3Inbox icon" className="wc-icon" src="/icon.png" />
         </Link>
       )}
 

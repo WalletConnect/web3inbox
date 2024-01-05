@@ -5,43 +5,43 @@
   "icons": [
     {
       "sizes": "72x72",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     },
     {
       "sizes": "96x96",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     },
     {
       "sizes": "120x120",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     },
     {
       "sizes": "128x128",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     },
     {
       "sizes": "144x144",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     },
     {
       "sizes": "152x152",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     },
     {
       "sizes": "180x180",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     },
     {
       "sizes": "192x192",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     },
     {
       "sizes": "384x384",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     },
     {
       "sizes": "512x512",
-      "src": "/pwa-196x196.png"
+      "src": "/logo.png"
     }
   ],
   "display": "standalone",

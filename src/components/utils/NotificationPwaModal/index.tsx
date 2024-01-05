@@ -35,7 +35,7 @@ export const NotificationPwaModal: React.FC = () => {
           <img src={BackgroundImage} />
         </div>
         <div className="NotificationPwaModal__icon">
-          <WalletConnectIcon hoverable={false} />
+          <img alt="Web3Inbox icon" className="wc-icon" src="/icon.png" />
         </div>
         <div className="NotificationPwaModal__header">
           <Text variant={'large-500'}>Enable Notifications</Text>
