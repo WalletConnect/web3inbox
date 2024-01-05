@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import IntroApps from '@/components/general/Icon/IntroApps'
 import IntroContent from '@/components/general/IntroContent'
 import MobileHeader from '@/components/layout/MobileHeader'
-import SettingsContext from '@/contexts/SettingsContext/context'
+import { COMING_SOON_PROJECTS } from '@/constants/projects'
 import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
 
 import AppCard from './AppCard'
@@ -16,7 +16,8 @@ import './AppExplorer.scss'
 
 const AppExplorer = () => {
   const { projects, loading } = useNotifyProjects()
-  const { filterAppDomain } = useContext(SettingsContext)
+
+  const allProjects = projects.concat(COMING_SOON_PROJECTS)
 
   return (
     <AnimatePresence>
@@ -53,39 +54,32 @@ const AppExplorer = () => {
         ) : (
           <div className="AppExplorer__apps">
             <div className="AppExplorer__apps__column">
-              {projects
+              {allProjects
                 .filter((_, i) => i % 2 === 0)
-                .filter(app => Boolean(app.name))
                 .map(app => (
                   <AppCard
-                    key={app.name}
+                    key={app.id}
                     name={app.name}
                     description={app.description}
-                    bgColor={{
-                      dark: app.colors?.primary ?? '#00FF00',
-                      light: app.colors?.primary ?? '#00FF00'
-                    }}
-                    logo={app.icons?.[0] || '/fallback.svg'}
+                    logo={app.icon}
                     url={app.url}
                     isVerified={app.isVerified}
+                    isComingSoon={app.isComingSoon}
                   />
                 ))}
             </div>
             <div className="AppExplorer__apps__column">
-              {projects
+              {allProjects
                 .filter((_, i) => i % 2 !== 0)
                 .map(app => (
                   <AppCard
-                    key={app.name}
+                    key={app.id}
                     name={app.name}
                     description={app.description}
-                    bgColor={{
-                      dark: app.colors?.primary ?? '#00FF00',
-                      light: app.colors?.primary ?? '#00FF00'
-                    }}
-                    logo={app.icons?.[0] || '/fallback.svg'}
+                    logo={app.icon}
                     url={app.url}
                     isVerified={app.isVerified}
+                    isComingSoon={app.isComingSoon}
                   />
                 ))}
             </div>

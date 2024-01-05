@@ -283,14 +283,6 @@
         border-radius: 1em;
       }
 
-      &__dev-image {
-        width: 10px;
-        height: 10px;
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
-
       @media only screen and (max-width: 700px) {
         border-radius: 1.5em;
         width: 3rem;

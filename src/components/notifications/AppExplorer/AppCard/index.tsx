@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
+import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 
 import SpannerSVG from '@/assets/Spanner.svg'
@@ -16,15 +17,19 @@ interface AppCardProps {
   name: string
   description: string
   logo: string
-  bgColor: {
-    dark: string
-    light: string
-  }
   url: string
   isVerified?: boolean
+  isComingSoon: boolean
 }
 
-const AppCard: React.FC<AppCardProps> = ({ name, description, isVerified, logo, bgColor, url }) => {
+const AppCard: React.FC<AppCardProps> = ({
+  description,
+  isComingSoon,
+  isVerified,
+  logo,
+  name,
+  url
+}) => {
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
@@ -67,7 +72,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, isVerified, logo, 
         showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
-    [userPubkey, name, description, logo, bgColor, url, setSubscribing, subscribed]
+    [userPubkey, name, description, logo, url, setSubscribing, subscribed]
   )
 
   const handleNavigateApp = () => {
@@ -89,7 +94,7 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, isVerified, logo, 
   return (
     <div
       ref={ref}
-      className="AppCard"
+      className={classNames('AppCard', isComingSoon && 'AppCard__coming-soon')}
       rel="noopener noreferrer"
       style={{ cursor: subscribed ? 'pointer' : 'default' }}
       onClick={handleNavigateApp}
@@ -98,22 +103,26 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, isVerified, logo, 
       <div className="AppCard__header">
         <div className="AppCard__header__logo">
           <img src={logo || '/fallback.svg'} alt={`${name} logo`} />
-          {!isVerified ? (
+          {!isVerified && !isComingSoon ? (
             <img src={SpannerSVG} className="AppCard__header__logo__dev-icon" alt="Dev mode icon" />
           ) : null}
         </div>
-        <SubscribeButton
-          className="mobile"
-          subscribed={Boolean(subscribed)}
-          subscribing={subscribing}
-          onNavigateToApp={handleNavigateApp}
-          onSubscribe={handleSubscription}
-        />
+        {isComingSoon ? (
+          <Badge variant="outline">Coming soon</Badge>
+        ) : (
+          <SubscribeButton
+            className="mobile"
+            subscribed={Boolean(subscribed)}
+            subscribing={subscribing}
+            onNavigateToApp={handleNavigateApp}
+            onSubscribe={handleSubscription}
+          />
+        )}
       </div>
       <div className="AppCard__body">
         <div className="AppCard__body__title">
           <Text variant="large-600">{name}</Text>
-          {!isVerified ? <Badge>DEV</Badge> : null}
+          {!isVerified && !isComingSoon ? <Badge>DEV</Badge> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
           {host}
@@ -121,12 +130,14 @@ const AppCard: React.FC<AppCardProps> = ({ name, description, isVerified, logo, 
         <Text className="AppCard__body__description" variant="paragraph-500">
           {description}
         </Text>
-        <SubscribeButton
-          subscribed={Boolean(subscribed)}
-          subscribing={subscribing}
-          onNavigateToApp={handleNavigateApp}
-          onSubscribe={handleSubscription}
-        />
+        {isComingSoon ? null : (
+          <SubscribeButton
+            subscribed={Boolean(subscribed)}
+            subscribing={subscribing}
+            onNavigateToApp={handleNavigateApp}
+            onSubscribe={handleSubscription}
+          />
+        )}
       </div>
     </div>
   )

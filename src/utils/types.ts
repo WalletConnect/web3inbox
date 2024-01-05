@@ -41,13 +41,18 @@ export interface INotifyProject {
     colors: { primary?: string; secondary?: string }
   }
 }
+
+export interface INotifyProjectWithComingSoon extends INotifyProject {
+  is_coming_soon: boolean
+}
+
 export interface INotifyApp {
   id: string
   name: string
   description: string
   url: string
-  icons: string[]
+  icon: string
   isVerified: boolean
   isFeatured: boolean
-  colors?: { primary?: string; secondary?: string }
+  isComingSoon: boolean
 }
