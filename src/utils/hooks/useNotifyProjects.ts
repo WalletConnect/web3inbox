@@ -34,8 +34,10 @@ const useNotifyProjects = () => {
       if (filterAppDomain) {
         explorerUrlAppDomain.searchParams.set('appDomain', filterAppDomain)
         const domainProjectsResponse = await fetch(explorerUrlAppDomain)
-        const domainProjectsData = await domainProjectsResponse.json()
-        domainProjects = [...discoverProjects, domainProjectsData.data] as INotifyProjectWithComingSoon[]
+	if(domainProjectsResponse.ok) {
+          const domainProjectsData = await domainProjectsResponse.json()
+          domainProjects = [...discoverProjects, domainProjectsData.data] as INotifyProjectWithComingSoon[]
+	}
       }
 
       const allProjects: INotifyProjectWithComingSoon[] = discoverProjects.concat(domainProjects)
