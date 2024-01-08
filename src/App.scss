@@ -40,7 +40,10 @@
     height: auto;
     min-height: 100svh;
     overflow-x: hidden;
-    padding-bottom: 90px;
+
+    @media only screen and (max-width: 700px) {
+      padding-bottom: calc(env(safe-area-inset-bottom) + 48px + 2rem);
+    }
 
     display: var(--main-display);
   }
@@ -81,7 +84,6 @@
     .Main {
       flex: 1;
       width: 100%;
-      padding: 1rem 1.5rem;
       height: 100svh;
     }
 
