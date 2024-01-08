@@ -1,15 +1,9 @@
-import React, { useContext } from 'react'
-
-import SettingsContext from '@/contexts/SettingsContext/context'
-import { useColorModeValue } from '@/utils/hooks'
+import React from 'react'
 
 interface TSettingIconProps {
   isFilled?: boolean
 }
 const SettingIcon: React.FC<TSettingIconProps> = ({ isFilled = false }) => {
-  const { mode } = useContext(SettingsContext)
-  const themeColors = useColorModeValue(mode)
-
   return isFilled ? (
     <svg fill="none" viewBox="0 0 24 24">
       <path

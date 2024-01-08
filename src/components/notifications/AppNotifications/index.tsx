@@ -8,10 +8,8 @@ import {
   useState
 } from 'react'
 
-import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
-import debounce from 'lodash.debounce'
 import { useParams } from 'react-router-dom'
 import { noop } from 'rxjs'
 
@@ -26,6 +24,12 @@ import AppNotificationsHeader from './AppNotificationsHeader'
 import { infiniteScrollReducer } from './reducer'
 
 import './AppNotifications.scss'
+
+const IntersectionObserverOptions = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 1.0
+}
 
 export interface AppNotificationsDragProps {
   id: string
@@ -99,6 +103,7 @@ const AppNotifications = () => {
   const { notifications, nextPage } = useInfiniteScrollNotifications(topic)
 
   const ref = useRef<HTMLDivElement>(null)
+  const intersectionObserverRef = useRef<HTMLDivElement>(null)
 
   const [notificationsDrag, setNotificationsDrag] = useState<
     AppNotificationsDragProps[] | undefined
@@ -120,18 +125,24 @@ const AppNotifications = () => {
     }
   }, [notifyClientProxy, nextPage, topic])
 
-  const handleListScroll: React.UIEventHandler<HTMLDivElement> = useCallback(
-    debounce(e => {
-      const { scrollTop, scrollHeight, clientHeight } = e.target
-
-      const atBottom = scrollTop + clientHeight >= scrollHeight
-
-      if (atBottom) {
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      const target = entries[0]
+      if (target.isIntersecting) {
         nextPage()
       }
-    }, 100),
-    [nextPage]
-  )
+    }, IntersectionObserverOptions)
+
+    if (intersectionObserverRef.current) {
+      observer.observe(intersectionObserverRef.current)
+    }
+
+    return () => {
+      if (intersectionObserverRef.current) {
+        observer.unobserve(intersectionObserverRef.current)
+      }
+    }
+  }, [intersectionObserverRef, nextPage])
 
   return app?.metadata ? (
     <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>
@@ -158,32 +169,31 @@ const AppNotifications = () => {
           />
           <AppNotificationsCardMobile />
           {notifications.length > 0 ? (
-            <>
-              <div onScroll={handleListScroll} className="AppNotifications__list">
+            <div className="AppNotifications__list">
+              <div className="AppNotifications__list__content">
                 <Label color="main">Latest</Label>
-                <>
-                  {notifications.map(notification => (
-                    <AppNotificationItem
-                      key={notification.id}
-                      onClear={nextPage}
-                      notification={{
-                        timestamp: notification.sentAt,
-                        // We do not manage read status for now.
-                        isRead: true,
-                        id: notification.id.toString(),
-                        message: notification.body,
-                        title: notification.title,
-                        image: notification.type
-                          ? app.scope[notification.type].imageUrls.md
-                          : undefined,
-                        url: notification.url
-                      }}
-                      appLogo={app.metadata?.icons?.[0]}
-                    />
-                  ))}
-                </>
+                {notifications.map((notification, index) => (
+                  <AppNotificationItem
+                    ref={index === notifications.length - 1 ? intersectionObserverRef : null}
+                    key={notification.id}
+                    onClear={nextPage}
+                    notification={{
+                      timestamp: notification.sentAt,
+                      // We do not manage read status for now.
+                      isRead: true,
+                      id: notification.id.toString(),
+                      message: notification.body,
+                      title: notification.title,
+                      image: notification.type
+                        ? app?.scope[notification.type]?.imageUrls?.md
+                        : undefined,
+                      url: notification.url
+                    }}
+                    appLogo={app.metadata?.icons?.[0]}
+                  />
+                ))}
               </div>
-            </>
+            </div>
           ) : (
             <AppNotificationsEmpty icon={app.metadata?.icons?.[0]} name={app.metadata.name} />
           )}
