@@ -2,6 +2,16 @@ import { INotifyApp } from '@/utils/types'
 
 export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
   {
+    id: 'snapshot',
+    name: 'Snapshot',
+    description: 'Where decisions get made.',
+    url: 'https://snapshot.org/',
+    isComingSoon: true,
+    isVerified: false,
+    isFeatured: false,
+    icon: '/snapshot.png'
+  },  
+  {
     id: 'galxe',
     name: 'Galxe',
     description: 'Galxe is the leading platform for building Web3 community.',
@@ -21,5 +31,15 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     isVerified: false,
     isFeatured: false,
     icon: '/gempad.png'
+  },
+  {
+    id: 'moso',
+    name: 'Moso',
+    description: 'Shop with Moso, get cryptoback.',
+    url: 'https://moso.xyz/',
+    isComingSoon: true,
+    isVerified: false,
+    isFeatured: false,
+    icon: '/moso.png'
   }
 ]
