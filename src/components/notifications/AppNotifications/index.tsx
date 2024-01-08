@@ -155,7 +155,7 @@ const AppNotifications = () => {
                           id: notification.id.toString(),
                           message: notification.body,
                           title: notification.title,
-                          image: app.scope[notification.type ?? ""].imageUrls.md,
+                          image: notification.type? app.scope[notification.type].imageUrls.md : undefined,
                           url: notification.url
                         }}
                         appLogo={app.metadata?.icons?.[0]}
