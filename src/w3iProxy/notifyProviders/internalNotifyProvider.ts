@@ -113,10 +113,12 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       allApps: !Boolean(params.isLimited)
     })
 
-    const signature = await (async message => {
-        this.emitter.emit('notify_signature_requested', { message })
+    console.log("Firing signature")
 
+    const signature = await (async message => {
       return new Promise<string>(resolve => {
+	console.log("emitting")
+        this.emitter.emit('notify_signature_requested', { message })
           this.emitter.on(
             'notify_signature_delivered',
             ({ signature: deliveredSyncSignature }: { signature: string }) => {
@@ -124,8 +126,9 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
             }
           )
         })
-    }
-    )();
+    })();
+
+    console.log({signature})
 
     const identityKey = await this.notifyClient.register({
       registerParams: preparedRegistration.registerParams,
