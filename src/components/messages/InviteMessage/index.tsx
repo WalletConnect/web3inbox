@@ -54,7 +54,7 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
         pending: <PendingStatus />,
         rejected: <RejectedStatus />,
         approved: <AcceptedStatus />
-      } as Record<string, React.ReactNode>),
+      }) as Record<string, React.ReactNode>,
     [PendingStatus, RejectedStatus, AcceptedStatus]
   )
 
@@ -64,7 +64,7 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
         pending: ChatInviteHandEmoji,
         rejected: ChatRejectedHandEmoji,
         approved: ChatInviteHandEmoji
-      } as Record<string, string>),
+      }) as Record<string, string>,
     []
   )
 

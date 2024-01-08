@@ -131,9 +131,7 @@ const AppSelector: React.FC = () => {
         <div className="AppSelector__wrapper">
           {!empty ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
-            {loading
-              ? Array.from({length: 3}, (_,idx) => (<LinkItemSkeleton key={idx} />))
-              : null}
+            {loading ? Array.from({ length: 3 }, (_, idx) => <LinkItemSkeleton key={idx} />) : null}
             {!loading &&
               filteredApps?.map(app => {
                 return (

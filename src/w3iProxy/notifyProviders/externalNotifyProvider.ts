@@ -76,7 +76,7 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
 
   public async register() {
     // TODO: remove this whole provider
-    return "not implemented"
+    return 'not implemented'
   }
 
   public async subscribe(params: { appDomain: string; account: string }) {
@@ -97,7 +97,11 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
     return this.postToExternalProvider('getActiveSubscriptions', params)
   }
 
-  public async getNotificationHistory(params: { topic: string, limit: number, startingAfter?: string }) {
+  public async getNotificationHistory(params: {
+    topic: string
+    limit: number
+    startingAfter?: string
+  }) {
     return this.postToExternalProvider('getNotificationHistory', params)
   }
 
