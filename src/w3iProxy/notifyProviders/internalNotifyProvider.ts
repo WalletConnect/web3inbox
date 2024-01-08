@@ -107,28 +107,32 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
-    const preparedRegistration = await this.notifyClient.prepareRegistration({
+    const props = {
       account: params.account,
       domain: params.domain,
       allApps: !Boolean(params.isLimited)
-    })
+    }
+
+    if(this.notifyClient.isRegistered(props)) {
+      return this.notifyClient.identityKeys.getIdentity({account: props.account})
+    }
+
+    const preparedRegistration = await this.notifyClient.prepareRegistration(props)
 
     console.log("Firing signature")
 
     const signature = await (async message => {
+    this.emitter.emit('notify_signature_requested', { message })
       return new Promise<string>(resolve => {
-	console.log("emitting")
-        this.emitter.emit('notify_signature_requested', { message })
           this.emitter.on(
             'notify_signature_delivered',
             ({ signature: deliveredSyncSignature }: { signature: string }) => {
+	console.log("getting...")
               resolve(deliveredSyncSignature)
             }
           )
         })
-    })();
-
-    console.log({signature})
+    })(preparedRegistration.message);
 
     const identityKey = await this.notifyClient.register({
       registerParams: preparedRegistration.registerParams,
