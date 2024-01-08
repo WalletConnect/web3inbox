@@ -1,8 +1,17 @@
-import { createContext, useCallback, useContext, useEffect, useReducer, useRef, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState
+} from 'react'
 
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
+import debounce from 'lodash.debounce'
 import { useParams } from 'react-router-dom'
 import { noop } from 'rxjs'
 
@@ -14,11 +23,9 @@ import AppNotificationItem from './AppNotificationItem'
 import AppNotificationsCardMobile from './AppNotificationsCardMobile'
 import AppNotificationsEmpty from './AppNotificationsEmpty'
 import AppNotificationsHeader from './AppNotificationsHeader'
-
-import debounce from 'lodash.debounce'
+import { infiniteScrollReducer } from './reducer'
 
 import './AppNotifications.scss'
-import { infiniteScrollReducer } from './reducer'
 
 export interface AppNotificationsDragProps {
   id: string
@@ -40,36 +47,47 @@ const useInfiniteScrollNotifications = (topic?: string) => {
 
   // This is done in a reducer to prevent the function from constantly being updated as it needs the values in
   // existingIds and fullNotifications to update those values, causing a loop in its definition.
-  const [state, dispatch] = useReducer(infiniteScrollReducer, {fullNotifications: [], existingIds: new Set<string>()})
+  const [state, dispatch] = useReducer(infiniteScrollReducer, {
+    fullNotifications: [],
+    existingIds: new Set<string>()
+  })
 
-  const limit = 6;
+  const limit = 6
 
-  const nextPageInternal = useCallback(async (lastMessageId?: string) => {
-    if(!(notifyClientProxy && topic)) {
-      return;
-    }
+  const nextPageInternal = useCallback(
+    async (lastMessageId?: string) => {
+      if (!(notifyClientProxy && topic)) {
+        return
+      }
 
-    const newNotifications = await notifyClientProxy.getNotificationHistory({ topic, limit, startingAfter: lastMessageId })
+      const newNotifications = await notifyClientProxy.getNotificationHistory({
+        topic,
+        limit,
+        startingAfter: lastMessageId
+      })
 
-    dispatch({
-      type: 'concat_to_array',
-      vals: newNotifications.notifications
-    })
+      dispatch({
+        type: 'concat_to_array',
+        vals: newNotifications.notifications
+      })
 
-    dispatch({
-      type: 'add_to_set',
-      vals: newNotifications.notifications.map(notification => notification.id)
-    })
+      dispatch({
+        type: 'add_to_set',
+        vals: newNotifications.notifications.map(notification => notification.id)
+      })
 
-    // Although this is not the cleanest way to do this
-    
-  }, [notifyClientProxy, dispatch])
+      // Although this is not the cleanest way to do this
+    },
+    [notifyClientProxy, dispatch]
+  )
 
   useEffect(() => {
     nextPageInternal()
   }, [nextPageInternal])
 
-  const lastMessageId = state.fullNotifications.length? state.fullNotifications[state.fullNotifications.length - 1].id : undefined
+  const lastMessageId = state.fullNotifications.length
+    ? state.fullNotifications[state.fullNotifications.length - 1].id
+    : undefined
 
   return { notifications: state.fullNotifications, nextPage: () => nextPageInternal(lastMessageId) }
 }
@@ -79,7 +97,6 @@ const AppNotifications = () => {
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const { notifications, nextPage } = useInfiniteScrollNotifications(topic)
-
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -94,7 +111,7 @@ const AppNotifications = () => {
 
     const notifyMessageSentSub = notifyClientProxy.observe('notify_message', {
       next: () => {
-	nextPage()
+        nextPage()
       }
     })
 
@@ -103,16 +120,18 @@ const AppNotifications = () => {
     }
   }, [notifyClientProxy, nextPage, topic])
 
-  const handleListScroll: React.UIEventHandler<HTMLDivElement> = useCallback(debounce((e) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.target;
+  const handleListScroll: React.UIEventHandler<HTMLDivElement> = useCallback(
+    debounce(e => {
+      const { scrollTop, scrollHeight, clientHeight } = e.target
 
-    const atBottom = scrollTop + clientHeight >= scrollHeight;
+      const atBottom = scrollTop + clientHeight >= scrollHeight
 
-    if(atBottom) {
-      nextPage()
-    }
-    
-  }, 100), [nextPage])
+      if (atBottom) {
+        nextPage()
+      }
+    }, 100),
+    [nextPage]
+  )
 
   return app?.metadata ? (
     <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>
@@ -143,24 +162,25 @@ const AppNotifications = () => {
               <div onScroll={handleListScroll} className="AppNotifications__list">
                 <Label color="main">Latest</Label>
                 <>
-                  {notifications
-                    .map(notification => (
-                      <AppNotificationItem
-                        key={notification.id}
-                        onClear={nextPage}
-                        notification={{
-                          timestamp: notification.sentAt,
-                          // We do not manage read status for now.
-                          isRead: true,
-                          id: notification.id.toString(),
-                          message: notification.body,
-                          title: notification.title,
-                          image: notification.type? app.scope[notification.type].imageUrls.md : undefined,
-                          url: notification.url
-                        }}
-                        appLogo={app.metadata?.icons?.[0]}
-                      />
-                    ))}
+                  {notifications.map(notification => (
+                    <AppNotificationItem
+                      key={notification.id}
+                      onClear={nextPage}
+                      notification={{
+                        timestamp: notification.sentAt,
+                        // We do not manage read status for now.
+                        isRead: true,
+                        id: notification.id.toString(),
+                        message: notification.body,
+                        title: notification.title,
+                        image: notification.type
+                          ? app.scope[notification.type].imageUrls.md
+                          : undefined,
+                        url: notification.url
+                      }}
+                      appLogo={app.metadata?.icons?.[0]}
+                    />
+                  ))}
                 </>
               </div>
             </>
