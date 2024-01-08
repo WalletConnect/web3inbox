@@ -113,26 +113,26 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       allApps: !Boolean(params.isLimited)
     }
 
-    if(this.notifyClient.isRegistered(props)) {
-      return this.notifyClient.identityKeys.getIdentity({account: props.account})
+    if (this.notifyClient.isRegistered(props)) {
+      return this.notifyClient.identityKeys.getIdentity({ account: props.account })
     }
 
     const preparedRegistration = await this.notifyClient.prepareRegistration(props)
 
-    console.log("Firing signature")
+    console.log('Firing signature')
 
     const signature = await (async message => {
-    this.emitter.emit('notify_signature_requested', { message })
+      this.emitter.emit('notify_signature_requested', { message })
       return new Promise<string>(resolve => {
-          this.emitter.on(
-            'notify_signature_delivered',
-            ({ signature: deliveredSyncSignature }: { signature: string }) => {
-	console.log("getting...")
-              resolve(deliveredSyncSignature)
-            }
-          )
-        })
-    })(preparedRegistration.message);
+        this.emitter.on(
+          'notify_signature_delivered',
+          ({ signature: deliveredSyncSignature }: { signature: string }) => {
+            console.log('getting...')
+            resolve(deliveredSyncSignature)
+          }
+        )
+      })
+    })(preparedRegistration.message)
 
     const identityKey = await this.notifyClient.register({
       registerParams: preparedRegistration.registerParams,
@@ -192,12 +192,16 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     return Promise.resolve(subscriptions)
   }
 
-  public async getNotificationHistory(params: { topic: string, limit: number, startingAfter?: string }) {
+  public async getNotificationHistory(params: {
+    topic: string
+    limit: number
+    startingAfter?: string
+  }) {
     if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('getNotificationHistory'))
     }
 
-    const { topic, limit, startingAfter } = params;
+    const { topic, limit, startingAfter } = params
 
     const messages = this.notifyClient.getNotificationHistory({
       topic,
