@@ -107,13 +107,16 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('approve'))
     }
 
-    const identityKey = await this.notifyClient.register({
-      ...params,
-      isLimited: params.isLimited,
-      onSign: async message => {
+    const preparedRegistration = await this.notifyClient.prepareRegistration({
+      account: params.account,
+      domain: params.domain,
+      allApps: !Boolean(params.isLimited)
+    })
+
+    const signature = await (async message => {
         this.emitter.emit('notify_signature_requested', { message })
 
-        return new Promise(resolve => {
+      return new Promise<string>(resolve => {
           this.emitter.on(
             'notify_signature_delivered',
             ({ signature: deliveredSyncSignature }: { signature: string }) => {
@@ -121,7 +124,12 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
             }
           )
         })
-      }
+    }
+    )();
+
+    const identityKey = await this.notifyClient.register({
+      registerParams: preparedRegistration.registerParams,
+      signature
     })
 
     return identityKey
@@ -177,24 +185,20 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     return Promise.resolve(subscriptions)
   }
 
-  public async getMessageHistory(params: { topic: string }) {
+  public async getNotificationHistory(params: { topic: string, limit: number, startingAfter?: string }) {
     if (!this.notifyClient) {
-      throw new Error(this.formatClientRelatedError('getMessageHistory'))
+      throw new Error(this.formatClientRelatedError('getNotificationHistory'))
     }
 
-    const messages = this.notifyClient.getMessageHistory(params)
+    const { topic, limit, startingAfter } = params;
+
+    const messages = this.notifyClient.getNotificationHistory({
+      topic,
+      limit,
+      startingAfter
+    })
 
     return Promise.resolve(messages)
-  }
-
-  public async deleteNotifyMessage(params: { id: number }) {
-    if (!this.notifyClient) {
-      throw new Error(this.formatClientRelatedError('deleteNotifyMessage'))
-    }
-
-    this.notifyClient.deleteNotifyMessage(params)
-
-    return Promise.resolve()
   }
 
   public async registerWithEcho() {

@@ -18,7 +18,7 @@ import AppNotificationsHeader from './AppNotificationsHeader'
 import './AppNotifications.scss'
 
 export interface AppNotificationsDragProps {
-  id: number
+  id: string
   isDragged: boolean
 }
 
@@ -36,7 +36,7 @@ const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
-  const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
+  const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessage[]>([])
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -46,10 +46,10 @@ const AppNotifications = () => {
 
   const updateMessages = useCallback(() => {
     if (notifyClientProxy && topic) {
-      notifyClientProxy.getMessageHistory({ topic }).then(messageHistory => {
-        setNotifications(Object.values(messageHistory))
+      notifyClientProxy.getNotificationHistory({ topic, limit: 10 }).then(messageHistory => {
+        setNotifications(messageHistory.notifications)
         setNotificationsDrag(
-          Object.values(messageHistory).map(notification => {
+          Object.values(messageHistory.notifications).map(notification => {
             return {
               id: notification.id,
               isDragged: false
@@ -108,20 +108,20 @@ const AppNotifications = () => {
                 <Label color="main">Latest</Label>
                 <>
                   {notifications
-                    .sort((a, b) => b.publishedAt - a.publishedAt)
+                    .sort((a, b) => b.sentAt - a.sentAt)
                     .map(notification => (
                       <AppNotificationItem
                         key={notification.id}
                         onClear={updateMessages}
                         notification={{
-                          timestamp: notification.publishedAt,
+                          timestamp: notification.sentAt,
                           // We do not manage read status for now.
                           isRead: true,
                           id: notification.id.toString(),
-                          message: notification.message.body,
-                          title: notification.message.title,
-                          image: notification.message.icon,
-                          url: notification.message.url
+                          message: notification.body,
+                          title: notification.title,
+                          image: app.scope[notification.type ?? ""].imageUrls.md,
+                          url: notification.url
                         }}
                         appLogo={app.metadata?.icons?.[0]}
                       />
