@@ -9,12 +9,12 @@ const IntersectionObserverOptions = {
   threshold: 1.0
 }
 
+const NOTIFICATION_BATCH_SIZE = 6
+
 export const useNotificationsInfiniteScroll = (topic?: string) => {
   const intersectionObserverRef = useRef<HTMLDivElement>(null)
   const { notifyClientProxy } = useContext(W3iContext)
   const [state, dispatch] = useReducer(notificationsReducer, {})
-
-  const limit = 6
 
   const nextPageInternal = useCallback(
     async (lastMessageId?: string) => {
@@ -24,7 +24,7 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
 
       const newNotifications = await notifyClientProxy.getNotificationHistory({
         topic,
-        limit,
+        limit: NOTIFICATION_BATCH_SIZE,
         startingAfter: lastMessageId
       })
 
