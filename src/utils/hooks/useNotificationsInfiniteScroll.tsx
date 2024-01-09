@@ -9,7 +9,7 @@ const IntersectionObserverOptions = {
   threshold: 1.0
 }
 
-const NOTIFICATION_BATCH_SIZE = 6
+const NOTIFICATION_BATCH_SIZE = 12
 
 export const useNotificationsInfiniteScroll = (topic?: string) => {
   const intersectionObserverRef = useRef<HTMLDivElement>(null)
@@ -39,9 +39,9 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
     [notifyClientProxy, dispatch, topic]
   )
 
-  const topicNotifications =
-    topic && state?.[topic]?.fullNotifications ? state[topic].fullNotifications : []
-  const hasMore = topic && state?.[topic]?.hasMore ? state[topic].hasMore : false
+  const topicState = topic ? state?.[topic] : undefined
+  const topicNotifications = topicState ? topicState.fullNotifications : []
+  const hasMore = topicState ? topicState.hasMore : false
 
   const lastMessageId = topicNotifications.length
     ? topicNotifications[topicNotifications.length - 1].id
