@@ -31,7 +31,6 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
       dispatch({
         type: 'FETCH_NOTIFICATIONS',
         notifications: newNotifications.notifications,
-        uniqueIds: newNotifications.notifications.map(notification => notification.id),
         hasMore: newNotifications.hasMore,
         topic
       })
