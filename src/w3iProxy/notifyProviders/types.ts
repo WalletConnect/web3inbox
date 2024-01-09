@@ -55,6 +55,7 @@ interface ModifiedNotifyClientFunctions {
   registerWithEcho: () => Promise<void>
   getRegisteredWithEcho: () => Promise<boolean>
   register: (params: { account: string; domain: string; isLimited?: boolean }) => Promise<string>
+  isInitialSubscriptionLoadComplete: () => boolean
 }
 
 export type NotifyClientFunctions = Omit<NotifyClient, NonMethodNotifyClientKeys>

@@ -61,6 +61,10 @@ class W3iNotifyFacade implements W3iNotify {
     return this.provider.subscribe(params)
   }
 
+  public isInitialSubscriptionLoadComplete() {
+    return this.provider.isInitialSubscriptionLoadComplete();
+  }
+
   public async update(params: { topic: string; scope: string[] }) {
     return this.provider.update(params)
   }

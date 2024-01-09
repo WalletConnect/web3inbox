@@ -49,15 +49,18 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
   // it takes time for handshake (watch subscriptions) to complete
   // load in progress state using interval until it is
   useEffect(() => {
-    if(watchSubscriptionsComplete) {
-      return noop;
-    }
-
     // Account for sync init
-    const timeoutId = setInterval(() => refreshNotifyState(), 500)
+    const intervalId = setInterval(() => {
+      if(notifyClient?.isInitialSubscriptionLoadComplete()) {
+        setWatchSubscriptionsComplete(true);
+	clearInterval(intervalId);
+        return;
+      }
+      refreshNotifyState()
+    }, 500)
 
-    return () => clearTimeout(timeoutId)
-  }, [refreshNotifyState, watchSubscriptionsComplete])
+    return () => clearInterval(intervalId)
+  }, [refreshNotifyState, notifyClient, setWatchSubscriptionsComplete])
 
   const handleRegistration = useCallback(
     async (key: string) => {
@@ -128,8 +131,8 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
 
     const notifySubsChanged = notifyClient.observe('notify_subscriptions_changed', {
       next: () => {
-	setWatchSubscriptionsComplete(true)
         refreshNotifyState()
+	setWatchSubscriptionsComplete(true)
       }
     })
 
@@ -146,7 +149,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
       notifySignatureRequestedSub.unsubscribe()
       notifySignatureRequestCancelledSub.unsubscribe()
     }
-  }, [notifyClient, refreshNotifyState])
+  }, [notifyClient, refreshNotifyState, setWatchSubscriptionsComplete])
 
   return { activeSubscriptions, registeredKey, registerMessage, notifyClient, refreshNotifyState, watchSubscriptionsComplete }
 }
