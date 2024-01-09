@@ -119,7 +119,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
     const preparedRegistration = await this.notifyClient.prepareRegistration(props)
 
-    console.log('Firing signature')
 
     const signature = await (async message => {
       this.emitter.emit('notify_signature_requested', { message })
