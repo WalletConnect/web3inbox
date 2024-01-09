@@ -13,7 +13,6 @@ export interface NotificationsState {
 export type NotificationsActions = {
   type: 'FETCH_NOTIFICATIONS'
   notifications: NotifyClientTypes.NotifyMessage[]
-  uniqueIds: string[]
   topic: string
   hasMore: boolean
 }
@@ -28,11 +27,12 @@ export const notificationsReducer = (
     case 'FETCH_NOTIFICATIONS':
       const ids = topicState?.existingIds || new Set<string>()
       const filteredVals = action.notifications.filter(val => !ids.has(val.id))
-      const fullNotifications = topicState?.fullNotifications || []
+      const uniqueIds = action.notifications.map(notification => notification.id)
 
+      const fullNotifications = topicState?.fullNotifications || []
       const newFullIdsSet = new Set(topicState?.existingIds || [])
 
-      for (const val of action.uniqueIds) {
+      for (const val of uniqueIds) {
         newFullIdsSet.add(val)
       }
 
