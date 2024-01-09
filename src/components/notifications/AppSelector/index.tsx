@@ -133,9 +133,6 @@ const AppSelector: React.FC = () => {
         <div className="AppSelector__wrapper">
           {!empty ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
-            {loading
-              ? SkeletonItems
-              : null}
             {!loading &&
               filteredApps?.map(app => {
                 return (
@@ -173,10 +170,7 @@ const AppSelector: React.FC = () => {
                   </AnimatePresence>
                 )
               })}
-            {loading || !subscriptionsFinishedLoading? Array(3)
-                  .fill(<LinkItemSkeleton />)
-                  .map(x => x)
-              : null}
+            {loading || !subscriptionsFinishedLoading? SkeletonItems : null}
           </ul>
         </div>
       </div>
