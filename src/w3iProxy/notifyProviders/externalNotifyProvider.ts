@@ -74,14 +74,9 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
     }
   }
 
-  public async register(params: { account: string; domain: string; isLimited?: boolean }) {
-    return this.postToExternalProvider('register', {
-      account: params.account,
-      isLimited: params.isLimited,
-      domain: params.domain,
-      // Signing will be handled wallet-side.
-      onSign: async () => Promise.resolve('')
-    })
+  public async register() {
+    // TODO: remove this whole provider
+    return 'not implemented'
   }
 
   public async subscribe(params: { appDomain: string; account: string }) {
@@ -102,12 +97,12 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
     return this.postToExternalProvider('getActiveSubscriptions', params)
   }
 
-  public async getMessageHistory(params: { topic: string }) {
-    return this.postToExternalProvider('getMessageHistory', params)
-  }
-
-  public async deleteNotifyMessage(params: { id: number }) {
-    return this.postToExternalProvider('deleteNotifyMessage', params)
+  public async getNotificationHistory(params: {
+    topic: string
+    limit: number
+    startingAfter?: string
+  }) {
+    return this.postToExternalProvider('getNotificationHistory', params)
   }
 
   public async registerWithEcho() {

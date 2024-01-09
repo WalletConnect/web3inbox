@@ -75,12 +75,12 @@ class W3iNotifyFacade implements W3iNotify {
     return this.provider.getActiveSubscriptions(params)
   }
 
-  public async getMessageHistory(params: { topic: string }) {
-    return this.provider.getMessageHistory(params)
-  }
-
-  public async deleteNotifyMessage(params: { id: number }) {
-    return this.provider.deleteNotifyMessage(params)
+  public async getNotificationHistory(params: {
+    topic: string
+    limit: number
+    startingAfter?: string
+  }) {
+    return this.provider.getNotificationHistory(params)
   }
 
   public async registerWithEcho() {

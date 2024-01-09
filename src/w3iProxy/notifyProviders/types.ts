@@ -30,6 +30,11 @@ type NonMethodNotifyClientKeys =
   | 'removeListener'
   | 'signedStatements'
   | 'watchedAccounts'
+  // TODO: Refactor to new identity key spec
+  | 'prepareRegistration'
+  | 'registrationData'
+  | 'isRegistered'
+  | 'register'
   | 'requests'
   // unregister functionality is not present in web3inbox at the moment.
   | 'unregister'
@@ -47,11 +52,9 @@ interface ModifiedNotifyClientFunctions {
   getActiveSubscriptions: (
     ...params: Parameters<NotifyClient['getActiveSubscriptions']>
   ) => Promise<ReturnType<NotifyClient['getActiveSubscriptions']>>
-  getMessageHistory: (
-    ...params: Parameters<NotifyClient['getMessageHistory']>
-  ) => Promise<ReturnType<NotifyClient['getMessageHistory']>>
   registerWithEcho: () => Promise<void>
   getRegisteredWithEcho: () => Promise<boolean>
+  register: (params: { account: string; domain: string; isLimited?: boolean }) => Promise<string>
 }
 
 export type NotifyClientFunctions = Omit<NotifyClient, NonMethodNotifyClientKeys>

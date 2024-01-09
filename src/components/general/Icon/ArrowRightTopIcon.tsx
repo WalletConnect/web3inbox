@@ -10,7 +10,7 @@ const ArrowRightTopIcon: React.FC<React.SVGProps<SVGSVGElement>> = props => {
       fill="none"
       {...props}
     >
-      <g clip-path="url(#clip0_4498_48131)">
+      <g clipPath="url(#clip0_4498_48131)">
         <path
           d="M11.3012 5.19971L4.70117 11.7997"
           stroke="currentColor"

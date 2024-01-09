@@ -1,6 +1,5 @@
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
-import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
@@ -9,6 +8,7 @@ import { noop } from 'rxjs'
 import Label from '@/components/general/Label'
 import MobileHeader from '@/components/layout/MobileHeader'
 import W3iContext from '@/contexts/W3iContext/context'
+import { useNotificationsInfiniteScroll } from '@/utils/hooks/useNotificationsInfiniteScroll'
 
 import AppNotificationItem from './AppNotificationItem'
 import AppNotificationsCardMobile from './AppNotificationsCardMobile'
@@ -18,7 +18,7 @@ import AppNotificationsHeader from './AppNotificationsHeader'
 import './AppNotifications.scss'
 
 export interface AppNotificationsDragProps {
-  id: number
+  id: string
   isDragged: boolean
 }
 
@@ -36,7 +36,7 @@ const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
-  const [notifications, setNotifications] = useState<NotifyClientTypes.NotifyMessageRecord[]>([])
+  const { notifications, intersectionObserverRef, nextPage } = useNotificationsInfiniteScroll(topic)
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -44,39 +44,21 @@ const AppNotifications = () => {
     AppNotificationsDragProps[] | undefined
   >()
 
-  const updateMessages = useCallback(() => {
-    if (notifyClientProxy && topic) {
-      notifyClientProxy.getMessageHistory({ topic }).then(messageHistory => {
-        setNotifications(Object.values(messageHistory))
-        setNotificationsDrag(
-          Object.values(messageHistory).map(notification => {
-            return {
-              id: notification.id,
-              isDragged: false
-            }
-          })
-        )
-      })
-    }
-  }, [setNotifications, notifyClientProxy, topic])
-
-  useEffect(() => {
-    updateMessages()
-  }, [updateMessages])
-
   useEffect(() => {
     if (!(notifyClientProxy && topic)) {
       return noop
     }
 
     const notifyMessageSentSub = notifyClientProxy.observe('notify_message', {
-      next: updateMessages
+      next: () => {
+        nextPage()
+      }
     })
 
     return () => {
       notifyMessageSentSub.unsubscribe()
     }
-  }, [notifyClientProxy, setNotifications, topic])
+  }, [notifyClientProxy, nextPage, topic])
 
   return app?.metadata ? (
     <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>
@@ -103,32 +85,31 @@ const AppNotifications = () => {
           />
           <AppNotificationsCardMobile />
           {notifications.length > 0 ? (
-            <>
-              <div className="AppNotifications__list">
+            <div className="AppNotifications__list">
+              <div className="AppNotifications__list__content">
                 <Label color="main">Latest</Label>
-                <>
-                  {notifications
-                    .sort((a, b) => b.publishedAt - a.publishedAt)
-                    .map(notification => (
-                      <AppNotificationItem
-                        key={notification.id}
-                        onClear={updateMessages}
-                        notification={{
-                          timestamp: notification.publishedAt,
-                          // We do not manage read status for now.
-                          isRead: true,
-                          id: notification.id.toString(),
-                          message: notification.message.body,
-                          title: notification.message.title,
-                          image: notification.message.icon,
-                          url: notification.message.url
-                        }}
-                        appLogo={app.metadata?.icons?.[0]}
-                      />
-                    ))}
-                </>
+                {notifications.map((notification, index) => (
+                  <AppNotificationItem
+                    ref={index === notifications.length - 1 ? intersectionObserverRef : null}
+                    key={notification.id}
+                    onClear={nextPage}
+                    notification={{
+                      timestamp: notification.sentAt,
+                      // We do not manage read status for now.
+                      isRead: true,
+                      id: notification.id.toString(),
+                      message: notification.body,
+                      title: notification.title,
+                      image: notification.type
+                        ? app?.scope[notification.type]?.imageUrls?.md
+                        : undefined,
+                      url: notification.url
+                    }}
+                    appLogo={app.metadata?.icons?.[0]}
+                  />
+                ))}
               </div>
-            </>
+            </div>
           ) : (
             <AppNotificationsEmpty icon={app.metadata?.icons?.[0]} name={app.metadata.name} />
           )}

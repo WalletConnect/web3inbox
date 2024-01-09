@@ -104,24 +104,28 @@ const NotificationsSettings: React.FC = () => {
               </SettingsItem>
             </div>
 
-            <div
-              className="NotificationsSettings__debug"
-              style={{ opacity: isDevModeEnabled ? 1 : 0 }}
-            >
-              {tokenEntries.map(([clientId, fcmToken], idx) => {
-                return (
-                  <div className="NotificationsSettings__debug-row">
-                    <span>Entry {idx + 1} </span>
-                    <span>
-                      <span style={{ fontWeight: 800 }}>ClientId</span>: {JSON.stringify(clientId)}{' '}
-                    </span>
-                    <span>
-                      <span style={{ fontWeight: 800 }}>FCM Token</span>: {JSON.stringify(fcmToken)}{' '}
-                    </span>
-                  </div>
-                )
-              })}
-            </div>
+            {tokenEntries?.length ? (
+              <div
+                className="NotificationsSettings__debug"
+                style={{ opacity: isDevModeEnabled ? 1 : 0 }}
+              >
+                {tokenEntries.map(([clientId, fcmToken], idx) => {
+                  return (
+                    <div className="NotificationsSettings__debug-row">
+                      <span>Entry {idx + 1} </span>
+                      <span>
+                        <span style={{ fontWeight: 800 }}>ClientId</span>:{' '}
+                        {JSON.stringify(clientId)}{' '}
+                      </span>
+                      <span>
+                        <span style={{ fontWeight: 800 }}>FCM Token</span>:{' '}
+                        {JSON.stringify(fcmToken)}{' '}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            ) : null}
 
             <SettingsItem
               title="Developer Mode"

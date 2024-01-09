@@ -25,7 +25,10 @@
 
   &__text {
     color: var(--fg-color-1);
-    font-feature-settings: 'case' on, 'ss04' on, 'ss06' on;
+    font-feature-settings:
+      'case' on,
+      'ss04' on,
+      'ss06' on;
     font-weight: 700;
     width: 100%;
     @include padding-x(1em);

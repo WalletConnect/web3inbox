@@ -96,7 +96,8 @@
     --corner-width: 10px;
 
     z-index: 2;
-    background: linear-gradient(
+    background:
+      linear-gradient(
           to right,
           var(--corner-color) var(--corner-width),
           transparent var(--corner-width)

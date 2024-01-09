@@ -26,6 +26,8 @@ import './AppSelector.scss'
 
 const SUBSCRIPTION_LOADER_TIMEOUT = 3000
 
+const SkeletonItems = Array.from({length: 3}, (_,idx) => (<LinkItemSkeleton key={idx} />))
+
 const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
   const [search, setSearch] = useState('')
@@ -131,10 +133,13 @@ const AppSelector: React.FC = () => {
         <div className="AppSelector__wrapper">
           {!empty ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
+            {loading
+              ? SkeletonItems
+              : null}
             {!loading &&
               filteredApps?.map(app => {
                 return (
-                  <AnimatePresence>
+                  <AnimatePresence key={app.topic}>
                     <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
                       <NavLink
                         key={app.topic}
