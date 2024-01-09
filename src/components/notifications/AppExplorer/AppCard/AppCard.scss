@@ -29,13 +29,12 @@
      */
     z-index: 0;
     position: absolute;
-    border-radius: 1.875em;
     background-repeat: no-repeat;
-    background-position: -60px -60px;
-    background-size: 256px;
-    opacity: 50%;
-    filter: blur(120px);
+    background-position: -50px -50px;
+    background-size: 80%;
     overflow: hidden;
+    filter: blur(32px) saturate(1.2);
+    opacity: 0.15;
     top: 0;
     left: 0;
     width: 100%;
