@@ -32,7 +32,7 @@ const AppSelector: React.FC = () => {
   const isMobile = useIsMobile()
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const [loading, setLoading] = useState(true)
-  const { activeSubscriptions } = useContext(W3iContext)
+  const { activeSubscriptions, watchSubscriptionsSucceeded: subscriptionsFinishedLoading } = useContext(W3iContext)
   const { projects } = useNotifyProjects()
 
   const empty = !loading && filteredApps.length === 0
@@ -131,7 +131,6 @@ const AppSelector: React.FC = () => {
         <div className="AppSelector__wrapper">
           {!empty ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
-            {loading ? Array.from({ length: 3 }, (_, idx) => <LinkItemSkeleton key={idx} />) : null}
             {!loading &&
               filteredApps?.map(app => {
                 return (
@@ -169,6 +168,7 @@ const AppSelector: React.FC = () => {
                   </AnimatePresence>
                 )
               })}
+            {loading || !subscriptionsFinishedLoading ? Array.from({ length: 3 }, (_, idx) => <LinkItemSkeleton key={idx} />) : null}
           </ul>
         </div>
       </div>

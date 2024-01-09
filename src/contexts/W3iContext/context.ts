@@ -34,6 +34,7 @@ interface W3iContextState {
   dappName: string
   dappIcon: string
   dappNotificationDescription: string
+  watchSubscriptionsSucceeded: boolean
   // This is only kept to allow old components to build
   chatClientProxy: W3iChatClient | null
 }
@@ -56,7 +57,8 @@ const W3iContext = createContext<W3iContextState>({
   dappIcon: '',
   dappNotificationDescription: '',
   dappName: '',
-  chatClientProxy: null
+  chatClientProxy: null,
+  watchSubscriptionsSucceeded: false
 })
 
 export default W3iContext

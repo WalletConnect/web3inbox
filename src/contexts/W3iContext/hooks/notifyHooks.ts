@@ -24,6 +24,8 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
 
   const [notifyClient, setNotifyClient] = useState<W3iNotifyClient | null>(null)
 
+  const [watchSubscriptionsSucceeded, setWatchSubscriptionsSucceeded] = useState<boolean>(false);
+
   useEffect(() => {
     if (proxyReady) {
       setNotifyClient(w3iProxy.notify)
@@ -39,17 +41,25 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     if (!proxyReady || !notifyClient || !userPubkey) {
       return
     }
+
     notifyClient.getActiveSubscriptions({ account: userPubkey }).then(subscriptions => {
       setActiveSubscriptions(Object.values(subscriptions))
     })
   }, [notifyClient, userPubkey, proxyReady])
 
+  // while handshakle (watchSubscriptions) is in progress
+  // fire interval to refresh state every 50ms
+  // when handshake complete, kill interval.
   useEffect(() => {
-    // Account for sync init
-    const timeoutId = setTimeout(() => refreshNotifyState(), 100)
+    if(watchSubscriptionsSucceeded) {
+      return noop
+    }
 
-    return () => clearTimeout(timeoutId)
-  }, [refreshNotifyState])
+    // Account for sync init
+    const interval = setInterval(() => refreshNotifyState(), 500)
+
+    return () => clearInterval(interval)
+  }, [refreshNotifyState, watchSubscriptionsSucceeded])
 
   const handleRegistration = useCallback(
     async (key: string) => {
@@ -109,21 +119,24 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     )
 
     const notifySubscriptionSub = notifyClient.observe('notify_subscription', {
-      next: refreshNotifyState
+      next: () => refreshNotifyState()
     })
     const notifyDeleteSub = notifyClient.observe('notify_delete', {
-      next: refreshNotifyState
+      next: () => refreshNotifyState()
     })
     const notifyUpdateSub = notifyClient.observe('notify_update', {
-      next: refreshNotifyState
+      next: () => refreshNotifyState()
     })
 
     const notifySubsChanged = notifyClient.observe('notify_subscriptions_changed', {
-      next: refreshNotifyState
+      next: () => {
+	setWatchSubscriptionsSucceeded(true);
+	refreshNotifyState()
+      }
     })
 
     const syncUpdateSub = notifyClient.observe('sync_update', {
-      next: refreshNotifyState
+      next: () => refreshNotifyState()
     })
 
     return () => {
@@ -137,5 +150,5 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     }
   }, [notifyClient, refreshNotifyState])
 
-  return { activeSubscriptions, registeredKey, registerMessage, notifyClient, refreshNotifyState }
+  return { activeSubscriptions, registeredKey, registerMessage, notifyClient, refreshNotifyState, watchSubscriptionsSucceeded }
 }
