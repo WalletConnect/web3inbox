@@ -168,8 +168,7 @@ const AppSelector: React.FC = () => {
                   </AnimatePresence>
                 )
               })}
-            {loading || !subscriptionsFinishedLoading
-              ? Array(3)
+            {loading || !subscriptionsFinishedLoading? Array(3)
                   .fill(<LinkItemSkeleton />)
                   .map(x => x)
               : null}

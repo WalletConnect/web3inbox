@@ -127,7 +127,10 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     })
 
     const notifySubsChanged = notifyClient.observe('notify_subscriptions_changed', {
-      next: refreshNotifyState
+      next: () => {
+	setWatchSubscriptionsComplete(true)
+        refreshNotifyState()
+      }
     })
 
     const syncUpdateSub = notifyClient.observe('sync_update', {
