@@ -1,12 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useReducer,
-  useRef,
-  useState
-} from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
@@ -16,20 +8,14 @@ import { noop } from 'rxjs'
 import Label from '@/components/general/Label'
 import MobileHeader from '@/components/layout/MobileHeader'
 import W3iContext from '@/contexts/W3iContext/context'
+import { useNotificationsInfiniteScroll } from '@/utils/hooks/useNotificationsInfiniteScroll'
 
 import AppNotificationItem from './AppNotificationItem'
 import AppNotificationsCardMobile from './AppNotificationsCardMobile'
 import AppNotificationsEmpty from './AppNotificationsEmpty'
 import AppNotificationsHeader from './AppNotificationsHeader'
-import { infiniteScrollReducer } from './reducer'
 
 import './AppNotifications.scss'
-
-const IntersectionObserverOptions = {
-  root: null,
-  rootMargin: '0px',
-  threshold: 1.0
-}
 
 export interface AppNotificationsDragProps {
   id: string
@@ -46,64 +32,13 @@ export const AppNotificationDragContext = createContext<AppNotificationsDragCont
   () => null
 ])
 
-const useInfiniteScrollNotifications = (topic?: string) => {
-  const { notifyClientProxy } = useContext(W3iContext)
-
-  // This is done in a reducer to prevent the function from constantly being updated as it needs the values in
-  // existingIds and fullNotifications to update those values, causing a loop in its definition.
-  const [state, dispatch] = useReducer(infiniteScrollReducer, {
-    fullNotifications: [],
-    existingIds: new Set<string>()
-  })
-
-  const limit = 6
-
-  const nextPageInternal = useCallback(
-    async (lastMessageId?: string) => {
-      if (!(notifyClientProxy && topic)) {
-        return
-      }
-
-      const newNotifications = await notifyClientProxy.getNotificationHistory({
-        topic,
-        limit,
-        startingAfter: lastMessageId
-      })
-
-      dispatch({
-        type: 'concat_to_array',
-        vals: newNotifications.notifications
-      })
-
-      dispatch({
-        type: 'add_to_set',
-        vals: newNotifications.notifications.map(notification => notification.id)
-      })
-
-      // Although this is not the cleanest way to do this
-    },
-    [notifyClientProxy, dispatch]
-  )
-
-  useEffect(() => {
-    nextPageInternal()
-  }, [nextPageInternal])
-
-  const lastMessageId = state.fullNotifications.length
-    ? state.fullNotifications[state.fullNotifications.length - 1].id
-    : undefined
-
-  return { notifications: state.fullNotifications, nextPage: () => nextPageInternal(lastMessageId) }
-}
-
 const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
-  const { notifications, nextPage } = useInfiniteScrollNotifications(topic)
+  const { notifications, intersectionObserverRef, nextPage } = useNotificationsInfiniteScroll(topic)
 
   const ref = useRef<HTMLDivElement>(null)
-  const intersectionObserverRef = useRef<HTMLDivElement>(null)
 
   const [notificationsDrag, setNotificationsDrag] = useState<
     AppNotificationsDragProps[] | undefined
@@ -124,25 +59,6 @@ const AppNotifications = () => {
       notifyMessageSentSub.unsubscribe()
     }
   }, [notifyClientProxy, nextPage, topic])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      const target = entries[0]
-      if (target.isIntersecting) {
-        nextPage()
-      }
-    }, IntersectionObserverOptions)
-
-    if (intersectionObserverRef.current) {
-      observer.observe(intersectionObserverRef.current)
-    }
-
-    return () => {
-      if (intersectionObserverRef.current) {
-        observer.unobserve(intersectionObserverRef.current)
-      }
-    }
-  }, [intersectionObserverRef, nextPage])
 
   return app?.metadata ? (
     <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>
