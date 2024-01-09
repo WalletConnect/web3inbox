@@ -29,22 +29,24 @@ export const notificationsReducer = (
   switch (action.type) {
     case 'FETCH_NOTIFICATIONS':
       const ids = topicState?.existingIds || new Set<string>()
-      const filteredVals = action.notifications.filter(val => !ids.has(val.id))
-      const uniqueIds = action.notifications.map(notification => notification.id)
+      const filteredNotifications = action.notifications.filter(val => !ids.has(val.id))
+      const notificationIds = action.notifications.map(notification => notification.id)
 
       const fullNotifications = topicState?.fullNotifications || []
       const newFullIdsSet = new Set(topicState?.existingIds || [])
 
-      for (const val of uniqueIds) {
+      for (const val of notificationIds) {
         newFullIdsSet.add(val)
       }
+
+      const concatenatedNotification = fullNotifications.concat(filteredNotifications)
 
       return {
         ...state,
         [action.topic]: {
           ...topicState,
           existingIds: newFullIdsSet,
-          fullNotifications: fullNotifications.concat(filteredVals),
+          fullNotifications: concatenatedNotification,
           hasMore: action.hasMore
         }
       }
