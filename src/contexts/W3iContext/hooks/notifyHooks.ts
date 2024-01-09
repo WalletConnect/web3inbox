@@ -24,6 +24,8 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
 
   const [notifyClient, setNotifyClient] = useState<W3iNotifyClient | null>(null)
 
+  const [watchSubscriptionsComplete, setWatchSubscriptionsComplete] = useState(false);
+
   useEffect(() => {
     if (proxyReady) {
       setNotifyClient(w3iProxy.notify)
@@ -44,12 +46,18 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     })
   }, [notifyClient, userPubkey, proxyReady])
 
+  // it takes time for handshake (watch subscriptions) to complete
+  // load in progress state using interval until it is
   useEffect(() => {
+    if(watchSubscriptionsComplete) {
+      return noop;
+    }
+
     // Account for sync init
-    const timeoutId = setTimeout(() => refreshNotifyState(), 100)
+    const timeoutId = setInterval(() => refreshNotifyState(), 500)
 
     return () => clearTimeout(timeoutId)
-  }, [refreshNotifyState])
+  }, [refreshNotifyState, watchSubscriptionsComplete])
 
   const handleRegistration = useCallback(
     async (key: string) => {
@@ -119,7 +127,10 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     })
 
     const notifySubsChanged = notifyClient.observe('notify_subscriptions_changed', {
-      next: refreshNotifyState
+      next: () => {
+	setWatchSubscriptionsComplete(true)
+        refreshNotifyState()
+      }
     })
 
     const syncUpdateSub = notifyClient.observe('sync_update', {
@@ -137,5 +148,5 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     }
   }, [notifyClient, refreshNotifyState])
 
-  return { activeSubscriptions, registeredKey, registerMessage, notifyClient, refreshNotifyState }
+  return { activeSubscriptions, registeredKey, registerMessage, notifyClient, refreshNotifyState, watchSubscriptionsComplete }
 }
