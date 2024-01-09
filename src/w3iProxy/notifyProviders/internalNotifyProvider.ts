@@ -18,6 +18,8 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
   public providerName = 'InternalNotifyProvider'
   private readonly methodsListenedTo = ['notify_signature_delivered']
 
+  private gotFirstWatchSubscriptionsResponse = false;
+
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
   }
@@ -29,6 +31,8 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
   public initState(notifyClient: NotifyClient) {
     const updateSymkeyState = async () => {
       const subs = Object.values(await this.getActiveSubscriptions())
+
+      this.gotFirstWatchSubscriptionsResponse = true;
 
       if (this.notifyClient) {
         await setupSubscriptionsSymkeys(subs.map(({ topic, symKey }) => [topic, symKey]))
@@ -101,6 +105,10 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
   }
 
   // ------------------- Method-forwarding for NotifyClient -------------------
+
+  public isInitialSubscriptionLoadComplete() {
+    return this.gotFirstWatchSubscriptionsResponse;
+  }
 
   public async register(params: { account: string; domain: string; isLimited?: boolean }) {
     if (!this.notifyClient) {

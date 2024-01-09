@@ -213,22 +213,12 @@
       }
     }
 
-    @keyframes slideIn {
-      0% {
-        transform: translateX(-100%);
-      }
-      100% {
-        transform: translateX(0);
-      }
-    }
-
     &-item {
       padding: 0.75rem 1rem 0.75rem 0.75rem;
       border-radius: 1em;
       position: relative;
       transition: background-color 0.2s linear;
       will-change: background-color;
-      animation: slideIn 0.5s ease-in;
 
       @media only screen and (max-width: 700px) {
         border-radius: 0px;

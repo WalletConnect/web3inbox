@@ -74,6 +74,10 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
     }
   }
 
+  public isInitialSubscriptionLoadComplete() {
+    return true
+  }
+
   public async register() {
     // TODO: remove this whole provider
     return 'not implemented'
