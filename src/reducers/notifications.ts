@@ -17,6 +17,9 @@ export type NotificationsActions = {
   hasMore: boolean
 }
 
+// Opted for a reducer since the state changes are complex enough to warrant
+// changes to a set and an array and having all that inside the hooks would
+// cause too many updates to the hooks, causing unnecessary rerenders.
 export const notificationsReducer = (
   state: NotificationsState,
   action: NotificationsActions
