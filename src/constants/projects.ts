@@ -50,6 +50,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     isComingSoon: true,
     isVerified: false,
     isFeatured: false,
-    icon: '/moso.png'
+    icon: '/chainspot.png'
   }
 ]
