@@ -28,6 +28,10 @@
     border: solid 1px var(--accent-color-1);
     padding: 0.5em 0.5em;
   }
+  &__empty__message {
+    color: var(--fg-color-2);
+    padding: 0.5rem 0.75rem;
+  }
 
   .App,
   .Input {
