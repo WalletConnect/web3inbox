@@ -36,7 +36,8 @@ const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
-  const { notifications, intersectionObserverRef, nextPage } = useNotificationsInfiniteScroll(topic)
+  const { notifications, intersectionObserverRef, nextPage, unshiftNewMessage } =
+    useNotificationsInfiniteScroll(topic)
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -51,7 +52,7 @@ const AppNotifications = () => {
 
     const notifyMessageSentSub = notifyClientProxy.observe('notify_message', {
       next: () => {
-        nextPage()
+        unshiftNewMessage()
       }
     })
 

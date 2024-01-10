@@ -38,6 +38,24 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
     [notifyClientProxy, dispatch, topic]
   )
 
+  const unshiftNewMessage = useCallback(async () => {
+    if (!(notifyClientProxy && topic)) {
+      return
+    }
+
+    const newNotifications = await notifyClientProxy.getNotificationHistory({
+      topic,
+      limit: 5,
+      startingAfter: undefined
+    })
+
+    dispatch({
+      type: 'UNSHIFT_NEW_NOTIFICATIONS',
+      notifications: newNotifications.notifications.slice(0, 1),
+      topic
+    })
+  }, [notifyClientProxy, dispatch, topic])
+
   const topicState = topic ? state?.[topic] : undefined
   const topicNotifications = topicState ? topicState.fullNotifications : []
   const hasMore = topicState ? topicState.hasMore : false
@@ -73,6 +91,7 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
     hasMore,
     notifications: topicNotifications,
     intersectionObserverRef,
-    nextPage: () => nextPageInternal(lastMessageId)
+    nextPage: () => nextPageInternal(lastMessageId),
+    unshiftNewMessage
   }
 }

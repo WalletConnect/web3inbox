@@ -26,7 +26,7 @@ import './AppSelector.scss'
 
 const SUBSCRIPTION_LOADER_TIMEOUT = 3000
 
-const SkeletonItems = Array.from({length: 3}, (_,idx) => (<LinkItemSkeleton key={idx} />))
+const SkeletonItems = Array.from({ length: 3 }, (_, idx) => <LinkItemSkeleton key={idx} />)
 
 const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
@@ -34,7 +34,8 @@ const AppSelector: React.FC = () => {
   const isMobile = useIsMobile()
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const [loading, setLoading] = useState(true)
-  const { activeSubscriptions, watchSubscriptionsComplete: subscriptionsFinishedLoading } = useContext(W3iContext)
+  const { activeSubscriptions, watchSubscriptionsComplete: subscriptionsFinishedLoading } =
+    useContext(W3iContext)
   const { projects } = useNotifyProjects()
 
   const empty = !loading && filteredApps.length === 0
@@ -170,7 +171,7 @@ const AppSelector: React.FC = () => {
                   </AnimatePresence>
                 )
               })}
-            {loading || !subscriptionsFinishedLoading? SkeletonItems : null}
+            {loading || !subscriptionsFinishedLoading ? SkeletonItems : null}
           </ul>
         </div>
       </div>

@@ -18,7 +18,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
   public providerName = 'InternalNotifyProvider'
   private readonly methodsListenedTo = ['notify_signature_delivered']
 
-  private gotFirstWatchSubscriptionsResponse = false;
+  private gotFirstWatchSubscriptionsResponse = false
 
   public constructor(emitter: EventEmitter, _name = 'internal') {
     this.emitter = emitter
@@ -32,7 +32,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     const updateSymkeyState = async () => {
       const subs = Object.values(await this.getActiveSubscriptions())
 
-      this.gotFirstWatchSubscriptionsResponse = true;
+      this.gotFirstWatchSubscriptionsResponse = true
 
       if (this.notifyClient) {
         await setupSubscriptionsSymkeys(subs.map(({ topic, symKey }) => [topic, symKey]))
@@ -107,7 +107,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
   // ------------------- Method-forwarding for NotifyClient -------------------
 
   public isInitialSubscriptionLoadComplete() {
-    return this.gotFirstWatchSubscriptionsResponse;
+    return this.gotFirstWatchSubscriptionsResponse
   }
 
   public async register(params: { account: string; domain: string; isLimited?: boolean }) {
@@ -123,10 +123,14 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
     if (this.notifyClient.isRegistered(props)) {
       return this.notifyClient.identityKeys.getIdentity({ account: props.account })
+    } else {
+      // this means that there is a stale registration
+      if (await this.notifyClient.identityKeys.hasIdentity({ account: props.account })) {
+        await this.notifyClient.unregister({ account: props.account })
+      }
     }
 
     const preparedRegistration = await this.notifyClient.prepareRegistration(props)
-
 
     const signature = await (async message => {
       this.emitter.emit('notify_signature_requested', { message })
