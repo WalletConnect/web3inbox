@@ -163,7 +163,7 @@ const AppSelector: React.FC = () => {
                   </AnimatePresence>
                 )
               })}
-            {subscriptionsLoading ? SkeletonItems : null}
+            {loading || !subscriptionsFinishedLoading ? SkeletonItems : null}
           </ul>
         </div>
       </div>
