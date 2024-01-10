@@ -124,6 +124,12 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     if (this.notifyClient.isRegistered(props)) {
       return this.notifyClient.identityKeys.getIdentity({ account: props.account })
     }
+    else {
+      // this means that there is a stale registration
+      if(await this.notifyClient.identityKeys.hasIdentity({ account: props.account})) {
+	await this.notifyClient.unregister({ account: props.account })
+      }
+    }
 
     const preparedRegistration = await this.notifyClient.prepareRegistration(props)
 
