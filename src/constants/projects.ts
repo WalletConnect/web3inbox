@@ -41,5 +41,15 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     isVerified: false,
     isFeatured: false,
     icon: '/moso.png'
+  },
+  {
+    id: 'chainspot',
+    name: 'Chainspot',
+    description: 'The largest cross-chain solutions aggregator with useful tools and analytics.',
+    url: 'https://chainspot.io/',
+    isComingSoon: true,
+    isVerified: false,
+    isFeatured: false,
+    icon: '/moso.png'
   }
 ]
