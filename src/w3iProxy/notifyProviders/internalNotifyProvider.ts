@@ -104,7 +104,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
   // ------------------- Method-forwarding for NotifyClient -------------------
 
   public hasFinishedInitialLoad() {
-    return this.notifyClient?.hasFinishedInitialLoad() || false;
+    return this.notifyClient?.hasFinishedInitialLoad() || false
   }
 
   public async register(params: { account: string; domain: string; isLimited?: boolean }) {

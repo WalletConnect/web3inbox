@@ -62,7 +62,7 @@ class W3iNotifyFacade implements W3iNotify {
   }
 
   public hasFinishedInitialLoad() {
-    return this.provider.hasFinishedInitialLoad();
+    return this.provider.hasFinishedInitialLoad()
   }
 
   public async update(params: { topic: string; scope: string[] }) {

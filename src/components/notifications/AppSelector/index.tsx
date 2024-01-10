@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
+import cx from 'classnames'
 import { AnimatePresence, m } from 'framer-motion'
 import debounce from 'lodash.debounce'
 import { useLocation } from 'react-router-dom'
@@ -19,8 +20,6 @@ import { NAVIGATION } from '@/utils/constants'
 import { useIsMobile } from '@/utils/hooks'
 import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
 import { handleImageFallback } from '@/utils/ui'
-
-import cx from 'classnames'
 
 import LinkItemSkeleton from './LinkItemSkeleton'
 
@@ -136,7 +135,12 @@ const AppSelector: React.FC = () => {
                       <NavLink
                         key={app.topic}
                         to={NAVIGATION.notifications.topic(app.topic)}
-                        className={cx("AppSelector__link-item", !subscriptionsFinishedLoading && (fullApps.length - idx + 1 === 0 ) && "AppSelector__link-item-loading-in")}
+                        className={cx(
+                          'AppSelector__link-item',
+                          !subscriptionsFinishedLoading &&
+                            fullApps.length - idx + 1 === 0 &&
+                            'AppSelector__link-item-loading-in'
+                        )}
                       >
                         <div className="AppSelector__notifications">
                           <div className="AppSelector__notifications-link">

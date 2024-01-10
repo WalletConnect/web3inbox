@@ -74,9 +74,8 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
     }
   }
 
-
   public hasFinishedInitialLoad() {
-    return true;
+    return true
   }
 
   public async register() {
