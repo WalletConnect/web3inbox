@@ -3,7 +3,7 @@ import React from 'react'
 const NewMessageIcon: React.FC = () => {
   return (
     <svg fill="none" viewBox="0 0 28 28">
-      <g clip-path="url(#a)">
+      <g clipPath="url(#a)">
         <path
           stroke="#141414"
           strokeLinecap="round"
