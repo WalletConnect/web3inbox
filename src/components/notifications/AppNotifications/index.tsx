@@ -51,7 +51,6 @@ const AppNotifications = () => {
 
     const notifyMessageSentSub = notifyClientProxy.observe('notify_message', {
       next: () => {
-	console.log(">> calling unshift")
         unshiftNewMessage()
       }
     })

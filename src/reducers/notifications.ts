@@ -45,7 +45,6 @@ export const notificationsReducer = (
 
     case 'UNSHIFT_NEW_NOTIFICATIONS':
       const unshiftedNotifications = filteredNotifications.concat(fullNotifications)
-      console.log(">> dispatched", action.notifications)
 
       return {
         ...state,
@@ -57,7 +56,6 @@ export const notificationsReducer = (
         }
       }
   
-    
     case 'FETCH_NOTIFICATIONS':
       const concatenatedNotification = fullNotifications.concat(filteredNotifications)
 
