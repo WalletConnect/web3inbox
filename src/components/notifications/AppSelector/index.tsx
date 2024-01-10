@@ -20,6 +20,8 @@ import { useIsMobile } from '@/utils/hooks'
 import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
 import { handleImageFallback } from '@/utils/ui'
 
+import cx from 'classnames'
+
 import LinkItemSkeleton from './LinkItemSkeleton'
 
 import './AppSelector.scss'
@@ -135,14 +137,14 @@ const AppSelector: React.FC = () => {
           {!empty ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
             {!loading &&
-              filteredApps?.map(app => {
+              filteredApps?.map((app, idx, fullApps) => {
                 return (
                   <AnimatePresence key={app.topic}>
                     <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
                       <NavLink
                         key={app.topic}
                         to={NAVIGATION.notifications.topic(app.topic)}
-                        className="AppSelector__link-item"
+                        className={cx("AppSelector__link-item", !subscriptionsFinishedLoading && (fullApps.length - idx + 1 === 0 ) && "AppSelector__link-item-loading-in")}
                       >
                         <div className="AppSelector__notifications">
                           <div className="AppSelector__notifications-link">
