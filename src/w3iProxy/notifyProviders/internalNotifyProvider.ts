@@ -32,8 +32,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     const updateSymkeyState = async () => {
       const subs = Object.values(await this.getActiveSubscriptions())
 
-      this.gotFirstWatchSubscriptionsResponse = true;
-
       if (this.notifyClient) {
         await setupSubscriptionsSymkeys(subs.map(({ topic, symKey }) => [topic, symKey]))
       }
@@ -46,6 +44,9 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     this.notifyClient.on('notify_message', args => this.emitter.emit('notify_message', args))
     this.notifyClient.on('notify_subscriptions_changed', args => {
       updateSymkeyState()
+
+      this.gotFirstWatchSubscriptionsResponse = true;
+
       this.emitter.emit('notify_subscriptions_changed', args)
     })
     this.notifyClient.on('notify_update', args => this.emitter.emit('notify_update', args))
