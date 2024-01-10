@@ -54,7 +54,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     }
     // Account for sync init
     const intervalId = setInterval(() => {
-      if(notifyClient?.isInitialSubscriptionLoadComplete()) {
+      if(notifyClient?.hasFinishedInitialLoad()) {
 	setWatchSubscriptionsComplete(true)
       }
       refreshNotifyState()
