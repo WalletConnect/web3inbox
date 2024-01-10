@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
+import cx from 'classnames'
 import { AnimatePresence, m } from 'framer-motion'
 import debounce from 'lodash.debounce'
 import { useLocation } from 'react-router-dom'
@@ -127,14 +128,19 @@ const AppSelector: React.FC = () => {
           {!empty || subscriptionsLoading ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
             {!loading &&
-              filteredApps?.map(app => {
+              filteredApps?.map((app, idx, fullApps) => {
                 return (
                   <AnimatePresence key={app.topic}>
                     <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
                       <NavLink
                         key={app.topic}
                         to={NAVIGATION.notifications.topic(app.topic)}
-                        className="AppSelector__link-item"
+                        className={cx(
+                          'AppSelector__link-item',
+                          !subscriptionsFinishedLoading &&
+                            fullApps.length - idx + 1 === 0 &&
+                            'AppSelector__link-item-loading-in'
+                        )}
                       >
                         <div className="AppSelector__notifications">
                           <div className="AppSelector__notifications-link">
@@ -163,7 +169,7 @@ const AppSelector: React.FC = () => {
                   </AnimatePresence>
                 )
               })}
-            {subscriptionsLoading ? SkeletonItems : null}
+            {loading || !subscriptionsFinishedLoading ? SkeletonItems : null}
           </ul>
         </div>
       </div>
