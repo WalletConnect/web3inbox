@@ -49,6 +49,9 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
   // it takes time for handshake (watch subscriptions) to complete
   // load in progress state using interval until it is
   useEffect(() => {
+    if (watchSubscriptionsComplete) {
+      return noop
+    }
     // Account for sync init
     const intervalId = setInterval(() => {
       if(notifyClient?.isInitialSubscriptionLoadComplete()) {
