@@ -104,34 +104,24 @@ const AppSelector: React.FC = () => {
       <TargetTitle className="AppSelector__target-title" to="/notifications/new-app">
         <Text variant="large-700">Inbox</Text>
       </TargetTitle>
-      {isMobile && empty && !subscriptionsLoading ? (
-        <div className="AppSelector__empty__message">
-          <Text variant="small-500">You don't have any subscriptions yet</Text>
-        </div>
-      ) : null}
-
       <div className="AppSelector__lists">
         <div className="AppSelector__wrapper">
-          {!isMobile && (
-            <>
-              <Label color="main">Discover</Label>
-              <ul className="AppSelector__list">
-                <NavLink to={`/notifications/new-app`} end className="AppSelector__link-appsItem">
-                  <div className="AppSelector__notifications">
-                    <div className="AppSelector__notifications-apps">
-                      <img
-                        className="AppSelector__link-apps"
-                        src={AllAppsIcon}
-                        alt="Discover apps logo"
-                        loading="lazy"
-                      />
-                      <Text variant="small-500">Discover apps</Text>
-                    </div>
-                  </div>
-                </NavLink>
-              </ul>
-            </>
-          )}
+          <Label color="main">Discover</Label>
+          <ul className="AppSelector__list">
+            <NavLink to={`/notifications/new-app`} end className="AppSelector__link-appsItem">
+              <div className="AppSelector__notifications">
+                <div className="AppSelector__notifications-apps">
+                  <img
+                    className="AppSelector__link-apps"
+                    src={AllAppsIcon}
+                    alt="Discover apps logo"
+                    loading="lazy"
+                  />
+                  <Text variant="small-500">Discover apps</Text>
+                </div>
+              </div>
+            </NavLink>
+          </ul>
         </div>
         <div className="AppSelector__wrapper">
           {!empty || subscriptionsLoading ? <Label color="main">Subscribed</Label> : null}

@@ -45,7 +45,6 @@
     gap: 1.5rem;
 
     @media only screen and (max-width: 700px) {
-      margin-top: 0px;
       gap: 1.25rem;
       padding-bottom: 10%;
     }
@@ -59,9 +58,9 @@
     .Label {
       padding: 0px 0.75rem;
 
-      @media only screen and (max-width: 700px) {
-        padding: 0 1.25rem;
-      }
+      // @media only screen and (max-width: 700px) {
+      //   padding: 0 1.25rem;
+      // }
     }
   }
 
@@ -171,6 +170,11 @@
       position: relative;
       transition: background-color 0.1s linear;
       will-change: background-color;
+
+      @media only screen and (max-width: 700px) {
+        border-radius: 0px;
+        padding: 1rem 1.25rem;
+      }
 
       &:not(.NavLink-active):hover {
         @media (hover: hover) {
