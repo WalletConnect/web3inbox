@@ -39,22 +39,21 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
   )
 
   const unshiftNewMessage = useCallback(async () => {
-      if (!(notifyClientProxy && topic)) {
-        return
-      }
+    if (!(notifyClientProxy && topic)) {
+      return
+    }
 
-      const newNotifications = await notifyClientProxy.getNotificationHistory({
-        topic,
-        limit: 5,
-	startingAfter: undefined
-      })
+    const newNotifications = await notifyClientProxy.getNotificationHistory({
+      topic,
+      limit: 5,
+      startingAfter: undefined
+    })
 
-      dispatch({
-        type: 'UNSHIFT_NEW_NOTIFICATIONS',
-        notifications: newNotifications.notifications.slice(0,1),
-        topic
-      })
-
+    dispatch({
+      type: 'UNSHIFT_NEW_NOTIFICATIONS',
+      notifications: newNotifications.notifications.slice(0, 1),
+      topic
+    })
   }, [notifyClientProxy, dispatch, topic])
 
   const topicState = topic ? state?.[topic] : undefined

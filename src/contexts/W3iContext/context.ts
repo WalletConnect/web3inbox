@@ -34,7 +34,7 @@ interface W3iContextState {
   dappName: string
   dappIcon: string
   dappNotificationDescription: string
-  watchSubscriptionsComplete: boolean,
+  watchSubscriptionsComplete: boolean
   // This is only kept to allow old components to build
   chatClientProxy: W3iChatClient | null
 }

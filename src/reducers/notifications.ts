@@ -10,16 +10,18 @@ export interface NotificationsState {
   [topic: string]: TopicNotificationsState
 }
 
-export type NotificationsActions = {
-  type: 'FETCH_NOTIFICATIONS'
-  notifications: NotifyClientTypes.NotifyMessage[]
-  topic: string
-  hasMore: boolean
-} | {
-  type: "UNSHIFT_NEW_NOTIFICATIONS",
-  notifications: NotifyClientTypes.NotifyMessage[]
-  topic: string
-}
+export type NotificationsActions =
+  | {
+      type: 'FETCH_NOTIFICATIONS'
+      notifications: NotifyClientTypes.NotifyMessage[]
+      topic: string
+      hasMore: boolean
+    }
+  | {
+      type: 'UNSHIFT_NEW_NOTIFICATIONS'
+      notifications: NotifyClientTypes.NotifyMessage[]
+      topic: string
+    }
 
 // Opted for a reducer since the state changes are complex enough to warrant
 // changes to a set and an array. Having all that inside the hooks would
@@ -42,7 +44,6 @@ export const notificationsReducer = (
   }
 
   switch (action.type) {
-
     case 'UNSHIFT_NEW_NOTIFICATIONS':
       const unshiftedNotifications = filteredNotifications.concat(fullNotifications)
 
@@ -55,7 +56,7 @@ export const notificationsReducer = (
           hasMore: topicState?.hasMore || false
         }
       }
-  
+
     case 'FETCH_NOTIFICATIONS':
       const concatenatedNotification = fullNotifications.concat(filteredNotifications)
 

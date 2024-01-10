@@ -10,7 +10,7 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     isVerified: false,
     isFeatured: false,
     icon: '/snapshot.png'
-  },  
+  },
   {
     id: 'galxe',
     name: 'Galxe',

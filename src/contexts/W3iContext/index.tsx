@@ -53,7 +53,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         sentInvites: [],
         threads: [],
         invites: [],
-	watchSubscriptionsComplete
+        watchSubscriptionsComplete
       }}
     >
       {children}
