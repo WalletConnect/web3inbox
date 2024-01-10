@@ -15,6 +15,10 @@ export type NotificationsActions = {
   notifications: NotifyClientTypes.NotifyMessage[]
   topic: string
   hasMore: boolean
+} | {
+  type: "UNSHIFT_NEW_NOTIFICATIONS",
+  notifications: NotifyClientTypes.NotifyMessage[]
+  topic: string
 }
 
 // Opted for a reducer since the state changes are complex enough to warrant
@@ -26,19 +30,35 @@ export const notificationsReducer = (
 ): NotificationsState => {
   const topicState = state[action.topic] as TopicNotificationsState | undefined
 
+  const ids = topicState?.existingIds || new Set<string>()
+  const filteredNotifications = action.notifications.filter(val => !ids.has(val.id))
+  const notificationIds = action.notifications.map(notification => notification.id)
+
+  const fullNotifications = topicState?.fullNotifications || []
+  const newFullIdsSet = new Set(topicState?.existingIds || [])
+
+  for (const val of notificationIds) {
+    newFullIdsSet.add(val)
+  }
+
   switch (action.type) {
-    case 'FETCH_NOTIFICATIONS':
-      const ids = topicState?.existingIds || new Set<string>()
-      const filteredNotifications = action.notifications.filter(val => !ids.has(val.id))
-      const notificationIds = action.notifications.map(notification => notification.id)
 
-      const fullNotifications = topicState?.fullNotifications || []
-      const newFullIdsSet = new Set(topicState?.existingIds || [])
+    case 'UNSHIFT_NEW_NOTIFICATIONS':
+      const unshiftedNotifications = filteredNotifications.concat(fullNotifications)
+      console.log(">> dispatched", action.notifications)
 
-      for (const val of notificationIds) {
-        newFullIdsSet.add(val)
+      return {
+        ...state,
+        [action.topic]: {
+          ...topicState,
+          existingIds: newFullIdsSet,
+          fullNotifications: unshiftedNotifications,
+          hasMore: topicState?.hasMore || false
+        }
       }
-
+  
+    
+    case 'FETCH_NOTIFICATIONS':
       const concatenatedNotification = fullNotifications.concat(filteredNotifications)
 
       return {
