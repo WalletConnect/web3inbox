@@ -18,7 +18,7 @@
     "@sentry/react": "^7.64.0",
     "@walletconnect/core": "2.11.0",
     "@walletconnect/identity-keys": "^1.0.1",
-    "@walletconnect/notify-client": "^0.16.1",
+    "@walletconnect/notify-client": "^0.16.2",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
     "@web3modal/wagmi": "3.5.4",
     "classnames": "^2.3.2",
