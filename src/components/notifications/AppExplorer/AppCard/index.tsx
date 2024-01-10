@@ -72,7 +72,7 @@ const AppCard: React.FC<AppCardProps> = ({
         showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
-    [userPubkey, name, description, logo, url, setSubscribing, subscribed]
+    [userPubkey, name, description, logo, url, setSubscribing, subscribed, notifyClientProxy]
   )
 
   const handleNavigateApp = () => {
