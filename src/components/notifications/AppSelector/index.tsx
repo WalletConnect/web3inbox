@@ -39,6 +39,7 @@ const AppSelector: React.FC = () => {
   const { projects } = useNotifyProjects()
 
   const empty = !loading && filteredApps.length === 0
+  const subscriptionsLoading = loading || !subscriptionsFinishedLoading
 
   const fetchApps = async (searchQuery: string) => {
     const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
@@ -90,49 +91,40 @@ const AppSelector: React.FC = () => {
   return (
     <div className="AppSelector">
       {isMobile && pathname.endsWith('/notifications') ? (
-        <>
-          <MobileHeader title="Notifications" />
-        </>
+        <MobileHeader title="Notifications" />
       ) : (
-        <>
-          <Input
-            onChange={({ target }) => {
-              setSearch(target.value)
-            }}
-            placeholder="Search"
-            icon={SearchIcon}
-          />
-          <TargetTitle className="AppSelector__target-title" to="/notifications/new-app">
-            <Text variant="large-700">Inbox</Text>
-          </TargetTitle>
-        </>
+        <Input
+          onChange={({ target }) => {
+            setSearch(target.value)
+          }}
+          placeholder="Search"
+          icon={SearchIcon}
+        />
       )}
-
+      <TargetTitle className="AppSelector__target-title" to="/notifications/new-app">
+        <Text variant="large-700">Inbox</Text>
+      </TargetTitle>
       <div className="AppSelector__lists">
         <div className="AppSelector__wrapper">
-          {!isMobile && (
-            <>
-              <Label color="main">Discover</Label>
-              <ul className="AppSelector__list">
-                <NavLink to={`/notifications/new-app`} end className="AppSelector__link-appsItem">
-                  <div className="AppSelector__notifications">
-                    <div className="AppSelector__notifications-apps">
-                      <img
-                        className="AppSelector__link-apps"
-                        src={AllAppsIcon}
-                        alt="Discover apps logo"
-                        loading="lazy"
-                      />
-                      <Text variant="small-500">Discover apps</Text>
-                    </div>
-                  </div>
-                </NavLink>
-              </ul>
-            </>
-          )}
+          <Label color="main">Discover</Label>
+          <ul className="AppSelector__list">
+            <NavLink to={`/notifications/new-app`} end className="AppSelector__link-appsItem">
+              <div className="AppSelector__notifications">
+                <div className="AppSelector__notifications-apps">
+                  <img
+                    className="AppSelector__link-apps"
+                    src={AllAppsIcon}
+                    alt="Discover apps logo"
+                    loading="lazy"
+                  />
+                  <Text variant="small-500">Discover apps</Text>
+                </div>
+              </div>
+            </NavLink>
+          </ul>
         </div>
         <div className="AppSelector__wrapper">
-          {!empty ? <Label color="main">Subscribed</Label> : null}
+          {!empty || subscriptionsLoading ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
             {!loading &&
               filteredApps?.map(app => {
@@ -171,7 +163,7 @@ const AppSelector: React.FC = () => {
                   </AnimatePresence>
                 )
               })}
-            {loading || !subscriptionsFinishedLoading ? SkeletonItems : null}
+            {subscriptionsLoading ? SkeletonItems : null}
           </ul>
         </div>
       </div>
