@@ -24,7 +24,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
 
   const [notifyClient, setNotifyClient] = useState<W3iNotifyClient | null>(null)
 
-  const [watchSubscriptionsComplete, setWatchSubscriptionsComplete] = useState(false);
+  const [watchSubscriptionsComplete, setWatchSubscriptionsComplete] = useState(false)
 
   useEffect(() => {
     if (proxyReady) {
@@ -49,18 +49,16 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
   // it takes time for handshake (watch subscriptions) to complete
   // load in progress state using interval until it is
   useEffect(() => {
+    if (watchSubscriptionsComplete) {
+      return noop
+    }
     // Account for sync init
     const intervalId = setInterval(() => {
-      if(notifyClient?.isInitialSubscriptionLoadComplete()) {
-        setWatchSubscriptionsComplete(true);
-	clearInterval(intervalId);
-        return;
-      }
       refreshNotifyState()
     }, 500)
 
     return () => clearInterval(intervalId)
-  }, [refreshNotifyState, notifyClient, setWatchSubscriptionsComplete])
+  }, [refreshNotifyState, watchSubscriptionsComplete])
 
   const handleRegistration = useCallback(
     async (key: string) => {
@@ -132,7 +130,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     const notifySubsChanged = notifyClient.observe('notify_subscriptions_changed', {
       next: () => {
         refreshNotifyState()
-	setWatchSubscriptionsComplete(true)
+        setWatchSubscriptionsComplete(true)
       }
     })
 
@@ -151,5 +149,12 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     }
   }, [notifyClient, refreshNotifyState, setWatchSubscriptionsComplete])
 
-  return { activeSubscriptions, registeredKey, registerMessage, notifyClient, refreshNotifyState, watchSubscriptionsComplete }
+  return {
+    activeSubscriptions,
+    registeredKey,
+    registerMessage,
+    notifyClient,
+    refreshNotifyState,
+    watchSubscriptionsComplete
+  }
 }
