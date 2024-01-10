@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { WagmiConfig } from 'wagmi'
 import { arbitrum, avalanche, bsc, mainnet, polygon } from 'wagmi/chains'
 
+import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from '@/constants/web3Modal'
 import SettingsContextProvider from '@/contexts/SettingsContext'
 import W3iContextProvider from '@/contexts/W3iContext'
 import ConfiguredRoutes from '@/routes'
@@ -36,7 +37,9 @@ createWeb3Modal({
   chains,
   projectId,
   themeMode: 'light',
-  themeVariables: { '--w3m-z-index': 9999 }
+  themeVariables: { '--w3m-z-index': 9999 },
+  termsConditionsUrl: TERMS_OF_SERVICE_URL,
+  privacyPolicyUrl: PRIVACY_POLICY_URL
 })
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
