@@ -29,6 +29,8 @@ export const Modals = () => {
 
   const notificationsEnabled = useNotificationPermissionState()
 
+  console.log({perms: window.Notification.permission})
+
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
 
   const shouldShowNotificationModal = useMemo(

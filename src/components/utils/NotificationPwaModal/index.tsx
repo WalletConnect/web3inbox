@@ -10,6 +10,7 @@ import { requireNotifyPermission } from '@/utils/notifications'
 import { pwaModalService } from '@/utils/store'
 
 import './NotificationPwaModal.scss'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
 
 export const NotificationPwaModal: React.FC = () => {
   const { notifyClientProxy } = useContext(W3iContext)
@@ -31,6 +32,15 @@ export const NotificationPwaModal: React.FC = () => {
   return (
     <Modal onCloseModal={pwaModalService.closeModal}>
       <div className="NotificationPwaModal">
+        <div className="NotificationPwaModal__header">
+          <Button
+            className="ContactsModal__close"
+            customType="action-icon"
+            onClick={pwaModalService.closeModal}
+          >
+            <CrossIcon />
+          </Button>
+        </div>
         <div className="NotificationPwaModal__background">
           <img src={BackgroundImage} />
         </div>
