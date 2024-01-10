@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
-
 import { NotifyClient } from '@walletconnect/notify-client'
+
+import { localStorageKeys } from '@/constants/localStorage'
+import { notificationPwaModalService } from '@/utils/store'
 
 import { getFirebaseToken } from './firebase'
 import { getDbEchoRegistrations, getDbSymkeyStore } from './idb'
@@ -59,6 +60,16 @@ export const setupSubscriptionsSymkeys = async (topicSymkeyEntries: [string, str
   for (const [topic, symkey] of topicSymkeyEntries) {
     setupSubscriptionSymkey(topic, symkey)
   }
+}
+
+export const closeNotificationModal = () => {
+  localStorage.setItem(localStorageKeys.notificationModalClosed, 'true')
+  notificationPwaModalService.closeModal()
+}
+
+export const checkIfNotificationModalClosed = () => {
+  const storageValue = localStorage.getItem(localStorageKeys.notificationModalClosed)
+  return storageValue === 'true'
 }
 
 export const notificationsEnabledInBrowser = () => {

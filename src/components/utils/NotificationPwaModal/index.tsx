@@ -2,18 +2,19 @@ import React, { Fragment, useContext } from 'react'
 
 import BackgroundImage from '@/assets/IntroBackground.png'
 import Button from '@/components/general/Button'
-import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
 import { Modal } from '@/components/general/Modal/Modal'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
-import { requireNotifyPermission } from '@/utils/notifications'
+import { closeNotificationModal, requireNotifyPermission } from '@/utils/notifications'
 import { pwaModalService } from '@/utils/store'
 
 import './NotificationPwaModal.scss'
-import CrossIcon from '@/components/general/Icon/CrossIcon'
 
 export const NotificationPwaModal: React.FC = () => {
   const { notifyClientProxy } = useContext(W3iContext)
+
+  const explicitlyDeniedPermissionForNotifications = window.Notification?.permission === 'denied'
 
   const handleEnableNotifications = async () => {
     const notificationPermissionGranted = await requireNotifyPermission()
@@ -27,16 +28,14 @@ export const NotificationPwaModal: React.FC = () => {
     }
   }
 
-  const explicitlyDeniedPermissionForNotifications = window.Notification?.permission === 'denied'
-
   return (
     <Modal onCloseModal={pwaModalService.closeModal}>
       <div className="NotificationPwaModal">
         <div className="NotificationPwaModal__header">
           <Button
-            className="ContactsModal__close"
+            className="NotificationPwaModal__close-button"
             customType="action-icon"
-            onClick={pwaModalService.closeModal}
+            onClick={closeNotificationModal}
           >
             <CrossIcon />
           </Button>

@@ -11,8 +11,11 @@ import W3iContext from '@/contexts/W3iContext/context'
 import { SignatureModal } from '@/pages/Login/SignatureModal'
 import { useModals } from '@/utils/hooks'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
-import { notificationsEnabledInBrowser } from '@/utils/notifications'
-import { isMobileButNotInstalledOnHomescreen } from '@/utils/pwa'
+import {
+  checkIfNotificationModalClosed,
+  notificationsEnabledInBrowser
+} from '@/utils/notifications'
+import { isMobileButNotInstalledOnHomeScreen } from '@/utils/pwa'
 import { notificationPwaModalService, signatureModalService } from '@/utils/store'
 import { isMobile } from '@/utils/ui'
 
@@ -29,20 +32,17 @@ export const Modals = () => {
 
   const notificationsEnabled = useNotificationPermissionState()
 
-  console.log({perms: window.Notification.permission})
-
+  const notificationModalClosed = checkIfNotificationModalClosed()
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
 
-  const shouldShowNotificationModal = useMemo(
-    () =>
-      notificationsEnabledInBrowser() &&
-      !explicitlyDeniedOnDesktop &&
-      !isMobileButNotInstalledOnHomescreen() &&
-      !notificationsEnabled &&
-      Boolean(notifyRegisteredKey) &&
-      !isSignatureModalOpen,
-    [explicitlyDeniedOnDesktop, notificationsEnabled, notifyRegisteredKey, isSignatureModalOpen]
-  )
+  const shouldShowNotificationModal =
+    notificationsEnabledInBrowser() &&
+    !explicitlyDeniedOnDesktop &&
+    !isMobileButNotInstalledOnHomeScreen() &&
+    !notificationsEnabled &&
+    Boolean(notifyRegisteredKey) &&
+    !isSignatureModalOpen &&
+    !notificationModalClosed
 
   useEffect(() => {
     const notifySignatureRequired = Boolean(notifyRegisterMessage) && !notifyRegisteredKey
@@ -66,20 +66,18 @@ export const Modals = () => {
   }, [shouldShowNotificationModal])
 
   return (
-    <>
-      <AnimatePresence mode="popLayout">
-        {isUnsubscribeModalOpen && <UnsubscribeModal />}
+    <AnimatePresence mode="popLayout">
+      {isUnsubscribeModalOpen && <UnsubscribeModal />}
 
-        {isPreferencesModalOpen && <PreferencesModal />}
+      {isPreferencesModalOpen && <PreferencesModal />}
 
-        {isSignatureModalOpen && (
-          <SignatureModal message={notifyRegisterMessage ?? ''} sender={'notify'} />
-        )}
+      {isSignatureModalOpen && (
+        <SignatureModal message={notifyRegisterMessage ?? ''} sender={'notify'} />
+      )}
 
-        {isMobileButNotInstalledOnHomescreen() && <PwaModal />}
+      {isMobileButNotInstalledOnHomeScreen() && <PwaModal />}
 
-        {isNotificationPwaModalOpen && <NotificationPwaModal />}
-      </AnimatePresence>
-    </>
+      {isNotificationPwaModalOpen && <NotificationPwaModal />}
+    </AnimatePresence>
   )
 }

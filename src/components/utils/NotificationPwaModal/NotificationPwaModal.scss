@@ -7,6 +7,12 @@
   gap: 2em;
   position: relative;
 
+  &__close-button {
+    svg {
+      color: var(--fg-color-3);
+    }
+  }
+
   &__header {
     display: flex;
     justify-content: flex-end;
