@@ -66,7 +66,7 @@ const AppNotifications = () => {
       <AnimatePresence>
         <motion.div
           ref={ref}
-          className="AppNotifications"
+          className="AppNotifications PageContainer"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

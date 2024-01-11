@@ -38,7 +38,7 @@ const AppExplorer = () => {
   return (
     <AnimatePresence>
       <motion.div
-        className="AppExplorer"
+        className="AppExplorer PageContainer"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

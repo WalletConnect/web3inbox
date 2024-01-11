@@ -60,3 +60,18 @@ video {
   border-radius: 10px;
   background: var(--fg-color-2);
 }
+
+.PageContainer {
+  position: relative;
+  padding-bottom: 0;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+@media only screen and (max-width: 700px) {
+  .PageContainer {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+  }
+}

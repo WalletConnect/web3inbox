@@ -13,10 +13,14 @@
   z-index: 0;
   position: relative;
 
+  height: calc(100svh - 60px - env(safe-area-inset-bottom));
+  overflow: hidden;
+
   .TargetSelector {
     grid-area: target-selector;
     display: var(--targetselector-display);
-    max-height: 100vh;
+    height: 100%;
+    overflow-x: hidden;
     overflow-y: auto;
   }
 
@@ -38,11 +42,14 @@
     grid-area: main;
     max-width: 100vw;
     height: auto;
-    min-height: 100svh;
-    overflow-x: hidden;
+    overflow-x: auto;
 
     @media only screen and (max-width: 700px) {
-      padding-bottom: calc(env(safe-area-inset-bottom) + 48px + 2rem);
+      // padding-bottom: calc(env(safe-area-inset-bottom) + 48px + 2rem);
+
+      // update
+      overflow: hidden;
+      width: 100vw;
     }
 
     display: var(--main-display);
@@ -76,6 +83,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
+    height: 100svh;
 
     .Sidebar {
       border-right: solid 1px var(--bg-color-2);
@@ -88,10 +96,13 @@
     }
 
     .TargetSelector {
-      max-width: 320px;
+      width: 320px;
       padding: 1rem 0.75rem;
       border-right: solid 1px var(--bg-color-2);
       position: relative;
+      height: 100svh;
+      overflow-x: hidden;
+      overflow-y: auto;
 
       .Input {
         padding: 0px 0.75rem;
