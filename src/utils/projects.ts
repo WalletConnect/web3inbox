@@ -11,15 +11,15 @@ export async function fetchFeaturedProjects<T>() {
 
   try {
     const discoverProjectsData = await fetch(explorerUrlFeatured)
-      .then(res => res.json())
-      .catch(err => console.log({ featuredProjects: err }))
+      .then(async res => res.json())
+      .catch(err => console.error({ featuredProjects: err }))
     const discoverProjects = Object.values(discoverProjectsData.projects)
 
     return {
       data: discoverProjects as T
     }
   } catch (error) {
-    throw new Error('Error fetching featured projects')
+    throw new Error(`Error fetching featured projects: ${error}`)
   }
 }
 
@@ -35,13 +35,13 @@ export async function fetchDomainProjects<T>(domain: string) {
   explorerUrlAppDomain.searchParams.set('appDomain', domain)
 
   try {
-    const domainProjectsData = await fetch(explorerUrlAppDomain).then(res => res.json())
+    const domainProjectsData = await fetch(explorerUrlAppDomain).then(async res => res.json())
     domainProject = domainProjectsData.data as T
 
     return {
       data: domainProject
     }
   } catch (error) {
-    throw new Error('Error fetching domain project')
+    throw new Error(`Error fetching projects for domain: ${error}`)
   }
 }
