@@ -43,7 +43,8 @@ const WidgetSubscribe: React.FC = () => {
         appDomain: new URL(dappOrigin).host
       })
     } catch (error) {
-      showErrorMessageToast('Failed to subscribe')
+      console.error(error)
+      showErrorMessageToast(`Failed to subscribe to ${dappOrigin}`)
     } finally {
       setIsSubscribing(false)
     }
