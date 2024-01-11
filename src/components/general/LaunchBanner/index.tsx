@@ -10,7 +10,9 @@ import './LaunchBanner.scss'
 
 const LAUNCH_BANNER_URL = 'https://walletconnect.com/blog/introducing-web3inbox-app'
 
-const isBannerClosed = localStorage.getItem(localStorageKeys.launchBannerClosed) === 'true'
+const isBannerClosed = localStorage
+  ? localStorage.getItem(localStorageKeys.launchBannerClosed) === 'true'
+  : false
 
 export default function LaunchBanner() {
   const [closed, setClosed] = useState(isBannerClosed)
