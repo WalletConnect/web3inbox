@@ -23,12 +23,12 @@ const AppExplorer = () => {
   const allProjects = projects.concat(COMING_SOON_PROJECTS)
 
   const checkSubscriptionStatusLoading = (url: string) => {
-    const existInSubscriptions = activeSubscriptions.find(subscription => {
-      const projectURL = new URL(url)
-      return projectURL.hostname === subscription.metadata.appDomain
-    })
-
     if (!subscriptionsFinishedLoading) {
+      const existInSubscriptions = activeSubscriptions.find(subscription => {
+        const projectURL = new URL(url)
+        return projectURL.hostname === subscription.metadata.appDomain
+      })
+
       return existInSubscriptions ? false : true
     }
 
