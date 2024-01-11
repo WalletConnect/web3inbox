@@ -22,10 +22,11 @@ const AppExplorer = () => {
 
   const allProjects = projects.concat(COMING_SOON_PROJECTS)
 
-  const checkSubscriptionStatusLoading = (projectName: string) => {
-    const existInSubscriptions = activeSubscriptions.find(
-      subscription => subscription.metadata.name === projectName
-    )
+  const checkSubscriptionStatusLoading = (url: string) => {
+    const existInSubscriptions = activeSubscriptions.find(subscription => {
+      const projectURL = new URL(url)
+      return projectURL.hostname === subscription.metadata.appDomain
+    })
 
     if (!subscriptionsFinishedLoading) {
       return existInSubscriptions ? false : true
@@ -80,7 +81,7 @@ const AppExplorer = () => {
                     url={app.url}
                     isVerified={app.isVerified}
                     isComingSoon={app.isComingSoon}
-                    loadingSubscription={checkSubscriptionStatusLoading(app.name)}
+                    loadingSubscription={checkSubscriptionStatusLoading(app.url)}
                   />
                 ))}
             </div>
@@ -96,7 +97,7 @@ const AppExplorer = () => {
                     url={app.url}
                     isVerified={app.isVerified}
                     isComingSoon={app.isComingSoon}
-                    loadingSubscription={checkSubscriptionStatusLoading(app.name)}
+                    loadingSubscription={checkSubscriptionStatusLoading(app.url)}
                   />
                 ))}
             </div>

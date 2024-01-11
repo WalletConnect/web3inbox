@@ -46,7 +46,11 @@ const AppCard: React.FC<AppCardProps> = ({
   }, [userPubkey])
 
   const subscribed =
-    userPubkey && activeSubscriptions.some(element => element.metadata.name === name)
+    userPubkey &&
+    activeSubscriptions.some(element => {
+      const projectURL = new URL(url)
+      return projectURL.hostname === element.metadata.appDomain
+    })
   const logoURL = logo || '/fallback.svg'
 
   const handleSubscription = useCallback(
