@@ -2,8 +2,8 @@ import { useLocation } from 'react-router-dom'
 
 import AppearanceIcon from '@/components/general/Icon/Appearance'
 import ChevronRightIcon from '@/components/general/Icon/ChevronRightIcon'
+import CircleQuestionIcon from '@/components/general/Icon/CircleQuestionIcon'
 import NotificationIcon from '@/components/general/Icon/Notification'
-import PrivacyIcon from '@/components/general/Icon/Privacy'
 import NavLink from '@/components/general/NavLink'
 import Text from '@/components/general/Text'
 import MobileHeader from '@/components/layout/MobileHeader'
@@ -59,23 +59,22 @@ const SettingsSelector: React.FC = () => {
                     </div>
                   </div>
                 </NavLink>
-                {/* <NavLink to={`/settings/privacy`} end className="SettingsSelector__link">
+                <NavLink to={`/settings/support`} end className="SettingsSelector__link">
                   <div className="SettingsSelector__link__wrapper">
-                    <PrivacyIcon />
+                    <CircleQuestionIcon />
                     <div className="SettingsSelector__link__icon__wrapper">
                       <div className="SettingsSelector__link__title__wrapper">
                         <Text className="SettingsSelector__link__title" variant="small-500">
-                          Privacy
+                          Support
                         </Text>
                         <Text className="SettingsSelector__link__description" variant="small-500">
-                          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-                          eirmod tempor invidunt.
+                          Contact to our support team.
                         </Text>
                       </div>
                       <ChevronRightIcon />
                     </div>
                   </div>
-                </NavLink> */}
+                </NavLink>
               </ul>
             )}
           </>
@@ -98,14 +97,14 @@ const SettingsSelector: React.FC = () => {
                   </Text>
                 </div>
               </NavLink>
-              {/* <NavLink to={`/settings/privacy`} end className="SettingsSelector__link">
+              <NavLink to="/settings/support" end className="SettingsSelector__link">
                 <div className="SettingsSelector__link__wrapper">
-                  <PrivacyIcon />
+                  <CircleQuestionIcon />
                   <Text className="SettingsSelector__link__title" variant="small-500">
-                    Privacy
+                    Support
                   </Text>
                 </div>
-              </NavLink> */}
+              </NavLink>
             </ul>
           </>
         )}
