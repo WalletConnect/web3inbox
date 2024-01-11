@@ -41,7 +41,7 @@ const useNotifyProjects = () => {
             url: item.dapp_url,
             icon: item.image_url?.md ?? '/fallback.svg',
             colors: item.metadata?.colors,
-            isVerified: item.is_verified || item.isVerified ? true : false,
+            isVerified: Boolean(item.is_verified || item.isVerified),
             isFeatured: item.is_featured,
             isComingSoon: item.is_coming_soon
           }))
@@ -49,11 +49,12 @@ const useNotifyProjects = () => {
 
         notifyApps.concat(COMING_SOON_PROJECTS)
 
-        setLoading(false)
         setProjects(notifyApps)
       } catch (error) {
-        setLoading(false)
+        console.error(error)
         setProjects([])
+      } finally {
+        setLoading(false)
       }
     }
 

@@ -46,8 +46,10 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     })
   }, [notifyClient, userPubkey, proxyReady])
 
-  // it takes time for handshake (watch subscriptions) to complete
-  // load in progress state using interval until it is
+  /*
+   * It takes time for handshake (watch subscriptions) to complete
+   * load in progress state using interval until it is
+   */
   useEffect(() => {
     if(watchSubscriptionsComplete) {
       return noop;
@@ -78,6 +80,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
           setRegistered(identityKey)
           refreshNotifyState()
         } catch (error) {
+          console.error(error)
           setRegisterMessage(null)
         }
       }

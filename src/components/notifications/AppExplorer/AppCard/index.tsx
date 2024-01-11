@@ -49,6 +49,7 @@ const AppCard: React.FC<AppCardProps> = ({
     userPubkey &&
     activeSubscriptions.some(element => {
       const projectURL = new URL(url)
+
       return projectURL.hostname === element.metadata.appDomain
     })
   const logoURL = logo || '/fallback.svg'
@@ -74,6 +75,7 @@ const AppCard: React.FC<AppCardProps> = ({
           appDomain: new URL(url).host
         })
       } catch (error) {
+        console.error(error)
         setSubscribing(false)
         showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
