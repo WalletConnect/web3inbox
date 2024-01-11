@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { WagmiConfig } from 'wagmi'
 import { arbitrum, avalanche, bsc, mainnet, polygon } from 'wagmi/chains'
 
+import LaunchBanner from '@/components/general/LaunchBanner'
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from '@/constants/web3Modal'
 import SettingsContextProvider from '@/contexts/SettingsContext'
 import W3iContextProvider from '@/contexts/W3iContext'
@@ -49,6 +50,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <SettingsContextProvider>
         <BrowserRouter>
           <W3iContextProvider>
+            <LaunchBanner />
             <ConfiguredRoutes />
             <Modals />
           </W3iContextProvider>

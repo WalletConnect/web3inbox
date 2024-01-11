@@ -1,0 +1,29 @@
+.Banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #00a39e;
+  width: 100%;
+  padding-right: calc(2rem + 1.5rem);
+  position: relative;
+
+  &__close-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    color: rgba(255, 255, 255, 0.75);
+
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+.Banner span {
+  text-align: center;
+  color: white;
+}

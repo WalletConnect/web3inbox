@@ -1,0 +1,17 @@
+.LaunchBanner {
+  &__learn-more {
+    display: inline-block;
+
+    svg {
+      color: white;
+      display: inline-block;
+      margin-left: 0.25rem;
+      margin-top: 0.0125rem;
+      transition: margin-left 0.3s ease-in-out;
+    }
+
+    &:hover svg {
+      margin-left: 0.5rem;
+    }
+  }
+}

@@ -1,8 +1,12 @@
 import React from 'react'
 
-const CrossIcon: React.FC = () => {
+type CrossIconProps = {
+  className?: string
+}
+
+const CrossIcon: React.FC<CrossIconProps> = ({ className }) => {
   return (
-    <svg fill="none" viewBox="0 0 16 16">
+    <svg fill="none" viewBox="0 0 16 16" className={className}>
       <path
         fill="currentColor"
         fillRule="evenodd"
