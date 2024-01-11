@@ -5,14 +5,13 @@ import { Link } from 'react-router-dom'
 import Banner from '@/components/general/Banner'
 import ChevronRightIcon from '@/components/general/Icon/ChevronRightIcon'
 import { localStorageKeys } from '@/constants/localStorage'
+import { LocalStorage } from '@/utils/localStorage'
 
 import './LaunchBanner.scss'
 
 const LAUNCH_BANNER_URL = 'https://walletconnect.com/blog/introducing-web3inbox-app'
 
-const isBannerClosed = localStorage
-  ? localStorage.getItem(localStorageKeys.launchBannerClosed) === 'true'
-  : false
+const isBannerClosed = LocalStorage.get(localStorageKeys.launchBannerClosed) === 'true'
 
 export default function LaunchBanner() {
   const [closed, setClosed] = useState(isBannerClosed)
