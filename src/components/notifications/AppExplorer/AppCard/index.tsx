@@ -16,6 +16,7 @@ import './AppCard.scss'
 interface AppCardProps {
   name: string
   description: string
+  loadingSubscription: boolean
   logo: string
   url: string
   isVerified?: boolean
@@ -26,6 +27,7 @@ const AppCard: React.FC<AppCardProps> = ({
   description,
   isComingSoon,
   isVerified,
+  loadingSubscription,
   logo,
   name,
   url
@@ -116,6 +118,7 @@ const AppCard: React.FC<AppCardProps> = ({
             subscribing={subscribing}
             onNavigateToApp={handleNavigateApp}
             onSubscribe={handleSubscription}
+            loading={loadingSubscription}
           />
         )}
       </div>
@@ -136,6 +139,7 @@ const AppCard: React.FC<AppCardProps> = ({
             subscribing={subscribing}
             onNavigateToApp={handleNavigateApp}
             onSubscribe={handleSubscription}
+            loading={loadingSubscription}
           />
         )}
       </div>
