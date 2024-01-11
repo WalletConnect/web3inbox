@@ -45,8 +45,8 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
   {
     id: 'chainspot',
     name: 'Chainspot',
-    description: 'The largest cross-chain solutions aggregator with useful tools and analytics.',
-    url: 'https://chainspot.io/',
+    description: 'Bridge&swap across 27 chains at the best rates and research data about 100+ Web3 products.',
+    url: 'https://app.chainspot.io/',
     isComingSoon: true,
     isVerified: false,
     isFeatured: false,
