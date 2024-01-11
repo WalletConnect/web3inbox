@@ -7,6 +7,7 @@ import IntroApps from '@/components/general/Icon/IntroApps'
 import IntroContent from '@/components/general/IntroContent'
 import MobileHeader from '@/components/layout/MobileHeader'
 import { COMING_SOON_PROJECTS } from '@/constants/projects'
+import W3iContext from '@/contexts/W3iContext/context'
 import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
 
 import AppCard from './AppCard'
@@ -15,9 +16,24 @@ import AppCardSkeleton from './AppCardSkeleton'
 import './AppExplorer.scss'
 
 const AppExplorer = () => {
+  const { activeSubscriptions, watchSubscriptionsComplete: subscriptionsFinishedLoading } =
+    useContext(W3iContext)
   const { projects, loading } = useNotifyProjects()
 
   const allProjects = projects.concat(COMING_SOON_PROJECTS)
+
+  const checkSubscriptionStatusLoading = (url: string) => {
+    if (!subscriptionsFinishedLoading) {
+      const existInSubscriptions = activeSubscriptions.find(subscription => {
+        const projectURL = new URL(url)
+        return projectURL.hostname === subscription.metadata.appDomain
+      })
+
+      return existInSubscriptions ? false : true
+    }
+
+    return false
+  }
 
   return (
     <AnimatePresence>
@@ -65,6 +81,7 @@ const AppExplorer = () => {
                     url={app.url}
                     isVerified={app.isVerified}
                     isComingSoon={app.isComingSoon}
+                    loadingSubscription={checkSubscriptionStatusLoading(app.url)}
                   />
                 ))}
             </div>
@@ -80,6 +97,7 @@ const AppExplorer = () => {
                     url={app.url}
                     isVerified={app.isVerified}
                     isComingSoon={app.isComingSoon}
+                    loadingSubscription={checkSubscriptionStatusLoading(app.url)}
                   />
                 ))}
             </div>

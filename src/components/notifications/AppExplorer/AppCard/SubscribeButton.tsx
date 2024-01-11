@@ -9,6 +9,7 @@ import './AppCard.scss'
 
 interface SubscribeButtonProps {
   className?: string
+  loading?: boolean
   subscribing: boolean
   subscribed: boolean
   onNavigateToApp: () => void
@@ -17,16 +18,21 @@ interface SubscribeButtonProps {
 
 const SubscribeButton: React.FC<SubscribeButtonProps> = ({
   className,
+  loading,
   subscribing,
   subscribed,
   onNavigateToApp,
   onSubscribe
 }) => {
-  if (subscribed) {
+  if (subscribed || loading) {
     return (
-      <button onClick={onNavigateToApp} className={cn('AppCard__body__subscribed', className)}>
-        Subscribed
-        <ChevronRightIcon />
+      <button
+        disabled={loading}
+        onClick={onNavigateToApp}
+        className={cn('AppCard__body__subscribed', className)}
+      >
+        {loading ? null : 'Subscribed'}
+        {loading ? <Spinner /> : <ChevronRightIcon />}
       </button>
     )
   }
@@ -37,7 +43,8 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({
       className={cn('AppCard__body__subscribe', className)}
       onClick={onSubscribe}
     >
-      {subscribing ? <Spinner /> : 'Subscribe'}
+      {subscribing ? 'Subscribing' : 'Subscribe'}
+      {subscribing ? <Spinner /> : null}
     </button>
   )
 }

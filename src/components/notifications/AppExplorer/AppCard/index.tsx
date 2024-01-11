@@ -16,6 +16,7 @@ import './AppCard.scss'
 interface AppCardProps {
   name: string
   description: string
+  loadingSubscription: boolean
   logo: string
   url: string
   isVerified?: boolean
@@ -26,6 +27,7 @@ const AppCard: React.FC<AppCardProps> = ({
   description,
   isComingSoon,
   isVerified,
+  loadingSubscription,
   logo,
   name,
   url
@@ -44,7 +46,11 @@ const AppCard: React.FC<AppCardProps> = ({
   }, [userPubkey])
 
   const subscribed =
-    userPubkey && activeSubscriptions.some(element => element.metadata.name === name)
+    userPubkey &&
+    activeSubscriptions.some(element => {
+      const projectURL = new URL(url)
+      return projectURL.hostname === element.metadata.appDomain
+    })
   const logoURL = logo || '/fallback.svg'
 
   const handleSubscription = useCallback(
@@ -116,6 +122,7 @@ const AppCard: React.FC<AppCardProps> = ({
             subscribing={subscribing}
             onNavigateToApp={handleNavigateApp}
             onSubscribe={handleSubscription}
+            loading={loadingSubscription}
           />
         )}
       </div>
@@ -136,6 +143,7 @@ const AppCard: React.FC<AppCardProps> = ({
             subscribing={subscribing}
             onNavigateToApp={handleNavigateApp}
             onSubscribe={handleSubscription}
+            loading={loadingSubscription}
           />
         )}
       </div>
