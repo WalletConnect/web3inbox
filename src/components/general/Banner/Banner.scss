@@ -9,15 +9,24 @@
   padding-right: calc(2rem + 1.5rem);
   position: relative;
 
-  &__close-icon {
+  &__close-button {
+    width: 1rem;
+    height: 1rem;
+    background: none;
+    border: none;
+    display: flex;
     position: absolute;
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 1rem;
-    color: rgba(255, 255, 255, 0.75);
 
-    &:hover {
+    svg {
+      width: 1rem;
+      height: 1rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    &:hover svg {
       color: white;
     }
   }
