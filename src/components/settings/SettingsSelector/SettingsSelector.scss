@@ -116,7 +116,7 @@
 
     &:not(.NavLink-active):hover {
       @media (hover: hover) {
-        background: var(--accent-color-2);
+        background: var(--accent-color-3);
       }
 
       @media only screen and (max-width: 700px) {

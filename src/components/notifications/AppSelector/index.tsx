@@ -9,6 +9,8 @@ import { from } from 'rxjs'
 
 import AllAppsIcon from '@/assets/AllApps.svg'
 import SearchIcon from '@/assets/Search.svg'
+import SubmitAppIcon from '@/assets/SubmitApp.svg'
+import ExternalLinkIcon from '@/components/general/Icon/ExternalLinkIcon'
 import Input from '@/components/general/Input'
 import Label from '@/components/general/Label'
 import NavLink from '@/components/general/NavLink'
@@ -118,7 +120,27 @@ const AppSelector: React.FC = () => {
                     alt="Discover apps logo"
                     loading="lazy"
                   />
+
                   <Text variant="small-500">Discover apps</Text>
+                </div>
+              </div>
+            </NavLink>
+            <NavLink
+              to="https://walletconnect.com/web3inbox?utm_source=website&utm_medium=w3iapp"
+              target="_blank"
+              end
+              className="AppSelector__link-appsItem"
+            >
+              <div className="AppSelector__notifications">
+                <div className="AppSelector__notifications-apps">
+                  <img
+                    className="AppSelector__link-apps"
+                    src={SubmitAppIcon}
+                    alt="Submit app logo"
+                    loading="lazy"
+                  />
+                  <Text variant="small-500">Submit app</Text>
+                  <ExternalLinkIcon className="AppSelector__link-apps__external-link-icon" />
                 </div>
               </div>
             </NavLink>

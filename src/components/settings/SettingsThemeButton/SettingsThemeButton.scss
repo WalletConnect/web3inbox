@@ -5,14 +5,13 @@
 
 .SettingsThemeInput:checked + .SettingsThemeButton {
   background: rgba(51, 150, 255, 0.1);
-  outline: 2px solid #3396ff;
-  box-shadow: 0px 0px 0px 4px rgba(51, 150, 255, 0.2);
+  outline: 2px solid var(--accent-color-1);
 
   .SettingsThemeButton__icon {
     background-color: rgba(51, 150, 255, 0.1);
     svg {
       path {
-        stroke: #3396ff;
+        stroke: var(--accent-color-1);
       }
     }
   }

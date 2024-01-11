@@ -8,8 +8,8 @@
   backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-
   will-change: opacity;
+  position: relative;
 
   @media only screen and (max-width: 1300px) {
     margin-right: 0%;
