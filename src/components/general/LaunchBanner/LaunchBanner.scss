@@ -1,6 +1,24 @@
 .LaunchBanner {
+  &__terms,
   &__learn-more {
+    text-decoration: none;
+  }
+
+  &__terms {
+    color: rgba(255, 255, 255, 0.6);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__learn-more {
+    color: white;
     display: inline-block;
+
+    &:hover {
+      text-decoration: underline;
+    }
 
     svg {
       color: white;

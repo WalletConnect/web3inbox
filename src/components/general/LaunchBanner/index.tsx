@@ -10,6 +10,7 @@ import { LocalStorage } from '@/utils/localStorage'
 import './LaunchBanner.scss'
 
 const LAUNCH_BANNER_URL = 'https://walletconnect.com/blog/introducing-web3inbox-app'
+const LAUNCH_BANNER_TERMS_URL = 'https://web3inbox.com/terms-soundwaves'
 
 const isBannerClosed = LocalStorage.get(localStorageKeys.launchBannerClosed) === 'true'
 
@@ -28,8 +29,11 @@ export default function LaunchBanner() {
   return (
     <Banner className="LaunchBanner" onClose={handleCloseBanner}>
       The Web3Inbox app is live! Subscribe to Web3Inbox to get your Soundwaves NFT airdrop.{' '}
-      <Link to={LAUNCH_BANNER_URL} target="_blank">
-        <span className="LaunchBanner__learn-more">
+      <Link className="LaunchBanner__terms" to={LAUNCH_BANNER_TERMS_URL} target="_blank">
+        <span>(T&Cs apply)</span>
+      </Link>{' '}
+      <Link className="LaunchBanner__learn-more" to={LAUNCH_BANNER_URL} target="_blank">
+        <span>
           Learn more
           <ChevronRightIcon />
         </span>
