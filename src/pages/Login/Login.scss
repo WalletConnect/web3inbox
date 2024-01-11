@@ -19,7 +19,6 @@
 
   .Main {
     position: relative;
-
     max-width: 100vw;
     height: 100svh;
     overflow-x: hidden;
@@ -27,6 +26,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &__connect-button {
+      min-width: fit-content;
+    }
   }
 }
 

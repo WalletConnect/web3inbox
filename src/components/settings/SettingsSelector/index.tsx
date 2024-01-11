@@ -1,13 +1,15 @@
-import Text from '../../general/Text'
-import './SettingsSelector.scss'
-import AppearanceIcon from '../../general/Icon/Appearance'
-import NotificationIcon from '../../general/Icon/Notification'
-import PrivacyIcon from '../../general/Icon/Privacy'
-import NavLink from '../../general/NavLink'
-import { useIsMobile } from '../../../utils/hooks'
 import { useLocation } from 'react-router-dom'
-import MobileHeader from '../../layout/MobileHeader'
-import ChevronRightIcon from '../../general/Icon/ChevronRightIcon'
+
+import AppearanceIcon from '@/components/general/Icon/Appearance'
+import ChevronRightIcon from '@/components/general/Icon/ChevronRightIcon'
+import NotificationIcon from '@/components/general/Icon/Notification'
+import PrivacyIcon from '@/components/general/Icon/Privacy'
+import NavLink from '@/components/general/NavLink'
+import Text from '@/components/general/Text'
+import MobileHeader from '@/components/layout/MobileHeader'
+import { useIsMobile } from '@/utils/hooks'
+
+import './SettingsSelector.scss'
 
 const SettingsSelector: React.FC = () => {
   const isMobile = useIsMobile()

@@ -1,8 +1,13 @@
-import React, { useEffect, useReducer } from 'react'
-import { useColorModeValue } from '../../utils/hooks'
-import type { SettingsContextSimpleState, SettingsContextUpdate } from './context'
-import SettingsContext from './context'
-import { useWeb3ModalTheme } from '@web3modal/wagmi/react'
+import React, { useEffect, useReducer, useState } from 'react'
+
+import type {
+  SettingsContextSimpleState,
+  SettingsContextUpdate
+} from '@/contexts/SettingsContext/context'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import { useColorModeValue } from '@/utils/hooks'
+
+const LOCAL_SETTINGS_KEY = 'w3i-settings'
 
 interface ThemeContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -16,31 +21,30 @@ const settingsReducer = (
 }
 
 const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children }) => {
-  const favoriteTheme =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    typeof localStorage === 'undefined' || !localStorage
-      ? null
-      : (localStorage.getItem('w3i-theme') as SettingsContextSimpleState['mode'] | null)
+  const localSettings = localStorage.getItem(LOCAL_SETTINGS_KEY)
 
-  const initialState: SettingsContextSimpleState = {
-    mode: 'light',
-    newContacts: 'require-invite',
-    isDevModeEnabled: true
-  }
+  const initialState: SettingsContextSimpleState = localSettings
+    ? JSON.parse(localSettings)
+    : {
+        mode: 'light',
+        newContacts: 'require-invite',
+        isDevModeEnabled: false,
+        filterAppDomain: ''
+      }
 
-  const { setThemeMode } = useWeb3ModalTheme()
   const [settingsState, updateSettings] = useReducer(settingsReducer, initialState)
-  const themeColors = useColorModeValue(settingsState.mode)
 
-  useEffect(() => {
-    // setThemeMode(favoriteTheme === 'light' ? 'light' : 'dark')
-  }, [setThemeMode, favoriteTheme])
+  const themeColors = useColorModeValue(settingsState.mode)
 
   useEffect(() => {
     Object.entries(themeColors).forEach(([colorVariable, colorValue]) => {
       document.documentElement.style.setProperty(colorVariable, colorValue)
     })
   }, [themeColors])
+
+  useEffect(() => {
+    localStorage?.setItem(LOCAL_SETTINGS_KEY, JSON.stringify(settingsState))
+  }, [settingsState])
 
   return (
     <SettingsContext.Provider

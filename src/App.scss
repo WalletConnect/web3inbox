@@ -16,7 +16,10 @@
   .TargetSelector {
     grid-area: target-selector;
     display: var(--targetselector-display);
+    max-height: 100vh;
+    overflow-y: auto;
   }
+
   .Sidebar {
     padding-top: 1.25em;
     padding-bottom: 1em;
@@ -37,7 +40,10 @@
     height: auto;
     min-height: 100svh;
     overflow-x: hidden;
-    padding-bottom: 90px;
+
+    @media only screen and (max-width: 700px) {
+      padding-bottom: calc(env(safe-area-inset-bottom) + 48px + 2rem);
+    }
 
     display: var(--main-display);
   }
@@ -61,28 +67,28 @@
       padding: 1rem 0.085em;
     }
   }
+
   .App {
     --targetselector-display: unset;
     --sidebar-display: unset;
     --header-display: unset;
     --main-display: unset;
-    grid-template: 'sidebar target-selector main';
-    grid-template-columns: 3.75rem 1fr 2fr;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
 
     .Sidebar {
       border-right: solid 1px var(--bg-color-2);
     }
 
-    @media only screen and (min-width: 1300px) {
-      grid-template-columns: 3.75rem 1fr 3fr;
-    }
-
     .Main {
-      padding: 1rem 1.5rem;
+      flex: 1;
+      width: 100%;
       height: 100svh;
     }
 
     .TargetSelector {
+      max-width: 320px;
       padding: 1rem 0.75rem;
       border-right: solid 1px var(--bg-color-2);
       position: relative;

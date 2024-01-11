@@ -1,70 +1,110 @@
+import { useContext } from 'react'
+
+import { AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+
+import IntroApps from '@/components/general/Icon/IntroApps'
+import IntroContent from '@/components/general/IntroContent'
+import MobileHeader from '@/components/layout/MobileHeader'
+import { COMING_SOON_PROJECTS } from '@/constants/projects'
+import W3iContext from '@/contexts/W3iContext/context'
+import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
+
 import AppCard from './AppCard'
+import AppCardSkeleton from './AppCardSkeleton'
+
 import './AppExplorer.scss'
-import useNotifyProjects from '../../../utils/hooks/useNotifyProjects'
-import MobileHeader from '../../layout/MobileHeader'
-import IntroContent from '../../general/IntroContent'
-import Button from '../../general/Button'
-import IntroApps from '../../general/Icon/IntroApps'
 
 const AppExplorer = () => {
-  const projects = useNotifyProjects()
+  const { activeSubscriptions, watchSubscriptionsComplete: subscriptionsFinishedLoading } =
+    useContext(W3iContext)
+  const { projects, loading } = useNotifyProjects()
+
+  const allProjects = projects.concat(COMING_SOON_PROJECTS)
+
+  const checkSubscriptionStatusLoading = (url: string) => {
+    if (!subscriptionsFinishedLoading) {
+      const existInSubscriptions = activeSubscriptions.find(subscription => {
+        const projectURL = new URL(url)
+        return projectURL.hostname === subscription.metadata.appDomain
+      })
+
+      return existInSubscriptions ? false : true
+    }
+
+    return false
+  }
 
   return (
-    <div className="AppExplorer">
-      <MobileHeader title="Discover" />
-      <IntroContent
-        title="Welcome to Web3Inbox"
-        subtitle="Subscribing to our available apps below to start receiving notifications"
-        button={
-          <Button
-            onClick={() => {
-              // TODO: Subscribe all function
-            }}
-            style={{ minWidth: 'fit-content' }}
-          >
-            {'Subscribe all'}
-          </Button>
-        }
-        icon={<IntroApps />}
-      />
-      <div className="AppExplorer__apps">
-        <div className="AppExplorer__apps__column">
-          {projects
-            .filter((_, i) => i % 2 === 0)
-            .filter(app => Boolean(app.name))
-            .map(app => (
-              <AppCard
-                key={app.name}
-                name={app.name}
-                description={app.description}
-                bgColor={{
-                  dark: app.colors?.primary ?? '#00FF00',
-                  light: app.colors?.primary ?? '#00FF00'
-                }}
-                logo={app.icons[0]}
-                url={app.url}
-              />
-            ))}
-        </div>
-        <div className="AppExplorer__apps__column">
-          {projects
-            .filter((_, i) => i % 2 !== 0)
-            .map(app => (
-              <AppCard
-                key={app.name}
-                name={app.name}
-                description={app.description}
-                bgColor={{
-                  dark: app.colors?.primary ?? '#00FF00',
-                  light: app.colors?.primary ?? '#00FF00'
-                }}
-                logo={app.icons[0]}
-                url={app.url}
-              />
-            ))}
-        </div>
-      </div>
-    </div>
+    <AnimatePresence>
+      <motion.div
+        className="AppExplorer"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.33 }}
+      >
+        <MobileHeader title="Discover" />
+        <IntroContent
+          animation={true}
+          title="Discover Web3Inbox"
+          subtitle="Subscribe to our available apps below to start receiving notifications"
+          scale={2.5}
+          icon={<IntroApps />}
+        />
+        {loading ? (
+          <div className="AppExplorer__apps">
+            <div className="AppExplorer__apps__column">
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+            </div>
+            <div className="AppExplorer__apps__column">
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+              <AppCardSkeleton />
+            </div>
+          </div>
+        ) : (
+          <div className="AppExplorer__apps">
+            <div className="AppExplorer__apps__column">
+              {allProjects
+                .filter((_, i) => i % 2 === 0)
+                .map(app => (
+                  <AppCard
+                    key={app.id}
+                    name={app.name}
+                    description={app.description}
+                    logo={app.icon}
+                    url={app.url}
+                    isVerified={app.isVerified}
+                    isComingSoon={app.isComingSoon}
+                    loadingSubscription={checkSubscriptionStatusLoading(app.url)}
+                  />
+                ))}
+            </div>
+            <div className="AppExplorer__apps__column">
+              {allProjects
+                .filter((_, i) => i % 2 !== 0)
+                .map(app => (
+                  <AppCard
+                    key={app.id}
+                    name={app.name}
+                    description={app.description}
+                    logo={app.icon}
+                    url={app.url}
+                    isVerified={app.isVerified}
+                    isComingSoon={app.isComingSoon}
+                    loadingSubscription={checkSubscriptionStatusLoading(app.url)}
+                  />
+                ))}
+            </div>
+          </div>
+        )}
+      </motion.div>
+    </AnimatePresence>
   )
 }
 

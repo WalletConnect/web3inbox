@@ -1,84 +1,31 @@
-import { useContext, useMemo, useState } from 'react'
-import W3iContext from '../../../../contexts/W3iContext/context'
-import { noop } from '../../../../utils/general'
-import { useIsMobile } from '../../../../utils/hooks'
-import BackButton from '../../../general/BackButton'
-import Button from '../../../general/Button'
+import { useContext, useState } from 'react'
+
+import BackButton from '@/components/general/BackButton'
+import Button from '@/components/general/Button'
+import Text from '@/components/general/Text'
+import W3iContext from '@/contexts/W3iContext/context'
+import { noop } from '@/utils/general'
+import { useIsMobile } from '@/utils/hooks'
+
 import AppNotificationDropdown from '../AppNotificationDropdown'
+
 import './AppNotificationsHeader.scss'
 
 interface IAppNotificationsHeaderProps {
   id: string
-  logo: string
+  logo: string | undefined
   name: string
+  domain: string
 }
-const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, name, id }) => {
+const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
+  domain,
+  logo,
+  name,
+  id
+}) => {
   const isMobile = useIsMobile()
   const { dappOrigin } = useContext(W3iContext)
   const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
-
-  const HeaderContent = useMemo(
-    () =>
-      dappOrigin ? (
-        <div className="AppNotificationsHeader__plain">
-          <h2>Notifications</h2>
-          <AppNotificationDropdown
-            dropdownPlacement="bottomLeft"
-            notificationId={id}
-            h="2em"
-            w="2em"
-            closeDropdown={noop}
-          />
-        </div>
-      ) : (
-        <>
-          <div className="AppNotificationsHeader__app">
-            <BackButton backTo="/notifications" />
-            <img
-              className="AppNotificationsHeader__app__logo"
-              src={logo}
-              alt={`${name}logo`}
-              loading="lazy"
-            />
-            <h2 className="AppNotificationsHeader__app__name">{name}</h2>
-          </div>
-          <div className="AppNotificationsHeader__wrapper">
-            {/*
-             <div className="AppNotificationsHeader__selector">
-              <Select
-                name="explorer-selector"
-                id="explorer-selector"
-                onChange={console.log}
-                options={[{ label: 'All', value: 'all' }]}
-              />
-            </div>
-            */}
-            {isMobile ? (
-              <>
-                <AppNotificationDropdown
-                  closeDropdown={() => setDropdownToShow(undefined)}
-                  h="2.5em"
-                  w="2.5em"
-                  notificationId={id}
-                  dropdownPlacement="bottomLeft"
-                />
-              </>
-            ) : (
-              <>
-                <AppNotificationDropdown
-                  closeDropdown={() => setDropdownToShow(undefined)}
-                  h="2.5em"
-                  w="2.5em"
-                  dropdownPlacement="bottomLeft"
-                  notificationId={id}
-                />
-              </>
-            )}
-          </div>
-        </>
-      ),
-    [dappOrigin]
-  )
 
   return (
     <div className="AppNotificationsHeader">
@@ -100,47 +47,28 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({ logo, 
               <BackButton backTo="/notifications" />
               <img
                 className="AppNotificationsHeader__app__logo"
-                src={logo}
-                alt={`${name}logo`}
+                src={logo || '/fallback.svg'}
+                alt={`${name} logo`}
                 loading="lazy"
               />
-              <h2 className="AppNotificationsHeader__app__name">{name}</h2>
+              <div className="AppNotificationsHeader__app__name_container">
+                <h2 className="AppNotificationsHeader__app__name">{name}</h2>
+                <Text variant="link-500" className="AppNotificationsHeader__app__description">
+                  {domain}
+                </Text>
+              </div>
             </div>
             <div className="AppNotificationsHeader__wrapper">
-              {/*
-             <div className="AppNotificationsHeader__selector">
-              <Select
-                name="explorer-selector"
-                id="explorer-selector"
-                onChange={console.log}
-                options={[{ label: 'All', value: 'all' }]}
+              <AppNotificationDropdown
+                closeDropdown={() => setDropdownToShow(undefined)}
+                h="2.5em"
+                w="2.5em"
+                notificationId={id}
+                dropdownPlacement="bottomLeft"
               />
             </div>
-            */}
-              {isMobile ? (
-                <>
-                  <AppNotificationDropdown
-                    closeDropdown={() => setDropdownToShow(undefined)}
-                    h="2.5em"
-                    w="2.5em"
-                    notificationId={id}
-                    dropdownPlacement="bottomLeft"
-                  />
-                </>
-              ) : (
-                <>
-                  <AppNotificationDropdown
-                    closeDropdown={() => setDropdownToShow(undefined)}
-                    h="2.5em"
-                    w="2.5em"
-                    dropdownPlacement="bottomLeft"
-                    notificationId={id}
-                  />
-                </>
-              )}
-            </div>
           </>
-        )}{' '}
+        )}
       </div>
 
       {isMobile && (

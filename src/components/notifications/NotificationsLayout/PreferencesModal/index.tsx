@@ -1,24 +1,26 @@
-import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import SettingsContext from '../../../../contexts/SettingsContext/context'
-import W3iContext from '../../../../contexts/W3iContext/context'
-import { useColorModeValue, useModals } from '../../../../utils/hooks'
-import { preferencesModalService } from '../../../../utils/store'
-import Button from '../../../general/Button'
-import Divider from '../../../general/Divider'
-import CrossIcon from '../../../general/Icon/CrossIcon'
-import { Modal } from '../../../general/Modal/Modal'
-import Toggle from '../../../general/Toggle'
+
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
+
+import Button from '@/components/general/Button'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
+import { Modal } from '@/components/general/Modal/Modal'
+import Spinner from '@/components/general/Spinner'
+import Text from '@/components/general/Text'
+import Toggle from '@/components/general/Toggle'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import W3iContext from '@/contexts/W3iContext/context'
+import { useColorModeValue, useModals } from '@/utils/hooks'
+import { preferencesModalService } from '@/utils/store'
+import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
+
 import './PreferencesModal.scss'
-import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
-import Text from '../../../general/Text'
 
 export const PreferencesModal: React.FC = () => {
-  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
-  const { mode } = useContext(SettingsContext)
-  const themeColors = useColorModeValue(mode)
+  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const { preferencesModalAppId } = useModals()
   const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
+  const [loading, setLoading] = useState(false)
 
   // Reduces the scopes mapping to only an array of enabled scopes
   const getEnabledScopes = (scopesMap: NotifyClientTypes.NotifySubscription['scope']) => {
@@ -42,29 +44,32 @@ export const PreferencesModal: React.FC = () => {
   }, [preferencesModalAppId, setScopes, activeSubscriptions])
 
   const handleUpdatePreferences = useCallback(async () => {
+    setLoading(true)
     if (preferencesModalAppId) {
       const topic = preferencesModalAppId
 
       try {
-        pushClientProxy?.observeOne('notify_update', {
+        notifyClientProxy?.observeOne('notify_update', {
           next: () => {
             preferencesModalService.closeModal()
+            setLoading(false)
             showSuccessMessageToast('Preferences updated successfully')
           }
         })
-        await pushClientProxy?.update({
+        await notifyClientProxy?.update({
           topic,
           scope: getEnabledScopes(scopes)
         })
       } catch (error) {
         console.error(error)
         showErrorMessageToast('Failed to update preferences')
+        setLoading(false)
       }
     }
-  }, [preferencesModalAppId, pushClientProxy, scopes])
+  }, [preferencesModalAppId, notifyClientProxy, scopes])
 
   return (
-    <Modal onToggleModal={preferencesModalService.toggleModal}>
+    <Modal onCloseModal={preferencesModalService.closeModal}>
       <div className="PreferencesModal">
         <div className="PreferencesModal__header">
           <Text variant="paragraph-600">Preferences</Text>
@@ -75,11 +80,11 @@ export const PreferencesModal: React.FC = () => {
         <div className="PreferencesModal__content">
           {Object.entries(scopes)
             .sort(([a], [b]) => a.charCodeAt(0) - b.charCodeAt(0))
-            .map(([title, scope]) => (
-              <div key={title} className="PreferencesModal__content__item">
+            .map(([scopeId, scope]) => (
+              <div key={scope.name} className="PreferencesModal__content__item">
                 <div className="PreferencesModal__content__item__wrapper">
                   <h4 style={{ textTransform: 'capitalize' }}>
-                    <Text variant="paragraph-600">{title} Notifications</Text>
+                    <Text variant="paragraph-600">{scope.name} Notifications</Text>
                   </h4>
                   <div className="PreferencesModal__content__setting__helper-text">
                     <Text className="PreferencesModal__content__item__subtitle" variant="small-500">
@@ -93,22 +98,27 @@ export const PreferencesModal: React.FC = () => {
                     setScopes(oldScopes => {
                       return {
                         ...oldScopes,
-                        [title]: {
-                          ...oldScopes[title],
+                        [scopeId]: {
+                          ...oldScopes[scopeId],
                           enabled
                         }
                       }
                     })
                   }}
-                  name={title}
-                  id={title}
+                  name={scope.name}
+                  id={scopeId}
                 />
               </div>
             ))}
         </div>
+        <div className="PreferencesModal__overflow-gradient" />
         <div className="PreferencesModal__action">
-          <Button className="PreferencesModal__action__btn" onClick={handleUpdatePreferences}>
-            Update
+          <Button
+            disabled={loading}
+            className="PreferencesModal__action__btn"
+            onClick={handleUpdatePreferences}
+          >
+            {loading ? <Spinner /> : 'Update'}
           </Button>
         </div>
       </div>

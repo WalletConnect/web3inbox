@@ -1,29 +1,36 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+
+import { AnimatePresence } from 'framer-motion'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { noop } from 'rxjs'
 import { useEnsName } from 'wagmi'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { truncate } from '../../../utils/string'
-import Avatar from '../../account/Avatar'
-import BackButton from '../../general/BackButton'
-import InviteMessage from '../InviteMessage'
+
+import Avatar from '@/components/account/Avatar'
+import BackButton from '@/components/general/BackButton'
+import Text from '@/components/general/Text'
+import W3iContext from '@/contexts/W3iContext/context'
+import { getEthChainAddress } from '@/utils/address'
+import { truncate } from '@/utils/string'
+import type { ChatClientTypes } from '@/w3iProxy/chatProviders/types'
+import type { ReplayMessage } from '@/w3iProxy/w3iChatFacade'
+
 import ConversationBeginning from '../ConversationBeginning'
+import InviteMessage from '../InviteMessage'
 import { MessageItem } from '../Message/MessageItem'
 import MessageBox from '../MessageBox'
-import './ThreadWindow.scss'
-import { noop } from 'rxjs'
-import { AnimatePresence } from 'framer-motion'
 import ThreadDropdown from './ThreadDropdown'
-import type { ReplayMessage } from '../../../w3iProxy/w3iChatFacade'
-import { getEthChainAddress } from '../../../utils/address'
-import Text from '../../general/Text'
+
+import './ThreadWindow.scss'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
   const peerAddress = (peer?.split(':')[2] ?? `0x`) as `0x${string}`
+  const nav = useNavigate()
   const { search } = useLocation()
   const { chatClientProxy, userPubkey, threads, sentInvites } = useContext(W3iContext)
   const { data: ensName } = useEnsName({ address: peerAddress })
+  const [pendingMessages, setPendingMessages] = useState<ReplayMessage[]>([])
+
   const topic = useMemo(
     () =>
       new URLSearchParams(search).get('topic') ??
@@ -32,13 +39,9 @@ const ThreadWindow: React.FC = () => {
     [threads, search]
   )
 
-  const [pendingMessages, setPendingMessages] = useState<ReplayMessage[]>([])
-
   if (!topic) {
     return <Navigate to="/messages" />
   }
-
-  const nav = useNavigate()
 
   const [messages, setMessages] = useState<ChatClientTypes.Message[]>([])
 
@@ -55,17 +58,9 @@ const ThreadWindow: React.FC = () => {
   )
 
   const refreshMessages = useCallback(() => {
-    console.log(
-      `Calling refreshMessages with topic ${topic} and a ${
-        chatClientProxy ? 'truthy' : 'falsy'
-      } client`
-    )
-
     if (!chatClientProxy || !topic) {
       return
     }
-
-    console.log(`Retreiving messages for topic ${topic}`)
 
     chatClientProxy
       .getMessages({

@@ -1,34 +1,35 @@
-import debounce from 'lodash.debounce'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { concatAll, from, takeLast, takeWhile } from 'rxjs'
-import PlusIcon from '../../../assets/Plus.svg'
-import SearchIcon from '../../../assets/Search.svg'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { getEthChainAddress } from '../../../utils/address'
-import { useIsMobile, useSearch } from '../../../utils/hooks'
-import { chatSearchService } from '../../../utils/store'
-import Avatar from '../../account/Avatar'
-import CircleBadge from '../../general/Badge/CircleBadge'
-import Input from '../../general/Input'
-import NavLink from '../../general/NavLink'
-import Search from '../../general/Search'
-import MobileHeading from '../../layout/MobileHeading'
+
+import PlusIcon from '@/assets/Plus.svg'
+import SearchIcon from '@/assets/Search.svg'
+import Avatar from '@/components/account/Avatar'
+import CircleBadge from '@/components/general/CircleBadge/CircleBadge'
+import PencilIcon from '@/components/general/Icon/PencilIcon'
+import Input from '@/components/general/Input'
+import NavLink from '@/components/general/NavLink'
+import Search from '@/components/general/Search'
+import TargetTitle from '@/components/general/TargetTitle'
+import Text from '@/components/general/Text'
+import MobileHeading from '@/components/layout/MobileHeading'
+import W3iContext from '@/contexts/W3iContext/context'
+import { getEthChainAddress } from '@/utils/address'
+import { useIsMobile, useSearch } from '@/utils/hooks'
+import { chatSearchService } from '@/utils/store'
+
 import EmptyThreads from './EmptyThreads'
 import Thread from './Thread'
+
 import './ThreadSelector.scss'
-import TargetTitle from '../../general/TargetTitle'
-import PencilIcon from '../../general/Icon/PencilIcon'
-import Text from '../../general/Text'
 
 const ThreadSelector: React.FC = () => {
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
   const { isChatSearchOpen } = useSearch()
 
-  const [filteredThreadTopics, setFilteredThreadTopics] = useState<
+  const [filteredThreadTopics] = useState<
     { topic: string; message?: string; timestamp?: number }[]
   >([])
-  const { threads, invites, chatClientProxy, sentInvites } = useContext(W3iContext)
+  const { threads, invites, sentInvites } = useContext(W3iContext)
 
   const filteredThreads = useMemo(() => {
     return threads.filter(
@@ -38,55 +39,10 @@ const ThreadSelector: React.FC = () => {
     )
   }, [threads, filteredThreadTopics])
 
-  const filterThreads = useCallback(
-    debounce((searchQuery: string) => {
-      if (!searchQuery || !chatClientProxy) {
-        setFilteredThreadTopics([])
-
-        return
-      }
-
-      const newFilteredThreadTopics: { topic: string; message?: string; timestamp?: number }[] = []
-
-      /*
-       * For every thread, check if the thread address matches the searchQuery
-       * If it does, add it to filtered topics
-       * If it doesn't, look through the last 100 messages (or until a match is
-       * found), if one is found add it to filtered topics with the matched
-       * message as the reason (so it can be showcased).
-       */
-      from(threads).subscribe({
-        next: thread => {
-          if (thread.peerAccount.includes(searchQuery)) {
-            newFilteredThreadTopics.push({ topic: thread.topic })
-
-            return
-          }
-
-          from(chatClientProxy.getMessages({ topic: thread.topic }))
-            .pipe(concatAll())
-            .pipe(takeLast(100))
-            .pipe(
-              takeWhile(messageToCheck => {
-                return !messageToCheck.message.includes(searchQuery)
-              }, true)
-            )
-            .pipe(takeLast(1))
-            .subscribe({
-              next: ({ message }) => {
-                if (message.includes(searchQuery)) {
-                  newFilteredThreadTopics.push({ topic: thread.topic, message })
-                }
-              }
-            })
-        },
-        complete: () => {
-          setFilteredThreadTopics(newFilteredThreadTopics)
-        }
-      })
-    }, 50),
-    [threads, chatClientProxy]
-  )
+  // Commit it was removed: 9e95e32053c7ef0e3d605dbe8b6fea7e2ddbbf48
+  const filterThreads = useCallback((_search: string) => {
+    return []
+  }, [])
 
   useEffect(() => {
     filterThreads(search)

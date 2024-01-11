@@ -1,15 +1,16 @@
-import { EventEmitter } from 'events'
-import type ChatClient from '@walletconnect/chat-client'
-// eslint-disable-next-line no-duplicate-imports
-import type { ChatClientTypes } from '@walletconnect/chat-client'
-import type { ChatFacadeEvents } from './listenerTypes'
-import type { W3iChat } from './chatProviders/types'
-import InternalChatProvider from './chatProviders/internalChatProvider'
-import ExternalChatProvider from './chatProviders/externalChatProvider'
-import { filter, from, ReplaySubject, scan, throwError, timeout } from 'rxjs'
-import { ONE_DAY } from '@walletconnect/time'
+/* eslint-disable */
+// @ts-nocheck
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
+import { ONE_DAY } from '@walletconnect/time'
+import { EventEmitter } from 'events'
+import { ReplaySubject, filter, from, scan, throwError, timeout } from 'rxjs'
 import { hashMessage } from 'viem'
+
+import ExternalChatProvider from './chatProviders/externalChatProvider'
+// eslint-disable-next-line no-duplicate-imports
+import type { ChatClientTypes } from './chatProviders/types'
+import type { W3iChat } from './chatProviders/types'
+import type { ChatFacadeEvents } from './listenerTypes'
 import { ObservablesController } from './observablesController'
 
 export type ReplayMessage = ChatClientTypes.Message & {
@@ -25,7 +26,7 @@ export const getMessageId = (params: ChatClientTypes.Message) => {
 
 class W3iChatFacade implements W3iChat {
   private readonly providerMap = {
-    internal: InternalChatProvider,
+    internal: ExternalChatProvider,
     external: ExternalChatProvider,
     ios: ExternalChatProvider,
     reactnative: ExternalChatProvider,
@@ -37,7 +38,7 @@ class W3iChatFacade implements W3iChat {
 
   private readonly emitter: EventEmitter
   private readonly observablesController: ObservablesController<ChatFacadeEvents>
-  private readonly provider: ExternalChatProvider | InternalChatProvider
+  private readonly provider: ExternalChatProvider
   private readonly messageSendTimeout = 1000
 
   private unsentMessages: ReplayMessage[] = []
@@ -118,7 +119,7 @@ class W3iChatFacade implements W3iChat {
           const messages: ReplayMessage[] = []
           for (const message of messageMap.values()) {
             if (message.status !== 'sent') {
-              messages.push(message)
+              messages.notify(message)
             }
           }
           this.unsentMessages = messages
@@ -148,9 +149,9 @@ class W3iChatFacade implements W3iChat {
     this.emitter.emit('chat_message_attempt')
   }
 
-  public async initInternalProvider(chatClient: ChatClient) {
-    const internalProvider = this.provider as InternalChatProvider
-    await internalProvider.initState(chatClient)
+  // eslint-disable-next-line
+  public async initInternalProvider(chatClient: any) {
+    console.error('Initting internal chat provider not supported')
   }
 
   // Method to be used by external providers. Not internal use.

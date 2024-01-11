@@ -1,4 +1,52 @@
 {
   "gcm_sender_id": "295861682652",
-  "display": "standalone"
+  "name": "Web3Inbox",
+  "short_name": "Web3Inbox",
+  "icons": [
+    {
+      "sizes": "72x72",
+      "src": "/logo.png"
+    },
+    {
+      "sizes": "96x96",
+      "src": "/logo.png"
+    },
+    {
+      "sizes": "120x120",
+      "src": "/logo.png"
+    },
+    {
+      "sizes": "128x128",
+      "src": "/logo.png"
+    },
+    {
+      "sizes": "144x144",
+      "src": "/logo.png"
+    },
+    {
+      "sizes": "152x152",
+      "src": "/logo.png"
+    },
+    {
+      "sizes": "180x180",
+      "src": "/logo.png"
+    },
+    {
+      "sizes": "192x192",
+      "src": "/logo.png"
+    },
+    {
+      "sizes": "384x384",
+      "src": "/logo.png"
+    },
+    {
+      "sizes": "512x512",
+      "src": "/logo.png"
+    }
+  ],
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "splash_pages": null
 }

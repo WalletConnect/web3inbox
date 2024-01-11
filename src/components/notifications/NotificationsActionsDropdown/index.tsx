@@ -1,7 +1,9 @@
 import { useCallback } from 'react'
-import { unsubscribeModalService } from '../../../utils/store'
-import Dropdown from '../../general/Dropdown/Dropdown'
-import CrossIcon from '../../general/Icon/CrossIcon'
+
+import Dropdown from '@/components/general/Dropdown/Dropdown'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
+import { unsubscribeModalService } from '@/utils/store'
+
 import './NotificationsActionsDropdown.scss'
 
 interface INotificationsActionsDropdownProps {

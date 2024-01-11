@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
-import W3iContext from '../../../../contexts/W3iContext/context'
-import NavLink from '../../../general/NavLink'
-import PeerAndMessage from '../../PeerAndMessage'
+import React, { useState } from 'react'
+
+import NavLink from '@/components/general/NavLink'
+import PeerAndMessage from '@/components/messages/PeerAndMessage'
+
 import './Thread.scss'
 
 interface ThreadProps {
@@ -19,20 +20,8 @@ const Thread: React.FC<ThreadProps> = ({
   searchQuery,
   threadPeer
 }) => {
-  const [calculatedLastMessage, setCalculatedLastMessage] = useState<string | undefined>()
-  const [calculatedLastMsgTimestamp, setCalculatedLastMsgTimestamp] = useState<number | undefined>()
-  const { chatClientProxy } = useContext(W3iContext)
-
-  useEffect(() => {
-    if (!calculatedLastMessage && !lastMessage) {
-      chatClientProxy?.getMessages({ topic }).then(messages => {
-        if (messages.length) {
-          setCalculatedLastMessage(messages[messages.length - 1].message)
-          setCalculatedLastMsgTimestamp(messages[messages.length - 1].timestamp)
-        }
-      })
-    }
-  }, [chatClientProxy, calculatedLastMessage, lastMessage, setCalculatedLastMessage])
+  const [calculatedLastMessage] = useState<string | undefined>()
+  const [calculatedLastMsgTimestamp] = useState<number | undefined>()
 
   return (
     <NavLink to={`/messages/chat/${threadPeer}?topic=${topic}`}>

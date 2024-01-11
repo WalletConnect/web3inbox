@@ -1,0 +1,99 @@
+.AppCardSkeleton {
+  padding: 2rem;
+  background: var(--shimmer-bg);
+  backdrop-filter: blur(1rem);
+  border-radius: 1.875em;
+  position: relative;
+  outline: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+
+  @media only screen and (max-width: 700px) {
+    border-radius: 0.75rem;
+    padding: 1rem;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    &__logo {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      background: var(--shimmer-fg);
+      border-radius: 50%;
+      width: 3.75em;
+      height: 3.75em;
+      margin-bottom: 0.75em;
+
+      @media only screen and (max-width: 700px) {
+        width: 3rem;
+        height: 3rem;
+        margin-bottom: 0px;
+      }
+    }
+
+    &__link-icon {
+      width: 0.67em;
+      height: 0.67em;
+    }
+  }
+
+  &__body {
+    display: flex;
+    justify-content: flex-start;
+    z-index: 1;
+    flex-direction: column;
+    color: var(--fg-color-1);
+
+    @media only screen and (max-width: 700px) {
+      margin-top: 0.75rem;
+    }
+
+    &__title {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      background: var(--shimmer-fg);
+      height: 26px;
+      width: 40%;
+      display: flex;
+      align-items: center;
+      gap: 0.3125rem;
+    }
+
+    &__subtitle {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      background: var(--shimmer-fg);
+      height: 16px;
+      width: 70%;
+      margin-top: 4px;
+    }
+
+    &__description {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      background: var(--shimmer-fg);
+      height: 20px;
+      margin-top: 1rem;
+    }
+
+    &__subscribed {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      background: var(--shimmer-fg);
+      border-radius: 14px;
+      height: 28px;
+      min-width: 84px;
+      width: max-content;
+      margin-top: 1.5rem;
+      cursor: pointer;
+      z-index: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+}

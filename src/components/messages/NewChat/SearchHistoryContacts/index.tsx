@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react'
-import Ledger from '../../../../assets/Ledger.svg'
-import Button from '../../../general/Button'
+
+import Ledger from '@/assets/Ledger.svg'
+import Button from '@/components/general/Button'
+
 import './SearchHistoryContacts.scss'
 
 const SearchHistoryContacts: React.FC = () => {
@@ -12,9 +14,7 @@ const SearchHistoryContacts: React.FC = () => {
     setHistoryContacts(['vitalik.eth', 'clinenerd.eth'])
   }, [setIsSearchingContacts])
 
-  const handleInviteSelectedContact = useCallback((selectedContact: string) => {
-    console.log(`Inviting ${selectedContact}`)
-  }, [])
+  const handleInviteSelectedContact = useCallback((selectedContact: string) => {}, [])
 
   return (
     <div className="SearchHistoryContacts">

@@ -78,10 +78,6 @@
       width: 1.25rem;
       height: 1.25rem;
       fill: transparent;
-      // stroke: black;
-      // path {
-      //   stroke: black;
-      // }
     }
 
     &__icon {
@@ -120,7 +116,7 @@
 
     &:not(.NavLink-active):hover {
       @media (hover: hover) {
-        background: rgba(51, 150, 255, 0.08);
+        background: var(--accent-color-2);
       }
 
       @media only screen and (max-width: 700px) {

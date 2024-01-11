@@ -1,11 +1,14 @@
 import { useContext, useEffect } from 'react'
+
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useEnsName } from 'wagmi'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { truncate } from '../../../utils/string'
-import Spinner from '../../general/Spinner'
+
+import Spinner from '@/components/general/Spinner'
+import W3iContext from '@/contexts/W3iContext/context'
+import { truncate } from '@/utils/string'
+import { showErrorMessageToast } from '@/utils/toasts'
+
 import './DirectInvite.scss'
-import { showErrorMessageToast } from '../../../utils/toasts'
 
 const DirectInvite: React.FC = () => {
   const { account } = useParams<{ account: string }>()
@@ -42,7 +45,7 @@ const DirectInvite: React.FC = () => {
     <div className="DirectInvite">
       <div className="DirectInvite__message">
         <span>Inviting {ensName ?? truncate(account ?? '', 4)}... </span>
-        <Spinner width="1em" />
+        <Spinner />
       </div>
     </div>
   )

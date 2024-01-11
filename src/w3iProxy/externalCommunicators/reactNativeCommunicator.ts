@@ -1,6 +1,7 @@
 import type { JsonRpcResult } from '@walletconnect/jsonrpc-utils'
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { EventEmitter } from 'events'
+
 import type { ExternalCommunicator, TTargetClient } from './communicatorType'
 
 declare global {

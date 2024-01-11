@@ -1,14 +1,16 @@
 import React, { useCallback, useContext, useMemo } from 'react'
-import Spinner from '../../general/Spinner'
-import CrossIcon from '../../general/Icon/CrossIcon'
+
+import ChatInviteHandEmoji from '@/assets/ChatInviteHandEmoji.svg'
+import ChatRejectedHandEmoji from '@/assets/ChatRejectedHandEmoji.svg'
+import CheckIcon from '@/components/general/Icon/CheckIcon'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
+import Spinner from '@/components/general/Spinner'
+import Text from '@/components/general/Text'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import { useColorModeValue } from '@/utils/hooks'
+import type { ChatClientTypes } from '@/w3iProxy/chatProviders/types'
+
 import './InviteMessage.scss'
-import { useColorModeValue } from '../../../utils/hooks'
-import SettingsContext from '../../../contexts/SettingsContext/context'
-import ChatInviteHandEmoji from '../../../assets/ChatInviteHandEmoji.svg'
-import ChatRejectedHandEmoji from '../../../assets/ChatRejectedHandEmoji.svg'
-import CheckIcon from '../../general/Icon/CheckIcon'
-import type { ChatClientTypes } from '@walletconnect/chat-client'
-import Text from '../../general/Text'
 
 interface InviteMessageProps {
   status: ChatClientTypes.SentInvite['status']
@@ -22,7 +24,7 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
   const PendingStatus = useCallback(() => {
     return (
       <div className="InviteMessage__pending">
-        <Spinner width="1em" />
+        <Spinner />
         <span>Pending</span>
       </div>
     )
@@ -47,20 +49,22 @@ const InviteMessage: React.FC<InviteMessageProps> = ({ status }) => {
   }, [themeColors])
 
   const StatusComponents = useMemo(
-    () => ({
-      pending: <PendingStatus />,
-      rejected: <RejectedStatus />,
-      approved: <AcceptedStatus />
-    }),
+    () =>
+      ({
+        pending: <PendingStatus />,
+        rejected: <RejectedStatus />,
+        approved: <AcceptedStatus />
+      }) as Record<string, React.ReactNode>,
     [PendingStatus, RejectedStatus, AcceptedStatus]
   )
 
   const StatusEmojis = useMemo(
-    () => ({
-      pending: ChatInviteHandEmoji,
-      rejected: ChatRejectedHandEmoji,
-      approved: ChatInviteHandEmoji
-    }),
+    () =>
+      ({
+        pending: ChatInviteHandEmoji,
+        rejected: ChatRejectedHandEmoji,
+        approved: ChatInviteHandEmoji
+      }) as Record<string, string>,
     []
   )
 

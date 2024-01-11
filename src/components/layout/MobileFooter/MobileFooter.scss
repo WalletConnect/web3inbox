@@ -4,16 +4,23 @@
   left: 0;
   width: 100%;
   background-color: #fff;
-  padding: 0.625rem 3.375rem;
+  padding: 0.625rem 3.375rem 3rem;
   display: flex;
   justify-content: space-between;
-  border-bottom: 0.5px solid rgba(6, 43, 43, 0.15);
-  border-top: 0.5px solid rgba(6, 43, 43, 0.15);
-  height: 48px;
+  border-bottom: 0.5px solid var(--light-overlay-015);
+  border-top: 0.5px solid var(--light-overlay-015);
+  height: auto;
+  padding: 0.5rem 1rem;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
 
   &__link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+
     svg {
       width: 1.5rem;
+      height: 1.5rem;
     }
   }
 

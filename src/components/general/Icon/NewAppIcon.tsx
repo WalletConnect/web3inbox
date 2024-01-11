@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
-import SettingsContext from '../../../contexts/SettingsContext/context'
-import { useColorModeValue } from '../../../utils/hooks'
+
+import SettingsContext from '@/contexts/SettingsContext/context'
+import { useColorModeValue } from '@/utils/hooks'
 
 interface TNewAppIconProps {
   isFilled?: boolean
@@ -13,9 +14,9 @@ const NewAppIcon: React.FC<TNewAppIconProps> = ({ isFilled = false }) => {
     <svg fill="none" viewBox="0 0 28 28">
       <path
         fill={themeColors['--icon-color-1']}
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M11.66 3.5a2.33 2.33 0 0 0-2.33 2.33h9.33a2.33 2.33 0 0 0-2.33-2.33h-4.67ZM5.83 9.33A2.33 2.33 0 0 1 8.16 7h11.67a2.33 2.33 0 0 1 2.33 2.33H5.83Zm-.58 1.17c-.97 0-1.75.78-1.75 1.75v10.5c0 .97.78 1.75 1.75 1.75h17.5c.97 0 1.75-.78 1.75-1.75v-10.5c0-.97-.78-1.75-1.75-1.75H5.25Zm7.9 3.19v2.95h-2.96a.86.86 0 0 0 0 1.72h2.95v2.95a.86.86 0 0 0 1.71 0v-2.95h2.96a.86.86 0 0 0 0-1.72h-2.96V13.7a.86.86 0 1 0-1.7 0Z"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
     </svg>
   ) : (
@@ -31,8 +32,8 @@ const NewAppIcon: React.FC<TNewAppIconProps> = ({ isFilled = false }) => {
       >
         <rect fill="white" x="1.5" y="1.50006" width="25" height="25" />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M11.6636 3.50006C10.3749 3.50006 9.33025 4.54473 9.33025 5.83338H18.6635C18.6635 4.54473 17.6189 3.50006 16.3302 3.50006H11.6636ZM5.83126 9.3334C5.83126 8.04474 6.87592 7.00008 8.16458 7.00008H19.8312C21.1199 7.00008 22.1645 8.04474 22.1645 9.3334H5.83126ZM5.24999 10.5001C4.2835 10.5001 3.5 11.2836 3.5 12.2501V22.75C3.5 23.7165 4.2835 24.5 5.24999 24.5H22.7499C23.7164 24.5 24.4999 23.7165 24.4999 22.75V12.2501C24.4999 11.2836 23.7164 10.5001 22.7499 10.5001H5.24999ZM13.143 13.6891V16.6439H10.1882C9.71548 16.6439 9.33227 17.0271 9.33227 17.4998C9.33227 17.9725 9.71548 18.3557 10.1882 18.3557H13.143V21.3105C13.143 21.7832 13.5262 22.1664 13.9989 22.1664C14.4716 22.1664 14.8548 21.7832 14.8548 21.3105V18.3557H17.8096C18.2824 18.3557 18.6656 17.9725 18.6656 17.4998C18.6656 17.0271 18.2824 16.6439 17.8096 16.6439H14.8548V13.6891C14.8548 13.2164 14.4716 12.8332 13.9989 12.8332C13.5262 12.8332 13.143 13.2164 13.143 13.6891Z"
         />
       </mask>

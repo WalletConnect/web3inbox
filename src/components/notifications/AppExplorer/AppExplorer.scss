@@ -4,23 +4,34 @@
   flex-direction: column;
   align-items: center;
   max-width: 100vw;
-  margin-right: 30%;
+
+  z-index: -1;
+  backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  will-change: opacity;
 
   @media only screen and (max-width: 1300px) {
     margin-right: 0%;
   }
 
+  @media only screen and (min-width: 700px) {
+    margin-right: 10%;
+    margin-left: 10%;
+  }
+
   .IntroContent {
     margin-top: 2.25rem;
-
-    &__Background {
-      transform: scale(2.5) translateY(-15%) translateX(5%);
-    }
   }
 
   &__apps {
+    width: 100%;
+    max-width: 700px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    // 2 columns, of equal width, at least 20em wide each
+    // If there is not enough space for the above, go to a one column layout.
+    grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
     gap: 1.5rem;
     padding: 5rem 0rem;
 

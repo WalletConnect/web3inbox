@@ -1,19 +1,22 @@
+/* eslint-disable */
+// @ts-nocheck
 import { getAccount } from '@wagmi/core'
-import type { ChatClientTypes } from '@walletconnect/chat-client'
-import type { EventEmitter } from 'events'
 // eslint-disable-next-line no-duplicate-imports
-import type ChatClient from '@walletconnect/chat-client'
 import { Core, Store } from '@walletconnect/core'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { Logger } from '@walletconnect/logger'
-import type { ICore, IStore } from '@walletconnect/types'
-import type { W3iChatProvider } from './types'
 // eslint-disable-next-line no-duplicate-imports
 import { getDefaultLoggerOptions } from '@walletconnect/logger'
+import type { ICore, IStore } from '@walletconnect/types'
+import type { EventEmitter } from 'events'
 import pino from 'pino'
 
+import type { ChatClientTypes } from './types'
+import type { W3iChatProvider } from './types'
+
 export default class InternalChatProvider implements W3iChatProvider {
-  private chatClient: ChatClient | undefined
+  // eslint-disable-next-line
+  private chatClient: any
   private readonly emitter: EventEmitter
   public providerName = 'InternalChatProvider'
   private readonly core: ICore
@@ -40,7 +43,7 @@ export default class InternalChatProvider implements W3iChatProvider {
    * We need to re-register events from the chat client to the emitter
    * to allow the observers in the facade to work seamlessly.
    */
-  public async initState(chatClient: ChatClient) {
+  public async initState(chatClient: any) {
     this.chatClient = chatClient
     this.projectId = this.chatClient.projectId
 

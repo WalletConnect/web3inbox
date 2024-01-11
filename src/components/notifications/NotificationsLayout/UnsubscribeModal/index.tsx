@@ -1,19 +1,24 @@
-import React, { useCallback, useContext, useMemo } from 'react'
-import SettingsContext from '../../../../contexts/SettingsContext/context'
-import W3iContext from '../../../../contexts/W3iContext/context'
-import { useColorModeValue, useModals } from '../../../../utils/hooks'
-import { unsubscribeModalService } from '../../../../utils/store'
-import Button from '../../../general/Button'
-import CrossIcon from '../../../general/Icon/CrossIcon'
-import { Modal } from '../../../general/Modal/Modal'
+import React, { useCallback, useContext, useMemo, useState } from 'react'
+
+import { useNavigate } from 'react-router-dom'
+
+import Button from '@/components/general/Button'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
+import { Modal } from '@/components/general/Modal/Modal'
+import Spinner from '@/components/general/Spinner'
+import Text from '@/components/general/Text'
+import W3iContext from '@/contexts/W3iContext/context'
+import { useModals } from '@/utils/hooks'
+import { unsubscribeModalService } from '@/utils/store'
+import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
+
 import './UnsubscribeModal.scss'
-import Text from '../../../general/Text'
 
 export const UnsubscribeModal: React.FC = () => {
-  const { mode } = useContext(SettingsContext)
-  const themeColors = useColorModeValue(mode)
-  const { activeSubscriptions, pushClientProxy } = useContext(W3iContext)
+  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const { unsubscribeModalAppId } = useModals()
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const app = useMemo(
     () => activeSubscriptions.find(activeApp => activeApp.topic === unsubscribeModalAppId),
@@ -21,26 +26,34 @@ export const UnsubscribeModal: React.FC = () => {
   )
 
   const handleUnsubscribe = useCallback(async () => {
-    if (pushClientProxy && unsubscribeModalAppId) {
+    setLoading(true)
+    if (notifyClientProxy && unsubscribeModalAppId) {
       try {
-        pushClientProxy.observeOne('notify_delete', {
+        notifyClientProxy.observeOne('notify_delete', {
           next: () => {
             unsubscribeModalService.closeModal()
+            showSuccessMessageToast(
+              `Successfully unsubscribed from ${app ? app.metadata.name : `dapp`}`
+            )
+            setLoading(false)
+            navigate('/notifications/new-app')
           }
         })
-        await pushClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
+        await notifyClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
       } catch (error) {
         console.error(error)
+        showErrorMessageToast(`Unsubscribing failed, please try again`)
+        setLoading(false)
       }
     }
-  }, [pushClientProxy, unsubscribeModalAppId])
+  }, [notifyClientProxy, unsubscribeModalAppId])
 
   if (!app) {
     return null
   }
 
   return (
-    <Modal onToggleModal={unsubscribeModalService.toggleModal}>
+    <Modal onCloseModal={unsubscribeModalService.closeModal}>
       <div className="UnsubscribeModal">
         <div className="UnsubscribeModal__header">
           <Text variant="paragraph-600">Unsubscribe</Text>
@@ -49,7 +62,7 @@ export const UnsubscribeModal: React.FC = () => {
           </button>
         </div>
         <div className="UnsubscribeModal__hero">
-          <img src={app.metadata.icons[0]} alt="logo" />
+          <img src={app?.metadata?.icons?.[0] || '/fallback.svg'} alt="logo" />
         </div>
         <div className="UnsubscribeModal__content">
           <div className="UnsubscribeModal__content__title">
@@ -57,10 +70,10 @@ export const UnsubscribeModal: React.FC = () => {
           </div>
           <div className="UnsubscribeModal__content__helper-text">
             <Text variant="small-500">
-              You will stop receiving all notifications from {app.metadata.name} on the web inbox
-              and in your wallet.
+              You will stop receiving all notifications from {app.metadata.name} on the Web3Inbox
+              and connected wallets.
               <br />
-              You can re-subscribe later
+              You can re-subscribe at any time later.
             </Text>
           </div>
         </div>
@@ -69,7 +82,7 @@ export const UnsubscribeModal: React.FC = () => {
           className="UnsubscribeModal__action"
           onClick={handleUnsubscribe}
         >
-          <Text variant="small-600">Disable Notifications</Text>
+          {loading ? <Spinner /> : <Text variant="small-600">Unsubscribe</Text>}
         </Button>
       </div>
     </Modal>

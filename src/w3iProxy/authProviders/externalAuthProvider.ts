@@ -1,5 +1,6 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import type { EventEmitter } from 'events'
+
 import { AndroidCommunicator } from '../externalCommunicators/androidCommunicator'
 import type { ExternalCommunicator } from '../externalCommunicators/communicatorType'
 import { IOSCommunicator } from '../externalCommunicators/iosCommunicator'
@@ -14,6 +15,7 @@ export default class ExternalAuthProvider {
   private readonly methodsListenedTo = ['auth_set_account']
 
   private account?: string
+  private chain?: string
 
   public constructor(emitter: EventEmitter, name: string) {
     this.emitter = emitter
@@ -49,11 +51,19 @@ export default class ExternalAuthProvider {
     }
   }
 
+  public getChain() {
+    return this.chain
+  }
+
   public getAccount() {
     return this.account
   }
 
   public setAccount(account: string) {
     this.account = account
+  }
+
+  public setChain(chain: string) {
+    this.chain = chain
   }
 }

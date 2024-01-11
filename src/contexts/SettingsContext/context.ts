@@ -1,9 +1,12 @@
 import { createContext } from 'react'
 
+import { noop } from '@/utils/general'
+
 export interface SettingsContextUpdate {
   mode?: 'dark' | 'light' | 'system'
   newContacts?: 'accept-new' | 'reject-new' | 'require-invite'
   isDevModeEnabled?: boolean
+  filterAppDomain?: string
 }
 
 export type SettingsContextSimpleState = Required<SettingsContextUpdate>
@@ -16,8 +19,8 @@ const SettingsContext = createContext<SettingsContextState>({
   mode: 'light',
   newContacts: 'require-invite',
   isDevModeEnabled: true,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  updateSettings: () => {}
+  updateSettings: noop,
+  filterAppDomain: ''
 })
 
 export default SettingsContext

@@ -4,7 +4,9 @@
   gap: 1em;
   border-radius: 15px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 6px 14px -6px rgba(0, 0, 0, 0.12), 0px 10px 32px -4px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0px 6px 14px -6px rgba(0, 0, 0, 0.12),
+    0px 10px 32px -4px rgba(0, 0, 0, 0.1);
   flex-direction: column;
   color: var(--fg-color-1);
 

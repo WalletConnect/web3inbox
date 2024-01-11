@@ -4,15 +4,15 @@
   position: relative;
   border-radius: 50%;
   box-sizing: content-box;
-  transition: 250ms all ease-in-out;
+  transition: filter 0.2s linear;
 
   &:hover {
-    filter: contrast(1.25);
+    filter: contrast(1.15);
   }
 
   &__container {
     border-radius: 50%;
-    border: 1px solid var(--fg-color-3);
+    box-shadow: inset 0 0 0 1px var(--border-color-2);
     background: radial-gradient(
       75.29% 75.29% at 64.96% 24.36%,
       #fff 0.52%,
@@ -23,6 +23,7 @@
       var(--local-color-4) 100%
     );
   }
+
   &__icon {
     border-radius: 50%;
   }

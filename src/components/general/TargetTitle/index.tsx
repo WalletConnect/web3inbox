@@ -1,6 +1,8 @@
 import React from 'react'
+
 import type { NavLinkProps } from 'react-router-dom'
 import { NavLink as RouterNavLink } from 'react-router-dom'
+
 import './TargetTitle.scss'
 
 interface ITargetTitle extends NavLinkProps {

@@ -1,24 +1,37 @@
-import { getAccount, watchAccount } from '@wagmi/core'
+import { getAccount, getNetwork, watchAccount, watchNetwork } from '@wagmi/core'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import type { EventEmitter } from 'events'
+
+import { getEIPChainString } from '@/utils/chain'
 
 export default class InternalAuthProvider {
   private readonly methodsListenedTo = ['auth_set_account']
   public providerName = 'InternalAuthProvider'
-  public account?: string
+  public account?: string = getAccount().address
+  public chain?: string = getEIPChainString(getNetwork().chain?.id)
   protected readonly emitter: EventEmitter
 
   public constructor(emitter: EventEmitter, _name = 'InternalAuthProvider') {
     this.emitter = emitter
+
+    watchNetwork(network => {
+      const caip10Chain = getEIPChainString(getNetwork().chain?.id)
+      this.chain = caip10Chain
+
+      this.emitter.emit('auth_set_account', { account: this.account, chain: caip10Chain })
+    })
+
     watchAccount(account => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!account.address || !window.web3inbox.chat) {
-        this.emitter.emit('auth_set_account', { account: null })
+      if (!account.address) {
+        this.emitter.emit('auth_set_account', { account: null, chain: null })
 
         return
       }
 
-      this.emitter.emit('auth_set_account', { account: account.address })
+      const caip10Chain = getEIPChainString(getNetwork().chain?.id)
+      this.emitter.emit('auth_set_account', { account: account.address, chain: caip10Chain })
+      this.chain = caip10Chain
       this.account = account.address
     })
   }
@@ -41,10 +54,14 @@ export default class InternalAuthProvider {
   public async initState() {
     this.account = getAccount().address
     if (this.account) {
-      this.emitter.emit('auth_set_account', { account: this.account })
+      this.emitter.emit('auth_set_account', { account: this.account, chain: this.chain })
     }
 
     return Promise.resolve()
+  }
+
+  public getChain() {
+    return this.chain
   }
 
   public getAccount() {
@@ -53,5 +70,9 @@ export default class InternalAuthProvider {
 
   public setAccount(account: string) {
     this.account = account
+  }
+
+  public setChain(chain: string) {
+    this.chain = chain
   }
 }

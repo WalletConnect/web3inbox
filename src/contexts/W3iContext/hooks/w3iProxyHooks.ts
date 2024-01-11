@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
 import Web3InboxProxy from '../../../w3iProxy'
 import { useDappOrigin } from './dappOrigin'
 import { useProviderQueries } from './providerQueryHooks'
@@ -13,18 +14,13 @@ export const useW3iProxy = () => {
   const { uiEnabled } = useUiState()
   const [ready, setReady] = useState(false)
   const { dappOrigin } = useDappOrigin()
-  const { chatProvider, pushProvider, authProvider } = useProviderQueries()
+  const { notifyProvider, authProvider } = useProviderQueries()
 
   const [w3iProxy] = useState(
-    Web3InboxProxy.getProxy(
-      chatProvider,
-      pushProvider,
-      authProvider,
-      dappOrigin,
-      projectId,
-      relayUrl,
-      uiEnabled
-    )
+    Web3InboxProxy.getProxy(notifyProvider, authProvider, dappOrigin, projectId, relayUrl, {
+      ...uiEnabled,
+      chat: false
+    })
   )
 
   useEffect(() => {
@@ -34,7 +30,9 @@ export const useW3iProxy = () => {
     if (!w3iProxy.getInitComplete()) {
       w3iProxy
         .init()
-        .then(() => setReady(true))
+        .then(() => {
+          setReady(true)
+        })
         .catch(error => {
           console.error('w3iProxy failed to initialize: ', error)
         })

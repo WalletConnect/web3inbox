@@ -6,13 +6,15 @@
   gap: 11px;
   align-self: flex-start;
   width: 100%;
+  padding: 1rem 1.5rem;
+
   @media only screen and (max-width: 700px) {
     display: none;
   }
 
   &__wrapper {
     display: flex;
-    gap: 8px;
+    gap: 0.3em;
     align-items: center;
   }
 
@@ -39,6 +41,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 0.5rem;
   }
   &__secondary__actions {
     display: flex;
@@ -51,6 +54,7 @@
     }
   }
   &__app {
+    flex: 1;
     display: flex;
     align-items: center;
     gap: 0.5em;
@@ -67,6 +71,19 @@
       font-weight: 500;
       line-height: 130%;
       letter-spacing: -0.32px;
+
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+    }
+    &__description {
+      color: var(--fg-color-2);
+
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
     }
   }
   &__actions {

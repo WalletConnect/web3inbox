@@ -1,9 +1,11 @@
 import { useContext, useMemo } from 'react'
+
 import type { DropdownIndicatorProps } from 'react-select'
 import { components } from 'react-select'
-import ChevronDarkIcon from '../../../assets/ChevronDark.svg'
-import ChevronLightIcon from '../../../assets/ChevronLight.svg'
-import SettingsContext from '../../../contexts/SettingsContext/context'
+
+import ChevronDarkIcon from '@/assets/ChevronDark.svg'
+import ChevronLightIcon from '@/assets/ChevronLight.svg'
+import SettingsContext from '@/contexts/SettingsContext/context'
 
 const DropdownIndicator = (props: DropdownIndicatorProps<{ label: string; value: string }>) => {
   const { mode } = useContext(SettingsContext)

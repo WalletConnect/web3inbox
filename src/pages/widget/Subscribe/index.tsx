@@ -1,17 +1,20 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+
 import { EventEmitter } from 'events'
-import Button from '../../../components/general/Button'
-import W3iContext from '../../../contexts/W3iContext/context'
-import W3iBellIcon from '../../../assets/W3iBell.svg'
+import { useNavigate } from 'react-router-dom'
+
+import W3iBellIcon from '@/assets/W3iBell.svg'
+import Button from '@/components/general/Button'
+import Spinner from '@/components/general/Spinner'
+import W3iContext from '@/contexts/W3iContext/context'
+import { showErrorMessageToast } from '@/utils/toasts'
+import { JsCommunicator } from '@/w3iProxy/externalCommunicators/jsCommunicator'
+
 import './Subscribe.scss'
-import { showErrorMessageToast } from '../../../utils/toasts'
-import Spinner from '../../../components/general/Spinner'
-import { JsCommunicator } from '../../../w3iProxy/externalCommunicators/jsCommunicator'
 
 const WidgetSubscribe: React.FC = () => {
   const {
-    pushClientProxy,
+    notifyClientProxy,
     userPubkey,
     dappOrigin,
     dappIcon,
@@ -25,7 +28,7 @@ const WidgetSubscribe: React.FC = () => {
   const [isSubscribing, setIsSubscribing] = useState(false)
 
   const handleOnSubscribe = useCallback(async () => {
-    if (!pushClientProxy || !userPubkey) {
+    if (!notifyClientProxy || !userPubkey) {
       return
     }
 
@@ -35,8 +38,8 @@ const WidgetSubscribe: React.FC = () => {
        * Not setting isLoading to false as it will transition to a different page once subscription is
        * done.
        */
-      await pushClientProxy.subscribe({
-        account: `eip155:1:${userPubkey}`,
+      await notifyClientProxy.subscribe({
+        account: userPubkey,
         appDomain: new URL(dappOrigin).host
       })
     } catch (error) {
@@ -44,7 +47,7 @@ const WidgetSubscribe: React.FC = () => {
     } finally {
       setIsSubscribing(false)
     }
-  }, [pushClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
+  }, [notifyClientProxy, dappOrigin, dappIcon, dappName, dappNotificationDescription, userPubkey])
 
   useEffect(() => {
     const dappSub = activeSubscriptions.find(sub => sub.metadata.appDomain === dappOrigin)
@@ -68,7 +71,7 @@ const WidgetSubscribe: React.FC = () => {
         <h1 className="WidgetSubscribe__title">Notifications from {dappName}</h1>
         <p className="WidgetSubscribe__description">{dappNotificationDescription}</p>
         <Button onClick={handleOnSubscribe} disabled={isSubscribing}>
-          {isSubscribing ? <Spinner width="1em" /> : <span>Enable (Subscribe in Wallet)</span>}
+          {isSubscribing ? <Spinner /> : <span>Enable (Subscribe in Wallet)</span>}
         </Button>
       </div>
     </div>

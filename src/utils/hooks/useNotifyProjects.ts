@@ -1,49 +1,66 @@
 import { useContext, useEffect, useState } from 'react'
-import SettingsContext from '../../contexts/SettingsContext/context'
-import type { INotifyApp, INotifyProject } from '../types'
+
+import { COMING_SOON_PROJECTS } from '@/constants/projects'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import { fetchDomainProjects, fetchFeaturedProjects } from '@/utils/projects'
+import type { INotifyApp, INotifyProject, INotifyProjectWithComingSoon } from '@/utils/types'
 
 const useNotifyProjects = () => {
+  const [loading, setLoading] = useState(false)
   const [projects, setProjects] = useState<INotifyApp[]>([])
-  const { isDevModeEnabled } = useContext(SettingsContext)
+  const { filterAppDomain } = useContext(SettingsContext)
 
   useEffect(() => {
     const fetchNotifyProjects = async () => {
-      const explorerApiBaseUrl: string = import.meta.env.VITE_EXPLORER_API_URL
-      const projectId: string = import.meta.env.VITE_PROJECT_ID
+      setLoading(true)
 
-      const explorerUrl = `${explorerApiBaseUrl}/w3i/v1/projects?projectId=${projectId}&is_verified=${
-        isDevModeEnabled ? 'false' : 'true'
-      }`
-      const allProjectsRawRes = await fetch(explorerUrl)
-      const allNotifyProjectsRes = await allProjectsRawRes.json()
+      try {
+        const { data: featuredProjects } = await fetchFeaturedProjects<INotifyProject[]>()
+        const { data: domainProject } = await fetchDomainProjects<INotifyProject>(filterAppDomain)
 
-      const notifyProjects: Omit<INotifyProject, 'app'>[] = Object.values(
-        allNotifyProjectsRes.projects
-      )
-      const notifyApps: INotifyApp[] = notifyProjects.map(
-        ({
-          id,
-          name,
-          description,
-          dapp_url,
-          image_url,
-          metadata
-        }: Omit<INotifyProject, 'app'>) => ({
-          id,
-          name,
-          description,
-          url: dapp_url,
-          icons: [image_url.md],
-          colors: metadata?.colors
-        })
-      )
+        const allProjects: INotifyProjectWithComingSoon[] = featuredProjects.map(item => ({
+          ...item,
+          is_coming_soon: false
+        }))
 
-      setProjects(notifyApps)
+        const haveDevProject = allProjects.some(
+          ({ id }: INotifyProjectWithComingSoon) => id === domainProject?.id
+        )
+
+        if (!haveDevProject && domainProject) {
+          allProjects.push(domainProject as INotifyProjectWithComingSoon)
+        }
+
+        const notifyApps: INotifyApp[] = allProjects
+          // Lower order indicates higher priority, thus sorting ascending
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+          .map((item: INotifyProjectWithComingSoon) => ({
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            url: item.dapp_url,
+            icon: item.image_url?.md ?? '/fallback.svg',
+            colors: item.metadata?.colors,
+            isVerified: item.is_verified || item.isVerified ? true : false,
+            isFeatured: item.is_featured,
+            isComingSoon: item.is_coming_soon
+          }))
+          .filter(app => Boolean(app.name))
+
+        notifyApps.concat(COMING_SOON_PROJECTS)
+
+        setLoading(false)
+        setProjects(notifyApps)
+      } catch (error) {
+        setLoading(false)
+        setProjects([])
+      }
     }
-    fetchNotifyProjects()
-  }, [isDevModeEnabled, setProjects])
 
-  return projects
+    fetchNotifyProjects()
+  }, [setProjects, filterAppDomain])
+
+  return { projects, loading }
 }
 
 export default useNotifyProjects

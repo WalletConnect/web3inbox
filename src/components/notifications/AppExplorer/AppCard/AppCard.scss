@@ -1,22 +1,63 @@
 .AppCard {
   padding: 2rem;
+  background: white;
   border-radius: 1.875em;
+  position: relative;
   text-decoration: none;
   height: fit-content;
   outline: 1px solid rgba(0, 0, 0, 0.1);
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
-    radial-gradient(
-      140.74% 145.41% at 7.1% 2.28%,
-      var(--local-bg-color) 0%,
-      rgba(255, 255, 255, 0) 80%
-    );
+  overflow: hidden;
+
+  & .mobile {
+    display: none;
+  }
 
   @media only screen and (max-width: 700px) {
+    & .mobile {
+      display: flex;
+    }
+
     border-radius: 0.75rem;
     padding: 1rem;
   }
 
-  &__mobile__button {
+  // Blur out the image from the top left, ending to 75% of the width/height of the image
+  &__background {
+    /* Explicitly specify a 0 z-index to allow the other components to have a higher index and
+     * show over the background gradient. The reason this is not a negative index is to overlay the white
+     * background of AppCard
+     */
+    z-index: 0;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: -50px -50px;
+    background-size: 80%;
+    overflow: hidden;
+    filter: blur(32px) saturate(1.2);
+    opacity: 0.15;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__mobile__button__subscribe {
+    z-index: 1;
+    &:disabled {
+      background-color: var(--accent-color-1) !important;
+
+      .Spinner {
+        circle {
+          stroke: white;
+        }
+      }
+    }
+  }
+
+  &__mobile__button__subscribed,
+  &__mobile__button__subscribe {
+    min-width: 84px;
+    height: 28px;
     @media only screen and (min-width: 700px) {
       display: none;
     }
@@ -30,12 +71,42 @@
     @media only screen and (max-width: 700px) {
       align-items: center;
     }
+
     &__logo {
-      border-radius: 50%;
+      border-radius: 2em;
       width: 3.75em;
       height: 3.75em;
+      overflow: visible;
       margin-bottom: 0.75em;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      position: relative;
+
+      &::after {
+        border-radius: 2em;
+        box-shadow: inset 0 0 0 1px var(--border-color-2);
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      img:not(.AppCard__header__logo__dev-icon) {
+        border-radius: 2em;
+        width: 100%;
+        height: 100%;
+      }
+
+      &__dev-icon {
+        width: 1.125rem;
+        height: 1.125rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+        background-color: white;
+        border-radius: 1rem;
+      }
 
       @media only screen and (max-width: 700px) {
         width: 3rem;
@@ -43,6 +114,7 @@
         margin-bottom: 0px;
       }
     }
+
     &__link-icon {
       width: 0.67em;
       height: 0.67em;
@@ -52,6 +124,8 @@
   &__body {
     display: flex;
     justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 1;
     flex-direction: column;
     color: var(--fg-color-1);
 
@@ -62,10 +136,10 @@
     &__title {
       display: flex;
       align-items: center;
-      gap: 0.3125rem;
+      gap: 0.5rem;
 
       @media only screen and (max-width: 700px) {
-        span {
+        span:not(.Badge > span) {
           font-size: 16px;
           font-style: normal;
           font-weight: 600;
@@ -92,7 +166,7 @@
 
     &__description {
       color: var(--fg-color-1);
-      margin-top: 1rem;
+      margin: 1rem 0 1.5rem 0;
 
       @media only screen and (max-width: 700px) {
         margin-top: 0.75rem;
@@ -105,15 +179,82 @@
       }
     }
 
+    &__subscribed,
     &__subscribe {
+      padding: 7px 12px;
+      border-radius: 1rem;
+      height: 2rem;
+      border: none;
+      width: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      z-index: 1;
+      cursor: pointer;
+      transition:
+        background 200ms linear,
+        box-shadow 200ms linear,
+        color 200ms linear;
+      will-change: background-color, box-shadow, color;
+      outline: none;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+
       @media only screen and (max-width: 700px) {
         display: none;
       }
-      min-width: 84px;
-      width: max-content;
-      margin-top: 1.5rem;
-      cursor: pointer;
-      height: 28px;
+    }
+
+    &__subscribe {
+      background: #1b2045;
+      color: var(--light-inverse);
+
+      &:hover,
+      &:focus-visible {
+        background: black;
+      }
+
+      & svg {
+        width: 0.75rem;
+        color: var(--light-inverse);
+      }
+    }
+
+    &__subscribed {
+      box-shadow: inset 0 0 0 1px #1b2045;
+      background: transparent;
+      color: #1b2045;
+
+      & svg {
+        width: 0.75rem;
+        color: #1b2045;
+      }
+
+      &:not(:disabled) {
+        &:hover,
+        &:focus-visible {
+          box-shadow: inset 0 0 0 2px black;
+          color: black;
+
+          & svg {
+            width: 0.75rem;
+            color: black;
+          }
+        }
+      }
+    }
+  }
+
+  &__coming-soon {
+    .AppCard__body__description {
+      margin-bottom: 0rem;
     }
   }
 }

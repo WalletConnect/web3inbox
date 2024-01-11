@@ -1,21 +1,25 @@
-import { fetchEnsAddress } from '@wagmi/core'
 import React, { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import SettingsContext from '../../../contexts/SettingsContext/context'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { isValidAddressOrEnsDomain, isValidEnsDomain } from '../../../utils/address'
-import { useColorModeValue, useIsMobile } from '../../../utils/hooks'
-import BackButton from '../../general/BackButton'
-import Button from '../../general/Button'
-import SendIcon from '../../general/Icon/SendIcon'
-import Input from '../../general/Input'
-import MobileHeading from '../../layout/MobileHeading'
-import SearchSuggestions from './SearchSuggestions'
+
+import { fetchEnsAddress } from '@wagmi/core'
 import debounce from 'lodash.debounce'
-import './NewChat.scss'
-import { truncate } from '../../../utils/string'
-import QrIcon from '../../../assets/QrCodeScan.svg'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { showErrorMessageToast } from '../../../utils/toasts'
+
+import QrIcon from '@/assets/QrCodeScan.svg'
+import BackButton from '@/components/general/BackButton'
+import Button from '@/components/general/Button'
+import SendIcon from '@/components/general/Icon/SendIcon'
+import Input from '@/components/general/Input'
+import MobileHeading from '@/components/layout/MobileHeading'
+import SettingsContext from '@/contexts/SettingsContext/context'
+import W3iContext from '@/contexts/W3iContext/context'
+import { isValidAddressOrEnsDomain, isValidEnsDomain } from '@/utils/address'
+import { useColorModeValue, useIsMobile } from '@/utils/hooks'
+import { truncate } from '@/utils/string'
+import { showErrorMessageToast } from '@/utils/toasts'
+
+import SearchSuggestions from './SearchSuggestions'
+
+import './NewChat.scss'
 
 const NewChat: React.FC = () => {
   const { chatClientProxy, userPubkey } = useContext(W3iContext)

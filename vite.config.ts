@@ -1,39 +1,40 @@
+import react from '@vitejs/plugin-react'
+import autoprefixer from 'autoprefixer'
+import path from 'path'
 import { defineConfig } from 'vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { VitePWA } from 'vite-plugin-pwa'
 import type { VitePWAOptions } from 'vite-plugin-pwa'
-import react from '@vitejs/plugin-react'
-import autoprefixer from 'autoprefixer'
 
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: 'production',
   base: '/',
   strategies: 'injectManifest',
+  srcDir: 'src',
+  filename: 'main-sw.ts',
+  injectManifest: {
+    injectionPoint: undefined
+  },
   injectRegister: 'inline',
   registerType: 'autoUpdate',
   includeAssets: ['favicon.svg'],
-  injectManifest: {
-    globIgnores: ['*/**.js']
-  },
-  srcDir: 'src',
-  filename: 'main-sw.ts',
   manifest: {
     name: 'Web3Inbox',
     short_name: 'Web3Inbox',
     icons: [
       {
-        src: 'pwa-192x192.png',
-        sizes: '192x192',
+        src: 'pwa-196x196.png',
+        sizes: '196x196',
         type: 'image/png'
       },
       {
-        src: 'pwa-512x512.png',
-        sizes: '512x512',
+        src: 'pwa-270x270.png',
+        sizes: '270x270',
         type: 'image/png'
       },
       {
-        src: 'pwa-512x512.png',
-        sizes: '512x512',
+        src: 'pwa-270x270.png',
+        sizes: '270x270',
         type: 'image/png',
         purpose: 'any maskable'
       }
@@ -48,27 +49,32 @@ const pwaOptions: Partial<VitePWAOptions> = {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  build: {
-    target: 'es2020'
-  },
-  optimizeDeps: {
-    esbuildOptions: {
+export default defineConfig(() => {
+  return {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src')
+      }
+    },
+    build: {
       target: 'es2020'
-    }
-  },
-  plugins: [
-    react(),
-    nodePolyfills({
-      protocolImports: true
-    }),
-    VitePWA({
-      ...pwaOptions
-    })
-  ],
-  css: {
-    postcss: {
-      plugins: [autoprefixer({})]
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        target: 'es2020'
+      }
+    },
+    plugins: [
+      react(),
+      nodePolyfills({
+        protocolImports: true
+      }),
+      VitePWA(pwaOptions)
+    ],
+    css: {
+      postcss: {
+        plugins: [autoprefixer({})]
+      }
     }
   }
 })

@@ -1,15 +1,18 @@
 import { isAddress } from '@ethersproject/address'
 
-export const getEthChainAddress = (address: string) => {
-  return address.split(':')[2] as `0x${string}`
-}
-
-export const formatEthChainsAddress = (address: string | undefined) => {
+export const getEthChainAddress = (address?: string) => {
   if (!address) {
     return ''
   }
+  return address.split(':')[2] as `0x${string}`
+}
 
-  return `eip155:1:${address}`
+export const formatEthChainsAddress = (address?: string, chain?: string) => {
+  if (!address || !chain) {
+    return ''
+  }
+
+  return `${chain}:${address}`
 }
 
 export const isValidEnsDomain = (domain: string) => {
@@ -18,4 +21,8 @@ export const isValidEnsDomain = (domain: string) => {
 
 export const isValidAddressOrEnsDomain = (stringToTest: string) => {
   return isValidEnsDomain(stringToTest) || isAddress(stringToTest)
+}
+
+export const getChain = (address: string) => {
+  return address.split(':').slice(0, 2).join(':')
 }

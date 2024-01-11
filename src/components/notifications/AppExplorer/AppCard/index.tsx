@@ -1,136 +1,150 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import SettingsContext from '../../../../contexts/SettingsContext/context'
+
+import classNames from 'classnames'
+import { useNavigate } from 'react-router-dom'
+
+import SpannerSVG from '@/assets/Spanner.svg'
+import Badge from '@/components/general/Badge'
+import Text from '@/components/general/Text'
+import W3iContext from '@/contexts/W3iContext/context'
+import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
+
+import SubscribeButton from './SubscribeButton'
+
 import './AppCard.scss'
-import Button from '../../../general/Button'
-import W3iContext from '../../../../contexts/W3iContext/context'
-import { showErrorMessageToast, showSuccessMessageToast } from '../../../../utils/toasts'
-import { handleImageFallback } from '../../../../utils/ui'
-import Spinner from '../../../general/Spinner'
-import Text from '../../../general/Text'
-import VerifiedIcon from '../../../general/Icon/VerifiedIcon'
-import CheckMarkIcon from '../../../general/Icon/CheckMarkIcon'
 
 interface AppCardProps {
   name: string
   description: string
+  loadingSubscription: boolean
   logo: string
-  bgColor: {
-    dark: string
-    light: string
-  }
   url: string
+  isVerified?: boolean
+  isComingSoon: boolean
 }
 
-const AppCard: React.FC<AppCardProps> = ({ name, description, logo, bgColor, url }) => {
+const AppCard: React.FC<AppCardProps> = ({
+  description,
+  isComingSoon,
+  isVerified,
+  loadingSubscription,
+  logo,
+  name,
+  url
+}) => {
   const [subscribing, setSubscribing] = useState(false)
-  const { mode } = useContext(SettingsContext)
+  const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
-  const { pushClientProxy, userPubkey, pushProvider } = useContext(W3iContext)
-  const cardBgColor = useMemo(() => {
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    const specifiedMode = mode === 'system' ? systemTheme : mode
-
-    return specifiedMode === 'dark' ? bgColor.dark : bgColor.light
-  }, [mode, bgColor])
-
+  const { notifyClientProxy, userPubkey } = useContext(W3iContext)
   const { activeSubscriptions } = useContext(W3iContext)
 
-  const subscribed = activeSubscriptions.some(element => element.metadata.name === name)
+  const host = new URL(url).host
 
   useEffect(() => {
-    if (ref.current) {
-      ref.current.style.setProperty('--local-bg-color', cardBgColor)
-    }
-  }, [])
+    // If the account changes, the subscribing flow has broken.
+    setSubscribing(false)
+  }, [userPubkey])
+
+  const subscribed =
+    userPubkey &&
+    activeSubscriptions.some(element => {
+      const projectURL = new URL(url)
+      return projectURL.hostname === element.metadata.appDomain
+    })
+  const logoURL = logo || '/fallback.svg'
 
   const handleSubscription = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-      console.log({ userPubkey })
+
       if (!userPubkey) {
         return
       }
+
+      if (subscribing && subscribed) {
+        showSuccessMessageToast(`Subscribed to ${name}`)
+
+        return
+      }
+
       setSubscribing(true)
       try {
-        pushClientProxy?.observeOne('notify_subscription', {
-          next: () => {
-            showSuccessMessageToast(`Subscribed to ${name}`)
-          }
-        })
-
-        await pushClientProxy?.subscribe({
-          account: `eip155:1:${userPubkey}`,
+        await notifyClientProxy?.subscribe({
+          account: userPubkey,
           appDomain: new URL(url).host
         })
       } catch (error) {
-        console.log({ error })
-
-        showErrorMessageToast(`Failed to subscribe to ${name}`)
-      } finally {
         setSubscribing(false)
+        showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
-    [userPubkey, name, description, logo, bgColor, url, setSubscribing]
+    [userPubkey, name, description, logo, url, setSubscribing, subscribed, notifyClientProxy]
   )
 
+  const handleNavigateApp = () => {
+    if (subscribed) {
+      try {
+        const appDomain = new URL(url).host
+        const topic = activeSubscriptions.find(sub => sub.metadata.appDomain === appDomain)?.topic
+        if (topic) {
+          nav(`/notifications/${topic}`)
+        } else {
+          throw new Error(`No matching subscription found to domain, ${appDomain}`)
+        }
+      } catch (e: any) {
+        console.error(`Failed to navigate to app: ${e.message}`)
+      }
+    }
+  }
+
   return (
-    <div ref={ref} className="AppCard" rel="noopener noreferrer">
+    <div
+      ref={ref}
+      className={classNames('AppCard', isComingSoon && 'AppCard__coming-soon')}
+      rel="noopener noreferrer"
+      style={{ cursor: subscribed ? 'pointer' : 'default' }}
+      onClick={handleNavigateApp}
+    >
+      <div className="AppCard__background" style={{ backgroundImage: `url(${logoURL})` }} />
       <div className="AppCard__header">
-        <img
-          className="AppCard__header__logo"
-          src={logo}
-          alt={`${name} logo`}
-          onError={handleImageFallback}
-        />
-        {subscribed ? (
-          <>
-            <Button disabled className="AppCard__mobile__button">
-              Subscribed
-              <CheckMarkIcon />
-            </Button>
-          </>
+        <div className="AppCard__header__logo">
+          <img src={logo || '/fallback.svg'} alt={`${name} logo`} />
+          {!isVerified && !isComingSoon ? (
+            <img src={SpannerSVG} className="AppCard__header__logo__dev-icon" alt="Dev mode icon" />
+          ) : null}
+        </div>
+        {isComingSoon ? (
+          <Badge variant="outline">Coming soon</Badge>
         ) : (
-          <Button
-            disabled={subscribing}
-            className="AppCard__mobile__button"
-            onClick={e => {
-              handleSubscription(e)
-            }}
-          >
-            {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
-          </Button>
+          <SubscribeButton
+            className="mobile"
+            subscribed={Boolean(subscribed)}
+            subscribing={subscribing}
+            onNavigateToApp={handleNavigateApp}
+            onSubscribe={handleSubscription}
+            loading={loadingSubscription}
+          />
         )}
       </div>
       <div className="AppCard__body">
         <div className="AppCard__body__title">
-          <Text className="" variant="large-600">
-            {name}
-          </Text>
-          <VerifiedIcon />
+          <Text variant="large-600">{name}</Text>
+          {!isVerified && !isComingSoon ? <Badge>DEV</Badge> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
-          Official app
+          {host}
         </Text>
         <Text className="AppCard__body__description" variant="paragraph-500">
           {description}
         </Text>
-        {subscribed ? (
-          <>
-            <Button disabled className="AppCard__body__subscribe">
-              Subscribed
-              <CheckMarkIcon />
-            </Button>
-          </>
-        ) : (
-          <Button
-            disabled={subscribing}
-            className="AppCard__body__subscribe"
-            onClick={e => {
-              handleSubscription(e)
-            }}
-          >
-            {subscribing ? <Spinner width="1em" /> : 'Subscribe'}
-          </Button>
+        {isComingSoon ? null : (
+          <SubscribeButton
+            subscribed={Boolean(subscribed)}
+            subscribing={subscribing}
+            onNavigateToApp={handleNavigateApp}
+            onSubscribe={handleSubscription}
+            loading={loadingSubscription}
+          />
         )}
       </div>
     </div>

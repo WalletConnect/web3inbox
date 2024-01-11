@@ -1,28 +1,25 @@
-import cn from 'classnames'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import ArtistPalette from '../../../assets/ArtistPalette.png'
-import ColoredNotificationBell from '../../../assets/ColoredNotificationBell.png'
-import DarkCity from '../../../assets/DarkCity.png'
-import HalfHalfCity from '../../../assets/HalfHalfCity.png'
-import Handshake from '../../../assets/Handshake.png'
-import LightCity from '../../../assets/LightCity.png'
-import MoneyWithWings from '../../../assets/MoneyWithWings.png'
-import type { SettingsContextSimpleState } from '../../../contexts/SettingsContext/context'
-// eslint-disable-next-line no-duplicate-imports
-import SettingsContext from '../../../contexts/SettingsContext/context'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { useIsMobile, useModals } from '../../../utils/hooks'
-import { contactsModalService } from '../../../utils/store'
-import CircleBadge from '../../general/Badge/CircleBadge'
-import ArrowRightIcon from '../../general/Icon/ArrowRightIcon'
-import IconWrapper from '../../general/Icon/IconWrapper/IconWrapper'
-import Radio from '../../general/Radio'
-import ContactsModal from '../ContactsModal'
-import './Settings.scss'
-import Toggle from '../../general/Toggle'
+
 import { useWeb3ModalTheme } from '@web3modal/wagmi/react'
+import cn from 'classnames'
 import { useLocation } from 'react-router-dom'
-import MobileHeader from '../../layout/MobileHeader'
+
+import ArtistPalette from '@/assets/ArtistPalette.png'
+import ColoredNotificationBell from '@/assets/ColoredNotificationBell.png'
+import DarkCity from '@/assets/DarkCity.png'
+import HalfHalfCity from '@/assets/HalfHalfCity.png'
+import Handshake from '@/assets/Handshake.png'
+import LightCity from '@/assets/LightCity.png'
+import IconWrapper from '@/components/general/Icon/IconWrapper/IconWrapper'
+import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/context'
+// eslint-disable-next-line no-duplicate-imports
+import SettingsContext from '@/contexts/SettingsContext/context'
+import W3iContext from '@/contexts/W3iContext/context'
+import { useIsMobile, useModals } from '@/utils/hooks'
+
+import ContactsModal from '../ContactsModal'
+
+import './Settings.scss'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
   { id: 'light', icon: LightCity },
@@ -52,7 +49,7 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
 const Settings: React.FC = () => {
   const { mode, newContacts, isDevModeEnabled, updateSettings } = useContext(SettingsContext)
   const { isContactModalOpen } = useModals()
-  const { chatClientProxy, threads, uiEnabled } = useContext(W3iContext)
+  const { uiEnabled } = useContext(W3iContext)
   const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
   const { pathname } = useLocation()
   const { setThemeMode } = useWeb3ModalTheme()
@@ -71,29 +68,6 @@ const Settings: React.FC = () => {
     },
     [updateSettings]
   )
-
-  useEffect(() => {
-    if (!chatClientProxy || !uiEnabled.chat) {
-      return
-    }
-
-    chatClientProxy.getMutedContacts().then(mContacts => {
-      setMutedContacts(
-        mContacts
-          .filter(mutedContact => {
-            const address = threads.find(t => t.topic === mutedContact)?.peerAccount
-
-            return Boolean(address)
-          })
-          .map(mutedContact => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const address = threads.find(t => t.topic === mutedContact)!.peerAccount
-
-            return { address, topic: mutedContact }
-          })
-      )
-    })
-  }, [chatClientProxy, threads, uiEnabled])
 
   return (
     <div className="Settings">

@@ -1,13 +1,14 @@
 import React from 'react'
-import Card from '../../../../assets/Card.png'
-import Compass from '../../../../assets/Compass.png'
-import EyeSpeechBubble from '../../../../assets/EyeSpeechBubble.png'
-import FramedPicture from '../../../../assets/FramedPicture.png'
-import MoneyWithWings from '../../../../assets/MoneyWithWings.png'
-import SpeechBubble from '../../../../assets/SpeechBubble.png'
-import WavingHand from '../../../../assets/WavingHand.png'
-import type { ISection } from '../../../../utils/types'
-import FeatureInfoBox from '../../../general/FeatureInfoBox'
+
+import Card from '@/assets/Card.png'
+import Compass from '@/assets/Compass.png'
+import EyeSpeechBubble from '@/assets/EyeSpeechBubble.png'
+import FramedPicture from '@/assets/FramedPicture.png'
+import MoneyWithWings from '@/assets/MoneyWithWings.png'
+import SpeechBubble from '@/assets/SpeechBubble.png'
+import WavingHand from '@/assets/WavingHand.png'
+import FeatureInfoBox from '@/components/general/FeatureInfoBox'
+import type { ISection } from '@/utils/types'
 
 const sections: ISection[] = [
   {

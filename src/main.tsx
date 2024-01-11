@@ -1,45 +1,45 @@
 import React from 'react'
+
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { mainnet } from 'wagmi/chains'
-import SettingsContextProvider from './contexts/SettingsContext'
-import W3iContextProvider from './contexts/W3iContext'
-import './index.css'
-import './styles/fonts.css'
-import { AnimatePresence } from 'framer-motion'
-import ConfiguredRoutes from './routes'
+import { WagmiConfig } from 'wagmi'
+import { arbitrum, avalanche, bsc, mainnet, polygon } from 'wagmi/chains'
+
+import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from '@/constants/web3Modal'
+import SettingsContextProvider from '@/contexts/SettingsContext'
+import W3iContextProvider from '@/contexts/W3iContext'
+import ConfiguredRoutes from '@/routes'
+import { polyfill } from '@/utils/polyfill'
+import { initSentry } from '@/utils/sentry'
+
 import { Modals } from './Modals'
-import { initSentry } from './utils/sentry'
-import { polyfill } from './utils/polyfill'
-import { walletConnectProvider } from '@web3modal/wagmi'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { createWeb3Modal, useWeb3ModalTheme } from '@web3modal/wagmi/react'
+
+import './index.css'
 
 polyfill()
 initSentry()
 
 const projectId = import.meta.env.VITE_PROJECT_ID
+const chains = [mainnet, arbitrum, polygon, avalanche, bsc]
 
-const { chains, publicClient } = configureChains([mainnet], [walletConnectProvider({ projectId })])
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors: [
-    new WalletConnectConnector({ options: { projectId, showQrModal: false } }),
-    new InjectedConnector({ options: { shimDisconnect: true } }),
-    new CoinbaseWalletConnector({ options: { appName: 'Web3Inbox' } })
-  ],
-  publicClient
-})
+const metadata = {
+  name: 'Web3Inbox',
+  description: 'Notification Hub',
+  url: 'https://app.web3inbox.com',
+  icons: ['https://app.web3inbox.com/logo.png']
+}
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
 createWeb3Modal({
   wagmiConfig,
-  projectId,
+  enableAnalytics: import.meta.env.PROD,
   chains,
+  projectId,
   themeMode: 'light',
-  themeVariables: { '--w3m-z-index': 9999 }
+  themeVariables: { '--w3m-z-index': 9999 },
+  termsConditionsUrl: TERMS_OF_SERVICE_URL,
+  privacyPolicyUrl: PRIVACY_POLICY_URL
 })
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

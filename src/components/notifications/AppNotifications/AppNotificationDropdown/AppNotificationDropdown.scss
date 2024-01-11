@@ -15,7 +15,6 @@
       gap: 0.5em;
       border: none;
       background: none;
-      color: var(--fg-color-1);
       cursor: pointer;
       transition: background 500ms ease;
       overflow: hidden;
@@ -36,17 +35,23 @@
       svg {
         max-width: none;
         width: 1rem;
-        stroke: #2d3131;
       }
     }
+
+    & button:focus-visible {
+      outline: none;
+      background-color: var(--bg-color-4);
+    }
+
+    & button:not(&__unsubscribe) {
+      color: var(--fg-color-1);
+    }
+
     &__unsubscribe {
+      color: var(--error-color-1);
+
       span {
         color: var(--error-color-1);
-      }
-      svg {
-        path {
-          stroke: var(--error-color-1);
-        }
       }
     }
   }

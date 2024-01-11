@@ -1,14 +1,22 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+
 import { useLocation } from 'react-router-dom'
-import { useDisconnect } from 'wagmi'
-import type Web3InboxProxy from '../../../w3iProxy'
-import type W3iAuthFacade from '../../../w3iProxy/w3iAuthFacade'
+
+import { formatEthChainsAddress, getChain, getEthChainAddress } from '@/utils/address'
+import type Web3InboxProxy from '@/w3iProxy'
+import type W3iAuthFacade from '@/w3iProxy/w3iAuthFacade'
 
 export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [accountQueryParam, setAccountQueryParam] = useState('')
-  const [userPubkey, setUserPubkey] = useState<string | undefined>(undefined)
-  const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(null)
-  const { disconnectAsync: wagmiDisconnect } = useDisconnect()
+
+  const [authClient, setAuthClient] = useState<W3iAuthFacade | null>(w3iProxy.auth)
+
+  const account = authClient?.getAccount()
+  const chain = authClient?.getChain()
+
+  const [userPubkey, setUserPubkey] = useState<string | undefined>(
+    formatEthChainsAddress(account, chain)
+  )
 
   useEffect(() => {
     if (proxyReady) {
@@ -17,12 +25,6 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   }, [w3iProxy, proxyReady])
 
   const { search } = useLocation()
-
-  const disconnect = useCallback(() => {
-    wagmiDisconnect()
-    // TODO: Temp fix until wagmi updates their @walletconnect/ethereum-provider
-    localStorage.removeItem('wc@2:client:0.3//session')
-  }, [wagmiDisconnect])
 
   useEffect(() => {
     const account = new URLSearchParams(search).get('account')
@@ -34,26 +36,30 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
   useEffect(() => {
     if (accountQueryParam && authClient) {
-      authClient.setAccount(accountQueryParam)
+      authClient.updateFullAccount(
+        getChain(accountQueryParam),
+        getEthChainAddress(accountQueryParam)
+      )
     }
-  }, [accountQueryParam, setUserPubkey, authClient])
+  }, [accountQueryParam, authClient])
 
   useEffect(() => {
     const account = authClient?.getAccount()
+    const chain = authClient?.getChain()
     if (account) {
-      setUserPubkey(account)
+      setUserPubkey(formatEthChainsAddress(account, chain))
     }
-  }, [authClient, setUserPubkey])
+  }, [account, chain])
 
   useEffect(() => {
     const sub = authClient?.observe('auth_set_account', {
-      next: ({ account }) => {
-        setUserPubkey(account)
+      next: ({ account, chain }) => {
+        setUserPubkey(formatEthChainsAddress(account, chain))
       }
     })
 
     return () => sub?.unsubscribe()
-  }, [authClient, setUserPubkey])
+  }, [authClient, userPubkey])
 
-  return { userPubkey, setUserPubkey, disconnect }
+  return { userPubkey, setUserPubkey }
 }

@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-width: 17.5em;
 
   &__mobile-header {
     display: flex;
@@ -29,6 +28,10 @@
     border: solid 1px var(--accent-color-1);
     padding: 0.5em 0.5em;
   }
+  &__empty__message {
+    color: var(--fg-color-2);
+    padding: 0.5rem 0.75rem;
+  }
 
   .App,
   .Input {
@@ -42,8 +45,8 @@
     gap: 1.5rem;
 
     @media only screen and (max-width: 700px) {
-      margin-top: 0px;
       gap: 1.25rem;
+      padding-bottom: 10%;
     }
   }
 
@@ -55,9 +58,9 @@
     .Label {
       padding: 0px 0.75rem;
 
-      @media only screen and (max-width: 700px) {
-        padding: 0 1.25rem;
-      }
+      // @media only screen and (max-width: 700px) {
+      //   padding: 0 1.25rem;
+      // }
     }
   }
 
@@ -130,6 +133,11 @@
     }
 
     &__title {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+
       @media only screen and (max-width: 700px) {
         font-size: 15px;
         font-style: normal;
@@ -160,31 +168,89 @@
       padding: 1rem 1rem 1rem 1rem;
       border-radius: 1em;
       position: relative;
-      transition: all 250ms ease-in-out;
-
-      // on hover when link is not active
-      &:not(.NavLink-active):hover {
-        @media (hover: hover) {
-          background: rgba(51, 150, 255, 0.08);
-        }
-      }
-    }
-
-    &-item {
-      padding: 0.75rem 1rem 0.75rem 0.75rem;
-      border-radius: 1em;
-      position: relative;
-      transition: all 250ms ease-in-out;
+      transition: background-color 0.1s linear;
+      will-change: background-color;
 
       @media only screen and (max-width: 700px) {
         border-radius: 0px;
         padding: 1rem 1.25rem;
       }
 
-      // on hover when link is not active
       &:not(.NavLink-active):hover {
         @media (hover: hover) {
-          background: rgba(51, 150, 255, 0.08);
+          background-color: var(--accent-color-2);
+        }
+      }
+    }
+
+    &-item-skeleton {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      height: 56px;
+      padding: 0.75rem 1rem 0.75rem 0.75rem;
+      border-radius: 1em;
+      position: relative;
+
+      @media only screen and (max-width: 700px) {
+        border-radius: 0px;
+        padding: 1rem 1.25rem;
+      }
+
+      &__icon {
+        animation: var(--pulse);
+        will-change: opacity;
+        background: var(--shimmer-fg);
+        width: 0.75em;
+        height: 0.75em;
+
+        @media only screen and (min-width: 700px) {
+          border-radius: 50%;
+          padding: 0.5em;
+          width: 2em;
+          height: 2em;
+        }
+      }
+
+      &__description {
+        animation: var(--pulse);
+        will-change: opacity;
+        background: var(--shimmer-fg);
+        width: 50%;
+        height: 18px;
+      }
+    }
+
+    @keyframes slideIn {
+      0% {
+        transform: translateX(-10%);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateX(0%);
+        opacity: 1;
+      }
+    }
+
+    &-item-loading-in {
+      animation: slideIn 0.2s ease-in;
+    }
+
+    &-item {
+      padding: 0.75rem 1rem 0.75rem 0.75rem;
+      border-radius: 1em;
+      position: relative;
+      transition: background-color 0.2s linear;
+      will-change: background-color;
+
+      @media only screen and (max-width: 700px) {
+        border-radius: 0px;
+        padding: 1rem 1.25rem;
+      }
+
+      &:not(.NavLink-active):hover {
+        @media (hover: hover) {
+          background-color: var(--accent-color-2);
         }
       }
     }
@@ -202,6 +268,7 @@
     &-icon {
       width: 0.75em;
       height: 0.75em;
+
       @media only screen and (min-width: 700px) {
         background: var(--accent-color-1);
         border-radius: 50%;
@@ -216,13 +283,41 @@
       height: 1.5rem;
     }
 
-    &-logo {
-      border-radius: 50%;
+    &__logo {
+      border-radius: 1em;
       width: 2em;
       height: 2em;
+      position: relative;
+
+      &::after {
+        border-radius: 1em;
+        box-shadow: inset 0 0 0 1px var(--border-color-2);
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      &__image {
+        width: 100%;
+        height: 100%;
+        border-radius: 1em;
+      }
+
       @media only screen and (max-width: 700px) {
+        border-radius: 1.5em;
         width: 3rem;
         height: 3rem;
+
+        &__image {
+          border-radius: 1.5em;
+        }
+
+        &::after {
+          border-radius: 1.5rem;
+        }
       }
     }
   }

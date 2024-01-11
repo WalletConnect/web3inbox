@@ -1,0 +1,23 @@
+.Badge {
+  border-radius: 0.25rem;
+  background-color: rgba(27, 32, 70, 0.4);
+  padding: 0.125rem 0.25rem;
+  box-sizing: border-box;
+  height: 18px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    margin: 0px;
+    padding: 0px;
+    line-height: 13px;
+  }
+
+  &.outline {
+    background-color: transparent;
+    border: 1px solid #1b2045;
+    color: #1b2045;
+  }
+}

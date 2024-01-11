@@ -4,12 +4,10 @@
   color: var(--fg-color-1);
   border-radius: 16px;
   border: 1px solid var(--border-color-2);
-  background: var(--light-overlay-002, rgba(6, 43, 43, 0.02));
+  background: var(--light-overlay-002);
   padding: 0.25rem 0.875rem;
 
   &__textarea {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
-      Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     font-size: 15px;
     font-style: normal;
     font-weight: 510;

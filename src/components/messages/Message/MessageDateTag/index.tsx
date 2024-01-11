@@ -1,7 +1,10 @@
-import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
 import { useMemo } from 'react'
+
+import { format, isSameWeek, isToday, isYesterday } from 'date-fns'
+
+import Text from '@/components/general/Text'
+
 import './MessageDateTag.scss'
-import Text from '../../../general/Text'
 
 interface IMessageDateTagProps {
   timestamp: number

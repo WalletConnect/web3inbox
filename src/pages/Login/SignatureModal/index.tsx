@@ -1,40 +1,42 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import Button from '../../../components/general/Button'
-import { Modal } from '../../../components/general/Modal/Modal'
-import { signatureModalService } from '../../../utils/store'
+import React, { useCallback } from 'react'
+
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import { useDisconnect } from 'wagmi'
+
+import Button from '@/components/general/Button'
+import CrossIcon from '@/components/general/Icon/CrossIcon'
+import SignatureIcon from '@/components/general/Icon/SignatureIcon'
+import Wallet from '@/components/general/Icon/Wallet'
+import { Modal } from '@/components/general/Modal/Modal'
+import Text from '@/components/general/Text'
+import { useModals } from '@/utils/hooks'
+import { signatureModalService } from '@/utils/store'
+
+import { SignatureLoadingVisual } from './SignatureLoadingVisual'
+
 import './SignatureModal.scss'
-import CheckIcon from '../../../components/general/Icon/CheckIcon'
-import Spinner from '../../../components/general/Spinner'
-import CrossIcon from '../../../components/general/Icon/CrossIcon'
-import W3iContext from '../../../contexts/W3iContext/context'
-import Text from '../../../components/general/Text'
-import SignatureIcon from '../../../components/general/Icon/SignatureIcon'
 
 export const SignatureModal: React.FC<{
   message: string
-  sender: 'chat' | 'push'
+  sender: 'chat' | 'notify'
 }> = ({ message, sender }) => {
-  const { disconnect } = useContext(W3iContext)
-  const purpose: 'identity' | 'sync' = message.includes('did:key') ? 'identity' : 'sync'
   /*
    * If identity was already signed, and sync was requested then we are in the
    * final step.
    */
-  const [signing, setSigning] = useState(false)
+  const { isSigning } = useModals()
+  const { disconnect } = useDisconnect()
 
   const onSign = useCallback(() => {
-    setSigning(true)
+    signatureModalService.startSigning()
     window.web3inbox
       .signMessage(message)
       .then(signature => {
         switch (sender) {
           case 'chat':
-            window.web3inbox.chat.postMessage(
-              formatJsonRpcRequest('chat_signature_delivered', { signature })
-            )
+            console.warn('[Web3Inbox] Signing messages for chat is not supported.')
             break
-          case 'push':
+          case 'notify':
             window.web3inbox.notify.postMessage(
               formatJsonRpcRequest('notify_signature_delivered', { signature })
             )
@@ -44,30 +46,27 @@ export const SignatureModal: React.FC<{
         }
       })
       .catch(() => {
-        setSigning(false)
+        signatureModalService.stopSigning()
       })
-      .finally(() => setSigning(false))
-  }, [message, sender, setSigning])
-
-  // Modal is ready to sign when given a new purpose
-  useEffect(() => {
-    setTimeout(() => {
-      setSigning(false)
-    }, 0)
-  }, [purpose, setSigning])
-
-  const purposeMessage =
-    purpose === 'identity' ? 'Sign for your identity key.' : 'Sign for syncing capabilities'
+  }, [message, sender])
 
   return (
-    <Modal onToggleModal={signatureModalService.toggleModal}>
+    <Modal onCloseModal={signatureModalService.closeModal}>
       <div className="SignatureModal">
-        <div className="SignatureModal__icon">
-          <SignatureIcon />
+        <div className="SignatureModal__header">
+          <div onClick={() => disconnect()} className="SignatureModal__exit">
+            <CrossIcon />
+          </div>
         </div>
-
+        {isSigning ? (
+          <SignatureLoadingVisual />
+        ) : (
+          <div className="SignatureModal__icon">
+            <SignatureIcon />
+          </div>
+        )}
         <Text className="SignatureModal__title" variant="large-600">
-          {signing ? 'Requesting sign-in' : 'Sign in to enable notifications'}
+          {isSigning ? 'Requesting sign-in' : 'Sign in to enable notifications'}
         </Text>
         <Text className="SignatureModal__url" variant="small-400">
           app.web3inbox.com
@@ -76,8 +75,13 @@ export const SignatureModal: React.FC<{
           To fully use Web3Inbox, please sign into app.web3inbox.com with your wallet.
         </Text>
         <div className="SignatureModal__button">
-          <Button disabled={signing} onClick={onSign}>
-            {signing ? <Spinner width="1em" /> : 'Sign in with wallet'}
+          <Button
+            disabled={isSigning}
+            textVariant="paragraph-600"
+            rightIcon={isSigning ? null : <Wallet />}
+            onClick={onSign}
+          >
+            {isSigning ? 'Waiting for wallet...' : 'Sign in with wallet'}
           </Button>
         </div>
       </div>

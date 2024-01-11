@@ -27,7 +27,11 @@ export interface INotifyProject {
   app: {
     browser: string
   }
-  image_url: {
+  isVerified?: boolean
+  is_verified?: boolean
+  is_featured: boolean
+  order: number | null
+  image_url?: {
     sm: string
     md: string
     lg: string
@@ -37,11 +41,18 @@ export interface INotifyProject {
     colors: { primary?: string; secondary?: string }
   }
 }
+
+export interface INotifyProjectWithComingSoon extends INotifyProject {
+  is_coming_soon: boolean
+}
+
 export interface INotifyApp {
   id: string
   name: string
   description: string
   url: string
-  icons: string[]
-  colors?: { primary?: string; secondary?: string }
+  icon: string
+  isVerified: boolean
+  isFeatured: boolean
+  isComingSoon: boolean
 }

@@ -1,5 +1,6 @@
-import { EventEmitter } from 'events'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
+import { EventEmitter } from 'events'
+
 import ExternalAuthProvider from './authProviders/externalAuthProvider'
 import InternalAuthProvider from './authProviders/internalAuthProvider'
 import type { AuthFacadeEvents } from './authProviders/types'
@@ -42,14 +43,26 @@ class W3iAuthFacade {
     await internalProvider.initState()
   }
 
+  public getChain() {
+    return this.provider.getChain()
+  }
+
   public getAccount() {
     return this.provider.getAccount()
   }
 
+  public updateFullAccount(account: string, chain: string) {
+    this.provider.setAccount(account)
+    this.provider.setChain(chain)
+    this.emitter.emit('auth_set_account', { account, chain })
+  }
+
   public setAccount(account: string) {
     this.provider.setAccount(account)
+  }
 
-    this.emitter.emit('auth_set_account', { account })
+  public setChain(chain: string) {
+    this.provider.setChain(chain)
   }
 
   public get observe() {

@@ -1,18 +1,21 @@
-import ExplorerIcon from '../../../../assets/Explorer.svg'
-import { useIsMobile, useSearch } from '../../../../utils/hooks'
-import { appSearchService } from '../../../../utils/store'
-import Search from '../../../general/Search'
-import Select from '../../../general/Select/Select'
-import MobileHeading from '../../../layout/MobileHeading'
+import ExplorerIcon from '@/assets/Explorer.svg'
+import Search from '@/components/general/Search'
+import Select from '@/components/general/Select/Select'
+import MobileHeading from '@/components/layout/MobileHeading'
+import { useIsMobile, useSearch } from '@/utils/hooks'
+import { appSearchService } from '@/utils/store'
+
 import './AppExplorerHeader.scss'
 
 const AppExplorerHeader = () => {
   const isMobile = useIsMobile()
   const { isAppSearchOpen } = useSearch()
 
+  function handleSelectExplorer() {}
+
   return isMobile ? (
     <div className="AppExplorerHeader">
-      {!isAppSearchOpen && <MobileHeading>Explore Apps</MobileHeading>}
+      {!isAppSearchOpen && <MobileHeading>Discover Apps</MobileHeading>}
       <Search
         isSearchOpen={isAppSearchOpen}
         closeSearch={appSearchService.closeSearch}
@@ -24,13 +27,13 @@ const AppExplorerHeader = () => {
     <div className="AppExplorerHeader">
       <div className="AppExplorerHeader__title">
         <img src={ExplorerIcon} alt="Compass" />
-        <h1>Explore Apps</h1>
+        <h1>Discover Apps</h1>
       </div>
       <div className="AppExplorerHeader__selector">
         <Select
           name="explorer-selector"
           id="explorer-selector"
-          onChange={console.log}
+          onChange={handleSelectExplorer}
           options={[{ label: 'All', value: 'all' }]}
         />
       </div>

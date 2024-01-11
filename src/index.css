@@ -1,11 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --font-regular: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
 html {
   color-scheme: dark light;
 }
 
 body {
   background: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
-    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  overflow-y: hidden;
+}
+
+body,
+button,
+html,
+input,
+optgroup,
+select,
+textarea {
+  font-family: var(--font-regular);
+}
+
+@media only screen and (max-width: 700px) {
+  body {
+    overflow-y: unset;
+  }
 }
 
 *,
@@ -14,7 +36,10 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font: inherit;
+}
+
+*::selection {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 img,

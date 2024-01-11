@@ -1,17 +1,28 @@
 import React, { useContext, useMemo } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import W3iContext from '../../../contexts/W3iContext/context'
-import { useIsMobile } from '../../../utils/hooks'
-import Avatar from '../../account/Avatar'
-import MessageIcon from '../../general/Icon/MessageIcon'
-import NotificationIcon from '../../general/Icon/NotificationIcon'
-import SettingIcon from '../../general/Icon/SettingIcon'
-import './Sidebar.scss'
-import WalletConnectIcon from '../../general/Icon/WalletConnectIcon'
-import ConnectWalletButton from '../../login/ConnectWalletButton'
 
-const SidebarItem: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <div className="Sidebar__Item">{children}</div>
+import cn from 'classnames'
+import { Link, useLocation } from 'react-router-dom'
+
+import Avatar from '@/components/account/Avatar'
+import MessageIcon from '@/components/general/Icon/MessageIcon'
+import NotificationIcon from '@/components/general/Icon/NotificationIcon'
+import SettingIcon from '@/components/general/Icon/SettingIcon'
+import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
+import ConnectWalletButton from '@/components/login/ConnectWalletButton'
+import W3iContext from '@/contexts/W3iContext/context'
+import { getEthChainAddress } from '@/utils/address'
+import { NAVIGATION } from '@/utils/constants'
+import { useIsMobile } from '@/utils/hooks'
+
+import './Sidebar.scss'
+
+const SidebarItem: React.FC<{ children?: React.ReactNode; isDisabled?: boolean }> = ({
+  children,
+  isDisabled
+}) => {
+  return (
+    <div className={cn('Sidebar__Item', isDisabled && 'Sidebar__Item-disabled')}>{children}</div>
+  )
 }
 
 const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
@@ -19,22 +30,29 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
   const navigationPaths = useMemo(() => pathname.split('/'), [pathname])
   const { userPubkey, uiEnabled } = useContext(W3iContext)
   const isMobile = useIsMobile()
+
   const navItems = useMemo(() => {
     const items: [React.ReactNode, string][] = []
 
     if (uiEnabled.chat) {
-      items.push([<MessageIcon isFilled={pathname.includes('/messages')} />, 'messages'])
+      items.push([
+        <MessageIcon isFilled={pathname.startsWith(NAVIGATION.messages.index)} />,
+        NAVIGATION.messages.index
+      ])
     }
 
     if (uiEnabled.notify) {
       items.push([
-        <NotificationIcon isFilled={pathname.includes('/notifications')} />,
-        'notifications/new-app'
+        <NotificationIcon isFilled={pathname.startsWith(NAVIGATION.notifications.index)} />,
+        NAVIGATION.notifications.index
       ])
     }
 
     if (uiEnabled.settings) {
-      items.push([<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings/appearance'])
+      items.push([
+        <SettingIcon isFilled={pathname.startsWith(NAVIGATION.settings.index)} />,
+        NAVIGATION.settings.index
+      ])
     }
 
     return items
@@ -52,29 +70,34 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
       {!isMobile && (
         <SidebarItem>
           <Link to={`/notifications/new-app`}>
-            <WalletConnectIcon />
+            <img alt="Web3Inbox icon" className="wc-icon" src="/icon.png" />
           </Link>
         </SidebarItem>
       )}
-      {isLoggedIn && (
-        <SidebarItem>
-          <div className="Sidebar__Navigation">
-            {navItems.map(([icon, itemName]) => (
-              <Link className="Sidebar__Navigation__Link" key={itemName} to={`/${itemName}`}>
-                {icon}
-              </Link>
-            ))}
-          </div>
-        </SidebarItem>
-      )}
+      <SidebarItem isDisabled={!isLoggedIn}>
+        <div className="Sidebar__Navigation">
+          {navItems.map(([icon, path]) => (
+            <Link
+              className={cn(
+                'Sidebar__Navigation__Link',
+                pathname.startsWith(path) && 'Sidebar__Navigation__Link-active',
+                !isLoggedIn && `Sidebar__Navigation__Link-disabled`
+              )}
+              key={path}
+              to={path}
+            >
+              {icon}
+            </Link>
+          ))}
+        </div>
+      </SidebarItem>
 
       <SidebarItem>
         {isLoggedIn ? (
           <Avatar
-            address={userPubkey as `0x${string}`}
+            address={getEthChainAddress(userPubkey) as `0x${string}`}
             width="2em"
             height="2em"
-            hasProfileDropdown
           />
         ) : (
           <ConnectWalletButton />

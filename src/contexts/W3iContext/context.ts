@@ -1,9 +1,12 @@
-import type { ChatClientTypes } from '@walletconnect/chat-client'
-import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import type { Dispatch, SetStateAction } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import { createContext } from 'react'
-import type { W3iChatClient, W3iPushClient } from '../../w3iProxy'
+
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
+import { noop } from 'rxjs'
+
+import type { W3iChatClient, W3iNotifyClient } from '@/w3iProxy'
+import type { ChatClientTypes } from '@/w3iProxy/chatProviders/types'
 
 export interface UiEnabled {
   chat: boolean
@@ -13,7 +16,6 @@ export interface UiEnabled {
 }
 
 interface W3iContextState {
-  chatClientProxy: W3iChatClient | null
   refreshThreadsAndInvites: () => void
   refreshNotifications: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
@@ -22,49 +24,41 @@ interface W3iContextState {
   threads: ChatClientTypes.Thread[]
   invites: ChatClientTypes.ReceivedInvite[]
   userPubkey?: string
-  disconnect: () => void
-  pushClientProxy: W3iPushClient | null
-  chatRegisterMessage: string | null
-  chatRegisteredKey: string | null
-  pushRegisteredKey: string | null
-  pushRegisterMessage: string | null
-  chatProvider: string
-  pushProvider: string
+  notifyClientProxy: W3iNotifyClient | null
+  notifyRegisteredKey: string | null
+  notifyRegisterMessage: string | null
+  notifyProvider: string
   authProvider: string
   uiEnabled: UiEnabled
   dappOrigin: string
   dappName: string
   dappIcon: string
   dappNotificationDescription: string
+  watchSubscriptionsComplete: boolean
+  // This is only kept to allow old components to build
+  chatClientProxy: W3iChatClient | null
 }
 
 const W3iContext = createContext<W3iContextState>({
-  chatClientProxy: null,
-  chatRegisteredKey: '',
-  pushRegisteredKey: '',
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  refreshThreadsAndInvites: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  refreshNotifications: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  disconnect: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setUserPubkey: () => {},
+  notifyRegisteredKey: '',
+  refreshThreadsAndInvites: noop,
+  refreshNotifications: noop,
+  setUserPubkey: noop,
   threads: [],
   uiEnabled: { chat: true, notify: true, settings: true, sidebar: true },
   activeSubscriptions: [],
   sentInvites: [],
   invites: [],
-  pushClientProxy: null,
-  chatRegisterMessage: null,
-  pushRegisterMessage: null,
-  chatProvider: '',
-  pushProvider: '',
+  notifyClientProxy: null,
+  notifyRegisterMessage: null,
+  notifyProvider: '',
   authProvider: '',
   dappOrigin: '',
   dappIcon: '',
   dappNotificationDescription: '',
-  dappName: ''
+  dappName: '',
+  chatClientProxy: null,
+  watchSubscriptionsComplete: false
 })
 
 export default W3iContext
