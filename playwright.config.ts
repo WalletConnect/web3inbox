@@ -4,7 +4,6 @@ import { defineConfig, devices } from '@playwright/test'
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
 
 const baseURL = 'http://localhost:5173'
 
@@ -31,12 +30,8 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
 
-<<<<<<< HEAD
-    screenshot: 'only-on-failure'
-=======
     screenshot: 'only-on-failure',
     video: 'retain-on-failure'
->>>>>>> 8156e6b (feat(ui-tests): scaffolds basic test)
   },
 
   /* Configure projects for major browsers */
