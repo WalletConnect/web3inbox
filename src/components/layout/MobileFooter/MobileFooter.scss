@@ -3,20 +3,23 @@
   bottom: 0;
   left: 0;
   width: 100%;
+  height: calc(var(--mobile-footer-height) + env(safe-area-inset-bottom));
   background-color: #fff;
   padding: 0.625rem 3.375rem 3rem;
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   border-bottom: 0.5px solid var(--light-overlay-015);
   border-top: 0.5px solid var(--light-overlay-015);
-  height: auto;
-  padding: 0.5rem 1rem;
-  padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+  padding: 0rem 1rem;
 
   &__link {
+    height: var(--mobile-footer-height);
+    flex: 1;
     display: flex;
     align-items: center;
-    padding: 0.5rem 2rem;
+    justify-content: center;
+    -webkit-tap-highlight-color: var(--accent-color-3);
 
     svg {
       width: 1.5rem;
