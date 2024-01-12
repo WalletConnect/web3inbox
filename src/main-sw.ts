@@ -41,6 +41,7 @@ self.addEventListener('message', event => {
 // In your service worker
 self.addEventListener('push', event => {
   console.log('>>> SW: push event', event)
+  // --------
   const data = event?.data?.json()
   // Store data for the app to access later
   // Show a notification
@@ -52,8 +53,8 @@ self.addEventListener('push', event => {
 
 self.addEventListener('notificationclick', event => {
   console.log('>>> SW: notificationclick event', event)
+  // --------
   event.notification.close()
-
   event.waitUntil(
     self.clients.openWindow('/') // Opens your app
   )
