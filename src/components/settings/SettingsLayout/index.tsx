@@ -1,12 +1,23 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+
+import { isMobile } from '@/utils/ui'
 
 import SettingsSelector from '../SettingsSelector'
 
 const SettingsLayout: React.FC = () => {
+  const { pathname } = useLocation()
+  const nav = useNavigate()
+
+  useEffect(() => {
+    if (pathname === '/settings' && !isMobile()) {
+      nav('/settings/notification')
+    }
+  }, [pathname])
+
   return (
     <Fragment>
       <div className="TargetSelector">
