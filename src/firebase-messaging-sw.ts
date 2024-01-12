@@ -52,3 +52,11 @@ onBackgroundMessage(messaging, async ev => {
     body: m.body
   })
 })
+
+self.addEventListener('notificationclick', function (event) {
+  console.log('>>> SW: notificationclick', event)
+  var urlToRedirect = event.notification.data.url || 'https://app.web3inbox.com'
+
+  event.notification.close()
+  event.waitUntil(self.clients.openWindow(urlToRedirect))
+})
