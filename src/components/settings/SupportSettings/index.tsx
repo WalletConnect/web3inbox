@@ -23,7 +23,7 @@ const SupportSettings: React.FC = () => {
           </Text>
           <Text className="SupportSettings__subtitle" variant="paragraph-500">
             Get support at our Discord, or view our{' '}
-            <Link to={web3InboxURLs.website}>Frequently Asked Questions</Link>.
+            <Link to={web3InboxURLs.websiteFaqs}>Frequently Asked Questions</Link>.
           </Text>
           <Link
             to={web3InboxURLs.discord}
