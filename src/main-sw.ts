@@ -56,6 +56,18 @@ self.addEventListener('push', event => {
   // Show a notification
   self.registration.showNotification(data.title, {
     body: data.body
+    icon: data.icon,
+    vibrate: [200, 100, 200],
+    actions: [
+      {
+        action: 'view',
+        title: 'View'
+      },
+      {
+        action: 'dismiss',
+        title: 'Dismiss'
+      }
+    ]
     // other options
   })
 })
