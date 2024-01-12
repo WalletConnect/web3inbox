@@ -5,7 +5,7 @@
   background-color: #fff;
   width: 100%;
   z-index: 10;
-  height: 3.125rem;
+  height: var(--mobile-header-height);
   align-items: center;
   border-bottom: 0.5px solid var(--light-overlay-015);
 

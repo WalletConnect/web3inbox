@@ -3,6 +3,8 @@
 :root {
   --font-regular: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
     Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  --mobile-header-height: 3.125rem;
+  --mobile-footer-height: 3.75rem;
 }
 
 html {
