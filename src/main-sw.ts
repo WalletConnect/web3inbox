@@ -55,7 +55,7 @@ self.addEventListener('push', event => {
   // Store data for the app to access later
   // Show a notification
   self.registration.showNotification(data.title, {
-    body: data.body
+    body: data.body,
     icon: data.icon,
     vibrate: [200, 100, 200],
     actions: [
