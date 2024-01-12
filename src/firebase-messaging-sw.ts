@@ -49,7 +49,8 @@ onBackgroundMessage(messaging, async ev => {
 
   return self.registration.showNotification(m.title, {
     icon: m.icon,
-    body: m.body
+    body: m.body,
+    data: { url: m.url }
   })
 })
 
