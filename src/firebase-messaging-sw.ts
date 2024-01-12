@@ -53,10 +53,17 @@ onBackgroundMessage(messaging, async ev => {
   })
 })
 
-self.addEventListener('notificationclick', function (event) {
-  console.log('>>> SW: notificationclick', event)
-  var urlToRedirect = event.notification.data.url || 'https://app.web3inbox.com'
-
-  event.notification.close()
-  event.waitUntil(self.clients.openWindow(urlToRedirect))
+self.addEventListener('notificationclick', e => {
+  e.notification.close()
+  e.waitUntil(
+    self.clients.matchAll({ type: 'window' }).then(clientsArr => {
+      const hadWindowToFocus = clientsArr.some(windowClient =>
+        windowClient.url === e.notification.data.url ? (windowClient.focus(), true) : false
+      )
+      if (!hadWindowToFocus)
+        self.clients
+          .openWindow('https://app.web3inbox.com')
+          .then(windowClient => (windowClient ? windowClient.focus() : null))
+    })
+  )
 })

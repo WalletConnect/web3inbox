@@ -26,15 +26,6 @@ self.ononline = () => {
   clearCache()
 }
 
-self.addEventListener('notificationclick', event => {
-  console.log('>>> SW: notificationclick event', event)
-  event.notification.close()
-})
-
-self.addEventListener('notificationclose', event => {
-  console.log('>>> SW: notificationclose event', event)
-})
-
 self.addEventListener('message', event => {
   console.log('>>> SW: message', event?.data)
   if (!event.data) return
