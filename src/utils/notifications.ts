@@ -1,6 +1,7 @@
 import { NotifyClient } from '@walletconnect/notify-client'
 
 import { localStorageKeys } from '@/constants/localStorage'
+import { LocalStorage } from '@/utils/localStorage'
 import { notificationPwaModalService } from '@/utils/store'
 
 import { getFirebaseToken } from './firebase'
@@ -63,12 +64,12 @@ export const setupSubscriptionsSymkeys = async (topicSymkeyEntries: [string, str
 }
 
 export const closeNotificationModal = () => {
-  localStorage.setItem(localStorageKeys.notificationModalClosed, 'true')
+  LocalStorage.set(localStorageKeys.notificationModalClosed, 'true')
   notificationPwaModalService.closeModal()
 }
 
 export const checkIfNotificationModalClosed = () => {
-  const storageValue = localStorage.getItem(localStorageKeys.notificationModalClosed)
+  const storageValue = LocalStorage.get(localStorageKeys.notificationModalClosed)
   return storageValue === 'true'
 }
 
