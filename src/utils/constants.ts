@@ -20,6 +20,9 @@ export const NAVIGATION = {
     topic: (topic: string) => `/notifications/${topic}`
   },
   settings: {
-    index: '/settings'
+    index: '/settings',
+    notification: '/settings/notification',
+    appearance: '/settings/appearance',
+    support: '/settings/support'
   }
 }

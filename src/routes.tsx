@@ -10,6 +10,7 @@ import NotificationsLayout from '@/components/notifications/NotificationsLayout'
 import AppearanceSettings from '@/components/settings/AppearanceSettings'
 import NotificationsSettings from '@/components/settings/NotificationsSettings'
 import SettingsLayout from '@/components/settings/SettingsLayout'
+import SupportSettings from '@/components/settings/SupportSettings'
 import W3iContext from '@/contexts/W3iContext/context'
 import Login from '@/pages/Login'
 import ScanQrCode from '@/pages/ScanQrCode'
@@ -43,6 +44,7 @@ const ConfiguredRoutes: React.FC = () => {
           <Route path="settings" element={<SettingsLayout />}>
             <Route path="/settings/appearance" element={<AppearanceSettings />} />
             <Route path="/settings/notification" element={<NotificationsSettings />} />
+            <Route path="/settings/support" element={<SupportSettings />} />
             {/* <Route path="/settings/privacy" element={<PrivacySettings />} /> */}
           </Route>
         ) : null}
