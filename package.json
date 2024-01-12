@@ -14,7 +14,9 @@
     "prettier": "prettier --check '**/*.{js,ts,jsx,tsx,scss}'",
     "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'",
     "playwright:install": "playwright install --with-deps",
-    "playwright:test": "playwright test"
+    "playwright:test": "playwright test",
+    "playwright:start": "yarn dev",
+    "playwright:debug": "playwright test --debug"
   },
   "dependencies": {
     "@sentry/react": "^7.64.0",
@@ -55,6 +57,7 @@
     "@vitejs/plugin-react": "^2.2.0",
     "@walletconnect/types": "2.11.0",
     "autoprefixer": "^10.4.14",
+    "dotenv": "16.3.1",
     "esbuild": "^0.18.17",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
