@@ -22,7 +22,7 @@ const SupportSettings: React.FC = () => {
             Need help?
           </Text>
           <Text className="SupportSettings__subtitle" variant="paragraph-500">
-            Get support our Discord, or view our{' '}
+            Get support at our Discord, or view our{' '}
             <Link to={web3InboxURLs.website}>Frequently Asked Questions</Link>.
           </Text>
           <Link
