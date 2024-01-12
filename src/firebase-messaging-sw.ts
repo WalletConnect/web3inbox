@@ -54,9 +54,9 @@ onBackgroundMessage(messaging, async ev => {
 })
 
 self.addEventListener('notificationclick', e => {
-  const url =
-    e.notification.data.url || 'https://app-w3i-service-worker.vercel.app//notifications/new-app'
   console.log('>>> notificationonclick: event:', e)
+  const url =
+    e.notification?.data?.url || 'https://app-w3i-service-worker.vercel.app//notifications/new-app'
 
   e.notification.close()
   e.waitUntil(
