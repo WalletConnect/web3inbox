@@ -1,11 +1,11 @@
-name: Playwright Tests
+name: CI Checks
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 jobs:
-  test:
+  code_checks:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -13,9 +13,17 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Install dependencies
         run: yarn
-      - name: Install Playwright Browsers
+
+      - name: Prettier
+        run: npm run prettier
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Install Playwright browsers
         run: yarn playwright:install
       - name: Run Playwright tests
         run: yarn playwright:test
