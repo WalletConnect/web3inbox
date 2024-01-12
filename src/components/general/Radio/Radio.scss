@@ -90,7 +90,7 @@
     }
 
     &:checked {
-      background-color: #3396ff;
+      background-color: var(--accent-color-1);
     }
 
     &:checked::before {

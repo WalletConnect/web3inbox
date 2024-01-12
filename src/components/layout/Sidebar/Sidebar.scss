@@ -66,7 +66,7 @@
         content: '';
         height: 3em;
         width: 0.25em;
-        background: hsla(211, 100%, 60%, 1);
+        background: var(--accent-color-1);
       }
 
       &:active {
@@ -116,7 +116,7 @@
             content: '';
             height: 3em;
             width: 0.25em;
-            background: hsla(211, 100%, 60%, 0.5);
+            background: var(--accent-color-3);
           }
         }
       }

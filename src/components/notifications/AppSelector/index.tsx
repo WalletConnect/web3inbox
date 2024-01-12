@@ -9,6 +9,8 @@ import { from } from 'rxjs'
 
 import AllAppsIcon from '@/assets/AllApps.svg'
 import SearchIcon from '@/assets/Search.svg'
+import SubmitAppIcon from '@/assets/SubmitApp.svg'
+import ExternalLinkIcon from '@/components/general/Icon/ExternalLinkIcon'
 import Input from '@/components/general/Input'
 import Label from '@/components/general/Label'
 import NavLink from '@/components/general/NavLink'
@@ -118,6 +120,7 @@ const AppSelector: React.FC = () => {
                     alt="Discover apps logo"
                     loading="lazy"
                   />
+
                   <Text variant="small-500">Discover apps</Text>
                 </div>
               </div>

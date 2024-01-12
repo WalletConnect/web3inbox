@@ -2,10 +2,15 @@ import { useContext } from 'react'
 
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
+import ExternalLinkIcon from '@/components/general/Icon/ExternalLinkIcon'
 import IntroApps from '@/components/general/Icon/IntroApps'
+import PlusIcon from '@/components/general/Icon/PlusIcon'
 import IntroContent from '@/components/general/IntroContent'
+import Text from '@/components/general/Text'
 import MobileHeader from '@/components/layout/MobileHeader'
+import { web3InboxURLs } from '@/constants/navigation'
 import { COMING_SOON_PROJECTS } from '@/constants/projects'
 import W3iContext from '@/contexts/W3iContext/context'
 import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
@@ -44,6 +49,17 @@ const AppExplorer = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.33 }}
       >
+        <div className="AppExplorer__submit__button">
+          <Link
+            to={web3InboxURLs.walletConnectWeb3Inbox}
+            className="AppExplorer__submit__button__link"
+            target="_blank"
+          >
+            <ExternalLinkIcon className="AppExplorer__submit__button__link__external__icon" />
+            <PlusIcon className="AppExplorer__submit__button__link__plus__icon" />
+            <Text variant="small-400">Submit app</Text>
+          </Link>
+        </div>
         <MobileHeader title="Discover" />
         <IntroContent
           animation={true}
