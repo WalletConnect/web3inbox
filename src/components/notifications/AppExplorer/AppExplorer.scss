@@ -20,6 +20,65 @@
     margin-left: auto;
   }
 
+  &__submit__button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media only screen and (max-width: 700px) {
+      height: auto;
+      top: calc(var(--mobile-header-height) + 1rem);
+    }
+
+    &__link {
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      border: 1px solid var(--accent-color-2);
+      text-decoration: none;
+      color: var(--accent-color-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.2);
+      z-index: 20;
+
+      svg {
+        width: 1rem;
+      }
+
+      @media only screen and (max-width: 700px) {
+        padding: 0.25rem 0.5rem;
+
+        svg {
+          width: 0.75rem;
+        }
+      }
+
+      &__external__icon {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      &:hover &__external__icon {
+        display: inline-block;
+        opacity: 1;
+      }
+      &:hover &__plus__icon {
+        display: none;
+      }
+
+      &:hover {
+        background: var(--accent-color-3);
+      }
+    }
+  }
+
   .IntroContent {
     margin-top: 2.25rem;
   }
