@@ -3103,7 +3103,7 @@
     lodash.isequal "4.5.0"
     uint8arrays "^3.1.0"
 
-"@walletconnect/core@2.11.0", "@walletconnect/core@^2.11.0":
+"@walletconnect/core@2.11.0", "@walletconnect/core@^2.11.0-canary.0":
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-2.11.0.tgz#3a4e301077b2f858fd916b7a20b5b984d1afce63"
   integrity sha512-2Tjp5BCevI7dbmqo/OrCjX4tqgMqwJNQLlQAlphqPfvwlF9+tIu6pGcVbSN3U9zyXzWIZCeleqEaWUeSeET4Ew==
@@ -3395,14 +3395,14 @@
     "@walletconnect/modal-core" "2.6.2"
     "@walletconnect/modal-ui" "2.6.2"
 
-"@walletconnect/notify-client@^0.16.3":
-  version "0.16.3"
-  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-0.16.3.tgz#e2cbfb34a92da30a01ee8ebfe86e0376ef66ae80"
-  integrity sha512-T/b/mfuwVIniUK0EwuhW1BJX7iqPSbM7bpS9dDyQowCxJeXBCJVddyo4x62/ecdYVmt+ePt+7b5oXZfmovIMIg==
+"@walletconnect/notify-client@^0.16.4":
+  version "0.16.4"
+  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-0.16.4.tgz#d2f1b55867cbd9793a6dee5c1e4554ad48055af3"
+  integrity sha512-+Y4CRG//oYTd3fB4qRnCyGx8TFv1+b5lW0LHCD8t/X+fS3rU7A03VPRoJgJwedrmyhjWh1Leh3VnXinCtTSNHw==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
-    "@walletconnect/core" "^2.11.0"
+    "@walletconnect/core" "^2.11.0-canary.0"
     "@walletconnect/did-jwt" "2.0.1"
     "@walletconnect/identity-keys" "^1.0.1"
     "@walletconnect/jsonrpc-utils" "1.0.7"
@@ -5356,9 +5356,9 @@ follow-redirects@^1.15.0:
   integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
 
 follow-redirects@^1.15.4:
-  version "1.15.4"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.4.tgz#cdc7d308bf6493126b17ea2191ea0ccf3e535adf"
-  integrity sha512-Cr4D/5wlrb0z9dgERpUL3LrmPKVDsETIJhaCMeDfuFYcqa5bldGV6wBsAN6X/vxlXQtFBMrXdXxdL8CbDTGniw==
+  version "1.15.5"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.5.tgz#54d4d6d062c0fa7d9d17feb008461550e3ba8020"
+  integrity sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==
 
 for-each@^0.3.3:
   version "0.3.3"
