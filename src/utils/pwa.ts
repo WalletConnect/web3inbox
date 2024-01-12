@@ -8,5 +8,5 @@ export const isInstalledOnHomescreen = () => {
 
 export const isMobileBrowser = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
-export const isMobileButNotInstalledOnHomescreen = () =>
+export const isMobileButNotInstalledOnHomeScreen = () =>
   isMobileBrowser() && !isInstalledOnHomescreen()
