@@ -24,3 +24,10 @@ Run the development server:
 ```bash
 yarn dev
 ```
+
+## Testing
+
+```bash
+yarn playwright:install
+yarn playwright:test
+```

@@ -12,7 +12,9 @@
     "lint": "eslint .",
     "prepare": "husky install",
     "prettier": "prettier --check '**/*.{js,ts,jsx,tsx,scss}'",
-    "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'"
+    "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'",
+    "playwright:install": "playwright install --with-deps",
+    "playwright:test": "playwright test"
   },
   "dependencies": {
     "@sentry/react": "^7.64.0",
@@ -41,9 +43,11 @@
     "wagmi": "^1.4.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.40.1",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/lodash.debounce": "^4.0.7",
     "@types/mixpanel-browser": "^2.47.1",
+    "@types/node": "^20.10.5",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@typescript-eslint/eslint-plugin": "^5.45.1",
