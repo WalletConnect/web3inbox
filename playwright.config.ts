@@ -4,7 +4,6 @@ import { defineConfig, devices } from '@playwright/test';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
 
 const baseURL = 'http://localhost:5173';
 
@@ -38,23 +37,13 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium/wagmi',
-      use: { ...devices['Desktop Chrome'], library: 'wagmi' }
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] }
     },
 
     {
-      name: 'firefox/wagmi',
-      use: { ...devices['Desktop Firefox'], library: 'wagmi' }
-    },
-
-    {
-      name: 'chromium/ethers',
-      use: { ...devices['Desktop Chrome'], library: 'ethers' }
-    },
-
-    {
-      name: 'firefox/ethers',
-      use: { ...devices['Desktop Firefox'], library: 'ethers' }
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] }
     }
   ],
 
