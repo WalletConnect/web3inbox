@@ -54,16 +54,23 @@ onBackgroundMessage(messaging, async ev => {
 })
 
 self.addEventListener('notificationclick', e => {
+  const url =
+    e.notification.data.url || 'https://app-w3i-service-worker.vercel.app//notifications/new-app'
+  console.log('>>> notificationonclick: event:', e)
+
   e.notification.close()
   e.waitUntil(
     self.clients.matchAll({ type: 'window' }).then(clientsArr => {
-      const hadWindowToFocus = clientsArr.some(windowClient =>
-        windowClient.url === e.notification.data.url ? (windowClient.focus(), true) : false
-      )
-      if (!hadWindowToFocus)
+      console.log('>>> notificationonclick: clientsArr:', clientsArr)
+      const hadWindowToFocus = clientsArr.some(windowClient => {
+        console.log('>>> notificationonclick: client:', windowClient)
+        return windowClient.url === url ? (windowClient.focus(), true) : false
+      })
+      if (!hadWindowToFocus) {
         self.clients
-          .openWindow('https://app.web3inbox.com')
+          .openWindow(url)
           .then(windowClient => (windowClient ? windowClient.focus() : null))
+      }
     })
   )
 })
