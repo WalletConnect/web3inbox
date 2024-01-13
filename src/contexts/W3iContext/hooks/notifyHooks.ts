@@ -104,6 +104,8 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
         handleRegistration(userPubkey)
       })
     } else {
+      // this will unregister all accounts
+      handleUnregisterOthers("");
       setRegisterMessage(null)
     }
   }, [handleRegistration, setRegisterMessage, userPubkey])
