@@ -1,5 +1,3 @@
-import { useContext } from 'react'
-
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
@@ -10,35 +8,18 @@ import PlusIcon from '@/components/general/Icon/PlusIcon'
 import IntroContent from '@/components/general/IntroContent'
 import Text from '@/components/general/Text'
 import MobileHeader from '@/components/layout/MobileHeader'
+import AppExplorerColumns from '@/components/notifications/AppExplorer/AppExplorerColumn'
+import AppExplorerSkeleton from '@/components/notifications/AppExplorer/AppExplorerSkeleton'
 import { web3InboxURLs } from '@/constants/navigation'
 import { COMING_SOON_PROJECTS } from '@/constants/projects'
-import W3iContext from '@/contexts/W3iContext/context'
 import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
-
-import AppCard from './AppCard'
-import AppCardSkeleton from './AppCardSkeleton'
 
 import './AppExplorer.scss'
 
 const AppExplorer = () => {
-  const { activeSubscriptions, watchSubscriptionsComplete: subscriptionsFinishedLoading } =
-    useContext(W3iContext)
   const { projects, loading } = useNotifyProjects()
 
   const allProjects = projects.concat(COMING_SOON_PROJECTS)
-
-  const checkSubscriptionStatusLoading = (url: string) => {
-    if (!subscriptionsFinishedLoading) {
-      const existInSubscriptions = activeSubscriptions.find(subscription => {
-        const projectURL = new URL(url)
-        return projectURL.hostname === subscription.metadata.appDomain
-      })
-
-      return existInSubscriptions ? false : true
-    }
-
-    return false
-  }
 
   return (
     <AnimatePresence>
@@ -69,54 +50,10 @@ const AppExplorer = () => {
           icon={<IntroApps />}
         />
         {loading ? (
-          <div className="AppExplorer__apps">
-            <div className="AppExplorer__apps__column">
-              <AppCardSkeleton />
-              <AppCardSkeleton />
-              <AppCardSkeleton />
-              <AppCardSkeleton />
-            </div>
-            <div className="AppExplorer__apps__column">
-              <AppCardSkeleton />
-              <AppCardSkeleton />
-              <AppCardSkeleton />
-              <AppCardSkeleton />
-            </div>
-          </div>
+          <AppExplorerSkeleton />
         ) : (
           <div className="AppExplorer__apps">
-            <div className="AppExplorer__apps__column">
-              {allProjects
-                .filter((_, i) => i % 2 === 0)
-                .map(app => (
-                  <AppCard
-                    key={app.id}
-                    name={app.name}
-                    description={app.description}
-                    logo={app.icon}
-                    url={app.url}
-                    isVerified={app.isVerified}
-                    isComingSoon={app.isComingSoon}
-                    loadingSubscription={checkSubscriptionStatusLoading(app.url)}
-                  />
-                ))}
-            </div>
-            <div className="AppExplorer__apps__column">
-              {allProjects
-                .filter((_, i) => i % 2 !== 0)
-                .map(app => (
-                  <AppCard
-                    key={app.id}
-                    name={app.name}
-                    description={app.description}
-                    logo={app.icon}
-                    url={app.url}
-                    isVerified={app.isVerified}
-                    isComingSoon={app.isComingSoon}
-                    loadingSubscription={checkSubscriptionStatusLoading(app.url)}
-                  />
-                ))}
-            </div>
+            <AppExplorerColumns apps={allProjects} />
           </div>
         )}
       </motion.div>

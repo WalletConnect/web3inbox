@@ -26,7 +26,7 @@ textarea {
   font-family: var(--font-regular);
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 768px) {
   body {
     overflow-y: unset;
   }
@@ -52,17 +52,6 @@ video {
   max-width: 100%;
 }
 
-::-webkit-scrollbar {
-  border-radius: 10px;
-  width: 5px;
-}
-
-::-webkit-scrollbar-thumb,
-::-webkit-scrollbar-thumb:hover {
-  border-radius: 10px;
-  background: var(--fg-color-2);
-}
-
 .PageContainer {
   position: relative;
   padding-bottom: 0;
@@ -70,7 +59,7 @@ video {
   overflow-x: hidden;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 768px) {
   .PageContainer {
     overflow-x: hidden;
     overflow-y: auto;

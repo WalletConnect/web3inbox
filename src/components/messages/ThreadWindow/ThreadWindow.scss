@@ -9,13 +9,13 @@
     justify-content: space-between;
     margin-bottom: 0.85rem;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       padding: 0px 1.25rem 0px 0rem;
     }
   }
 
   &__border {
-    @media only screen and (min-width: 700px) {
+    @media only screen and (min-width: 768px) {
       position: absolute;
       left: 0;
       top: 4.25rem;

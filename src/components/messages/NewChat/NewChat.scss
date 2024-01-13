@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     gap: 1em;
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 768px) {
       justify-content: space-between;
     }
 
@@ -62,7 +62,7 @@
   }
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 768px) {
   .NewChat {
     .SearchSuggestions {
       top: 125%;

@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   max-width: 100vw;
+  padding: 0 1.5rem;
 
   backface-visibility: hidden;
   -moz-backface-visibility: hidden;
@@ -13,9 +14,10 @@
 
   @media only screen and (max-width: 1300px) {
     margin-right: 0%;
+    padding: 0;
   }
 
-  @media only screen and (min-width: 700px) {
+  @media only screen and (min-width: 768px) {
     margin-right: auto;
     margin-left: auto;
   }
@@ -29,7 +31,7 @@
     align-items: center;
     justify-content: center;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       height: auto;
       top: calc(var(--mobile-header-height) + 1rem);
     }
@@ -51,7 +53,7 @@
         width: 1rem;
       }
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         padding: 0.25rem 0.5rem;
 
         svg {
@@ -91,22 +93,28 @@
     // If there is not enough space for the above, go to a one column layout.
     grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
     gap: 1.5rem;
-    padding: 5rem 1rem;
+    padding: 5rem 0;
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1024px) {
       grid-template-columns: repeat(1, 1fr);
+      padding: 5rem 1rem;
     }
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       grid-template-columns: repeat(1, 1fr);
       padding: 0 1rem;
       margin-top: 3rem;
     }
+
     &__column {
       display: flex;
       flex-flow: column wrap;
       justify-content: flex-start;
       gap: 1.5rem;
+
+      @media only screen and (max-width: 768px) {
+        gap: 1rem;
+      }
     }
   }
 }

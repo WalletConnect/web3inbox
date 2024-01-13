@@ -42,8 +42,15 @@ export const generateAvatarColors = (address: string) => {
   return variables
 }
 
+export const screenBreakPoints = {
+  sm: 640,
+  md: 768,
+  lg: 1024
+}
+
 export const isMobile = () => {
-  return window.innerWidth < 700
+  if (typeof window === 'undefined') return false
+  return window.innerWidth < screenBreakPoints.md
 }
 
 export const handleImageFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {

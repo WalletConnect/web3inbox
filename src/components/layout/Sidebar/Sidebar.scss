@@ -8,6 +8,7 @@
   gap: 1em;
   width: 3.75rem;
   height: 100vh;
+  display: none;
 
   @include padding-y(2em);
   display: none;
@@ -85,7 +86,7 @@
   }
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 768px) {
   .Sidebar {
     display: flex;
     background-color: var(--bg-color-1);

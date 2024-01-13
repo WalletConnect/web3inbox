@@ -43,7 +43,7 @@
     flex-direction: column;
     gap: 1.5rem;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       gap: 1.25rem;
     }
   }
@@ -56,7 +56,7 @@
     .Label {
       padding: 0px 0.75rem;
 
-      // @media only screen and (max-width: 700px) {
+      // @media only screen and (max-width: 768px) {
       //   padding: 0 1.25rem;
       // }
     }
@@ -67,7 +67,7 @@
     flex-direction: column;
     gap: 0.5rem;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       gap: 0px;
     }
 
@@ -121,7 +121,7 @@
     display: flex;
 
     &__wrapper {
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         width: 250px;
         overflow: hidden;
         display: flex;
@@ -136,7 +136,7 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         font-size: 15px;
         font-style: normal;
         font-weight: 500;
@@ -148,7 +148,7 @@
     &__subtitle {
       display: none;
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -169,7 +169,7 @@
       transition: background-color 0.1s linear;
       will-change: background-color;
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         border-radius: 0px;
         padding: 1rem 1.25rem;
       }
@@ -194,7 +194,7 @@
       border-radius: 1em;
       position: relative;
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         border-radius: 0px;
         padding: 1rem 1.25rem;
       }
@@ -206,7 +206,7 @@
         width: 0.75em;
         height: 0.75em;
 
-        @media only screen and (min-width: 700px) {
+        @media only screen and (min-width: 768px) {
           border-radius: 50%;
           padding: 0.5em;
           width: 2em;
@@ -245,7 +245,7 @@
       transition: background-color 0.2s linear;
       will-change: background-color;
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         border-radius: 0px;
         padding: 1rem 1.25rem;
       }
@@ -261,7 +261,7 @@
       }
     }
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       background: var(--accent-color-1);
       justify-content: center;
       min-width: 2em;
@@ -275,7 +275,7 @@
       width: 0.75em;
       height: 0.75em;
 
-      @media only screen and (min-width: 700px) {
+      @media only screen and (min-width: 768px) {
         background: var(--accent-color-1);
         border-radius: 50%;
         padding: 0.5em;
@@ -322,7 +322,7 @@
         border-radius: 1em;
       }
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         border-radius: 1.5em;
         width: 3rem;
         height: 3rem;
