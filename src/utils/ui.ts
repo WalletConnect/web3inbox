@@ -50,7 +50,7 @@ export const screenBreakPoints = {
 
 export const isMobile = () => {
   if (typeof window === 'undefined') return false
-  return window.innerWidth < 700
+  return window.innerWidth < screenBreakPoints.md
 }
 
 export const handleImageFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
