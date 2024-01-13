@@ -96,6 +96,7 @@ const AppCard: React.FC<AppCardProps> = ({
   useEffect(() => {
     if (subscribing && subscribed) {
       showSuccessMessageToast(`Subscribed to ${name}`)
+      setSubscribing(false)
     }
   }, [subscribing, subscribed])
 
