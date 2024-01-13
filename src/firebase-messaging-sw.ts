@@ -49,6 +49,30 @@ onBackgroundMessage(messaging, async ev => {
 
   return self.registration.showNotification(m.title, {
     icon: m.icon,
-    body: m.body
+    body: m.body,
+    data: { url: m.url }
   })
+})
+
+self.addEventListener('notificationclick', e => {
+  const url = e.notification?.data?.url
+
+  e.notification.close()
+
+  if (!url) {
+    return
+  }
+
+  e.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientsArr => {
+      const hadWindowToFocus = clientsArr.some(windowClient => {
+        return windowClient.url === url ? (windowClient.focus(), true) : false
+      })
+      if (!hadWindowToFocus) {
+        self.clients
+          .openWindow(url)
+          .then(windowClient => (windowClient ? windowClient.focus() : null))
+      }
+    })
+  )
 })
