@@ -36,7 +36,7 @@ type NonMethodNotifyClientKeys =
   | 'isRegistered'
   | 'register'
   | 'requests'
-  | 'subscription'
+  | 'subscriptions'
   | 'syncClient'
   | 'SyncStoreController'
   | 'version'
