@@ -56,8 +56,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     // Ensure we have a registration with echo (if we need it)
     this.ensureEchoRegistration()
     updateSymkeyState()
-
-
   }
 
   // ------------------------ Provider-specific methods ------------------------
@@ -110,7 +108,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     return this.notifyClient?.hasFinishedInitialLoad() || false
   }
 
-  public async unregister(params: {account: string}) {
+  public async unregister(params: { account: string }) {
     if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('unregister'))
     }
@@ -260,12 +258,13 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('unregisterOtherAccounts'))
     }
 
-    const otherAccounts = this.notifyClient.identityKeys.identityKeys.getAll()
-      .map(({accountId}) => accountId)
-      .filter(account => account !== currentAccount);
+    const otherAccounts = this.notifyClient.identityKeys.identityKeys
+      .getAll()
+      .map(({ accountId }) => accountId)
+      .filter(account => account !== currentAccount)
 
-    for(const account of otherAccounts) {
-      await this.notifyClient.unregister({account})
+    for (const account of otherAccounts) {
+      await this.notifyClient.unregister({ account })
     }
   }
 }

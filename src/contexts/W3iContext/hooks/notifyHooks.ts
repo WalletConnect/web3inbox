@@ -51,15 +51,15 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
    * load in progress state using interval until it is
    */
   useEffect(() => {
-    if(watchSubscriptionsComplete) {
-      return noop;
+    if (watchSubscriptionsComplete) {
+      return noop
     }
     // Account for sync init
     const intervalId = setInterval(() => {
-    if (notifyClient?.hasFinishedInitialLoad()) {
-      setWatchSubscriptionsComplete(true)
-      return noop;
-    }
+      if (notifyClient?.hasFinishedInitialLoad()) {
+        setWatchSubscriptionsComplete(true)
+        return noop
+      }
       refreshNotifyState()
     }, 100)
 
@@ -69,10 +69,12 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
   const handleUnregisterOthers = useCallback(
     async (key: string) => {
       if (!(notifyClient && key && uiEnabled.notify)) {
-	return
+        return
       }
-      await notifyClient.unregisterOtherAccounts(key);
-    }, [notifyClient])
+      await notifyClient.unregisterOtherAccounts(key)
+    },
+    [notifyClient]
+  )
 
   const handleRegistration = useCallback(
     async (key: string) => {
