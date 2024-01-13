@@ -12,22 +12,18 @@ const clearCache = () => {
 
 // Clear any cache
 self.oninstall = () => {
-  console.log('>>> SW: oninstall')
   clearCache()
 }
 
 self.onactivate = () => {
-  console.log('>>> SW: oninactive')
   clearCache()
 }
 
 self.ononline = () => {
-  console.log('>>> SW: ononline')
   clearCache()
 }
 
 self.addEventListener('message', event => {
-  console.log('>>> SW: message', event?.data)
   if (!event.data) return
 
   switch (event.data.type) {
@@ -36,31 +32,6 @@ self.addEventListener('message', event => {
       self.skipWaiting()
       break
   }
-})
-
-// In your service worker
-self.addEventListener('push', event => {
-  console.log('>>> SW: push event', event)
-  // --------
-  const data = event?.data?.json()
-  // Store data for the app to access later
-  // Show a notification
-  self.registration.showNotification(data.title, {
-    body: data.body,
-    icon: data.icon,
-    vibrate: [200, 100, 200],
-    actions: [
-      {
-        action: 'view',
-        title: 'View'
-      },
-      {
-        action: 'dismiss',
-        title: 'Dismiss'
-      }
-    ]
-    // other options
-  })
 })
 
 self.addEventListener('install', () => {
