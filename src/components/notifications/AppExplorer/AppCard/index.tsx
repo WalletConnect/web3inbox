@@ -62,12 +62,6 @@ const AppCard: React.FC<AppCardProps> = ({
         return
       }
 
-      if (subscribing && subscribed) {
-        showSuccessMessageToast(`Subscribed to ${name}`)
-
-        return
-      }
-
       setSubscribing(true)
       try {
         await notifyClientProxy?.subscribe({
@@ -98,6 +92,13 @@ const AppCard: React.FC<AppCardProps> = ({
       }
     }
   }
+
+  useEffect(() => {
+    if (subscribing && subscribed) {
+      showSuccessMessageToast(`Subscribed to ${name}`)
+      setSubscribing(false)
+    }
+  }, [subscribing, subscribed])
 
   return (
     <div
