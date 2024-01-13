@@ -55,16 +55,17 @@ onBackgroundMessage(messaging, async ev => {
 })
 
 self.addEventListener('notificationclick', e => {
-  console.log('>>> notificationonclick: event:', e)
-  const url =
-    e.notification?.data?.url || 'https://app-w3i-service-worker.vercel.app//notifications/new-app'
+  const url = e.notification?.data?.url
 
   e.notification.close()
+
+  if (!url) {
+    return
+  }
+
   e.waitUntil(
-    self.clients.matchAll({ type: 'window' }).then(clientsArr => {
-      console.log('>>> notificationonclick: clientsArr:', clientsArr)
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientsArr => {
       const hadWindowToFocus = clientsArr.some(windowClient => {
-        console.log('>>> notificationonclick: client:', windowClient)
         return windowClient.url === url ? (windowClient.focus(), true) : false
       })
       if (!hadWindowToFocus) {
