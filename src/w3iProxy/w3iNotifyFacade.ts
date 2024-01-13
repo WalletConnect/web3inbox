@@ -53,6 +53,10 @@ class W3iNotifyFacade implements W3iNotify {
 
   // ------------------ Notify Client Forwarding ------------------
 
+  public async unregister(params: { account: string }) {
+    return this.provider.unregister(params)
+  }
+
   public async register(params: { account: string; domain: string; isLimited?: boolean }) {
     return this.provider.register(params)
   }
@@ -87,12 +91,18 @@ class W3iNotifyFacade implements W3iNotify {
     return this.provider.getNotificationHistory(params)
   }
 
+  // ------- Custom functions ------------------- //
+
   public async registerWithEcho() {
     return this.provider.registerWithEcho()
   }
 
   public async getRegisteredWithEcho() {
     return this.provider.getRegisteredWithEcho()
+  }
+
+  public async unregisterOtherAccounts(currentAccount: string) {
+    this.provider.unregisterOtherAccounts(currentAccount)
   }
 }
 

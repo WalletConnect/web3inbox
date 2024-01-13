@@ -108,9 +108,16 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     return this.notifyClient?.hasFinishedInitialLoad() || false
   }
 
+  public async unregister(params: { account: string }) {
+    if (!this.notifyClient) {
+      throw new Error(this.formatClientRelatedError('unregister'))
+    }
+    return this.notifyClient.unregister(params)
+  }
+
   public async register(params: { account: string; domain: string; isLimited?: boolean }) {
     if (!this.notifyClient) {
-      throw new Error(this.formatClientRelatedError('approve'))
+      throw new Error(this.formatClientRelatedError('register'))
     }
 
     const props = {
@@ -243,5 +250,21 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     )
 
     return Boolean(existingRegistration)
+  }
+
+  // ---------- Custom functions ------------- //
+  public async unregisterOtherAccounts(currentAccount: string) {
+    if (!this.notifyClient) {
+      throw new Error(this.formatClientRelatedError('unregisterOtherAccounts'))
+    }
+
+    const otherAccounts = this.notifyClient.identityKeys.identityKeys
+      .getAll()
+      .map(({ accountId }) => accountId)
+      .filter(account => account !== currentAccount)
+
+    for (const account of otherAccounts) {
+      await this.notifyClient.unregister({ account })
+    }
   }
 }

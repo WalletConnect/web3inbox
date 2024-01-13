@@ -36,8 +36,6 @@ type NonMethodNotifyClientKeys =
   | 'isRegistered'
   | 'register'
   | 'requests'
-  // unregister functionality is not present in web3inbox at the moment.
-  | 'unregister'
   | 'subscriptions'
   | 'syncClient'
   | 'SyncStoreController'
@@ -55,6 +53,7 @@ interface ModifiedNotifyClientFunctions {
   registerWithEcho: () => Promise<void>
   getRegisteredWithEcho: () => Promise<boolean>
   register: (params: { account: string; domain: string; isLimited?: boolean }) => Promise<string>
+  unregisterOtherAccounts: (currentAccount: string) => Promise<void>
 }
 
 export type NotifyClientFunctions = Omit<NotifyClient, NonMethodNotifyClientKeys>
