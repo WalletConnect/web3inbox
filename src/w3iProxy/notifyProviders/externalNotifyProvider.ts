@@ -78,6 +78,11 @@ export default class ExternalNotifyProvider implements W3iNotifyProvider {
     return true
   }
 
+  public async unregister() {
+    // TODO: remove this whole provider
+    return 
+  }
+
   public async register() {
     // TODO: remove this whole provider
     return 'not implemented'

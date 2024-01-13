@@ -56,6 +56,8 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     // Ensure we have a registration with echo (if we need it)
     this.ensureEchoRegistration()
     updateSymkeyState()
+
+
   }
 
   // ------------------------ Provider-specific methods ------------------------
@@ -108,9 +110,16 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     return this.notifyClient?.hasFinishedInitialLoad() || false
   }
 
+  public async unregister(params: {account: string}) {
+    if (!this.notifyClient) {
+      throw new Error(this.formatClientRelatedError('unregister'))
+    }
+    return this.notifyClient.unregister(params)
+  }
+
   public async register(params: { account: string; domain: string; isLimited?: boolean }) {
     if (!this.notifyClient) {
-      throw new Error(this.formatClientRelatedError('approve'))
+      throw new Error(this.formatClientRelatedError('register'))
     }
 
     const props = {
