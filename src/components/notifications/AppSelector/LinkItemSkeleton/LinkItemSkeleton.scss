@@ -12,7 +12,7 @@
       position: relative;
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         border-radius: 0px;
         padding: 1rem 1.25rem;
       }

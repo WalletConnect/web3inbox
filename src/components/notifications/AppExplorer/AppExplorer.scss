@@ -15,7 +15,7 @@
     margin-right: 0%;
   }
 
-  @media only screen and (min-width: 700px) {
+  @media only screen and (min-width: 768px) {
     margin-right: auto;
     margin-left: auto;
   }
@@ -29,7 +29,7 @@
     align-items: center;
     justify-content: center;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       height: auto;
       top: calc(var(--mobile-header-height) + 1rem);
     }
@@ -51,7 +51,7 @@
         width: 1rem;
       }
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         padding: 0.25rem 0.5rem;
 
         svg {
@@ -85,7 +85,7 @@
 
   &__apps {
     width: 100%;
-    max-width: 700px;
+    max-width: 768px;
     display: grid;
     // 2 columns, of equal width, at least 20em wide each
     // If there is not enough space for the above, go to a one column layout.
@@ -93,15 +93,16 @@
     gap: 1.5rem;
     padding: 5rem 1rem;
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1024px) {
       grid-template-columns: repeat(1, 1fr);
     }
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       grid-template-columns: repeat(1, 1fr);
       padding: 0 1rem;
       margin-top: 3rem;
     }
+
     &__column {
       display: flex;
       flex-flow: column wrap;

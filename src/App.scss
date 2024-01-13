@@ -51,7 +51,7 @@
     height: auto;
     overflow-x: auto;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       overflow: hidden;
       width: 100vw;
     }
@@ -60,7 +60,7 @@
   }
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 768px) {
   .App:has(.TargetSelector):has(.ThreadSelector) {
     @media only screen and (min-width: 1300px) {
       grid-template-columns: 3.75rem 1.2fr 3fr;

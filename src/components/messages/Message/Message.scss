@@ -58,7 +58,7 @@
     will-change: border-radius;
     transition: border-radius ease 0.2s;
     max-width: 85%;
-    @media only screen and (min-width: 700px) {
+    @media only screen and (min-width: 768px) {
       max-width: 50%;
     }
   }

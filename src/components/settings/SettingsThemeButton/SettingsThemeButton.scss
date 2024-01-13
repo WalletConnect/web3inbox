@@ -30,7 +30,7 @@
   border-radius: 1.75rem;
   cursor: pointer;
 
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1024px) {
     padding: 1rem 0.75rem;
     flex-direction: row;
     gap: 1.25rem;
@@ -51,7 +51,7 @@
     flex-direction: column;
     gap: 0.625rem;
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1024px) {
       gap: 4px;
     }
   }
@@ -79,7 +79,7 @@
     margin-top: 1.25rem;
     color: var(--fg-color-1);
     text-align: center;
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1024px) {
       margin-top: 0px;
       text-align: left;
     }
@@ -88,7 +88,7 @@
   &__subtitle {
     color: #474d4d;
     text-align: center;
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1024px) {
       text-align: left;
     }
   }

@@ -10,7 +10,7 @@
     padding: 0 0.75rem;
     margin-top: 0.5rem;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       display: none;
     }
   }
@@ -45,13 +45,13 @@
     transition: all 250ms ease-in-out;
     text-decoration: none;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       padding: 0px 0px;
       border-radius: 0em;
     }
 
     &__description {
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
@@ -64,7 +64,7 @@
       display: flex;
       gap: 0.75rem;
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         gap: 1rem;
         padding: 0rem 1.25rem;
         width: 100%;
@@ -82,7 +82,7 @@
 
     &__icon {
       &__wrapper {
-        @media only screen and (max-width: 700px) {
+        @media only screen and (max-width: 768px) {
           display: flex;
           align-items: center;
           border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
@@ -95,7 +95,7 @@
     &__title {
       color: var(--fg-color-1);
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         font-size: 15px;
         font-style: normal;
         font-weight: 700;
@@ -104,7 +104,7 @@
       }
 
       &__wrapper {
-        @media only screen and (max-width: 700px) {
+        @media only screen and (max-width: 768px) {
           display: flex;
           flex-direction: column;
           gap: 4px;
@@ -119,7 +119,7 @@
         background: var(--accent-color-3);
       }
 
-      @media only screen and (max-width: 700px) {
+      @media only screen and (max-width: 768px) {
         @media (hover: hover) {
           background: transparent;
         }
@@ -132,7 +132,7 @@
     display: flex;
     flex-direction: column;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       margin-top: 0px;
     }
   }

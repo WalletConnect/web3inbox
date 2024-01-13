@@ -5,11 +5,11 @@
   flex-direction: column;
   height: 100%;
 
-  @media only screen and (min-width: 700px) {
+  @media only screen and (min-width: 768px) {
     min-width: 17.5em;
   }
 
-  @media only screen and (max-width: 700px) {
+  @media only screen and (max-width: 768px) {
     padding: 0 1.25em 1.25em;
   }
 
@@ -65,7 +65,7 @@
     gap: 0.5em;
     flex-shrink: 0;
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       background: var(--accent-color-1);
       justify-content: center;
       min-width: 2em;
@@ -78,7 +78,7 @@
     &-icon {
       width: 0.75em;
       height: 0.75em;
-      @media only screen and (min-width: 700px) {
+      @media only screen and (min-width: 768px) {
         background: var(--accent-color-1);
         border-radius: 50%;
         padding: 0.5em;
@@ -132,7 +132,7 @@
       padding: 1.25rem 1rem 1.25rem 0.75rem;
     }
 
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 768px) {
       max-height: 75vh;
     }
   }

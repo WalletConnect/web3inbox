@@ -41,7 +41,7 @@
   }
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 768px) {
   .Login:has(.TargetSelector):has(.ThreadSelector) {
     @media only screen and (min-width: 1300px) {
       grid-template-columns: 3.75rem 1fr;
