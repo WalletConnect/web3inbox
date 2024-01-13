@@ -253,4 +253,19 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
     return Boolean(existingRegistration)
   }
+
+  // ---------- Custom functions ------------- //
+  public async unregisterOtherAccounts(currentAccount: string) {
+    if (!this.notifyClient) {
+      throw new Error(this.formatClientRelatedError('unregisterOtherAccounts'))
+    }
+
+    const otherAccounts = this.notifyClient.identityKeys.identityKeys.getAll()
+      .map(({accountId}) => accountId)
+      .filter(account => account !== currentAccount);
+
+    for(const account of otherAccounts) {
+      await this.notifyClient.unregister({account})
+    }
+  }
 }

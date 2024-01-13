@@ -66,6 +66,14 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     return () => clearInterval(intervalId)
   }, [refreshNotifyState, watchSubscriptionsComplete])
 
+  const handleUnregisterOthers = useCallback(
+    async (key: string) => {
+      if (!(notifyClient && key && uiEnabled.notify)) {
+	return
+      }
+      await notifyClient.unregisterOtherAccounts(key);
+    }, [notifyClient])
+
   const handleRegistration = useCallback(
     async (key: string) => {
       if (notifyClient && key && uiEnabled.notify) {
@@ -90,7 +98,9 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
 
   useEffect(() => {
     if (userPubkey) {
-      handleRegistration(userPubkey)
+      handleUnregisterOthers(userPubkey).then(() => {
+        handleRegistration(userPubkey)
+      })
     } else {
       setRegisterMessage(null)
     }

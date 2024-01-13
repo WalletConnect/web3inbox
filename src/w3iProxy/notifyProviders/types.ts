@@ -53,6 +53,7 @@ interface ModifiedNotifyClientFunctions {
   registerWithEcho: () => Promise<void>
   getRegisteredWithEcho: () => Promise<boolean>
   register: (params: { account: string; domain: string; isLimited?: boolean }) => Promise<string>
+  unregisterOtherAccounts: (currentAccount: string) => Promise<void>
 }
 
 export type NotifyClientFunctions = Omit<NotifyClient, NonMethodNotifyClientKeys>
