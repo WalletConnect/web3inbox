@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
@@ -155,21 +156,23 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
 
+    let subscribed: boolean = false
     try {
-      const subscribed = await this.notifyClient.subscribe({
+      subscribed = await this.notifyClient.subscribe({
         ...params
       })
-
-      // Ensure we have a registration with echo (if we need it)
-      await this.ensureEchoRegistration()
-
-      return subscribed
     } catch (e: unknown) {
-      if (import.meta.env.VITE_ENABLE_MIXPANEL) {
-        mixpanel.track(`Failed subscribing: ${JSON.stringify(e)} `)
-      }
       throw e
     }
+
+    try {
+      // Ensure we have a registration with echo (if we need it)
+      await this.ensureEchoRegistration()
+    } catch (e) {
+      Sentry.captureEvent(e as Error)
+    }
+
+    return subscribed
   }
 
   public async update(params: { topic: string; scope: string[] }) {
