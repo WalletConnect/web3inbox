@@ -1,5 +1,9 @@
 import toast from 'react-hot-toast'
 
+export const showDefaultToast = (message: string) => {
+  toast(message)
+}
+
 export const showSuccessMessageToast = (message: string) => {
   toast.success(message)
 }

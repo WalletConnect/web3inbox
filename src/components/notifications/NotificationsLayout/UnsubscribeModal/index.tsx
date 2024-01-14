@@ -10,7 +10,7 @@ import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
 import { useModals } from '@/utils/hooks'
 import { unsubscribeModalService } from '@/utils/store'
-import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
+import { showDefaultToast, showErrorMessageToast } from '@/utils/toasts'
 
 import './UnsubscribeModal.scss'
 
@@ -32,9 +32,7 @@ export const UnsubscribeModal: React.FC = () => {
         notifyClientProxy.observeOne('notify_delete', {
           next: () => {
             unsubscribeModalService.closeModal()
-            showSuccessMessageToast(
-              `Successfully unsubscribed from ${app ? app.metadata.name : `dapp`}`
-            )
+            showDefaultToast(`Unsubscribed from ${app ? app.metadata.name : `dapp`}`)
             setLoading(false)
             navigate('/notifications/new-app')
           }
