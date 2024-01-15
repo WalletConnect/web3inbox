@@ -1,5 +1,6 @@
 .PwaModal {
-  padding: 3em;
+  padding: 3rem;
+  padding-bottom: 2rem;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -45,6 +46,22 @@
       width: 1em;
       height: 1em;
       display: inline-block;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0.5rem;
+
+    &__title {
+      color: var(--fg-color-2);
+    }
+
+    &__link {
+      color: var(--accent-color-1);
+      text-decoration: none;
     }
   }
 }
