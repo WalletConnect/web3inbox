@@ -4,13 +4,11 @@ import { detect } from 'detect-browser'
 import { Link } from 'react-router-dom'
 
 import BackgroundImage from '@/assets/IntroBackground.png'
-import Button from '@/components/general/Button'
 import AndroidShareIcon from '@/components/general/Icon/AndroidShare'
 import IShareIcon from '@/components/general/Icon/IShare'
 import { Modal } from '@/components/general/Modal/Modal'
 import Text from '@/components/general/Text'
 import { web3InboxURLs } from '@/constants/navigation'
-import { isAppleMobile } from '@/utils/pwa'
 import { pwaModalService } from '@/utils/store'
 
 import './PwaModal.scss'
@@ -73,13 +71,6 @@ export const PwaModal: React.FC = () => {
           <span className="PwaModal__share-icon">{getMobilePlatformIcon()}</span>
           <Text variant="small-500"> and “{getPlatformInstallText()}”</Text>
         </div>
-        {isAppleMobile ? (
-          <div className="PwaModal__footer">
-            <Text className="PwaModal__footer__title" variant="small-400">
-              Cannot see the option? Make sure you're using Safari.
-            </Text>
-          </div>
-        ) : null}
         <div className="PwaModal__footer">
           <Text className="PwaModal__footer__title" variant="small-400">
             Learn more at&nbsp;
