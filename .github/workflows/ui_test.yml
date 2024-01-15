@@ -28,6 +28,7 @@ jobs:
       run: yarn playwright:test
       env:
         VITE_PROJECT_ID: ${{ secrets.VITE_DEV_PROJECT_ID }}
+        VITE_EXPLORER_API_URL: ${{ secrets.VITE_EXPLORER_API_URL }}
     - uses: actions/upload-artifact@v3
       if: always()
       with:
