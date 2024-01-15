@@ -4,6 +4,7 @@ import cn from 'classnames'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 
+import Button from '@/components/general/Button'
 import NotificationIcon from '@/components/general/Icon/Notification'
 import PrivacyIcon from '@/components/general/Icon/Privacy'
 import Input from '@/components/general/Input'
@@ -13,6 +14,7 @@ import W3iContext from '@/contexts/W3iContext/context'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
 import { getDbEchoRegistrations } from '@/utils/idb'
 import { notificationsEnabledInBrowser, requireNotifyPermission } from '@/utils/notifications'
+import { showSuccessMessageToast } from '@/utils/toasts'
 
 import SettingsHeader from '../SettingsHeader'
 import SettingsItem from '../SettingsItem'
@@ -34,6 +36,9 @@ const getHelperTooltip = () => {
 const NotificationsSettings: React.FC = () => {
   const { isDevModeEnabled, updateSettings, filterAppDomain } = useContext(SettingsContext)
   const { notifyClientProxy } = useContext(W3iContext)
+  const [domain, setDomain] = useState(filterAppDomain)
+
+  const canSave = domain !== filterAppDomain
 
   const notificationsEnabled = useNotificationPermissionState()
 
@@ -60,6 +65,17 @@ const NotificationsSettings: React.FC = () => {
     }
   }
 
+  const handleClearDomain = () => {
+    setDomain('')
+    updateSettings({ filterAppDomain: '' })
+    showSuccessMessageToast('Configurations saved')
+  }
+
+  const handleSaveDomain = () => {
+    updateSettings({ filterAppDomain: domain })
+    showSuccessMessageToast('Configurations saved')
+  }
+
   return (
     <AnimatePresence>
       <motion.div
@@ -78,11 +94,27 @@ const NotificationsSettings: React.FC = () => {
               subtitle="Provide the domain of your app"
               className="NotificationsSettings__notifications"
             >
-              <Input
-                value={filterAppDomain}
-                placeholder="app.example.com"
-                onChange={ev => updateSettings({ filterAppDomain: ev.target.value })}
-              />
+              <div className="NotificationsSettings__content__container__form">
+                <Input
+                  value={domain}
+                  placeholder="app.example.com"
+                  onChange={ev => setDomain(ev.target.value)}
+                  tabIndex={1}
+                />
+                <div className="NotificationsSettings__content__container__form__buttons">
+                  <Button
+                    disabled={domain === ''}
+                    onClick={handleClearDomain}
+                    customType="outline"
+                    tabIndex={3}
+                  >
+                    Clear
+                  </Button>
+                  <Button disabled={!canSave} onClick={handleSaveDomain} tabIndex={2}>
+                    Save
+                  </Button>
+                </div>
+              </div>
             </SettingsItem>
 
             <div title={getHelperTooltip()}>
