@@ -4,15 +4,14 @@ export const isMobileBrowser = /iPhone|iPad|iPod|Android/i.test(navigator.userAg
 
 export const isAppleMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent)
 
-/**
- * vendor is deprecated but it's the only way to detect if the browser is belongs to Apple product (Safari)
- * There are variety of browsers that are based on Chromium (Chrome, Arc, Brave, etc.) but `navigator` object doesn't provide a unique way to detect them.
- * `userAgent` or other fields doesn't give us ability to check if it's Safari or not.
- * So, we need to check the vendor to make sure that the browser is Safari to make conditional rendering.
- * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vendor
- */
-const isAppleVendor = /Apple Computer, Inc./i.test(navigator.vendor)
+export const isNonSafari = /CriOS|FxiOS/i.test(navigator.userAgent)
 
-export const isSafari = isAppleVendor && navigator.userAgent.match(/Safari/i)
+/**
+ * It's not possible to detect Safari on iOS. `navigator` object doesn't have enough information to detect if the running browser is exactly Safari.
+ * There are several fields like `vendor` (deprecated), `userAgent`, `userAgentData`. But these values can mislead us since they can return the same values for different browsers.
+ * Instead of detecting Safari and doing conditional renderings with this value, prefer different solution.
+ * Tested mobile browsers: Safari, Chrome, Firefox, Arc, Brave
+ */
+export const isSafari = isAppleMobile && navigator.userAgent.match(/Safari/i)
 
 export const isMobileButNotInstalledOnHomeScreen = isMobileBrowser && !isInstalledOnHomeScreen

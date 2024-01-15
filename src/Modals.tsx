@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react'
+import { useContext, useEffect } from 'react'
 
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { AnimatePresence } from 'framer-motion'
@@ -16,7 +16,7 @@ import {
   checkIfNotificationModalClosed,
   notificationsEnabledInBrowser
 } from '@/utils/notifications'
-import { isAppleMobile, isMobileButNotInstalledOnHomeScreen, isSafari } from '@/utils/pwa'
+import { isAppleMobile, isMobileButNotInstalledOnHomeScreen, isNonSafari } from '@/utils/pwa'
 import { notificationPwaModalService, signatureModalService } from '@/utils/store'
 import { isMobile } from '@/utils/ui'
 
@@ -35,7 +35,7 @@ export const Modals = () => {
 
   const notificationModalClosed = checkIfNotificationModalClosed()
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
-  const shouldShowChangeBrowserModal = isAppleMobile ? !isSafari : false
+  const shouldShowChangeBrowserModal = isAppleMobile ? isNonSafari : false
   const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
   const shouldShowSignatureModal = isSignatureModalOpen && !shouldShowChangeBrowserModal
   const shouldShowUnsubscribeModalOpen = isUnsubscribeModalOpen && !shouldShowChangeBrowserModal
