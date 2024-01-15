@@ -28,8 +28,10 @@
     overflow-x: hidden;
     padding: 1rem 0.085em;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 4rem;
 
     @supports (height: 100dvh) {
       height: 100dvh;
@@ -37,6 +39,21 @@
 
     &__connect-button {
       min-width: fit-content;
+    }
+
+    &__footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &__title {
+        color: var(--fg-color-2);
+      }
+
+      &__link {
+        color: var(--accent-color-1);
+        text-decoration: none;
+      }
     }
   }
 }

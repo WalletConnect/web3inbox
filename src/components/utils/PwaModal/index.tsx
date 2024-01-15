@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { detect } from 'detect-browser'
+import { Link } from 'react-router-dom'
 
 import BackgroundImage from '@/assets/IntroBackground.png'
 import AndroidShareIcon from '@/components/general/Icon/AndroidShare'
@@ -40,7 +41,7 @@ export const getPlatformInstallText = () => {
       return 'Install App'
     case 'safari':
     case 'ios':
-      return 'Add to homescreen'
+      return 'Add to Home Screen'
     default:
       return 'Install'
   }
@@ -69,6 +70,19 @@ export const PwaModal: React.FC = () => {
           <Text variant="small-500">Just tap </Text>
           <span className="PwaModal__share-icon">{getMobilePlatformIcon()}</span>
           <Text variant="small-500"> and “{getPlatformInstallText()}”</Text>
+        </div>
+        <div className="PwaModal__footer">
+          <Text className="PwaModal__footer__title" variant="small-400">
+            Learn more at&nbsp;
+          </Text>
+          <Link
+            className="PwaModal__footer__link"
+            to="https://web3inbox.com"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <Text variant="small-400">web3inbox.com</Text>
+          </Link>
         </div>
       </div>
     </Modal>

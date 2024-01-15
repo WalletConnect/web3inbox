@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from 'react'
 
 import { useWeb3Modal } from '@web3modal/wagmi/react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import Button from '@/components/general/Button'
 import IntroWallet from '@/components/general/Icon/IntroWallet'
 import IntroContent from '@/components/general/IntroContent'
+import Text from '@/components/general/Text'
 import TransitionDiv from '@/components/general/TransitionDiv'
 import Sidebar from '@/components/layout/Sidebar'
 import W3iContext from '@/contexts/W3iContext/context'
@@ -55,6 +56,19 @@ const Login: React.FC = () => {
           }
           icon={<IntroWallet />}
         />
+        <div className="Main__footer">
+          <Text className="Main__footer__title" variant="small-400">
+            Learn more at
+          </Text>
+          <Link
+            className="Main__footer__link"
+            to="https://web3inbox.com"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <Text variant="small-400">web3inbox.com</Text>
+          </Link>
+        </div>
       </main>
     </TransitionDiv>
   )
