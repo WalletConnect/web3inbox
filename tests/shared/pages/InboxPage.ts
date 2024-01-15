@@ -35,15 +35,9 @@ export class ModalPage {
   async rejectNotifications() {
     // Allow for the modal to pop up
     await this.page.waitForTimeout(4000)
-    const isVisible =
-      (await this.page
-        .locator('.NotificationPwaModal__close-button')
-        .count()) > 0
+    const isVisible = (await this.page.locator('.NotificationPwaModal__close-button').count()) > 0
     if (!isVisible) return
-    await this.page
-      .locator('.NotificationPwaModal__close-button')
-      .first()
-      .click()
+    await this.page.locator('.NotificationPwaModal__close-button').first().click()
   }
 
   async subscribe(nth: number) {

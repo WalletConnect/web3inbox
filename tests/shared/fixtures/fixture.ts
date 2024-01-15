@@ -11,8 +11,7 @@ export interface ModalFixture {
 }
 
 export const test = base.extend<ModalFixture>({
-  library: ['wagmi', { option: true }],
-  modalPage: async ({ page, library }, use) => {
+  modalPage: async ({ page }, use) => {
     const modalPage = new ModalPage(page)
     await modalPage.load()
     await use(modalPage)
