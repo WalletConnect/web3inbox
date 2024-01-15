@@ -17,7 +17,8 @@
     "playwright:test": "playwright test"
   },
   "dependencies": {
-    "@sentry/react": "^7.64.0",
+    "@sentry/integrations": "^7.93.0",
+    "@sentry/react": "^7.93.0",
     "@walletconnect/core": "2.11.0",
     "@walletconnect/identity-keys": "^1.0.1",
     "@walletconnect/notify-client": "^0.16.4",
