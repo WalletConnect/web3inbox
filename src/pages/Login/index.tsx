@@ -9,6 +9,7 @@ import IntroContent from '@/components/general/IntroContent'
 import Text from '@/components/general/Text'
 import TransitionDiv from '@/components/general/TransitionDiv'
 import Sidebar from '@/components/layout/Sidebar'
+import { web3InboxURLs } from '@/constants/navigation'
 import W3iContext from '@/contexts/W3iContext/context'
 
 import './Login.scss'
@@ -62,7 +63,7 @@ const Login: React.FC = () => {
           </Text>
           <Link
             className="Main__footer__link"
-            to="https://web3inbox.com"
+            to={web3InboxURLs.website}
             target="_blank"
             rel="noreferrer noopener"
           >

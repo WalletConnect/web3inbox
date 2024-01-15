@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom'
 import BackgroundImage from '@/assets/IntroBackground.png'
 import AndroidShareIcon from '@/components/general/Icon/AndroidShare'
 import IShareIcon from '@/components/general/Icon/IShare'
-import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
 import { Modal } from '@/components/general/Modal/Modal'
 import Text from '@/components/general/Text'
+import { web3InboxURLs } from '@/constants/navigation'
 import { pwaModalService } from '@/utils/store'
 
 import './PwaModal.scss'
@@ -77,7 +77,7 @@ export const PwaModal: React.FC = () => {
           </Text>
           <Link
             className="PwaModal__footer__link"
-            to="https://web3inbox.com"
+            to={web3InboxURLs.website}
             target="_blank"
             rel="noreferrer noopener"
           >
