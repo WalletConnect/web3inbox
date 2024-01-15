@@ -34,14 +34,14 @@ export class ModalPage {
 
   async rejectNotifications() {
     // Allow for the modal to pop up
-    await this.page.waitForTimeout(2000)
+    await this.page.waitForTimeout(4000)
     const isVisible =
       (await this.page
-        .locator('.NotificationPwaModal > .NotificationPwaModal__close-button')
+        .locator('.NotificationPwaModal__close-button')
         .count()) > 0
     if (!isVisible) return
     await this.page
-      .locator('.NotificationPwaModal > .NotificationPwaModal__close-button')
+      .locator('.NotificationPwaModal__close-button')
       .first()
       .click()
   }
