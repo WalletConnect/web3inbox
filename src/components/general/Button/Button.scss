@@ -36,6 +36,12 @@
     color: var(--fg-color-5);
   }
 
+  &__outline {
+    background: transparent;
+    border: 1px solid var(--accent-color-1);
+    color: var(--accent-color-1);
+  }
+
   &__danger {
     background: var(--error-color-1);
     color: var(--light-inverse);
