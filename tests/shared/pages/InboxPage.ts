@@ -32,6 +32,20 @@ export class ModalPage {
     await this.page.getByRole('button', { name: 'Sign in with wallet' }).click()
   }
 
+  async rejectNotifications() {
+    // Allow for the modal to pop up
+    await this.page.waitForTimeout(2000)
+    const isVisible =
+      (await this.page
+        .locator('.NotificationPwaModal > .NotificationPwaModal__close-button')
+        .count()) > 0
+    if (!isVisible) return
+    await this.page
+      .locator('.NotificationPwaModal > .NotificationPwaModal__close-button')
+      .first()
+      .click()
+  }
+
   async subscribe(nth: number) {
     await this.page.locator('.AppCard__body > .AppCard__body__subscribe').nth(nth).click()
   }
