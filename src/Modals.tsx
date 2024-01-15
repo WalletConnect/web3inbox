@@ -16,7 +16,7 @@ import {
   checkIfNotificationModalClosed,
   notificationsEnabledInBrowser
 } from '@/utils/notifications'
-import { isChrome, isIOS, isMobileButNotInstalledOnHomeScreen } from '@/utils/pwa'
+import { isAppleMobile, isMobileButNotInstalledOnHomeScreen, isSafari } from '@/utils/pwa'
 import { notificationPwaModalService, signatureModalService } from '@/utils/store'
 import { isMobile } from '@/utils/ui'
 
@@ -35,8 +35,8 @@ export const Modals = () => {
 
   const notificationModalClosed = checkIfNotificationModalClosed()
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
-  const shouldShowChangeBrowserModal = isIOS() && isChrome()
-  const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen() && !shouldShowChangeBrowserModal
+  const shouldShowChangeBrowserModal = isAppleMobile ? !isSafari : false
+  const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
   const shouldShowSignatureModal = isSignatureModalOpen && !shouldShowChangeBrowserModal
   const shouldShowUnsubscribeModalOpen = isUnsubscribeModalOpen && !shouldShowChangeBrowserModal
   const shouldShowPreferencesModalOpen = isPreferencesModalOpen && !shouldShowChangeBrowserModal
@@ -44,7 +44,7 @@ export const Modals = () => {
   const shouldShowNotificationModal =
     notificationsEnabledInBrowser() &&
     !explicitlyDeniedOnDesktop &&
-    !isMobileButNotInstalledOnHomeScreen() &&
+    !isMobileButNotInstalledOnHomeScreen &&
     !notificationsEnabled &&
     Boolean(notifyRegisteredKey) &&
     !isSignatureModalOpen &&
