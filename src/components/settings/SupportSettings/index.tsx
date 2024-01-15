@@ -23,11 +23,16 @@ const SupportSettings: React.FC = () => {
           </Text>
           <Text className="SupportSettings__subtitle" variant="paragraph-500">
             Get support at our Discord, or view our{' '}
-            <Link to={web3InboxURLs.websiteFaqs}>Frequently Asked Questions</Link>.
+            <Link to={web3InboxURLs.websiteFaqs} target="_blank" rel="noopener noreferrer">
+              Frequently Asked Questions
+            </Link>
+            .
           </Text>
           <Link
             to={web3InboxURLs.discord}
             className="SupportSettings__discord-button Button Button__primary Button__medium"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <DiscordIcon className="SupportSettings__discord-button__icon" />
             <Text variant="small-500">Discord</Text>
