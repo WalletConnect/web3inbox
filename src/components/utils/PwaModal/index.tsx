@@ -61,13 +61,6 @@ export const PwaModal: React.FC = () => {
         </div>
         <div className="PwaModal__header">
           <Text variant={'large-500'}>Install PWA</Text>
-          <Button
-            onClick={() => {
-              navigator.clipboard.writeText(JSON.stringify(navigator.userAgent))
-            }}
-          >
-            copy navigator
-          </Button>
         </div>
         <div className="PwaModal__description">
           <Text variant="small-500">
