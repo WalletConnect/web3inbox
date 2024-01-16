@@ -35,7 +35,8 @@ export const Modals = () => {
   const notificationsEnabled = useNotificationPermissionState()
 
   const notificationModalClosed = checkIfNotificationModalClosed()
-  const explicitlyDeniedOnDesktop = !isMobile() && window.Notification.permission === 'denied'
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
   const shouldShowChangeBrowserModal = isAppleMobile ? isNonSafari : false
   const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
   const shouldShowSignatureModal = isSignatureModalOpen && !shouldShowChangeBrowserModal
