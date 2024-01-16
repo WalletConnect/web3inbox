@@ -1,0 +1,40 @@
+.LaunchBanner {
+  span {
+    text-align: center;
+  }
+
+  &__terms,
+  &__learn-more {
+    text-decoration: none;
+  }
+
+  &__terms {
+    color: rgba(255, 255, 255, 0.6);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__learn-more {
+    margin-left: 0.5rem;
+    color: white;
+    display: inline-block;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    svg {
+      color: white;
+      display: inline-block;
+      margin-left: 0.25rem;
+      margin-top: 0.0125rem;
+      transition: margin-left 0.3s ease-in-out;
+    }
+
+    &:hover svg {
+      margin-left: 0.5rem;
+    }
+  }
+}
