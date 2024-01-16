@@ -58,7 +58,7 @@ export const PwaModal: React.FC = () => {
           <img alt="Web3Inbox icon" className="wc-icon" src="/icon.png" />
         </div>
         <div className="PwaModal__header">
-          <Text variant={'large-500'}>Install Web3Inbox</Text>
+          <Text variant={'large-500'}>Install PWA</Text>
         </div>
         <div className="PwaModal__description">
           <Text variant="small-500">
