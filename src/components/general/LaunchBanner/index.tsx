@@ -30,7 +30,7 @@ export default function LaunchBanner() {
     <Banner className="LaunchBanner" onClose={handleCloseBanner}>
       The Web3Inbox app is live! Subscribe to Web3Inbox to get your Soundwaves NFT airdrop.{' '}
       <Link className="LaunchBanner__terms" to={LAUNCH_BANNER_TERMS_URL} target="_blank">
-        <span>(T&Cs apply)</span>
+        <span>T&Cs apply.</span>
       </Link>{' '}
       <Link className="LaunchBanner__learn-more" to={LAUNCH_BANNER_URL} target="_blank">
         <span>
