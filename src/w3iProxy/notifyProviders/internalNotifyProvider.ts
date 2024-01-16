@@ -53,11 +53,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       this.emitter.emit('sync_update', {})
     })
 
-    // @ts-ignore
-    window.forceUnregister = (account:string) => {
-      this.unregister({account})
-    }
-
     // Ensure we have a registration with echo (if we need it)
     this.ensureEchoRegistration()
     updateSymkeyState()
