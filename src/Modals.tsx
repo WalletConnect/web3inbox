@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
 
-import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react'
 import { AnimatePresence } from 'framer-motion'
 
 import { PreferencesModal } from '@/components/notifications/NotificationsLayout/PreferencesModal'
@@ -28,12 +28,14 @@ export const Modals = () => {
     isNotificationPwaModalOpen
   } = useModals()
   const { close: closeWeb3Modal } = useWeb3Modal()
+  const { open: isWeb3ModalOpen } = useWeb3ModalState()
 
   const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
 
   const notificationModalClosed = checkIfNotificationModalClosed()
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
   const shouldShowChangeBrowserModal = isAppleMobile ? isNonSafari : false
   const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
@@ -54,12 +56,22 @@ export const Modals = () => {
   useEffect(() => {
     const notifySignatureRequired = Boolean(notifyRegisterMessage) && !notifyRegisteredKey
     if (userPubkey && notifySignatureRequired) {
-      closeWeb3Modal() // close web3modal in case user is switching accounts
+      if (isWeb3ModalOpen) {
+        // Close web3modal in case user is switching accounts
+        closeWeb3Modal()
+      }
       signatureModalService.openModal()
     } else {
       signatureModalService.closeModal()
     }
-  }, [userPubkey, closeWeb3Modal, notifyRegisteredKey, notifyRegisterMessage])
+  }, [
+    userPubkey,
+    closeWeb3Modal,
+    notifyRegisteredKey,
+    notifyRegisterMessage,
+    isWeb3ModalOpen,
+    signatureModalService
+  ])
 
   useEffect(() => {
     // Create an artificial delay to prevent modals being spammed one after the other
