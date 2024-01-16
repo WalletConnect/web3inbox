@@ -15,6 +15,7 @@ import { signatureModalService } from '@/utils/store'
 import { SignatureLoadingVisual } from './SignatureLoadingVisual'
 
 import './SignatureModal.scss'
+import { logError } from '@/utils/error'
 
 export const SignatureModal: React.FC<{
   message: string
@@ -42,7 +43,7 @@ export const SignatureModal: React.FC<{
             )
             break
           default:
-            console.error('No correct sender for signature modal')
+	    logError(new Error(`No correct sender for signature modal, sender: ${sender}`))
         }
       })
       .catch(() => {

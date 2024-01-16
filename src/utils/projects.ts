@@ -1,4 +1,5 @@
 import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '@/utils/constants'
+import { logError } from './error'
 
 const projectId: string = import.meta.env.VITE_PROJECT_ID
 
@@ -10,15 +11,14 @@ export async function fetchFeaturedProjects<T>() {
   explorerUrlFeatured.searchParams.set('isFeatured', 'true')
 
   try {
-    const discoverProjectsData = await fetch(explorerUrlFeatured)
-      .then(async res => res.json())
-      .catch(err => console.error({ featuredProjects: err }))
+    const discoverProjectsData = await fetch(explorerUrlFeatured).then(async res => res.json())
     const discoverProjects = Object.values(discoverProjectsData.projects)
 
     return {
       data: discoverProjects as T
     }
   } catch (error) {
+    logError(error)
     throw new Error(`Error fetching featured projects: ${error}`)
   }
 }

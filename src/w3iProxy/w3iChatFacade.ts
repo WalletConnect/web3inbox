@@ -12,6 +12,7 @@ import type { ChatClientTypes } from './chatProviders/types'
 import type { W3iChat } from './chatProviders/types'
 import type { ChatFacadeEvents } from './listenerTypes'
 import { ObservablesController } from './observablesController'
+import { logError } from '@/utils/error'
 
 export type ReplayMessage = ChatClientTypes.Message & {
   id: string
@@ -151,7 +152,7 @@ class W3iChatFacade implements W3iChat {
 
   // eslint-disable-next-line
   public async initInternalProvider(chatClient: any) {
-    console.error('Initting internal chat provider not supported')
+    logError(new Error('Initting internal chat provider not supported'))
   }
 
   // Method to be used by external providers. Not internal use.

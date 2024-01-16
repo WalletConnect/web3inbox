@@ -9,6 +9,7 @@ import type { W3iNotifyClient } from '@/w3iProxy'
 
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
+import { logError } from '@/utils/error'
 
 export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
@@ -90,7 +91,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
           setRegistered(identityKey)
           refreshNotifyState()
         } catch (error) {
-          console.error(error)
+	  logError(error)
           setRegisterMessage(null)
         }
       }

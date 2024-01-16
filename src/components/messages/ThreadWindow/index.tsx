@@ -21,6 +21,7 @@ import MessageBox from '../MessageBox'
 import ThreadDropdown from './ThreadDropdown'
 
 import './ThreadWindow.scss'
+import { logError } from '@/utils/error'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -70,7 +71,7 @@ const ThreadWindow: React.FC = () => {
         setMessages(allChatMessages)
       })
       .catch(() => {
-        console.error('getMessages failed, redirecting to root')
+	logError(new Error('getMessages failed, redirecting to root'))
         nav('/')
       })
 
@@ -78,7 +79,7 @@ const ThreadWindow: React.FC = () => {
       // Not using `threads` to avoid a data race.
       chatClientProxy.getThreads({ account: `eip155:1:${userPubkey}` }).then(retreivedThreads => {
         if (!retreivedThreads.get(topic)) {
-          console.error('topic not in threads, redirecting to root')
+	logError(new Error('topic not in threads, redirecting to root'))
           nav('/')
         }
       })

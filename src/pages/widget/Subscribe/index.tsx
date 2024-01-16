@@ -11,6 +11,7 @@ import { showErrorMessageToast } from '@/utils/toasts'
 import { JsCommunicator } from '@/w3iProxy/externalCommunicators/jsCommunicator'
 
 import './Subscribe.scss'
+import { logError } from '@/utils/error'
 
 const WidgetSubscribe: React.FC = () => {
   const {
@@ -43,7 +44,7 @@ const WidgetSubscribe: React.FC = () => {
         appDomain: new URL(dappOrigin).host
       })
     } catch (error) {
-      console.error(error)
+      logError(error)
       showErrorMessageToast(`Failed to subscribe to ${dappOrigin}`)
     } finally {
       setIsSubscribing(false)

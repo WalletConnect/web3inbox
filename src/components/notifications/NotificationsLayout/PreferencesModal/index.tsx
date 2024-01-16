@@ -15,6 +15,7 @@ import { preferencesModalService } from '@/utils/store'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
 
 import './PreferencesModal.scss'
+import { logError } from '@/utils/error'
 
 export const PreferencesModal: React.FC = () => {
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
@@ -61,7 +62,7 @@ export const PreferencesModal: React.FC = () => {
           scope: getEnabledScopes(scopes)
         })
       } catch (error) {
-        console.error(error)
+	logError(error)
         showErrorMessageToast('Failed to update preferences')
         setLoading(false)
       }

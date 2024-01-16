@@ -12,6 +12,7 @@ import {
   userEnabledNotification
 } from '@/utils/notifications'
 import { W3iNotifyProvider } from '@/w3iProxy/notifyProviders/types'
+import { logError } from '@/utils/error'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined
@@ -193,7 +194,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       // Ensure we have a registration with echo (if we need it)
       await this.ensureEchoRegistration()
     } catch (e) {
-      Sentry.captureEvent(e as Error)
+      logError(e)
     }
 
     return subscribed

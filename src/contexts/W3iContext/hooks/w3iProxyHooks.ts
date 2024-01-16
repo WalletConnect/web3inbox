@@ -6,6 +6,7 @@ import Web3InboxProxy from '../../../w3iProxy'
 import { useDappOrigin } from './dappOrigin'
 import { useProviderQueries } from './providerQueryHooks'
 import { useUiState } from './uiHooks'
+import { logError } from '@/utils/error'
 
 export const useW3iProxy = () => {
   const relayUrl = import.meta.env.VITE_RELAY_URL
@@ -34,7 +35,7 @@ export const useW3iProxy = () => {
           setReady(true)
         })
         .catch(error => {
-          console.error('w3iProxy failed to initialize: ', error)
+          logError(error)
         })
     }
   }, [w3iProxy.isInitializing])

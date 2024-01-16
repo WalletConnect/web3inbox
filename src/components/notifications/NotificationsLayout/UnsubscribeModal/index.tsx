@@ -13,6 +13,7 @@ import { unsubscribeModalService } from '@/utils/store'
 import { showDefaultToast, showErrorMessageToast } from '@/utils/toasts'
 
 import './UnsubscribeModal.scss'
+import { logError } from '@/utils/error'
 
 export const UnsubscribeModal: React.FC = () => {
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
@@ -39,7 +40,7 @@ export const UnsubscribeModal: React.FC = () => {
         })
         await notifyClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
       } catch (error) {
-        console.error(error)
+	logError(error)
         showErrorMessageToast(`Unsubscribing failed, please try again`)
         setLoading(false)
       }
