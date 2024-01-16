@@ -7,7 +7,7 @@
   transform: translateX(-50%);
   gap: 1em;
   width: 3.75rem;
-  height: 100vh;
+  height: 100%;
   display: none;
 
   @include padding-y(2em);
@@ -95,7 +95,7 @@
 
     top: 0;
     left: 0;
-    height: 100vh;
+    height: 100%;
     flex-direction: column;
 
     &__Navigation {

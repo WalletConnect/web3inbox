@@ -16,6 +16,18 @@ body {
   overflow-y: hidden;
 }
 
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@supports (height: 100dvh) {
+  #root {
+    height: 100dvh;
+  }
+}
+
 body,
 button,
 html,
