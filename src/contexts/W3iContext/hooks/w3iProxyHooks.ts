@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react'
 
+import { logError } from '@/utils/error'
+
 import Web3InboxProxy from '../../../w3iProxy'
 import { useDappOrigin } from './dappOrigin'
 import { useProviderQueries } from './providerQueryHooks'
 import { useUiState } from './uiHooks'
-import { logError } from '@/utils/error'
 
 export const useW3iProxy = () => {
   const relayUrl = import.meta.env.VITE_RELAY_URL

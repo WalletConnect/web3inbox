@@ -10,6 +10,7 @@ import BackButton from '@/components/general/BackButton'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
 import { getEthChainAddress } from '@/utils/address'
+import { logError } from '@/utils/error'
 import { truncate } from '@/utils/string'
 import type { ChatClientTypes } from '@/w3iProxy/chatProviders/types'
 import type { ReplayMessage } from '@/w3iProxy/w3iChatFacade'
@@ -21,7 +22,6 @@ import MessageBox from '../MessageBox'
 import ThreadDropdown from './ThreadDropdown'
 
 import './ThreadWindow.scss'
-import { logError } from '@/utils/error'
 
 const ThreadWindow: React.FC = () => {
   const { peer } = useParams<{ peer: string }>()
@@ -71,7 +71,7 @@ const ThreadWindow: React.FC = () => {
         setMessages(allChatMessages)
       })
       .catch(() => {
-	logError(new Error('getMessages failed, redirecting to root'))
+        logError(new Error('getMessages failed, redirecting to root'))
         nav('/')
       })
 
@@ -79,7 +79,7 @@ const ThreadWindow: React.FC = () => {
       // Not using `threads` to avoid a data race.
       chatClientProxy.getThreads({ account: `eip155:1:${userPubkey}` }).then(retreivedThreads => {
         if (!retreivedThreads.get(topic)) {
-	logError(new Error('topic not in threads, redirecting to root'))
+          logError(new Error('topic not in threads, redirecting to root'))
           nav('/')
         }
       })

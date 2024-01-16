@@ -1,11 +1,13 @@
 import { useContext, useEffect, useState } from 'react'
 
+import { captureException } from '@sentry/react'
+
 import { COMING_SOON_PROJECTS } from '@/constants/projects'
 import SettingsContext from '@/contexts/SettingsContext/context'
 import { fetchDomainProjects, fetchFeaturedProjects } from '@/utils/projects'
 import type { INotifyApp, INotifyProject, INotifyProjectWithComingSoon } from '@/utils/types'
+
 import { logError } from '../error'
-import { captureException } from '@sentry/react'
 
 const useNotifyProjects = () => {
   const [loading, setLoading] = useState(false)

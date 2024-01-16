@@ -4,12 +4,12 @@ import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useNavigate } from 'react-router-dom'
 import { noop } from 'rxjs'
 
+import { logError } from '@/utils/error'
 import type Web3InboxProxy from '@/w3iProxy'
 import type { W3iNotifyClient } from '@/w3iProxy'
 
 import { useAuthState } from './authHooks'
 import { useUiState } from './uiHooks'
-import { logError } from '@/utils/error'
 
 export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
@@ -91,7 +91,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
           setRegistered(identityKey)
           refreshNotifyState()
         } catch (error) {
-	  logError(error)
+          logError(error)
           setRegisterMessage(null)
         }
       }

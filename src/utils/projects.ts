@@ -1,4 +1,5 @@
 import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '@/utils/constants'
+
 import { logError } from './error'
 
 const projectId: string = import.meta.env.VITE_PROJECT_ID

@@ -7,11 +7,11 @@ import W3iBellIcon from '@/assets/W3iBell.svg'
 import Button from '@/components/general/Button'
 import Spinner from '@/components/general/Spinner'
 import W3iContext from '@/contexts/W3iContext/context'
+import { logError } from '@/utils/error'
 import { showErrorMessageToast } from '@/utils/toasts'
 import { JsCommunicator } from '@/w3iProxy/externalCommunicators/jsCommunicator'
 
 import './Subscribe.scss'
-import { logError } from '@/utils/error'
 
 const WidgetSubscribe: React.FC = () => {
   const {

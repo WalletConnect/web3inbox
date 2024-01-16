@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom'
 
 import BackButton from '@/components/general/BackButton'
 import TransitionDiv from '@/components/general/TransitionDiv'
+import { logError } from '@/utils/error'
 
 import './ScanQrCode.scss'
-import { logError } from '@/utils/error'
 
 const ScanQrCode: React.FC = () => {
   const [scanResult, setResult] = useState('')

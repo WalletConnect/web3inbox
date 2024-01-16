@@ -6,13 +6,14 @@ import { EventEmitter } from 'events'
 import { ReplaySubject, filter, from, scan, throwError, timeout } from 'rxjs'
 import { hashMessage } from 'viem'
 
+import { logError } from '@/utils/error'
+
 import ExternalChatProvider from './chatProviders/externalChatProvider'
 // eslint-disable-next-line no-duplicate-imports
 import type { ChatClientTypes } from './chatProviders/types'
 import type { W3iChat } from './chatProviders/types'
 import type { ChatFacadeEvents } from './listenerTypes'
 import { ObservablesController } from './observablesController'
-import { logError } from '@/utils/error'
 
 export type ReplayMessage = ChatClientTypes.Message & {
   id: string
