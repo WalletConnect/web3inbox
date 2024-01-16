@@ -1,4 +1,3 @@
-import { CaptureConsole } from '@sentry/integrations'
 import * as Sentry from '@sentry/react'
 
 export const initSentry = () => {
@@ -9,7 +8,6 @@ export const initSentry = () => {
         tracePropagationTargets: ['https://web3inbox-dev-hidden.vercel.app']
       }),
       new Sentry.Replay(),
-      new CaptureConsole({ levels: ['error'] })
     ],
     tracesSampleRate: 0.2,
     replaysSessionSampleRate: 0.1,
