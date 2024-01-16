@@ -20,7 +20,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "playwright.config.ts", "tests", "../../../../tmp/!home!clinenerd!dev!web3inbox!src!utils!error.ts~"],
+  "include": ["src", "playwright.config.ts", "tests"],
   "exclude": ["*/**/*.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
