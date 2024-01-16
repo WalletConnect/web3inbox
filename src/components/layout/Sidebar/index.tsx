@@ -50,7 +50,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
 
     if (uiEnabled.settings) {
       items.push([
-        <SettingIcon isFilled={pathname.startsWith(NAVIGATION.settings.notification)} />,
+        <SettingIcon isFilled={pathname.startsWith(NAVIGATION.settings.index)} />,
         NAVIGATION.settings.index
       ])
     }
