@@ -163,12 +163,21 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('subscribe'))
     }
 
-    if(!this.notifyClient.isRegistered({ account: params.account, domain: window.location.hostname, allApps: true })) {
-      this.emitter.emit("notify_reregister", {userPubkey: params.account, nextAction: {
-	type: "subscribe",
-	params,
-      }})
-      return false;
+    if (
+      !this.notifyClient.isRegistered({
+        account: params.account,
+        domain: window.location.hostname,
+        allApps: true
+      })
+    ) {
+      this.emitter.emit('notify_reregister', {
+        userPubkey: params.account,
+        nextAction: {
+          type: 'subscribe',
+          params
+        }
+      })
+      return false
     }
 
     let subscribed: boolean = false
@@ -195,15 +204,21 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('update'))
     }
 
-    const account = this.notifyClient.subscriptions.keys.includes(params.topic)?
-      this.notifyClient.subscriptions.get(params.topic).account : ""
+    const account = this.notifyClient.subscriptions.keys.includes(params.topic)
+      ? this.notifyClient.subscriptions.get(params.topic).account
+      : ''
 
-    if(!this.notifyClient.isRegistered({ account, domain: window.location.hostname, allApps: true })) {
-      this.emitter.emit("notify_reregister", {userPubkey: account, nextAction: {
-	type: "update",
-	params
-      }})
-      return false;
+    if (
+      !this.notifyClient.isRegistered({ account, domain: window.location.hostname, allApps: true })
+    ) {
+      this.emitter.emit('notify_reregister', {
+        userPubkey: account,
+        nextAction: {
+          type: 'update',
+          params
+        }
+      })
+      return false
     }
 
     const updated = await this.notifyClient.update(params)
@@ -216,15 +231,21 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       throw new Error(this.formatClientRelatedError('deleteSubscription'))
     }
 
-    const account = this.notifyClient.subscriptions.keys.includes(params.topic)?
-      this.notifyClient.subscriptions.get(params.topic).account : ""
+    const account = this.notifyClient.subscriptions.keys.includes(params.topic)
+      ? this.notifyClient.subscriptions.get(params.topic).account
+      : ''
 
-    if(!this.notifyClient.isRegistered({ account, domain: window.location.hostname, allApps: true })) {
-      this.emitter.emit("notify_reregister", {userPubkey: account, nextAction: {
-	type: "deleteSubscription",
-	params
-      }})
-      return;
+    if (
+      !this.notifyClient.isRegistered({ account, domain: window.location.hostname, allApps: true })
+    ) {
+      this.emitter.emit('notify_reregister', {
+        userPubkey: account,
+        nextAction: {
+          type: 'deleteSubscription',
+          params
+        }
+      })
+      return
     }
 
     return this.notifyClient.deleteSubscription(params)
