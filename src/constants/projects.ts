@@ -73,5 +73,15 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     isVerified: false,
     isFeatured: false,
     icon: '/loopring.png'
+  },
+  {
+    id: 'jumptask',
+    name: 'JumpTask',
+    description: 'One place, many ways to earn!',
+    url: 'https://jumptask.io/',
+    isComingSoon: true,
+    isVerified: false,
+    isFeatured: false,
+    icon: '/jumptask.png'
   }
 ]
