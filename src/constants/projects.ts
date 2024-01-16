@@ -23,16 +23,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     icon: '/gempad.png'
   },
   {
-    id: 'moso',
-    name: 'Moso',
-    description: 'Shop with Moso and earn crypto back from over 2,000 stores.',
-    url: 'https://moso.xyz/',
-    isComingSoon: true,
-    isVerified: false,
-    isFeatured: false,
-    icon: '/moso.png'
-  },
-  {
     id: 'chainspot',
     name: 'Chainspot',
     description:
