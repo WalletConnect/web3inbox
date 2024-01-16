@@ -153,6 +153,24 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
       }
     })
 
+    const notifyReregisterSub = notifyClient.observe('notify_reregister', {
+      next: (params) => {
+	handleRegistration(params.userPubkey).then(() => {
+	  switch(params.nextAction.type) {
+	    case "subscribe":
+	      notifyClient.subscribe(params.nextAction.params)
+	      break;
+	    case "deleteSubscription":
+	      notifyClient.deleteSubscription(params.nextAction.params)
+	      break;
+	    case "update":
+	      notifyClient.update(params.nextAction.params)
+	      break;
+	  }
+	})
+      }
+    })
+
     const syncUpdateSub = notifyClient.observe('sync_update', {
       next: refreshNotifyState
     })
@@ -165,6 +183,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
       notifySubsChanged.unsubscribe()
       notifySignatureRequestedSub.unsubscribe()
       notifySignatureRequestCancelledSub.unsubscribe()
+      notifyReregisterSub.unsubscribe()
     }
   }, [notifyClient, refreshNotifyState, setWatchSubscriptionsComplete])
 
