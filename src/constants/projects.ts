@@ -47,7 +47,7 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     id: 'avive',
     name: 'Avive',
     description:
-      'One of the world\'s largest UBI & DePin Projects, with over 9 million worldwide users.',
+      "One of the world's largest UBI & DePin Projects, with over 9 million worldwide users.",
     url: 'https://www.avive.world',
     isComingSoon: true,
     isVerified: false,
@@ -57,8 +57,7 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
   {
     id: 'maverick',
     name: 'Maverick Protocol',
-    description:
-      'Maverick Protocol is a leading provider of smart contract solutions in DeFi.',
+    description: 'Maverick Protocol is a leading provider of smart contract solutions in DeFi.',
     url: 'https://app.mav.xyz',
     isComingSoon: true,
     isVerified: false,
@@ -68,8 +67,7 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
   {
     id: 'loopring-pro',
     name: 'Loopring Pro',
-    description:
-      'Explore the Loopring DEX, Earn, and NFT Management.',
+    description: 'Explore the Loopring DEX, Earn, and NFT Management.',
     url: 'https://loopring.io/#/pro',
     isComingSoon: true,
     isVerified: false,
@@ -79,8 +77,7 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
   {
     id: 'loopring-earn',
     name: 'Loopring Earn',
-    description:
-      'Access the most innovative structural products brought to the DeFi world.',
+    description: 'Access the most innovative structural products brought to the DeFi world.',
     url: 'https://earn.loopring.io/',
     isComingSoon: true,
     isVerified: false,

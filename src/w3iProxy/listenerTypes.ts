@@ -1,4 +1,4 @@
-import type { NotifyClientTypes } from '@walletconnect/notify-client'
+import type { NotifyClient, NotifyClientTypes } from '@walletconnect/notify-client'
 
 import type { ChatClientTypes } from './chatProviders/types'
 
@@ -21,6 +21,13 @@ export interface ChatFacadeEvents {
   sync_update: never
 }
 
+type NextAction<T extends 'subscribe' | 'update' | 'deleteSubscription'> = {
+  type: T
+  params: Parameters<NotifyClient[T]>[0]
+}
+
+type NextActions = NextAction<'subscribe'> | NextAction<'update'> | NextAction<'deleteSubscription'>
+
 export interface NotifyFacadeEvents {
   notify_message: NotifyClientTypes.EventArguments['notify_message']
   notify_subscription: NotifyClientTypes.EventArguments['notify_subscription']
@@ -29,5 +36,6 @@ export interface NotifyFacadeEvents {
   notify_subscriptions_changed: NotifyClientTypes.EventArguments['notify_subscriptions_changed']
   notify_signature_requested: { message: string }
   notify_signature_request_cancelled: never
+  notify_reregister: { userPubkey: string; nextAction: NextActions }
   sync_update: never
 }
