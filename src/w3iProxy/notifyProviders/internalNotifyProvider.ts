@@ -208,9 +208,13 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       ? this.notifyClient.subscriptions.get(params.topic).account
       : ''
 
-    if (
-      !this.notifyClient.isRegistered({ account, domain: window.location.hostname, allApps: true })
-    ) {
+     const isRegistered = this.notifyClient.isRegistered({
+      account,
+      domain: window.location.hostname,
+      allApps: true
+    })
+
+    if (!isRegistered) {
       this.emitter.emit('notify_reregister', {
         userPubkey: account,
         nextAction: {
