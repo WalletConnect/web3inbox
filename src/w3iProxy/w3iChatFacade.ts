@@ -6,6 +6,8 @@ import { EventEmitter } from 'events'
 import { ReplaySubject, filter, from, scan, throwError, timeout } from 'rxjs'
 import { hashMessage } from 'viem'
 
+import { logError } from '@/utils/error'
+
 import ExternalChatProvider from './chatProviders/externalChatProvider'
 // eslint-disable-next-line no-duplicate-imports
 import type { ChatClientTypes } from './chatProviders/types'
@@ -151,7 +153,7 @@ class W3iChatFacade implements W3iChat {
 
   // eslint-disable-next-line
   public async initInternalProvider(chatClient: any) {
-    console.error('Initting internal chat provider not supported')
+    logError(new Error('Initting internal chat provider not supported'))
   }
 
   // Method to be used by external providers. Not internal use.

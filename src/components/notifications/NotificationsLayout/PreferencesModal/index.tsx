@@ -10,6 +10,7 @@ import Text from '@/components/general/Text'
 import Toggle from '@/components/general/Toggle'
 import SettingsContext from '@/contexts/SettingsContext/context'
 import W3iContext from '@/contexts/W3iContext/context'
+import { logError } from '@/utils/error'
 import { useColorModeValue, useModals } from '@/utils/hooks'
 import { preferencesModalService } from '@/utils/store'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
@@ -61,7 +62,7 @@ export const PreferencesModal: React.FC = () => {
           scope: getEnabledScopes(scopes)
         })
       } catch (error) {
-        console.error(error)
+        logError(error)
         showErrorMessageToast('Failed to update preferences')
         setLoading(false)
       }

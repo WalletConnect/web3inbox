@@ -5,6 +5,8 @@ import SettingsContext from '@/contexts/SettingsContext/context'
 import { fetchDomainProjects, fetchFeaturedProjects } from '@/utils/projects'
 import type { INotifyApp, INotifyProject, INotifyProjectWithComingSoon } from '@/utils/types'
 
+import { logError } from '../error'
+
 const useNotifyProjects = () => {
   const [loading, setLoading] = useState(false)
   const [projects, setProjects] = useState<INotifyApp[]>([])
@@ -51,7 +53,7 @@ const useNotifyProjects = () => {
 
         setProjects(notifyApps)
       } catch (error) {
-        console.error(error)
+        logError(error)
         setProjects([])
       } finally {
         setLoading(false)

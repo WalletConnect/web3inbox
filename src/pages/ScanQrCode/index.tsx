@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import BackButton from '@/components/general/BackButton'
 import TransitionDiv from '@/components/general/TransitionDiv'
+import { logError } from '@/utils/error'
 
 import './ScanQrCode.scss'
 
@@ -22,7 +23,7 @@ const ScanQrCode: React.FC = () => {
     if (web3inboxRegex.test(scanResult)) {
       nav(scanResult.replace(window.location.origin, ''))
     } else {
-      console.error('Not a valid invite url', scanResult)
+      logError(new Error(`Not a valid invite url: ${scanResult}`))
       nav('/messages')
     }
   }, [scanResult])

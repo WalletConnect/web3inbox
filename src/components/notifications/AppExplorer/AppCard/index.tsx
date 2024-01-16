@@ -7,6 +7,7 @@ import SpannerSVG from '@/assets/Spanner.svg'
 import Badge from '@/components/general/Badge'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
+import { logError } from '@/utils/error'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
 
 import SubscribeButton from './SubscribeButton'
@@ -69,7 +70,7 @@ const AppCard: React.FC<AppCardProps> = ({
           appDomain: new URL(url).host
         })
       } catch (error) {
-        console.error(error)
+        logError(error)
         setSubscribing(false)
         showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
@@ -88,7 +89,7 @@ const AppCard: React.FC<AppCardProps> = ({
           throw new Error(`No matching subscription found to domain, ${appDomain}`)
         }
       } catch (e: any) {
-        console.error(`Failed to navigate to app: ${e.message}`)
+        logError(e)
       }
     }
   }

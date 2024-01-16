@@ -9,6 +9,7 @@ import SignatureIcon from '@/components/general/Icon/SignatureIcon'
 import Wallet from '@/components/general/Icon/Wallet'
 import { Modal } from '@/components/general/Modal/Modal'
 import Text from '@/components/general/Text'
+import { logError } from '@/utils/error'
 import { useModals } from '@/utils/hooks'
 import { signatureModalService } from '@/utils/store'
 
@@ -42,7 +43,7 @@ export const SignatureModal: React.FC<{
             )
             break
           default:
-            console.error('No correct sender for signature modal')
+            logError(new Error(`No correct sender for signature modal, sender: ${sender}`))
         }
       })
       .catch(() => {

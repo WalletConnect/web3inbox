@@ -90,7 +90,7 @@ export const userEnabledNotification = () => {
  */
 export const requireNotifyPermission = async () => {
   if (!notificationsEnabledInBrowser()) {
-    console.error('This browser does not support desktop push notifications')
+    console.warn('This browser does not support desktop push notifications')
     return false
   }
 
@@ -100,7 +100,7 @@ export const requireNotifyPermission = async () => {
     case 'granted':
       return true
     case 'denied':
-      console.error('User denied permissions')
+      console.warn('User denied permissions')
       return false
     default:
       return (await window.Notification?.requestPermission()) === 'granted'

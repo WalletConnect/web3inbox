@@ -8,6 +8,7 @@ import { Modal } from '@/components/general/Modal/Modal'
 import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
+import { logError } from '@/utils/error'
 import { useModals } from '@/utils/hooks'
 import { unsubscribeModalService } from '@/utils/store'
 import { showDefaultToast, showErrorMessageToast } from '@/utils/toasts'
@@ -39,7 +40,7 @@ export const UnsubscribeModal: React.FC = () => {
         })
         await notifyClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
       } catch (error) {
-        console.error(error)
+        logError(error)
         showErrorMessageToast(`Unsubscribing failed, please try again`)
         setLoading(false)
       }

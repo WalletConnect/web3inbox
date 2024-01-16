@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 
+import { logError } from '@/utils/error'
+
 import Web3InboxProxy from '../../../w3iProxy'
 import { useDappOrigin } from './dappOrigin'
 import { useProviderQueries } from './providerQueryHooks'
@@ -34,7 +36,7 @@ export const useW3iProxy = () => {
           setReady(true)
         })
         .catch(error => {
-          console.error('w3iProxy failed to initialize: ', error)
+          logError(error)
         })
     }
   }, [w3iProxy.isInitializing])

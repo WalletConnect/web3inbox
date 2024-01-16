@@ -7,6 +7,7 @@ import W3iBellIcon from '@/assets/W3iBell.svg'
 import Button from '@/components/general/Button'
 import Spinner from '@/components/general/Spinner'
 import W3iContext from '@/contexts/W3iContext/context'
+import { logError } from '@/utils/error'
 import { showErrorMessageToast } from '@/utils/toasts'
 import { JsCommunicator } from '@/w3iProxy/externalCommunicators/jsCommunicator'
 
@@ -43,7 +44,7 @@ const WidgetSubscribe: React.FC = () => {
         appDomain: new URL(dappOrigin).host
       })
     } catch (error) {
-      console.error(error)
+      logError(error)
       showErrorMessageToast(`Failed to subscribe to ${dappOrigin}`)
     } finally {
       setIsSubscribing(false)

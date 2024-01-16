@@ -10,9 +10,7 @@ export async function fetchFeaturedProjects<T>() {
   explorerUrlFeatured.searchParams.set('isFeatured', 'true')
 
   try {
-    const discoverProjectsData = await fetch(explorerUrlFeatured)
-      .then(async res => res.json())
-      .catch(err => console.error({ featuredProjects: err }))
+    const discoverProjectsData = await fetch(explorerUrlFeatured).then(async res => res.json())
     const discoverProjects = Object.values(discoverProjectsData.projects)
 
     return {

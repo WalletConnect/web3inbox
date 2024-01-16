@@ -4,6 +4,7 @@ import type { NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
 import mixpanel from 'mixpanel-browser'
 
+import { logError } from '@/utils/error'
 import { getDbEchoRegistrations } from '@/utils/idb'
 import {
   notificationsEnabledInBrowser,
@@ -193,7 +194,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       // Ensure we have a registration with echo (if we need it)
       await this.ensureEchoRegistration()
     } catch (e) {
-      Sentry.captureEvent(e as Error)
+      logError(e)
     }
 
     return subscribed
@@ -208,7 +209,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       ? this.notifyClient.subscriptions.get(params.topic).account
       : ''
 
-     const isRegistered = this.notifyClient.isRegistered({
+    const isRegistered = this.notifyClient.isRegistered({
       account,
       domain: window.location.hostname,
       allApps: true
