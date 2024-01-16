@@ -23,16 +23,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     icon: '/gempad.png'
   },
   {
-    id: 'moso',
-    name: 'Moso',
-    description: 'Shop with Moso and earn crypto back from over 2,000 stores.',
-    url: 'https://moso.xyz/',
-    isComingSoon: true,
-    isVerified: false,
-    isFeatured: false,
-    icon: '/moso.png'
-  },
-  {
     id: 'chainspot',
     name: 'Chainspot',
     description:
@@ -83,5 +73,15 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     isVerified: false,
     isFeatured: false,
     icon: '/loopring.png'
+  },
+  {
+    id: 'jumptask',
+    name: 'JumpTask',
+    description: 'One place, many ways to earn!',
+    url: 'https://jumptask.io/',
+    isComingSoon: true,
+    isVerified: false,
+    isFeatured: false,
+    icon: '/jumptask.png'
   }
 ]
