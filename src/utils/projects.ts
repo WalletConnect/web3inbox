@@ -1,7 +1,5 @@
 import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '@/utils/constants'
 
-import { logError } from './error'
-
 const projectId: string = import.meta.env.VITE_PROJECT_ID
 
 export async function fetchFeaturedProjects<T>() {
@@ -19,7 +17,6 @@ export async function fetchFeaturedProjects<T>() {
       data: discoverProjects as T
     }
   } catch (error) {
-    logError(error)
     throw new Error(`Error fetching featured projects: ${error}`)
   }
 }
