@@ -14,7 +14,7 @@ import { useModals } from '@/utils/hooks'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
 import {
   checkIfNotificationModalClosed,
-  notificationsEnabledInBrowser
+  notificationsAvailableInBrowser
 } from '@/utils/notifications'
 import { isAppleMobile, isMobileButNotInstalledOnHomeScreen, isNonSafari } from '@/utils/pwa'
 import { notificationPwaModalService, signatureModalService } from '@/utils/store'
@@ -44,7 +44,7 @@ export const Modals = () => {
   const shouldShowPreferencesModalOpen = isPreferencesModalOpen && !shouldShowChangeBrowserModal
 
   const shouldShowNotificationModal =
-    notificationsEnabledInBrowser() &&
+    notificationsAvailableInBrowser() &&
     !explicitlyDeniedOnDesktop &&
     !isMobileButNotInstalledOnHomeScreen &&
     !notificationsEnabled &&

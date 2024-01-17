@@ -7,8 +7,9 @@ import mixpanel from 'mixpanel-browser'
 import { logError } from '@/utils/error'
 import { getDbEchoRegistrations } from '@/utils/idb'
 import {
-  notificationsEnabledInBrowser,
+  notificationsAvailableInBrowser,
   registerWithEcho,
+  requireNotifyPermission,
   setupSubscriptionsSymkeys,
   userEnabledNotification
 } from '@/utils/notifications'
@@ -78,10 +79,14 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       return
     }
 
-    if (notificationsEnabledInBrowser()) {
-      await window.Notification?.requestPermission()
+    const notificationsAvailabe = notificationsAvailableInBrowser()
 
-      await registerWithEcho(this.notifyClient)
+    if (notificationsAvailabe) {
+      const notificationsGranted = await requireNotifyPermission()
+
+      if (notificationsGranted) {
+        await registerWithEcho(this.notifyClient)
+      }
     }
   }
 
