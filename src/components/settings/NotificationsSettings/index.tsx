@@ -13,7 +13,7 @@ import SettingsContext from '@/contexts/SettingsContext/context'
 import W3iContext from '@/contexts/W3iContext/context'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
 import { getDbEchoRegistrations } from '@/utils/idb'
-import { notificationsEnabledInBrowser, requireNotifyPermission } from '@/utils/notifications'
+import { notificationsAvailableInBrowser, requireNotifyPermission } from '@/utils/notifications'
 import { showSuccessMessageToast } from '@/utils/toasts'
 
 import SettingsHeader from '../SettingsHeader'
@@ -131,7 +131,7 @@ const NotificationsSettings: React.FC = () => {
                   setChecked={handleEnableNotifications}
                   icon={<NotificationIcon />}
                   title="Enable Push Notifications"
-                  active={notificationsEnabledInBrowser() && !notificationsEnabled}
+                  active={notificationsAvailableInBrowser() && !notificationsEnabled}
                 />
               </SettingsItem>
             </div>

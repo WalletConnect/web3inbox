@@ -73,12 +73,12 @@ export const checkIfNotificationModalClosed = () => {
   return storageValue === 'true'
 }
 
-export const notificationsEnabledInBrowser = () => {
+export const notificationsAvailableInBrowser = () => {
   return 'Notification' in window
 }
 
 export const userEnabledNotification = () => {
-  if (notificationsEnabledInBrowser()) {
+  if (notificationsAvailableInBrowser()) {
     return window.Notification?.permission === 'granted'
   }
   return false
@@ -89,7 +89,7 @@ export const userEnabledNotification = () => {
  * Returns true if permissions were granted
  */
 export const requireNotifyPermission = async () => {
-  if (!notificationsEnabledInBrowser()) {
+  if (!notificationsAvailableInBrowser()) {
     console.warn('This browser does not support desktop push notifications')
     return false
   }
