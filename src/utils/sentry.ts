@@ -7,9 +7,9 @@ export const initSentry = () => {
       new Sentry.BrowserTracing({
         tracePropagationTargets: ['https://web3inbox-dev-hidden.vercel.app']
       }),
-      new Sentry.Replay(),
+      new Sentry.Replay()
     ],
-    tracesSampleRate: 0.5,
+    tracesSampleRate: 0.2,
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0
   })
