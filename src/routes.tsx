@@ -45,7 +45,6 @@ const ConfiguredRoutes: React.FC = () => {
             <Route path="/settings/appearance" element={<AppearanceSettings />} />
             <Route path="/settings/notification" element={<NotificationsSettings />} />
             <Route path="/settings/support" element={<SupportSettings />} />
-            {/* <Route path="/settings/privacy" element={<PrivacySettings />} /> */}
           </Route>
         ) : null}
       </Route>
