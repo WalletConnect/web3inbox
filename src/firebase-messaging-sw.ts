@@ -2,8 +2,8 @@
 import { decryptMessage } from '@walletconnect/notify-message-decrypter'
 import { initializeApp } from 'firebase/app'
 import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw'
-
-import { getDbSymkeyStore } from '@/utils/idb'
+import { getDbSymkeyStore } from './utils/idb'
+import mixpanel from 'mixpanel-browser'
 
 declare let self: ServiceWorkerGlobalScope
 
@@ -33,20 +33,27 @@ const getSymKey = async (topic: string) => {
   throw new Error(`No symkey exists for such topic: ${topic}`)
 }
 
+mixpanel.init(import.meta.env.VITE_MIXPANEL_TOKEN, {
+  ignore_dnt: true
+})
+
 onBackgroundMessage(messaging, async ev => {
+  mixpanel.track("onBackgroundMessage > received_push_event")
+
   const encoded = ev.data?.blob
   const topic = ev.data?.topic
 
   if (!encoded || !topic) {
-    // Console Errors can be viewed via Chrome and Firefox devtools
-    console.error(`Received incorrect payload > blob: ${encoded} | topic: ${topic}`)
+    mixpanel.track(`Received incorrect payload > blob: ${encoded} | topic: ${topic}`)
     return
   }
 
   const symkey = await getSymKey(topic)
+  mixpanel.track(`Decoded symkey: ${symkey}`)
 
   const m = await decryptMessage({ encoded, symkey, topic })
 
+  mixpanel.track(`Decrypted Message: ${m.title}`)
   return self.registration.showNotification(m.title, {
     icon: m.icon,
     body: m.body,
