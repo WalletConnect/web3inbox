@@ -1,4 +1,4 @@
-import type { Locator, Page } from '@playwright/test'
+import { type Locator, type Page, expect } from '@playwright/test'
 
 import { BASE_URL } from '../constants'
 
@@ -42,14 +42,16 @@ export class ModalPage {
 
   async subscribe(nth: number) {
     await this.page.locator('.AppCard__body > .AppCard__body__subscribe').nth(nth).click()
+    await this.page.getByText('Subscribed to', { exact: false }).isVisible()
   }
 
-  async unsubscribe() {
-    await this.page.getByRole('button', { name: 'Subscribed' }).click()
-    await this.page.getByRole('button', { name: 'Subscribed' }).isHidden()
-    await this.page.getByRole('button').first().click()
+  async unsubscribe(nth: number) {
+    await this.page.getByRole('button', { name: 'Subscribed' }).nth(nth).click()
+    await this.page.getByRole('button', { name: 'Subscribed' }).nth(nth).isHidden()
+    await this.page.locator('.AppNotificationsHeader__wrapper > .Dropdown').click()
     await this.page.getByRole('button', { name: 'Unsubscribe' }).click()
     await this.page.getByRole('button', { name: 'Unsubscribe' }).nth(1).click()
+    await this.page.getByText('Unsubscribed from', { exact: false }).isVisible()
     await this.page.waitForTimeout(2000)
   }
 

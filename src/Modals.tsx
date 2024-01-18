@@ -10,6 +10,7 @@ import NotificationPwaModal from '@/components/utils/NotificationPwaModal'
 import PwaModal from '@/components/utils/PwaModal'
 import W3iContext from '@/contexts/W3iContext/context'
 import { SignatureModal } from '@/pages/Login/SignatureModal'
+import { isCI } from '@/utils/env'
 import { useModals } from '@/utils/hooks'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
 import {
@@ -96,7 +97,7 @@ export const Modals = () => {
 
       {shouldShowPWAModal && <PwaModal />}
 
-      {isNotificationPwaModalOpen && <NotificationPwaModal />}
+      {!isCI && isNotificationPwaModalOpen && <NotificationPwaModal />}
 
       {shouldShowChangeBrowserModal && <ChangeBrowserModal />}
     </AnimatePresence>
