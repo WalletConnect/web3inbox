@@ -13,6 +13,7 @@ export class ModalPage {
 
   async load() {
     await this.page.goto(this.baseURL)
+    await this.page.context().grantPermissions(['notifications'])
   }
 
   async copyConnectUriToClipboard() {
