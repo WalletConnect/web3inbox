@@ -32,5 +32,5 @@ test('it should subscribe and unsubscribe', async ({
   await walletPage.handleRequest({ accept: true })
   await modalPage.rejectNotifications()
   await modalPage.subscribe(0)
-  await modalPage.unsubscribe()
+  await modalPage.unsubscribe(0)
 })

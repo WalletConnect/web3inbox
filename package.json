@@ -15,7 +15,7 @@
     "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'",
     "playwright:install": "playwright install --with-deps",
     "playwright:test": "playwright test",
-    "playwright:start": "yarn dev",
+    "playwright:start": "VITE_CI=true yarn dev",
     "playwright:debug": "playwright test --debug"
   },
   "dependencies": {
