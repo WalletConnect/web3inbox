@@ -46,10 +46,10 @@ export class ModalPage {
   }
 
   async unsubscribe(nth: number) {
-    await this.page.locator('.AppCard__body > .AppCard__body__subscribed').nth(nth).click()
-    await this.page.locator('.AppCard__body > .AppCard__body__subscribed').nth(nth).isHidden()
+    await this.page.getByRole('button', { name: 'Subscribed' }).nth(nth).click()
+    await this.page.getByRole('button', { name: 'Subscribed' }).nth(nth).isHidden()
     await this.page.locator('.AppNotificationsHeader__wrapper > .Dropdown').click()
-    await this.page.locator('.AppNotificationDropdown__actions__unsubscribe').click()
+    await this.page.getByRole('button', { name: 'Unsubscribe' }).click()
     await this.page.getByRole('button', { name: 'Unsubscribe' }).nth(1).click()
     await this.page.getByText('Unsubscribed from', { exact: false }).isVisible()
     await this.page.waitForTimeout(2000)
