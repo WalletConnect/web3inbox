@@ -1,7 +1,7 @@
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 
 export interface TopicNotificationsState {
-  fullNotifications: NotifyClientTypes.NotifyMessage[]
+  fullNotifications: NotifyClientTypes.NotifyNotification[]
   existingIds: Set<string>
   hasMore: boolean
 }
@@ -13,13 +13,13 @@ export interface NotificationsState {
 export type NotificationsActions =
   | {
       type: 'FETCH_NOTIFICATIONS'
-      notifications: NotifyClientTypes.NotifyMessage[]
+      notifications: NotifyClientTypes.NotifyNotification[]
       topic: string
       hasMore: boolean
     }
   | {
       type: 'UNSHIFT_NEW_NOTIFICATIONS'
-      notifications: NotifyClientTypes.NotifyMessage[]
+      notifications: NotifyClientTypes.NotifyNotification[]
       topic: string
     }
 

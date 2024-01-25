@@ -20,7 +20,7 @@ export interface IAppNotification {
   message: string
   isRead: boolean
   timestamp: number
-  url?: string
+  url: string | null
 }
 interface IAppNotificationProps {
   notification: IAppNotification
@@ -30,7 +30,7 @@ interface IAppNotificationProps {
 
 const AppNotificationItemLink: React.FC<{
   children: React.ReactNode
-  url?: string
+  url: string | null
   className?: string
 }> = ({ children, url, ...props }) => {
   if (!url) return <div {...props}>{children}</div>
