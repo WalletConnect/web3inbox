@@ -34,17 +34,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     icon: '/chainspot.png'
   },
   {
-    id: 'avive',
-    name: 'Avive',
-    description:
-      "One of the world's largest UBI & DePin Projects, with over 9 million worldwide users.",
-    url: 'https://www.avive.world',
-    isComingSoon: true,
-    isVerified: false,
-    isFeatured: false,
-    icon: '/avive.png'
-  },
-  {
     id: 'maverick',
     name: 'Maverick Protocol',
     description: 'Maverick Protocol is a leading provider of smart contract solutions in DeFi.',
