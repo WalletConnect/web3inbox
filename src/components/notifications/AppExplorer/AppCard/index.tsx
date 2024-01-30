@@ -40,6 +40,7 @@ const AppCard: React.FC<AppCardProps> = ({
   const { activeSubscriptions } = useContext(W3iContext)
 
   const host = new URL(url).host
+  const projectURL = new URL(url)
 
   useEffect(() => {
     // If the account changes, the subscribing flow has broken.
@@ -49,8 +50,6 @@ const AppCard: React.FC<AppCardProps> = ({
   const subscribed =
     userPubkey &&
     activeSubscriptions.some(element => {
-      const projectURL = new URL(url)
-
       return projectURL.hostname === element.metadata.appDomain
     })
   const logoURL = logo || '/fallback.svg'

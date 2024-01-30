@@ -77,13 +77,22 @@
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 1;
     }
-    &__description {
+    &__link {
       color: var(--fg-color-2);
-
+      text-decoration: none;
+      display: flex;
+      align-items: center;
       overflow: hidden;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 1;
+      gap: 0.125rem;
+
+      svg {
+        display: inline-block;
+      }
+
+      &:hover {
+        color: var(--fg-color-2);
+        filter: brightness(0.9);
+      }
     }
   }
   &__actions {

@@ -1,7 +1,10 @@
 import { useContext, useState } from 'react'
 
+import { Link } from 'react-router-dom'
+
 import BackButton from '@/components/general/BackButton'
 import Button from '@/components/general/Button'
+import ArrowRightTopIcon from '@/components/general/Icon/ArrowRightTopIcon'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
 import { noop } from '@/utils/general'
@@ -17,6 +20,7 @@ interface IAppNotificationsHeaderProps {
   name: string
   domain: string
 }
+
 const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
   domain,
   logo,
@@ -25,7 +29,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
 }) => {
   const isMobile = useIsMobile()
   const { dappOrigin } = useContext(W3iContext)
-  const [dropdownToShow, setDropdownToShow] = useState<string | undefined>()
+  const url = new URL('https://' + domain)
 
   return (
     <div className="AppNotificationsHeader">
@@ -53,14 +57,21 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
               />
               <div className="AppNotificationsHeader__app__name_container">
                 <h2 className="AppNotificationsHeader__app__name">{name}</h2>
-                <Text variant="link-500" className="AppNotificationsHeader__app__description">
-                  {domain}
-                </Text>
+                <Link
+                  to={url.href}
+                  className="AppNotificationsHeader__app__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Text variant="link-500">{domain}</Text>
+                  <div>
+                    <ArrowRightTopIcon />
+                  </div>
+                </Link>
               </div>
             </div>
             <div className="AppNotificationsHeader__wrapper">
               <AppNotificationDropdown
-                closeDropdown={() => setDropdownToShow(undefined)}
                 h="2.5em"
                 w="2.5em"
                 notificationId={id}
