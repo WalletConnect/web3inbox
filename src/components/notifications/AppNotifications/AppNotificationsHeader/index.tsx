@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -76,6 +76,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
                 w="2.5em"
                 notificationId={id}
                 dropdownPlacement="bottomLeft"
+                closeDropdown={noop}
               />
             </div>
           </>
