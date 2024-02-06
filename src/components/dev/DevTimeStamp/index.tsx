@@ -7,7 +7,9 @@ const getTimeStampFormatted = (rawTimestamp: number) => {
   const timestamp = new Date(rawTimestamp)
 
   const year = timestamp.getFullYear();
-  const month = (timestamp.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+
+  // Months are zero-indexed
+  const month = (timestamp.getMonth() + 1).toString().padStart(2, '0'); 
   const day = timestamp.getDate().toString().padStart(2, '0');
   const hours = timestamp.getHours().toString().padStart(2, '0');
   const minutes = timestamp.getMinutes().toString().padStart(2, '0');
@@ -15,7 +17,6 @@ const getTimeStampFormatted = (rawTimestamp: number) => {
   
   const timeZone = new Intl.DateTimeFormat('en', { timeZoneName: 'short' }).formatToParts(timestamp).find(part => part.type === 'timeZoneName')!.value;
 
-// Combine components into the desired format
   const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${timeZone}`;
 
   return formattedDateTime
