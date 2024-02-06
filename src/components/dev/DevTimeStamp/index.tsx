@@ -42,7 +42,7 @@ const DevTimeStamp = () => {
 
   return (
     <div className="DevTimeStamp">
-      <p>{getTimeStampFormatted(timestamp)}</p>
+      <span>{getTimeStampFormatted(timestamp)}</span>
     </div>
   )
 }
