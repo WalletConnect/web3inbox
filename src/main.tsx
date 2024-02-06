@@ -16,6 +16,7 @@ import { initSentry } from '@/utils/sentry'
 import { Modals } from './Modals'
 
 import './index.css'
+import DevTimeStamp from './components/dev/DevTimeStamp'
 
 polyfill()
 initSentry()
@@ -50,6 +51,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <W3iContextProvider>
             <ConfiguredRoutes />
+            <DevTimeStamp />
             <Modals />
           </W3iContextProvider>
         </BrowserRouter>

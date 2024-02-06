@@ -11,7 +11,6 @@ import W3iContext from '@/contexts/W3iContext/context'
 import { useMobileResponsiveGrid } from '@/utils/hooks'
 
 import './App.scss'
-import DevTimeStamp from './components/dev/DevTimeStamp'
 
 const App = () => {
   const { uiEnabled } = useContext(W3iContext)
@@ -21,7 +20,6 @@ const App = () => {
 
   return (
     <AuthProtectedPage>
-      <DevTimeStamp />
       <LazyMotion features={domAnimation}>
         <m.div ref={ref} data-path={location.pathname} className="App">
           <Fragment>
