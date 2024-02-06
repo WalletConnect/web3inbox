@@ -30,7 +30,7 @@ const DevTimeStamp = () => {
     if(isDevModeEnabled) {
      const intervalId = setInterval(() => {
       setTimestamp(Date.now())
-     }, 100)
+     }, 250)
 
      return () => clearInterval(intervalId)
     }
