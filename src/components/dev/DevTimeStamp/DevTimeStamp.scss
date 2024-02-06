@@ -1,0 +1,15 @@
+.DevTimeStamp {
+  color: #888888;
+  position: fixed;
+  width: 100%;
+  top: 0.5em;
+  font-size: 11px;
+  pointer-events: none;
+  z-index: 999;
+
+  span {
+    display: block;
+    width: fit-content;
+    margin: auto;
+  }
+}
