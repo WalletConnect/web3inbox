@@ -1,0 +1,9 @@
+.DevTimeStamp {
+  color: var(--fg-color-1);
+  background: var(--bg-color-2);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.25em;
+  z-index: 999;
+}
