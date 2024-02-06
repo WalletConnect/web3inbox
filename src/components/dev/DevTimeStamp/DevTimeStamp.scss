@@ -1,9 +1,9 @@
 .DevTimeStamp {
-  color: var(--fg-color-1);
-  background: var(--bg-color-2);
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0.25em;
+  color: #888888;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  font-size: 11px;
+  pointer-events: none;
   z-index: 999;
 }
