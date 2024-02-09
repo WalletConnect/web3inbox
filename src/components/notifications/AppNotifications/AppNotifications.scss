@@ -265,4 +265,107 @@
       }
     }
   }
+
+  &__item-skeleton {
+    position: relative;
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+    border: 1px solid var(--border-color-2);
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+
+    @media only screen and (max-width: 768px) {
+      padding: 1rem 1.25rem;
+      border-radius: 0px;
+      border: none;
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+    }
+
+    &__status {
+      position: relative;
+      background-color: var(--shimmer-fg);
+    }
+
+    &__image {
+      width: 4em;
+      height: 4em;
+      aspect-ratio: 1/1;
+      border-radius: 10px;
+      object-fit: cover;
+      align-self: flex-start;
+      background-color: var(--shimmer-fg);
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+      @media only screen and (max-width: 768px) {
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      align-self: flex-start;
+      margin-top: 5px;
+      gap: 0.25rem;
+
+      @media only screen and (max-width: 768px) {
+        margin-top: 2px;
+      }
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &__title {
+        width: 50%;
+        height: 1.25rem;
+        background-color: var(--shimmer-fg);
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        border-radius: 0.25rem;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      &__date {
+        width: 10%;
+        height: 1.25rem;
+        background-color: var(--shimmer-fg);
+        display: flex;
+        align-items: center;
+        border-radius: 0.25rem;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+    }
+
+    &__message {
+      width: 70%;
+      height: 1.25rem;
+      background-color: var(--shimmer-fg);
+      margin-top: 0.25rem;
+      border-radius: 0.25rem;
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+      @media only screen and (max-width: 768px) {
+        margin-top: 0px;
+      }
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
 }

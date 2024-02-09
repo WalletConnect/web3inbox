@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { Fragment, createContext, useContext, useEffect, useRef, useState } from 'react'
 
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
@@ -7,6 +7,7 @@ import { noop } from 'rxjs'
 
 import Label from '@/components/general/Label'
 import MobileHeader from '@/components/layout/MobileHeader'
+import AppNotificationItemSkeleton from '@/components/notifications/AppNotifications/AppNotificationItemSkeleton'
 import W3iContext from '@/contexts/W3iContext/context'
 import { useNotificationsInfiniteScroll } from '@/utils/hooks/useNotificationsInfiniteScroll'
 
@@ -36,7 +37,7 @@ const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
   const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
-  const { notifications, intersectionObserverRef, nextPage, unshiftNewMessage } =
+  const { isLoading, notifications, intersectionObserverRef, nextPage, unshiftNewMessage } =
     useNotificationsInfiniteScroll(topic)
 
   const ref = useRef<HTMLDivElement>(null)
@@ -85,10 +86,10 @@ const AppNotifications = () => {
             title={app.metadata.name}
           />
           <AppNotificationsCardMobile />
-          {notifications.length > 0 ? (
+          {isLoading || notifications.length > 0 ? (
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
-                <Label color="main">Latest</Label>
+                {notifications.length > 0 ? <Label color="main">Latest</Label> : null}
                 {notifications.map((notification, index) => (
                   <AppNotificationItem
                     ref={index === notifications.length - 1 ? intersectionObserverRef : null}
@@ -109,6 +110,13 @@ const AppNotifications = () => {
                     appLogo={app.metadata?.icons?.[0]}
                   />
                 ))}
+                {isLoading ? (
+                  <Fragment>
+                    <AppNotificationItemSkeleton />
+                    <AppNotificationItemSkeleton />
+                    <AppNotificationItemSkeleton />
+                  </Fragment>
+                ) : null}
               </div>
             </div>
           ) : (

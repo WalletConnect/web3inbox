@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useReducer, useRef } from 'react'
+import { useCallback, useContext, useEffect, useReducer, useRef, useState } from 'react'
 
 import W3iContext from '@/contexts/W3iContext/context'
 import { notificationsReducer } from '@/reducers/notifications'
@@ -15,6 +15,7 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
   const intersectionObserverRef = useRef<HTMLDivElement>(null)
   const { notifyClientProxy } = useContext(W3iContext)
   const [state, dispatch] = useReducer(notificationsReducer, {})
+  const [isLoading, setIsLoading] = useState(false)
 
   const nextPageInternal = useCallback(
     async (lastMessageId?: string) => {
@@ -22,11 +23,13 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
         return
       }
 
+      setIsLoading(true)
       const newNotifications = await notifyClientProxy.getNotificationHistory({
         topic,
         limit: NOTIFICATION_BATCH_SIZE,
         startingAfter: lastMessageId
       })
+      setIsLoading(false)
 
       dispatch({
         type: 'FETCH_NOTIFICATIONS',
@@ -89,6 +92,7 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
 
   return {
     hasMore,
+    isLoading,
     notifications: topicNotifications,
     intersectionObserverRef,
     nextPage: () => nextPageInternal(lastMessageId),
