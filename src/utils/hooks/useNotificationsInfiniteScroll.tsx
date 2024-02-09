@@ -15,7 +15,6 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
   const intersectionObserverRef = useRef<HTMLDivElement>(null)
   const { notifyClientProxy } = useContext(W3iContext)
   const [state, dispatch] = useReducer(notificationsReducer, {})
-  const [isLoading, setIsLoading] = useState(false)
 
   const nextPageInternal = useCallback(
     async (lastMessageId?: string) => {
@@ -23,16 +22,16 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
         return
       }
 
-      setIsLoading(true)
+      dispatch({ type: 'FETCH_NOTIFICATIONS_LOADING', topic })
+
       const newNotifications = await notifyClientProxy.getNotificationHistory({
         topic,
         limit: NOTIFICATION_BATCH_SIZE,
         startingAfter: lastMessageId
       })
-      setIsLoading(false)
 
       dispatch({
-        type: 'FETCH_NOTIFICATIONS',
+        type: 'FETCH_NOTIFICATIONS_DONE',
         notifications: newNotifications.notifications,
         hasMore: newNotifications.hasMore,
         topic
@@ -61,6 +60,7 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
 
   const topicState = topic ? state?.[topic] : undefined
   const topicNotifications = topicState ? topicState.fullNotifications : []
+  const isLoading = topicState ? topicState.isLoading : []
   const hasMore = topicState ? topicState.hasMore : false
 
   const lastMessageId = topicNotifications.length
