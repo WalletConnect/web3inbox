@@ -18,7 +18,7 @@ const Avatar: React.FC<AvatarProps> = ({ address, width, height }) => {
 
   const addressOrEnsDomain = address as `0x${string}` | undefined
   const { data: ensName } = useEnsName({ address: addressOrEnsDomain })
-  const { data: ensAvatar } = useEnsAvatar({ name: ensName })
+  const { data: ensAvatar } = useEnsAvatar({ name: ensName ?? '' })
 
   return (
     <div

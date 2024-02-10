@@ -16,7 +16,7 @@ export default class InternalAuthProvider {
     this.emitter = emitter
 
     watchAccount(wagmiConfig, {
-      onChange(data) {
+      onChange: data => {
         const chainId = getAccount(wagmiConfig).chainId
 
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -49,7 +49,7 @@ export default class InternalAuthProvider {
   }
 
   public async initState() {
-    this.account = getAccount().address
+    this.account = getAccount(wagmiConfig).address
     if (this.account) {
       this.emitter.emit('auth_set_account', { account: this.account, chain: this.chain })
     }

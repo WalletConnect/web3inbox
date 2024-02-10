@@ -11,6 +11,8 @@ import type { ICore, IStore } from '@walletconnect/types'
 import type { EventEmitter } from 'events'
 import pino from 'pino'
 
+import { wagmiConfig } from '@/utils/wagmiConfig'
+
 import type { ChatClientTypes } from './types'
 import type { W3iChatProvider } from './types'
 
@@ -89,7 +91,7 @@ export default class InternalChatProvider implements W3iChatProvider {
   }
 
   private getRequiredInternalAddress(): string {
-    const address = getAccount().address
+    const address = getAccount(wagmiConfig).address
     if (!address) {
       throw new Error('No address registered')
     }

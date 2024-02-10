@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
-import { fetchEnsAddress } from '@wagmi/core'
+import { getEnsAddress } from '@wagmi/core'
 import debounce from 'lodash.debounce'
 import { NavLink, useNavigate } from 'react-router-dom'
 
@@ -16,6 +16,7 @@ import { isValidAddressOrEnsDomain, isValidEnsDomain } from '@/utils/address'
 import { useColorModeValue, useIsMobile } from '@/utils/hooks'
 import { truncate } from '@/utils/string'
 import { showErrorMessageToast } from '@/utils/toasts'
+import { wagmiConfig } from '@/utils/wagmiConfig'
 
 import SearchSuggestions from './SearchSuggestions'
 
@@ -46,7 +47,7 @@ const NewChat: React.FC = () => {
   const resolveAddress = async (inviteeAddress: string) => {
     // eslint-disable-next-line prefer-regex-literals
     if (isValidEnsDomain(inviteeAddress)) {
-      const resolvedAddress = await fetchEnsAddress({
+      const resolvedAddress = await getEnsAddress(wagmiConfig, {
         name: inviteeAddress
       })
 

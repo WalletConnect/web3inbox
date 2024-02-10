@@ -1,5 +1,5 @@
+import { arbitrum, avalanche, bsc, mainnet, polygon } from '@wagmi/core/chains'
 import { defaultWagmiConfig } from '@web3modal/wagmi'
-import { arbitrum, avalanche, bsc, mainnet, polygon } from 'wagmi/chains'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
