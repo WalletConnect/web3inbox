@@ -1,38 +1,35 @@
-import { getAccount, getNetwork, watchAccount, watchNetwork } from '@wagmi/core'
+import { getAccount, watchAccount } from '@wagmi/core'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import type { EventEmitter } from 'events'
 
 import { getEIPChainString } from '@/utils/chain'
+import { wagmiConfig } from '@/utils/wagmiConfig'
 
 export default class InternalAuthProvider {
   private readonly methodsListenedTo = ['auth_set_account']
   public providerName = 'InternalAuthProvider'
-  public account?: string = getAccount().address
-  public chain?: string = getEIPChainString(getNetwork().chain?.id)
+  public account?: string = getAccount(wagmiConfig).address
+  public chain?: string = getEIPChainString(getAccount(wagmiConfig).chain?.id)
   protected readonly emitter: EventEmitter
 
   public constructor(emitter: EventEmitter, _name = 'InternalAuthProvider') {
     this.emitter = emitter
 
-    watchNetwork(network => {
-      const caip10Chain = getEIPChainString(getNetwork().chain?.id)
-      this.chain = caip10Chain
+    watchAccount(wagmiConfig, {
+      onChange(data) {
+        const chainId = getAccount(wagmiConfig).chainId
 
-      this.emitter.emit('auth_set_account', { account: this.account, chain: caip10Chain })
-    })
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (!data.address) {
+          this.emitter.emit('auth_set_account', { account: null, chain: null })
+          return
+        }
 
-    watchAccount(account => {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!account.address) {
-        this.emitter.emit('auth_set_account', { account: null, chain: null })
-
-        return
+        const caip10Chain = getEIPChainString(chainId)
+        this.emitter.emit('auth_set_account', { account: data.address, chain: caip10Chain })
+        this.chain = caip10Chain
+        this.account = data.address
       }
-
-      const caip10Chain = getEIPChainString(getNetwork().chain?.id)
-      this.emitter.emit('auth_set_account', { account: account.address, chain: caip10Chain })
-      this.chain = caip10Chain
-      this.account = account.address
     })
   }
 
