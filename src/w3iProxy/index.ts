@@ -9,6 +9,7 @@ import type { Logger } from 'pino'
 
 import type { UiEnabled } from '@/contexts/W3iContext/context'
 import { identifyMixpanelUserAndInit } from '@/utils/mixpanel'
+import { wagmiConfig } from '@/utils/wagmiConfig'
 import W3iAuthFacade from '@/w3iProxy/w3iAuthFacade'
 import type W3iChatFacade from '@/w3iProxy/w3iChatFacade'
 import W3iNotifyFacade from '@/w3iProxy/w3iNotifyFacade'
@@ -101,7 +102,7 @@ class Web3InboxProxy {
     this.dappOrigin = dappOrigin
 
     this.signMessage = async (message: string) => {
-      return signMessage({ message })
+      return signMessage(wagmiConfig, { message })
     }
   }
 
