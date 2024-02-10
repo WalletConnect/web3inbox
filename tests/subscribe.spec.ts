@@ -6,7 +6,6 @@ test.beforeEach(async ({ modalPage, walletPage, browserName }) => {
     // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
     test.skip()
   }
-  test.skip()
   await modalPage.copyConnectUriToClipboard()
   await walletPage.connect()
   await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)
