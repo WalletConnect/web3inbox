@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import { useDisconnect } from 'wagmi'
+import { useDisconnect, useSignMessage } from 'wagmi'
 
 import Button from '@/components/general/Button'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
@@ -9,9 +9,9 @@ import SignatureIcon from '@/components/general/Icon/SignatureIcon'
 import Wallet from '@/components/general/Icon/Wallet'
 import { Modal } from '@/components/general/Modal/Modal'
 import Text from '@/components/general/Text'
-import { logError } from '@/utils/error'
 import { useModals } from '@/utils/hooks'
 import { signatureModalService } from '@/utils/store'
+import { wagmiConfig } from '@/utils/wagmiConfig'
 
 import { SignatureLoadingVisual } from './SignatureLoadingVisual'
 
@@ -19,37 +19,35 @@ import './SignatureModal.scss'
 
 export const SignatureModal: React.FC<{
   message: string
-  sender: 'chat' | 'notify'
-}> = ({ message, sender }) => {
+}> = ({ message }) => {
   /*
    * If identity was already signed, and sync was requested then we are in the
    * final step.
    */
   const { isSigning } = useModals()
   const { disconnect } = useDisconnect()
+  const { signMessageAsync } = useSignMessage()
 
-  const onSign = useCallback(() => {
+  async function onSignMessage() {
+    const signature = await signMessageAsync({
+      message: 'hello world!'
+    })
+  }
+
+  const onSign = () => {
     signatureModalService.startSigning()
     window.web3inbox
       .signMessage(message)
       .then(signature => {
-        switch (sender) {
-          case 'chat':
-            console.warn('[Web3Inbox] Signing messages for chat is not supported.')
-            break
-          case 'notify':
-            window.web3inbox.notify.postMessage(
-              formatJsonRpcRequest('notify_signature_delivered', { signature })
-            )
-            break
-          default:
-            logError(new Error(`No correct sender for signature modal, sender: ${sender}`))
-        }
+        window.web3inbox.notify.postMessage(
+          formatJsonRpcRequest('notify_signature_delivered', { signature })
+        )
       })
       .catch(() => {
+        console.error('Failed to sign message')
         signatureModalService.stopSigning()
       })
-  }, [message, sender])
+  }
 
   return (
     <Modal onCloseModal={signatureModalService.closeModal}>
