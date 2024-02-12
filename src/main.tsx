@@ -31,7 +31,13 @@ createWeb3Modal({
   themeMode: 'light',
   themeVariables: { '--w3m-z-index': 9999 },
   termsConditionsUrl: TERMS_OF_SERVICE_URL,
-  privacyPolicyUrl: PRIVACY_POLICY_URL
+  privacyPolicyUrl: PRIVACY_POLICY_URL,
+  metadata: {
+    name: 'Web3Inbox',
+    description: 'Web3Inbox App',
+    url: 'https://web3inbox.com',
+    icons: ['https://avatars.githubusercontent.com/u/37784886']
+  }
 })
 
 const queryClient = new QueryClient()
