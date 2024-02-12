@@ -9,6 +9,7 @@ import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
 import { noop } from '@/utils/general'
 import { useIsMobile } from '@/utils/hooks'
+import getDomainHref from '@/utils/url'
 
 import AppNotificationDropdown from '../AppNotificationDropdown'
 
@@ -29,7 +30,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
 }) => {
   const isMobile = useIsMobile()
   const { dappOrigin } = useContext(W3iContext)
-  const url = new URL('https://' + domain)
+  const href = getDomainHref(domain)
 
   return (
     <div className="AppNotificationsHeader">
@@ -58,7 +59,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
               <div className="AppNotificationsHeader__app__name_container">
                 <h2 className="AppNotificationsHeader__app__name">{name}</h2>
                 <Link
-                  to={url.href}
+                  to={href}
                   className="AppNotificationsHeader__app__link"
                   target="_blank"
                   rel="noopener noreferrer"
