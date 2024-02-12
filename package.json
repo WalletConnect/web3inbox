@@ -25,7 +25,7 @@
     "@walletconnect/identity-keys": "^1.0.1",
     "@walletconnect/notify-client": "^0.16.5",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
-    "@web3modal/wagmi": "4.0.2",
+    "@web3modal/wagmi": "4.0.3",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
     "detect-browser": "^5.3.0",
