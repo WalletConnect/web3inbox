@@ -36,7 +36,7 @@ createWeb3Modal({
     name: 'Web3Inbox',
     description: 'Web3Inbox App',
     url: 'https://web3inbox.com',
-    icons: ['https://avatars.githubusercontent.com/u/37784886']
+    icons: ['https://assets.web3inbox.com/images/w3i-app-logo.png']
   }
 })
 
