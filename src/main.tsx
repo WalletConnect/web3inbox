@@ -28,10 +28,10 @@ createWeb3Modal({
   wagmiConfig,
   enableAnalytics: import.meta.env.PROD,
   projectId,
-  themeMode: 'light',
-  themeVariables: { '--w3m-z-index': 9999 },
   termsConditionsUrl: TERMS_OF_SERVICE_URL,
   privacyPolicyUrl: PRIVACY_POLICY_URL,
+  themeMode: 'light',
+  themeVariables: { '--w3m-z-index': 9999 },
   metadata: {
     name: 'Web3Inbox',
     description: 'Web3Inbox App',
