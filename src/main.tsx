@@ -12,7 +12,7 @@ import W3iContextProvider from '@/contexts/W3iContext'
 import ConfiguredRoutes from '@/routes'
 import { polyfill } from '@/utils/polyfill'
 import { initSentry } from '@/utils/sentry'
-import { wagmiConfig } from '@/utils/wagmiConfig'
+import { metadata, wagmiConfig } from '@/utils/wagmiConfig'
 
 import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
@@ -32,12 +32,7 @@ createWeb3Modal({
   privacyPolicyUrl: PRIVACY_POLICY_URL,
   themeMode: 'light',
   themeVariables: { '--w3m-z-index': 9999 },
-  metadata: {
-    name: 'Web3Inbox',
-    description: 'Web3Inbox App',
-    url: 'https://web3inbox.com',
-    icons: ['https://assets.web3inbox.com/images/w3i-app-logo.png']
-  }
+  metadata
 })
 
 const queryClient = new QueryClient()

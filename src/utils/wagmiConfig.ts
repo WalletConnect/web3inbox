@@ -3,11 +3,11 @@ import { defaultWagmiConfig } from '@web3modal/wagmi'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
-const metadata = {
+export const metadata = {
   name: 'Web3Inbox',
-  description: 'Notification Hub',
-  url: 'https://app.web3inbox.com',
-  icons: ['https://app.web3inbox.com/logo.png']
+  description: 'Web3Inbox App',
+  url: 'https://web3inbox.com',
+  icons: ['https://assets.web3inbox.com/images/w3i-app-logo.png']
 }
 
 export const wagmiConfig = defaultWagmiConfig({
