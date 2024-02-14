@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 
 import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
-import { useDisconnect } from 'wagmi'
+import { useAccount, useDisconnect } from 'wagmi'
 
 import Button from '@/components/general/Button'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
 import SignatureIcon from '@/components/general/Icon/SignatureIcon'
 import Wallet from '@/components/general/Icon/Wallet'
 import { Modal } from '@/components/general/Modal/Modal'
+import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
-import { logError } from '@/utils/error'
 import { useModals } from '@/utils/hooks'
 import { signatureModalService } from '@/utils/store'
 
@@ -19,8 +19,10 @@ import './SignatureModal.scss'
 
 export const SignatureModal: React.FC<{
   message: string
-  sender: 'chat' | 'notify'
-}> = ({ message, sender }) => {
+}> = ({ message }) => {
+  const { status } = useAccount()
+  const connected = status === 'connected'
+
   /*
    * If identity was already signed, and sync was requested then we are in the
    * final step.
@@ -28,28 +30,20 @@ export const SignatureModal: React.FC<{
   const { isSigning } = useModals()
   const { disconnect } = useDisconnect()
 
-  const onSign = useCallback(() => {
+  const onSign = () => {
     signatureModalService.startSigning()
     window.web3inbox
       .signMessage(message)
       .then(signature => {
-        switch (sender) {
-          case 'chat':
-            console.warn('[Web3Inbox] Signing messages for chat is not supported.')
-            break
-          case 'notify':
-            window.web3inbox.notify.postMessage(
-              formatJsonRpcRequest('notify_signature_delivered', { signature })
-            )
-            break
-          default:
-            logError(new Error(`No correct sender for signature modal, sender: ${sender}`))
-        }
+        window.web3inbox.notify.postMessage(
+          formatJsonRpcRequest('notify_signature_delivered', { signature })
+        )
       })
       .catch(() => {
+        console.error('Failed to sign message')
         signatureModalService.stopSigning()
       })
-  }, [message, sender])
+  }
 
   return (
     <Modal onCloseModal={signatureModalService.closeModal}>
@@ -77,9 +71,9 @@ export const SignatureModal: React.FC<{
         </Text>
         <div className="SignatureModal__button">
           <Button
-            disabled={isSigning}
+            disabled={isSigning || !connected}
             textVariant="paragraph-600"
-            rightIcon={isSigning ? null : <Wallet />}
+            rightIcon={!connected ? <Spinner /> : isSigning ? null : <Wallet />}
             onClick={onSign}
           >
             {isSigning ? 'Waiting for wallet...' : 'Sign in with wallet'}

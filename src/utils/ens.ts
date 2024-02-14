@@ -1,5 +1,5 @@
+import { PublicClient } from 'viem'
 import { normalize } from 'viem/ens'
-import type { PublicClient } from 'wagmi'
 
 declare const localStorage: Storage | undefined
 

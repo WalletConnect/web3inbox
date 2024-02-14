@@ -59,7 +59,7 @@ export const Modals = () => {
     if (userPubkey && notifySignatureRequired) {
       if (isWeb3ModalOpen) {
         // Close web3modal in case user is switching accounts
-        closeWeb3Modal()
+        // closeWeb3Modal()
       }
       signatureModalService.openModal()
     } else {
@@ -91,9 +91,7 @@ export const Modals = () => {
 
       {shouldShowPreferencesModalOpen && <PreferencesModal />}
 
-      {shouldShowSignatureModal && (
-        <SignatureModal message={notifyRegisterMessage ?? ''} sender={'notify'} />
-      )}
+      {shouldShowSignatureModal && <SignatureModal message={notifyRegisterMessage ?? ''} />}
 
       {shouldShowPWAModal && <PwaModal />}
 

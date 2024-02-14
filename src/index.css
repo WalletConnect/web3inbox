@@ -78,3 +78,7 @@ video {
     padding-bottom: 1rem;
   }
 }
+
+#w3m-iframe {
+  border: none;
+}
