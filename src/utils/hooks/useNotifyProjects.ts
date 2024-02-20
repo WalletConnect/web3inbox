@@ -51,7 +51,8 @@ const useNotifyProjects = () => {
             description: domainProject.description,
             url: domainProject.dapp_url,
             icon: domainProject.image_url?.md ?? '/fallback.svg',
-            isFeatured: false
+            isFeatured: false,
+            isComingSoon: false
           })
         }
 
