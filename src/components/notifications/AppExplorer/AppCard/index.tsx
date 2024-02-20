@@ -7,7 +7,7 @@ import SpannerSVG from '@/assets/Spanner.svg'
 import Badge from '@/components/general/Badge'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
-import { logError } from '@/utils/error'
+import { getErrorMessage, logError } from '@/utils/error'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
 
 import SubscribeButton from './SubscribeButton'
@@ -69,9 +69,10 @@ const AppCard: React.FC<AppCardProps> = ({
           appDomain: new URL(url).host
         })
       } catch (error) {
+        const message = getErrorMessage(error, `Failed to subscribe to ${name}`)
         logError(error)
         setSubscribing(false)
-        showErrorMessageToast(`Failed to subscribe to ${name}`)
+        showErrorMessageToast(message)
       }
     },
     [userPubkey, name, description, logo, url, setSubscribing, subscribed, notifyClientProxy]
