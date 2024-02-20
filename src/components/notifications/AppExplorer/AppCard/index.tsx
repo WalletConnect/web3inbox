@@ -21,14 +21,14 @@ interface AppCardProps {
   loadingSubscription: boolean
   logo: string
   url: string
-  isVerified?: boolean
+  isFeatured?: boolean
   isComingSoon: boolean
 }
 
 const AppCard: React.FC<AppCardProps> = ({
   description,
   isComingSoon,
-  isVerified,
+  isFeatured,
   loadingSubscription,
   logo,
   name,
@@ -38,11 +38,12 @@ const AppCard: React.FC<AppCardProps> = ({
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
   const { notifyClientProxy, userPubkey } = useContext(W3iContext)
-  const { isDevModeEnabled } = useContext(SettingsContext)
+  const { filterAppDomain } = useContext(SettingsContext)
   const { activeSubscriptions } = useContext(W3iContext)
 
   const host = new URL(url).host
   const projectURL = new URL(url)
+  const isDomainProject = filterAppDomain === host
 
   useEffect(() => {
     // If the account changes, the subscribing flow has broken.
@@ -114,7 +115,7 @@ const AppCard: React.FC<AppCardProps> = ({
       <div className="AppCard__header">
         <div className="AppCard__header__logo">
           <img src={logo || '/fallback.svg'} alt={`${name} logo`} />
-          {isDevModeEnabled && !isVerified && !isComingSoon ? (
+          {isDomainProject && !isFeatured && !isComingSoon ? (
             <img src={SpannerSVG} className="AppCard__header__logo__dev-icon" alt="Dev mode icon" />
           ) : null}
         </div>
@@ -134,7 +135,7 @@ const AppCard: React.FC<AppCardProps> = ({
       <div className="AppCard__body">
         <div className="AppCard__body__title">
           <Text variant="large-600">{name}</Text>
-          {isDevModeEnabled && !isVerified && !isComingSoon ? <Badge>DEV</Badge> : null}
+          {isDomainProject && !isFeatured && !isComingSoon ? <Badge>DEV</Badge> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
           {host}

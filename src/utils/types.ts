@@ -52,7 +52,6 @@ export interface INotifyApp {
   description: string
   url: string
   icon: string
-  isVerified: boolean
   isFeatured: boolean
   isComingSoon: boolean
 }

@@ -7,7 +7,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     description: 'Galxe is the leading platform for building Web3 community.',
     url: 'https://galxe.com/',
     isComingSoon: true,
-    isVerified: false,
     isFeatured: false,
     icon: '/galxe.png'
   },
@@ -18,7 +17,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
       'Simple to use Multichain Launchpad where new and exciting projects host their presales and other sales before they get listed on exchanges.',
     url: 'https://gempad.app/',
     isComingSoon: true,
-    isVerified: false,
     isFeatured: false,
     icon: '/gempad.png'
   },
@@ -29,7 +27,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
       'Bridge&swap across 27 chains at the best rates and research data about 100+ Web3 products.',
     url: 'https://app.chainspot.io/',
     isComingSoon: true,
-    isVerified: false,
     isFeatured: false,
     icon: '/chainspot.png'
   },
@@ -39,7 +36,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     description: 'Maverick Protocol is a leading provider of smart contract solutions in DeFi.',
     url: 'https://app.mav.xyz',
     isComingSoon: true,
-    isVerified: false,
     isFeatured: false,
     icon: '/maverick.png'
   },
@@ -49,7 +45,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     description: 'Explore the Loopring DEX, Earn, and NFT Management.',
     url: 'https://loopring.io/#/pro',
     isComingSoon: true,
-    isVerified: false,
     isFeatured: false,
     icon: '/loopring.png'
   },
@@ -59,7 +54,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     description: 'Access the most innovative structural products brought to the DeFi world.',
     url: 'https://earn.loopring.io/',
     isComingSoon: true,
-    isVerified: false,
     isFeatured: false,
     icon: '/loopring.png'
   },
@@ -69,7 +63,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     description: 'One place, many ways to earn!',
     url: 'https://jumptask.io/',
     isComingSoon: true,
-    isVerified: false,
     isFeatured: false,
     icon: '/jumptask.png'
   }

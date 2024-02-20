@@ -17,9 +17,7 @@ const useNotifyProjects = () => {
       setLoading(true)
 
       try {
-        const { data: featuredProjects } = await fetchFeaturedProjects<INotifyProject[]>({
-          isDevModeEnabled
-        })
+        const { data: featuredProjects } = await fetchFeaturedProjects<INotifyProject[]>()
         const { data: domainProject } = await fetchDomainProjects<INotifyProject>(filterAppDomain)
 
         const allProjects: INotifyProjectWithComingSoon[] = featuredProjects.map(item => ({
@@ -27,13 +25,9 @@ const useNotifyProjects = () => {
           is_coming_soon: false
         }))
 
-        const haveDevProject = allProjects.some(
+        const haveDomainProject = allProjects.some(
           ({ id }: INotifyProjectWithComingSoon) => id === domainProject?.id
         )
-
-        if (!haveDevProject && domainProject) {
-          allProjects.push(domainProject as INotifyProjectWithComingSoon)
-        }
 
         const notifyApps: INotifyApp[] = allProjects
           // Lower order indicates higher priority, thus sorting ascending
@@ -45,11 +39,21 @@ const useNotifyProjects = () => {
             url: item.dapp_url,
             icon: item.image_url?.md ?? '/fallback.svg',
             colors: item.metadata?.colors,
-            isVerified: Boolean(item.is_verified || item.isVerified),
-            isFeatured: item.is_featured,
+            isFeatured: true,
             isComingSoon: item.is_coming_soon
           }))
           .filter(app => Boolean(app.name))
+
+        if (!haveDomainProject && domainProject) {
+          notifyApps.unshift({
+            id: domainProject.id,
+            name: domainProject.name,
+            description: domainProject.description,
+            url: domainProject.dapp_url,
+            icon: domainProject.image_url?.md ?? '/fallback.svg',
+            isFeatured: false
+          })
+        }
 
         notifyApps.concat(COMING_SOON_PROJECTS)
 

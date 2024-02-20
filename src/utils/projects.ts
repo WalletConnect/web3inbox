@@ -2,18 +2,12 @@ import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '@/utils/constants'
 
 const projectId: string = import.meta.env.VITE_PROJECT_ID
 
-type FetchFeaturedProjectsProps = {
-  isDevModeEnabled: boolean
-}
-
-export async function fetchFeaturedProjects<T>({ isDevModeEnabled }: FetchFeaturedProjectsProps) {
+export async function fetchFeaturedProjects<T>() {
   const explorerUrlFeatured = new URL(EXPLORER_ENDPOINTS.projects, EXPLORER_API_BASE_URL)
 
   explorerUrlFeatured.searchParams.set('projectId', projectId)
   explorerUrlFeatured.searchParams.set('isVerified', 'true')
-  if (!isDevModeEnabled) {
-    explorerUrlFeatured.searchParams.set('isFeatured', 'true')
-  }
+  explorerUrlFeatured.searchParams.set('isFeatured', 'true')
 
   try {
     const discoverProjectsData = await fetch(explorerUrlFeatured).then(async res => res.json())
