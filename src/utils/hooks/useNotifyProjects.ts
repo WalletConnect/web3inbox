@@ -10,14 +10,16 @@ import { logError } from '../error'
 const useNotifyProjects = () => {
   const [loading, setLoading] = useState(false)
   const [projects, setProjects] = useState<INotifyApp[]>([])
-  const { filterAppDomain } = useContext(SettingsContext)
+  const { filterAppDomain, isDevModeEnabled } = useContext(SettingsContext)
 
   useEffect(() => {
     const fetchNotifyProjects = async () => {
       setLoading(true)
 
       try {
-        const { data: featuredProjects } = await fetchFeaturedProjects<INotifyProject[]>()
+        const { data: featuredProjects } = await fetchFeaturedProjects<INotifyProject[]>({
+          isDevModeEnabled
+        })
         const { data: domainProject } = await fetchDomainProjects<INotifyProject>(filterAppDomain)
 
         const allProjects: INotifyProjectWithComingSoon[] = featuredProjects.map(item => ({
@@ -61,7 +63,7 @@ const useNotifyProjects = () => {
     }
 
     fetchNotifyProjects()
-  }, [setProjects, filterAppDomain])
+  }, [isDevModeEnabled, setProjects, filterAppDomain])
 
   return { projects, loading }
 }

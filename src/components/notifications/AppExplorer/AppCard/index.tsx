@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import SpannerSVG from '@/assets/Spanner.svg'
 import Badge from '@/components/general/Badge'
 import Text from '@/components/general/Text'
+import SettingsContext from '@/contexts/SettingsContext/context'
 import W3iContext from '@/contexts/W3iContext/context'
 import { logError } from '@/utils/error'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
@@ -37,6 +38,7 @@ const AppCard: React.FC<AppCardProps> = ({
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
   const { notifyClientProxy, userPubkey } = useContext(W3iContext)
+  const { isDevModeEnabled } = useContext(SettingsContext)
   const { activeSubscriptions } = useContext(W3iContext)
 
   const host = new URL(url).host
@@ -112,7 +114,7 @@ const AppCard: React.FC<AppCardProps> = ({
       <div className="AppCard__header">
         <div className="AppCard__header__logo">
           <img src={logo || '/fallback.svg'} alt={`${name} logo`} />
-          {!isVerified && !isComingSoon ? (
+          {isDevModeEnabled && !isVerified && !isComingSoon ? (
             <img src={SpannerSVG} className="AppCard__header__logo__dev-icon" alt="Dev mode icon" />
           ) : null}
         </div>
@@ -132,7 +134,7 @@ const AppCard: React.FC<AppCardProps> = ({
       <div className="AppCard__body">
         <div className="AppCard__body__title">
           <Text variant="large-600">{name}</Text>
-          {!isVerified && !isComingSoon ? <Badge>DEV</Badge> : null}
+          {isDevModeEnabled && !isVerified && !isComingSoon ? <Badge>DEV</Badge> : null}
         </div>
         <Text className="AppCard__body__subtitle" variant="tiny-500">
           {host}
