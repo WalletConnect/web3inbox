@@ -14,6 +14,7 @@ import {
   userEnabledNotification
 } from '@/utils/notifications'
 import { W3iNotifyProvider } from '@/w3iProxy/notifyProviders/types'
+import { isSmartContractWallet } from '@/utils/signature'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined
@@ -156,9 +157,15 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
       })
     })(preparedRegistration.message)
 
+    const [,,address] = props.account.split(':')
+
+    const isEip1271Signature = await isSmartContractWallet(address as `0x${string}`);
+
+
     const identityKey = await this.notifyClient.register({
       registerParams: preparedRegistration.registerParams,
-      signature
+      signature,
+      signatureType: isEip1271Signature? 'eip1271' : 'eip191'
     })
 
     return identityKey

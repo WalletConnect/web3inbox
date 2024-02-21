@@ -102,7 +102,15 @@ class Web3InboxProxy {
     this.dappOrigin = dappOrigin
 
     this.signMessage = async (message: string) => {
-      return signMessage(wagmiConfig, { message })
+      try {
+        const signed = await signMessage(wagmiConfig, {
+          message
+        })
+
+        return signed
+      } catch (e) {
+        return ''
+      }
     }
   }
 
@@ -171,7 +179,7 @@ class Web3InboxProxy {
     }
 
     if (this.core) {
-      this.identityKeys = new IdentityKeys(this.core)
+      this.identityKeys = new IdentityKeys(this.core, this.projectId)
     }
 
     if (this.authProvider === 'internal') {
