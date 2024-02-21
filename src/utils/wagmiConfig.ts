@@ -6,7 +6,7 @@ const projectId = import.meta.env.VITE_PROJECT_ID
 export const metadata = {
   name: 'Web3Inbox',
   description: 'Web3Inbox App',
-  url: 'https://web3inbox.com',
+  url: 'https://app.web3inbox.com',
   icons: ['https://assets.web3inbox.com/images/w3i-app-logo.png']
 }
 
