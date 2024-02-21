@@ -161,7 +161,6 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
 
     const isEip1271Signature = await isSmartContractWallet(address as `0x${string}`);
 
-
     const identityKey = await this.notifyClient.register({
       registerParams: preparedRegistration.registerParams,
       signature,
