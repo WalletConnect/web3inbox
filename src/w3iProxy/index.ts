@@ -109,6 +109,7 @@ class Web3InboxProxy {
 
         return signed
       } catch (e) {
+        console.error("signMessage error: ", e)
         return ''
       }
     }
