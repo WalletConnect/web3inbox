@@ -13,6 +13,7 @@ import { wagmiConfig } from '@/utils/wagmiConfig'
 import W3iAuthFacade from '@/w3iProxy/w3iAuthFacade'
 import type W3iChatFacade from '@/w3iProxy/w3iChatFacade'
 import W3iNotifyFacade from '@/w3iProxy/w3iNotifyFacade'
+import { showErrorMessageToast } from '@/utils/toasts'
 
 export type W3iChatClient = Omit<W3iChatFacade, 'initState'>
 export type W3iNotifyClient = Omit<W3iNotifyFacade, 'initState'>
@@ -109,6 +110,8 @@ class Web3InboxProxy {
 
         return signed
       } catch (e: any) {
+	console.log("___________________________")
+	showErrorMessageToast("Failed to sign message. Consider using different wallet.")
 	throw new Error(`Failed to sign message. ${e.message}`)
       }
     }

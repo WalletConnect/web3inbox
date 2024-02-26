@@ -1,7 +1,6 @@
 import { Fragment, useContext } from 'react'
 
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
-import { Toaster } from 'react-hot-toast'
 import { Outlet, useLocation } from 'react-router-dom'
 
 import MobileFooter from '@/components/layout/MobileFooter'
@@ -30,16 +29,6 @@ const App = () => {
         </m.div>
       </LazyMotion>
       <MobileFooter />
-      <Toaster
-        toastOptions={{
-          position: 'bottom-right',
-          duration: 5000,
-          style: {
-            border: '1px solid rgba(0, 0, 0, 0.1)',
-            borderRadius: '1em'
-          }
-        }}
-      />
     </AuthProtectedPage>
   )
 }
