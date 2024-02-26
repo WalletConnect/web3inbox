@@ -2,7 +2,7 @@ import { type Locator, type Page, expect } from '@playwright/test'
 
 import { BASE_URL } from '../constants'
 
-export class ModalPage {
+export class InboxPage {
   private readonly baseURL = BASE_URL
 
   private readonly connectButton: Locator
