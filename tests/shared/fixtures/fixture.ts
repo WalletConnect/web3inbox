@@ -30,7 +30,7 @@ export const test = base.extend<ModalFixture>({
     settingsPage.load()
     use(settingsPage)
   },
-  notifyServer: async(_, use) => {
+  notifyServer: async({}, use) => {
     const notifyServer = new NotifyServer();
     use(notifyServer)
   },

@@ -98,6 +98,7 @@ test('it should subscribe, recieve messages and unsubscribe', async ({
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()
+  await inboxPage.subscribe(0)
 
   await settingsPage.goToNotificationSettings()
   await settingsPage.displayCustomDapp(CUSTOM_TEST_DAPP.appDomain)
@@ -105,9 +106,11 @@ test('it should subscribe, recieve messages and unsubscribe', async ({
   await inboxPage.gotoDiscoverPage()
 
   // Ensure the custom dapp is the one subscribed to
-  expect(await inboxPage.page.getByText(CUSTOM_TEST_DAPP.appDomain).isVisible()).toEqual(true)
+  await inboxPage.page.getByText("Notify Swift", {exact: false}).waitFor({ state: 'visible' })
 
-  await inboxPage.subscribe(0)
+  expect(await inboxPage.page.getByText("Notify Swift", {exact: false}).isVisible()).toEqual(true);
+  
+  await inboxPage.subscribeAndNavigateToDapp(0)
 
   if(!CUSTOM_TEST_DAPP.projectId || !(CUSTOM_TEST_DAPP.projectSecret)) {
     throw new Error("TEST_DAPP_SECRET and TEST_DAPP_ID are required")
@@ -116,7 +119,7 @@ test('it should subscribe, recieve messages and unsubscribe', async ({
   const address = await inboxPage.getAddress()
 
   await notifyServer.sendMessage({
-    accounts: [address],
+    accounts: [`eip155:1:${address}`],
     body: "Test Body",
     title: "Test Title",
     type: CUSTOM_TEST_DAPP.messageType,
@@ -126,6 +129,7 @@ test('it should subscribe, recieve messages and unsubscribe', async ({
     projectSecret: CUSTOM_TEST_DAPP.projectSecret,
   })
 
-  expect(await inboxPage.page.getByText("Test Body").isVisible()).toEqual(true)
+  await inboxPage.page.getByText("Test Body").waitFor({state: 'visible'})
 
+  expect(await inboxPage.page.getByText("Test Body").isVisible()).toEqual(true)
 })

@@ -7,12 +7,10 @@ export class SettingsPage {
 
   constructor(public readonly page: Page) {}
 
-  async load() {
-    await this.page.goto(`${this.baseURL}`)
-  }
+  async load() {}
 
   async goToNotificationSettings() {
-    await this.page.goto(`${this.baseURL}settings/notifications`)
+    await this.page.locator('.Sidebar__Navigation__Link[href="/settings"]').click()
   }
 
   async displayCustomDapp(dappUrl: string) {

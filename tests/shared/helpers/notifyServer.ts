@@ -1,3 +1,5 @@
+import { expect } from "@playwright/test"
+
 export class NotifyServer {
   private notifyBaseUrl = "https://notify.walletconnect.com"
 
@@ -34,13 +36,27 @@ export class NotifyServer {
     const fetchUrl = `${this.notifyBaseUrl}/${projectId}/notify`
 
     const headers = new Headers({
+      
       Authorization: `Bearer ${projectSecret}`,
       "Content-Type": "application/json"
+
     })
 
-    await fetch(fetchUrl, {
-      headers,
-      body: request,
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode(request));
+        controller.close(); // Close the stream after enqueueing the data
+      }
     })
+
+    const fetchResults = await fetch(fetchUrl, {
+      method: "POST",
+      headers,
+      body: stream,
+    })
+
+    console.log(">>>> FETCH", await fetchResults.text(), fetchResults.status)
+
+    expect(fetchResults.status).toEqual(200)
   }
 }

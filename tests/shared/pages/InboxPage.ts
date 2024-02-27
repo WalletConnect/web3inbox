@@ -16,7 +16,10 @@ export class InboxPage {
   }
 
   async gotoDiscoverPage() {
-    await this.page.goto(`${this.baseURL}notifications/new-app`)
+    await this.page.locator('.Sidebar__Navigation__Link[href="/notifications"]').click()
+    await this.page.getByText('Discover Apps').click();
+
+    await this.page.getByText('Discover Web3Inbox').isVisible();
   }
 
   async copyConnectUriToClipboard() {
@@ -45,7 +48,7 @@ export class InboxPage {
   }
 
   async getAddress() {
-    await this.page.locator('.Avatar').click()
+    await this.page.locator('.Avatar').first().click()
     await this.page.locator('wui-icon[name=copy]').first().click();
     const copiedAddress: string = this.page.evaluate('navigator.clipboard.readText()') as any
     await this.page.locator('wui-icon[name=close]').first().click();
