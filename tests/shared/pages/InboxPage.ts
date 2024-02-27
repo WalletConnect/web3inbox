@@ -41,8 +41,15 @@ export class InboxPage {
   }
 
   async subscribe(nth: number) {
-    await this.page.locator('.AppCard__body > .AppCard__body__subscribe').nth(nth).click()
-    await this.page.getByText('Subscribed to', { exact: false }).isVisible()
+    const appCard = this.page.locator('.AppCard__body').nth(nth)
+    await appCard.locator('.AppCard__body__subscribe').click()
+
+    console.log({appCardText: await appCard.innerText()})
+
+    await appCard.locator('.AppCard__body__subscribed').getByText('Subscribed', { exact: false }).isVisible()
+
+    await this.page.waitForTimeout(3000);
+
   }
 
   async navigateToNewSubscription(nth: number) {
@@ -61,6 +68,17 @@ export class InboxPage {
     await this.page.getByRole('button', { name: 'Unsubscribe' }).nth(1).click()
     await this.page.getByText('Unsubscribed from', { exact: false }).isVisible()
     await this.page.waitForTimeout(2000)
+  }
+
+  async navigateToDappFromSidebar(nth: number) {
+    await this.page.locator('.AppSelector__notifications-link').nth(nth).click()
+  }
+
+  async countSubscribedDapps() {
+
+    const selected = await this.page.locator('AppSelector__list').all()
+    console.log({selected})
+    return (await this.page.locator('.AppSelector__notifications').count() - 1)
   }
 
   async updatePreferences() {
