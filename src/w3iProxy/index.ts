@@ -110,7 +110,6 @@ class Web3InboxProxy {
 
         return signed
       } catch (e: any) {
-	console.log("___________________________")
 	showErrorMessageToast("Failed to sign message. Consider using different wallet.")
 	throw new Error(`Failed to sign message. ${e.message}`)
       }
