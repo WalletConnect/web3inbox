@@ -36,7 +36,6 @@ export class NotifyServer {
     const fetchUrl = `${this.notifyBaseUrl}/${projectId}/notify`
 
     const headers = new Headers({
-      
       Authorization: `Bearer ${projectSecret}`,
       "Content-Type": "application/json"
 
