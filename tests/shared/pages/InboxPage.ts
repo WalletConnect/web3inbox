@@ -49,11 +49,10 @@ export class InboxPage {
 
   async getAddress() {
     await this.page.locator('.Avatar').first().click()
-    await this.page.locator('wui-icon[name=copy]').first().click();
-    const copiedAddress: string = this.page.evaluate('navigator.clipboard.readText()') as any
+    const address = await this.page.locator('wui-avatar').getAttribute('alt')
     await this.page.locator('wui-icon[name=close]').first().click();
 
-    return copiedAddress;
+    return address;
   }
 
   async subscribe(nth: number) {

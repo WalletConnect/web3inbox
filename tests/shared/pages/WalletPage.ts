@@ -10,6 +10,8 @@ export class WalletPage {
   private readonly gotoHome: Locator
   private readonly vercelPreview: Locator
 
+  private address: string;
+
   constructor(public readonly page: Page) {
     this.gotoHome = this.page.getByTestId('wc-connect')
     this.vercelPreview = this.page.locator('css=vercel-live-feedback')

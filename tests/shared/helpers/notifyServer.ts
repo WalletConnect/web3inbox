@@ -40,22 +40,11 @@ export class NotifyServer {
       "Content-Type": "application/json"
     })
 
-    const stream = new ReadableStream({
-      start(controller) {
-        controller.enqueue(new TextEncoder().encode(request));
-        controller.close(); // Close the stream after enqueueing the data
-      }
-    })
-
     const fetchResults = await fetch(fetchUrl, {
       method: "POST",
       headers,
-      // @ts-ignore
-      duplex: true,
-      body: stream,
+      body: request
     })
-
-    console.log(">>>> FETCH", await fetchResults.text(), fetchResults.status)
 
     expect(fetchResults.status).toEqual(200)
   }
