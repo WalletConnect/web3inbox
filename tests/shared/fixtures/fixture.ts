@@ -1,23 +1,23 @@
 import { test as base } from '@playwright/test'
 
 import { InboxPage } from '../pages/InboxPage'
-import { ModalValidator } from '../validators/ModalValidator'
+import { InboxValidator } from '../validators/ModalValidator'
 
 // Declare the types of fixtures to use
 export interface ModalFixture {
   inboxPage: InboxPage
-  inboxValidator: ModalValidator
+  inboxValidator: InboxValidator
   library: string
 }
 
 export const test = base.extend<ModalFixture>({
   inboxPage: async ({ page }, use) => {
-    const modalPage = new ModalPage(page)
-    await modalPage.load()
-    await use(modalPage)
+    const inboxPage = new InboxPage(page)
+    await inboxPage.load()
+    await use(inboxPage)
   },
-  inboxValidator: async ({ modalPage }, use) => {
-    const modalValidator = new ModalValidator(modalPage.page)
+  inboxValidator: async ({ inboxPage }, use) => {
+    const modalValidator = new InboxValidator(inboxPage.page)
     await use(modalValidator)
   }
 })

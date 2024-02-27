@@ -45,14 +45,49 @@ export class InboxPage {
     await this.page.getByText('Subscribed to', { exact: false }).isVisible()
   }
 
-  async unsubscribe(nth: number) {
+  async navigateToNewSubscription(nth: number) {
     await this.page.getByRole('button', { name: 'Subscribed' }).nth(nth).click()
     await this.page.getByRole('button', { name: 'Subscribed' }).nth(nth).isHidden()
+  }
+
+  async subscribeAndNavigateToDapp(nth: number) {
+    await this.subscribe(nth);
+    await this.navigateToNewSubscription(nth);
+  }
+
+  async unsubscribe() {
     await this.page.locator('.AppNotificationsHeader__wrapper > .Dropdown').click()
     await this.page.getByRole('button', { name: 'Unsubscribe' }).click()
     await this.page.getByRole('button', { name: 'Unsubscribe' }).nth(1).click()
     await this.page.getByText('Unsubscribed from', { exact: false }).isVisible()
     await this.page.waitForTimeout(2000)
+  }
+
+  async updatePreferences() {
+    await this.page.locator('.AppNotificationsHeader__wrapper > .Dropdown').click()
+    await this.page.getByRole('button', { name: 'Preferences' }).click()
+    // Ensure the modal is visible
+    await this.page.getByText('Preferences').nth(1).isVisible()
+    await this.page.getByText('Preferences').nth(1).click()
+
+    const firstCheckBoxIsChecked = await this.page.isChecked('.Toggle__checkbox:nth-of-type(1)')
+    console.log({firstCheckBoxIsChecked})
+    await expect(this.page.locator('.Toggle__label').first()).toBeVisible()
+
+    await this.page.locator('.Toggle').first().click()
+
+    await this.page.getByRole('button', { name: 'Update' }).click()
+
+
+    await this.page.locator('.AppNotificationsHeader__wrapper > .Dropdown').click()
+    await this.page.getByRole('button', { name: 'Preferences' }).click()
+
+    const firstCheckBoxIsCheckedAfterUpdating =  await this.page.isChecked('.Toggle__checkbox:nth-of-type(1)')
+
+    expect(firstCheckBoxIsChecked).not.toEqual(firstCheckBoxIsCheckedAfterUpdating)
+
+    await this.page.locator('.PreferencesModal__close').click();
+
   }
 
   async cancelSiwe() {
