@@ -1,4 +1,4 @@
-import { DEFAULT_SESSION_PARAMS } from './shared/constants'
+import { CUSTOM_TEST_DAPP, DEFAULT_SESSION_PARAMS } from './shared/constants'
 import { expect, testWallet as test } from './shared/fixtures/wallet-fixture'
 
 test.beforeEach(async ({ inboxPage, walletPage, browserName }) => {
@@ -79,4 +79,53 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
   // so there is only one item
   await inboxPage.navigateToDappFromSidebar(0);
   await inboxPage.unsubscribe()
+})
+
+
+test('it should subscribe, recieve messages and unsubscribe', async ({
+  inboxPage,
+  walletPage,
+  settingsPage,
+  walletValidator,
+  browserName,
+  notifyServer
+}) => {
+  if (browserName === 'webkit') {
+    // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
+    test.skip()
+  }
+  await inboxPage.promptSiwe()
+  await walletValidator.expectReceivedSign({})
+  await walletPage.handleRequest({ accept: true })
+  await inboxPage.rejectNotifications()
+
+  await settingsPage.goToNotificationSettings()
+  await settingsPage.displayCustomDapp(CUSTOM_TEST_DAPP.appDomain)
+
+  await inboxPage.gotoDiscoverPage()
+
+  // Ensure the custom dapp is the one subscribed to
+  expect(await inboxPage.page.getByText(CUSTOM_TEST_DAPP.appDomain).isVisible()).toEqual(true)
+
+  await inboxPage.subscribe(0)
+
+  if(!CUSTOM_TEST_DAPP.projectId || !(CUSTOM_TEST_DAPP.projectSecret)) {
+    throw new Error("TEST_DAPP_SECRET and TEST_DAPP_ID are required")
+  }
+
+  const address = await inboxPage.getAddress()
+
+  await notifyServer.sendMessage({
+    accounts: [address],
+    body: "Test Body",
+    title: "Test Title",
+    type: CUSTOM_TEST_DAPP.messageType,
+    url: CUSTOM_TEST_DAPP.appDomain,
+    icon: CUSTOM_TEST_DAPP.icons[0],
+    projectId: CUSTOM_TEST_DAPP.projectId,
+    projectSecret: CUSTOM_TEST_DAPP.projectSecret,
+  })
+
+  expect(await inboxPage.page.getByText("Test Body").isVisible()).toEqual(true)
+
 })

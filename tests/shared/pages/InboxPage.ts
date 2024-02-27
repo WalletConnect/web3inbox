@@ -12,7 +12,11 @@ export class InboxPage {
   }
 
   async load() {
-    await this.page.goto(this.baseURL)
+    await this.page.goto(`${this.baseURL}`)
+  }
+
+  async gotoDiscoverPage() {
+    await this.page.goto(`${this.baseURL}notifications/new-app`)
   }
 
   async copyConnectUriToClipboard() {
@@ -40,6 +44,15 @@ export class InboxPage {
     await this.page.locator('.NotificationPwaModal__close-button').first().click()
   }
 
+  async getAddress() {
+    await this.page.locator('.Avatar').click()
+    await this.page.locator('wui-icon[name=copy]').first().click();
+    const copiedAddress: string = this.page.evaluate('navigator.clipboard.readText()') as any
+    await this.page.locator('wui-icon[name=close]').first().click();
+
+    return copiedAddress;
+  }
+
   async subscribe(nth: number) {
     const appCard = this.page.locator('.AppCard__body').nth(nth)
     await appCard.locator('.AppCard__body__subscribe').click()
@@ -49,7 +62,6 @@ export class InboxPage {
     await appCard.locator('.AppCard__body__subscribed').getByText('Subscribed', { exact: false }).isVisible()
 
     await this.page.waitForTimeout(3000);
-
   }
 
   async navigateToNewSubscription(nth: number) {
@@ -105,7 +117,6 @@ export class InboxPage {
     expect(firstCheckBoxIsChecked).not.toEqual(firstCheckBoxIsCheckedAfterUpdating)
 
     await this.page.locator('.PreferencesModal__close').click();
-
   }
 
   async cancelSiwe() {
