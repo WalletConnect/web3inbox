@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import { WagmiProvider } from 'wagmi'
 
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from '@/constants/web3Modal'
@@ -53,5 +54,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </SettingsContextProvider>
       </QueryClientProvider>
     </WagmiProvider>
+      <Toaster
+        toastOptions={{
+          position: 'bottom-right',
+          duration: 5000,
+          style: {
+            border: '1px solid rgba(0, 0, 0, 0.1)',
+            borderRadius: '1em'
+          }
+        }}
+      />
   </React.StrictMode>
 )
