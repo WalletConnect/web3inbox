@@ -38,7 +38,6 @@ export class NotifyServer {
     const headers = new Headers({
       Authorization: `Bearer ${projectSecret}`,
       "Content-Type": "application/json"
-
     })
 
     const stream = new ReadableStream({

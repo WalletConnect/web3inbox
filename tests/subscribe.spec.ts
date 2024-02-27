@@ -82,7 +82,7 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
 })
 
 
-test('it should subscribe, recieve messages and unsubscribe', async ({
+test('it should subscribe, receive messages and unsubscribe', async ({
   inboxPage,
   walletPage,
   settingsPage,
