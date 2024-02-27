@@ -52,6 +52,8 @@ export class NotifyServer {
     const fetchResults = await fetch(fetchUrl, {
       method: "POST",
       headers,
+      // @ts-ignore
+      duplex: true,
       body: stream,
     })
 
