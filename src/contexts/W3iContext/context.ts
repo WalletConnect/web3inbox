@@ -29,7 +29,6 @@ interface W3iContextState {
   notifyRegisterMessage: string | null
   notifyProvider: string
   authProvider: string
-  uiEnabled: UiEnabled
   dappOrigin: string
   dappName: string
   dappIcon: string
@@ -45,7 +44,6 @@ const W3iContext = createContext<W3iContextState>({
   refreshNotifications: noop,
   setUserPubkey: noop,
   threads: [],
-  uiEnabled: { chat: true, notify: true, settings: true, sidebar: true },
   activeSubscriptions: [],
   sentInvites: [],
   invites: [],

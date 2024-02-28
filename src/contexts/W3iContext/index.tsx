@@ -7,15 +7,14 @@ import { useAuthState } from '@/contexts/W3iContext/hooks/authHooks'
 import { useDappOrigin } from '@/contexts/W3iContext/hooks/dappOrigin'
 import { useNotifyState } from '@/contexts/W3iContext/hooks/notifyHooks'
 import { useProviderQueries } from '@/contexts/W3iContext/hooks/providerQueryHooks'
-import { useUiState } from '@/contexts/W3iContext/hooks/uiHooks'
 import { useW3iProxy } from '@/contexts/W3iContext/hooks/w3iProxyHooks'
+import { useAllSubscriptions } from '@web3inbox/react'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
-  const { uiEnabled } = useUiState()
   const { dappOrigin, dappIcon, dappName, dappNotificationDescription } = useDappOrigin()
   const { notifyProvider, authProvider } = useProviderQueries()
   const [w3iProxy, isW3iProxyReady] = useW3iProxy()
@@ -24,12 +23,13 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
   const {
     notifyClient,
-    activeSubscriptions,
     refreshNotifyState,
     registerMessage: notifyRegisterMessage,
     registeredKey: notifyRegisteredKey,
     watchSubscriptionsComplete
   } = useNotifyState(w3iProxy, isW3iProxyReady)
+
+  const {data: activeSubscriptions} = useAllSubscriptions();
 
   return (
     <W3iContext.Provider
@@ -38,14 +38,13 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         notifyProvider,
         authProvider,
         userPubkey,
-        uiEnabled: { ...uiEnabled, chat: false },
         dappOrigin,
         dappName,
         dappNotificationDescription,
         dappIcon,
         refreshNotifications: refreshNotifyState,
         refreshThreadsAndInvites: noop,
-        activeSubscriptions,
+        activeSubscriptions: activeSubscriptions ?? [],
         notifyRegisteredKey,
         setUserPubkey,
         notifyRegisterMessage,
