@@ -62,8 +62,6 @@ export class InboxPage {
     console.log({appCardText: await appCard.innerText()})
 
     await appCard.locator('.AppCard__body__subscribed').getByText('Subscribed', { exact: false }).isVisible()
-
-    await this.page.waitForTimeout(3000);
   }
 
   async navigateToNewSubscription(nth: number) {

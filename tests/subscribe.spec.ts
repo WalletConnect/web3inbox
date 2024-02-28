@@ -69,6 +69,14 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
   await inboxPage.rejectNotifications()
   await inboxPage.subscribe(0)
   await inboxPage.subscribe(1)
+
+  // Wait for the 2 dapps to be subscribed to.
+  await inboxPage.page.waitForFunction(() => {
+    // Using 1 here since the first `AppSelector__list` is the one with `Discover Apps`
+    const apps = document.getElementsByClassName('AppSelector__list')[1].children.length;
+    return apps === 2;
+  })
+
   expect(await inboxPage.countSubscribedDapps()).toEqual(2);
 
   await inboxPage.navigateToDappFromSidebar(0);
