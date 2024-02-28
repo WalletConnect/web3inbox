@@ -106,7 +106,6 @@ test('it should subscribe, receive messages and unsubscribe', async ({
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()
-  await inboxPage.subscribe(0)
 
   await settingsPage.goToNotificationSettings()
   await settingsPage.displayCustomDapp(CUSTOM_TEST_DAPP.appDomain)
