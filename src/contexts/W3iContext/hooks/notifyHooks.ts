@@ -9,7 +9,6 @@ import type Web3InboxProxy from '@/w3iProxy'
 import type { W3iNotifyClient } from '@/w3iProxy'
 
 import { useAuthState } from './authHooks'
-import { useUiState } from './uiHooks'
 
 export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<
@@ -17,7 +16,6 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
   >([])
 
   const { userPubkey } = useAuthState(w3iProxy, proxyReady)
-  const { uiEnabled } = useUiState()
 
   const [registerMessage, setRegisterMessage] = useState<string | null>(null)
   const [registeredKey, setRegistered] = useState<string | null>(null)
@@ -69,7 +67,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
 
   const handleUnregisterOthers = useCallback(
     async (key: string) => {
-      if (!(notifyClient && key && uiEnabled.notify)) {
+      if (!(notifyClient && key)) {
         return
       }
       await notifyClient.unregisterOtherAccounts(key)
@@ -79,7 +77,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
 
   const handleRegistration = useCallback(
     async (key: string) => {
-      if (notifyClient && key && uiEnabled.notify) {
+      if (notifyClient && key) {
         try {
           const identityKey = await notifyClient.register({
             account: key,
@@ -96,7 +94,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
         }
       }
     },
-    [uiEnabled, notifyClient, refreshNotifyState, setRegisterMessage]
+    [notifyClient, refreshNotifyState, setRegisterMessage]
   )
 
   useEffect(() => {
