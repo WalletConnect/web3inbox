@@ -29,25 +29,11 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
   id
 }) => {
   const isMobile = useIsMobile()
-  const { dappOrigin } = useContext(W3iContext)
   const href = getDomainHref(domain)
 
   return (
     <div className="AppNotificationsHeader">
       <div className="AppNotificationsHeader__content">
-        {dappOrigin ? (
-          <div className="AppNotificationsHeader__plain">
-            <h2>Notifications</h2>
-            <AppNotificationDropdown
-              dropdownPlacement="bottomLeft"
-              notificationId={id}
-              h="2em"
-              w="2em"
-              closeDropdown={noop}
-            />
-          </div>
-        ) : (
-          <>
             <div className="AppNotificationsHeader__app">
               <BackButton backTo="/notifications" />
               <img
@@ -80,8 +66,6 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
                 closeDropdown={noop}
               />
             </div>
-          </>
-        )}
       </div>
 
       {isMobile && (

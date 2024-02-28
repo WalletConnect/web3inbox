@@ -13,6 +13,7 @@ import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
 import SubscribeButton from './SubscribeButton'
 
 import './AppCard.scss'
+import { useAllSubscriptions, useSubscribe, useSubscription } from '@web3inbox/react'
 
 interface AppCardProps {
   name: string
@@ -36,8 +37,13 @@ const AppCard: React.FC<AppCardProps> = ({
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
-  const { notifyClientProxy, userPubkey } = useContext(W3iContext)
-  const { activeSubscriptions } = useContext(W3iContext)
+  const { userPubkey } = useContext(W3iContext)
+
+  const { data: activeSubscriptions } = useAllSubscriptions()
+  const { subscribe } = useSubscribe()
+
+  // todo: pass params to subscribe
+  // subscribe()
 
   const host = new URL(url).host
   const projectURL = new URL(url)
@@ -49,7 +55,7 @@ const AppCard: React.FC<AppCardProps> = ({
 
   const subscribed =
     userPubkey &&
-    activeSubscriptions.some(element => {
+    activeSubscriptions?.some(element => {
       return projectURL.hostname === element.metadata.appDomain
     })
   const logoURL = logo || '/fallback.svg'
@@ -64,10 +70,7 @@ const AppCard: React.FC<AppCardProps> = ({
 
       setSubscribing(true)
       try {
-        await notifyClientProxy?.subscribe({
-          account: userPubkey,
-          appDomain: new URL(url).host
-        })
+        await subscribe()
       } catch (error) {
         logError(error)
         setSubscribing(false)
@@ -81,7 +84,7 @@ const AppCard: React.FC<AppCardProps> = ({
     if (subscribed) {
       try {
         const appDomain = new URL(url).host
-        const topic = activeSubscriptions.find(sub => sub.metadata.appDomain === appDomain)?.topic
+        const topic = activeSubscriptions?.find(sub => sub.metadata.appDomain === appDomain)?.topic
         if (topic) {
           nav(`/notifications/${topic}`)
         } else {

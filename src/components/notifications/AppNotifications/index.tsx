@@ -35,9 +35,9 @@ export const AppNotificationDragContext = createContext<AppNotificationsDragCont
 
 const AppNotifications = () => {
   const { topic } = useParams<{ topic: string }>()
-  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
+  const { activeSubscriptions } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
-  const { isLoading, notifications, intersectionObserverRef, nextPage, unshiftNewMessage } =
+  const { isLoading, notifications, intersectionObserverRef, nextPage } =
     useNotificationsInfiniteScroll(topic)
 
   const ref = useRef<HTMLDivElement>(null)
@@ -47,20 +47,11 @@ const AppNotifications = () => {
   >()
 
   useEffect(() => {
-    if (!(notifyClientProxy && topic)) {
+    if (!topic) {
       return noop
     }
 
-    const notifyMessageSentSub = notifyClientProxy.observe('notify_message', {
-      next: () => {
-        unshiftNewMessage()
-      }
-    })
-
-    return () => {
-      notifyMessageSentSub.unsubscribe()
-    }
-  }, [notifyClientProxy, nextPage, topic])
+  }, [topic])
 
   return app?.metadata ? (
     <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>

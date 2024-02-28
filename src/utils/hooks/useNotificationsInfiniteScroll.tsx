@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useReducer, useRef, useState } from
 
 import W3iContext from '@/contexts/W3iContext/context'
 import { notificationsReducer } from '@/reducers/notifications'
+import { useNotifications } from '@web3inbox/react'
 
 const IntersectionObserverOptions = {
   root: null,
@@ -13,7 +14,7 @@ const NOTIFICATION_BATCH_SIZE = 12
 
 export const useNotificationsInfiniteScroll = (topic?: string) => {
   const intersectionObserverRef = useRef<HTMLDivElement>(null)
-  const { notifyClientProxy } = useContext(W3iContext)
+  const { notifyClientProxy } = useNotifications(5, true)
   const [state, dispatch] = useReducer(notificationsReducer, {})
 
   const nextPageInternal = useCallback(

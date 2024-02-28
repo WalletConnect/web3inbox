@@ -28,10 +28,10 @@ export const Modals = () => {
     isSignatureModalOpen,
     isNotificationPwaModalOpen
   } = useModals()
-  const { close: closeWeb3Modal } = useWeb3Modal()
-  const { open: isWeb3ModalOpen } = useWeb3ModalState()
+  useWeb3Modal()
+  useWeb3ModalState()
 
-  const { notifyRegisteredKey, userPubkey } = useContext(W3iContext)
+  const { notifyRegisteredKey } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
 

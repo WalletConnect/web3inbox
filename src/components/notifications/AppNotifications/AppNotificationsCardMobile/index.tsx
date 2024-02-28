@@ -12,7 +12,7 @@ import './AppNotificationsCardMobile.scss'
 
 const AppNotificationsCardMobile: React.FC = () => {
   const { topic } = useParams<{ topic: string }>()
-  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
+  const { activeSubscriptions } = useContext(W3iContext)
   const app = activeSubscriptions.find(mock => mock.topic === topic)
   const { mode } = useContext(SettingsContext)
   const ref = useRef<HTMLDivElement>(null)
