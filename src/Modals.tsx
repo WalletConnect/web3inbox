@@ -31,7 +31,7 @@ export const Modals = () => {
   const { close: closeWeb3Modal } = useWeb3Modal()
   const { open: isWeb3ModalOpen } = useWeb3ModalState()
 
-  const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
+  const { notifyRegisteredKey, userPubkey } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
 
@@ -55,26 +55,6 @@ export const Modals = () => {
     !shouldShowChangeBrowserModal
 
   useEffect(() => {
-    const notifySignatureRequired = Boolean(notifyRegisterMessage) && !notifyRegisteredKey
-    if (userPubkey && notifySignatureRequired) {
-      if (isWeb3ModalOpen) {
-        // Close web3modal in case user is switching accounts
-        // closeWeb3Modal()
-      }
-      signatureModalService.openModal()
-    } else {
-      signatureModalService.closeModal()
-    }
-  }, [
-    userPubkey,
-    closeWeb3Modal,
-    notifyRegisteredKey,
-    notifyRegisterMessage,
-    isWeb3ModalOpen,
-    signatureModalService
-  ])
-
-  useEffect(() => {
     // Create an artificial delay to prevent modals being spammed one after the other
     if (shouldShowNotificationModal) {
       setTimeout(() => {
@@ -91,7 +71,7 @@ export const Modals = () => {
 
       {shouldShowPreferencesModalOpen && <PreferencesModal />}
 
-      {shouldShowSignatureModal && <SignatureModal message={notifyRegisterMessage ?? ''} />}
+      {shouldShowSignatureModal && <SignatureModal />}
 
       {shouldShowPWAModal && <PwaModal />}
 

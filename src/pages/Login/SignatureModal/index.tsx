@@ -16,12 +16,15 @@ import { signatureModalService } from '@/utils/store'
 import { SignatureLoadingVisual } from './SignatureLoadingVisual'
 
 import './SignatureModal.scss'
+import { usePrepareRegistration, useRegister } from '@web3inbox/react'
 
-export const SignatureModal: React.FC<{
-  message: string
-}> = ({ message }) => {
+export const SignatureModal: React.FC = () => {
   const { status } = useAccount()
   const connected = status === 'connected'
+
+  const { prepareRegistration } = usePrepareRegistration();
+  const { register } = useRegister();
+  
 
   /*
    * If identity was already signed, and sync was requested then we are in the
@@ -30,19 +33,18 @@ export const SignatureModal: React.FC<{
   const { isSigning } = useModals()
   const { disconnect } = useDisconnect()
 
-  const onSign = () => {
-    signatureModalService.startSigning()
-    window.web3inbox
-      .signMessage(message)
-      .then(signature => {
-        window.web3inbox.notify.postMessage(
-          formatJsonRpcRequest('notify_signature_delivered', { signature })
-        )
-      })
-      .catch(() => {
-        console.error('Failed to sign message')
-        signatureModalService.stopSigning()
-      })
+  const onSign = async () => {
+
+    try {
+      signatureModalService.startSigning()
+
+      const { message, registerParams } = await prepareRegistration();
+      const signature = await window.web3inbox.signMessage(message);
+      await register({registerParams, signature})
+    }
+    catch {
+      signatureModalService.stopSigning()
+    }
   }
 
   return (
