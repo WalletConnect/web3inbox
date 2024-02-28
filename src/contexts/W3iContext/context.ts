@@ -16,46 +16,17 @@ export interface UiEnabled {
 }
 
 interface W3iContextState {
-  refreshThreadsAndInvites: () => void
-  refreshNotifications: () => void
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
   activeSubscriptions: NotifyClientTypes.NotifySubscription[]
-  sentInvites: ChatClientTypes.SentInvite[]
-  threads: ChatClientTypes.Thread[]
-  invites: ChatClientTypes.ReceivedInvite[]
   userPubkey?: string
-  notifyClientProxy: W3iNotifyClient | null
   notifyRegisteredKey: string | null
-  notifyRegisterMessage: string | null
-  notifyProvider: string
-  authProvider: string
-  dappOrigin: string
-  dappName: string
-  dappIcon: string
-  dappNotificationDescription: string
   watchSubscriptionsComplete: boolean
-  // This is only kept to allow old components to build
-  chatClientProxy: W3iChatClient | null
 }
 
 const W3iContext = createContext<W3iContextState>({
   notifyRegisteredKey: '',
-  refreshThreadsAndInvites: noop,
-  refreshNotifications: noop,
   setUserPubkey: noop,
-  threads: [],
   activeSubscriptions: [],
-  sentInvites: [],
-  invites: [],
-  notifyClientProxy: null,
-  notifyRegisterMessage: null,
-  notifyProvider: '',
-  authProvider: '',
-  dappOrigin: '',
-  dappIcon: '',
-  dappNotificationDescription: '',
-  dappName: '',
-  chatClientProxy: null,
   watchSubscriptionsComplete: false
 })
 
