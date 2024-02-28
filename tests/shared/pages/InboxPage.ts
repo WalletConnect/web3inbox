@@ -59,8 +59,6 @@ export class InboxPage {
     const appCard = this.page.locator('.AppCard__body').nth(nth)
     await appCard.locator('.AppCard__body__subscribe').click()
 
-    console.log({appCardText: await appCard.innerText()})
-
     await appCard.locator('.AppCard__body__subscribed').getByText('Subscribed', { exact: false }).isVisible()
   }
 
@@ -89,7 +87,6 @@ export class InboxPage {
   async countSubscribedDapps() {
 
     const selected = await this.page.locator('AppSelector__list').all()
-    console.log({selected})
     return (await this.page.locator('.AppSelector__notifications').count() - 1)
   }
 
@@ -101,7 +98,6 @@ export class InboxPage {
     await this.page.getByText('Preferences').nth(1).click()
 
     const firstCheckBoxIsChecked = await this.page.isChecked('.Toggle__checkbox:nth-of-type(1)')
-    console.log({firstCheckBoxIsChecked})
     await expect(this.page.locator('.Toggle__label').first()).toBeVisible()
 
     await this.page.locator('.Toggle').first().click()
