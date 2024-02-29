@@ -10,7 +10,6 @@ import PrivacyIcon from '@/components/general/Icon/Privacy'
 import Input from '@/components/general/Input'
 import MobileHeader from '@/components/layout/MobileHeader'
 import SettingsContext from '@/contexts/SettingsContext/context'
-import W3iContext from '@/contexts/W3iContext/context'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
 import { getDbEchoRegistrations } from '@/utils/idb'
 import { notificationsAvailableInBrowser, requireNotifyPermission } from '@/utils/notifications'
@@ -21,6 +20,8 @@ import SettingsItem from '../SettingsItem'
 import SettingsToggle from '../SettingsToggle/Index'
 
 import './NotificationsSettings.scss'
+
+const { useRegisterWithEcho } from '@web3inbox/react'
 
 const getHelperTooltip = () => {
   switch (window.Notification?.permission) {
@@ -35,7 +36,6 @@ const getHelperTooltip = () => {
 
 const NotificationsSettings: React.FC = () => {
   const { isDevModeEnabled, updateSettings, filterAppDomain } = useContext(SettingsContext)
-  const { notifyClientProxy } = useContext(W3iContext)
   const [domain, setDomain] = useState(filterAppDomain)
 
   const canSave = domain !== filterAppDomain
@@ -56,12 +56,8 @@ const NotificationsSettings: React.FC = () => {
   }, [])
 
   const handleEnableNotifications = async () => {
-    if (!notifyClientProxy) {
-      return
-    }
-
     if (await requireNotifyPermission()) {
-      await notifyClientProxy.registerWithEcho()
+      await registerWithEcho()
     }
   }
 

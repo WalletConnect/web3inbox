@@ -6,22 +6,20 @@ import { logError } from '@/utils/error'
 
 import Web3InboxProxy from '../../../w3iProxy'
 import { useDappOrigin } from './dappOrigin'
-import { useProviderQueries } from './providerQueryHooks'
-import { useUiState } from './uiHooks'
 
 export const useW3iProxy = () => {
   const relayUrl = import.meta.env.VITE_RELAY_URL
   const projectId = import.meta.env.VITE_PROJECT_ID
 
-  const { uiEnabled } = useUiState()
   const [ready, setReady] = useState(false)
   const { dappOrigin } = useDappOrigin()
-  const { notifyProvider, authProvider } = useProviderQueries()
 
   const [w3iProxy] = useState(
-    Web3InboxProxy.getProxy(notifyProvider, authProvider, dappOrigin, projectId, relayUrl, {
-      ...uiEnabled,
-      chat: false
+    Web3InboxProxy.getProxy('internal', 'internal', dappOrigin, projectId, relayUrl, {
+      chat: true,
+      notify: true,
+      settings: true,
+      sidebar: true
     })
   )
 

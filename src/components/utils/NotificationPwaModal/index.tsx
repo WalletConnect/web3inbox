@@ -5,26 +5,20 @@ import Button from '@/components/general/Button'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
 import { Modal } from '@/components/general/Modal/Modal'
 import Text from '@/components/general/Text'
-import W3iContext from '@/contexts/W3iContext/context'
 import { closeNotificationModal, requireNotifyPermission } from '@/utils/notifications'
 import { pwaModalService } from '@/utils/store'
+import { useRegisterWithEcho } from '@web3inbox/react'
 
 import './NotificationPwaModal.scss'
 
 export const NotificationPwaModal: React.FC = () => {
-  const { notifyClientProxy } = useContext(W3iContext)
-
   const explicitlyDeniedPermissionForNotifications = window.Notification?.permission === 'denied'
 
   const handleEnableNotifications = async () => {
     const notificationPermissionGranted = await requireNotifyPermission()
 
-    if (!notifyClientProxy) {
-      return
-    }
-
     if (notificationPermissionGranted) {
-      await notifyClientProxy.registerWithEcho()
+      await registerWithEcho()
     }
   }
 

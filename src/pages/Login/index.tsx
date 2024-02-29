@@ -15,7 +15,7 @@ import W3iContext from '@/contexts/W3iContext/context'
 import './Login.scss'
 
 const Login: React.FC = () => {
-  const { userPubkey, uiEnabled, notifyRegisteredKey } = useContext(W3iContext)
+  const { userPubkey, notifyRegisteredKey } = useContext(W3iContext)
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
@@ -26,15 +26,13 @@ const Login: React.FC = () => {
     const path = next ? decodeURIComponent(next) : '/'
 
     if (userPubkey) {
-      const notifyConditionsPass = Boolean(
-        (!uiEnabled.chat || uiEnabled.notify) && notifyRegisteredKey
-      )
+      const notifyConditionsPass = Boolean(notifyRegisteredKey)
 
       if (notifyConditionsPass) {
         nav(path)
       }
     }
-  }, [userPubkey, next, notifyRegisteredKey, uiEnabled])
+  }, [userPubkey, next, notifyRegisteredKey])
 
   return (
     <TransitionDiv className="Login">
