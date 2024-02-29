@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react'
+import React, { useCallback } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -7,45 +7,34 @@ import CrossIcon from '@/components/general/Icon/CrossIcon'
 import { Modal } from '@/components/general/Modal/Modal'
 import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
-import W3iContext from '@/contexts/W3iContext/context'
 import { logError } from '@/utils/error'
 import { useModals } from '@/utils/hooks'
 import { unsubscribeModalService } from '@/utils/store'
 import { showDefaultToast, showErrorMessageToast } from '@/utils/toasts'
 
 import './UnsubscribeModal.scss'
+import { useSubscription, useUnsubscribe } from '@web3inbox/react'
 
 export const UnsubscribeModal: React.FC = () => {
-  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
-  const { unsubscribeModalAppId } = useModals()
-  const [loading, setLoading] = useState(false)
+  const { unsubscribeModalAppId: domain } = useModals()
+  const { data: app } = useSubscription(undefined, domain)
+  const { unsubscribe, isLoading: loading } = useUnsubscribe(undefined, domain)
   const navigate = useNavigate()
 
-  const app = useMemo(
-    () => activeSubscriptions.find(activeApp => activeApp.topic === unsubscribeModalAppId),
-    [unsubscribeModalAppId]
-  )
-
   const handleUnsubscribe = useCallback(async () => {
-    setLoading(true)
-    if (notifyClientProxy && unsubscribeModalAppId) {
+    if (domain) {
       try {
-        notifyClientProxy.observeOne('notify_delete', {
-          next: () => {
+	unsubscribe().then(() => {
             unsubscribeModalService.closeModal()
             showDefaultToast(`Unsubscribed from ${app ? app.metadata.name : `dapp`}`)
-            setLoading(false)
             navigate('/notifications/new-app')
-          }
-        })
-        await notifyClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
+	})
       } catch (error) {
         logError(error)
         showErrorMessageToast(`Unsubscribing failed, please try again`)
-        setLoading(false)
       }
     }
-  }, [notifyClientProxy, unsubscribeModalAppId])
+  }, [domain])
 
   if (!app) {
     return null
