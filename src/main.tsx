@@ -19,6 +19,7 @@ import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
 
 import './index.css'
+import { initWeb3InboxClient } from '@web3inbox/react'
 
 polyfill()
 initSentry()
@@ -34,6 +35,13 @@ createWeb3Modal({
   themeMode: 'light',
   themeVariables: { '--w3m-z-index': 9999 },
   metadata
+})
+
+initWeb3InboxClient({
+  projectId,
+  allApps: true,
+  domain: window.location.hostname,
+  logLevel: import.meta.env.PROD ? 'error' : 'debug',
 })
 
 const queryClient = new QueryClient()
