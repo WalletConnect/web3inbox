@@ -20,8 +20,8 @@ import SettingsItem from '../SettingsItem'
 import SettingsToggle from '../SettingsToggle/Index'
 
 import './NotificationsSettings.scss'
-
-const { useRegisterWithEcho } from '@web3inbox/react'
+import { useWeb3InboxClient } from '@web3inbox/react'
+import { getFirebaseToken } from '@/utils/firebase'
 
 const getHelperTooltip = () => {
   switch (window.Notification?.permission) {
@@ -44,6 +44,8 @@ const NotificationsSettings: React.FC = () => {
 
   const [tokenEntries, setTokenEntries] = useState<[IDBValidKey, any][]>([])
 
+  const { data: client } = useWeb3InboxClient()
+
   useEffect(() => {
     const getEntries = async () => {
       const [, , , getTokenIdEntries] = await getDbEchoRegistrations()
@@ -56,8 +58,8 @@ const NotificationsSettings: React.FC = () => {
   }, [])
 
   const handleEnableNotifications = async () => {
-    if (await requireNotifyPermission()) {
-      await registerWithEcho()
+    if (await requireNotifyPermission() && client) {
+      await client.registerWithPushServer(await getFirebaseToken())
     }
   }
 

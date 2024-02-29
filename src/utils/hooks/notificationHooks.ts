@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 
 import { userEnabledNotification } from '@/utils/notifications'
+import { getFirebaseToken } from '../firebase'
+import { useWeb3InboxClient } from '@web3inbox/react'
 
 export const useNotificationPermissionState = () => {
   const [notificationPermissionGranted, setNotificationPermissionGranted] =
