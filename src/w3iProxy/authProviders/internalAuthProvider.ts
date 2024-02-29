@@ -12,7 +12,7 @@ export default class InternalAuthProvider {
   public chain?: string = getEIPChainString(getAccount(wagmiConfig).chain?.id)
   protected readonly emitter: EventEmitter
 
-  public constructor(emitter: EventEmitter, _name = 'InternalAuthProvider') {
+  public constructor(emitter: EventEmitter) {
     this.emitter = emitter
 
     watchAccount(wagmiConfig, {

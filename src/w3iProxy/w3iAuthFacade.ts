@@ -1,30 +1,19 @@
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import { EventEmitter } from 'events'
 
-import ExternalAuthProvider from './authProviders/externalAuthProvider'
 import InternalAuthProvider from './authProviders/internalAuthProvider'
 import type { AuthFacadeEvents } from './authProviders/types'
 import { ObservablesController } from './observablesController'
 
 class W3iAuthFacade {
-  private readonly providerMap = {
-    internal: InternalAuthProvider,
-    external: ExternalAuthProvider,
-    ios: ExternalAuthProvider,
-    reactnative: ExternalAuthProvider,
-    android: ExternalAuthProvider
-  }
-  private readonly providerName: keyof typeof this.providerMap
   private readonly emitter: EventEmitter
   private readonly observablesController: ObservablesController<AuthFacadeEvents>
-  private readonly provider: ExternalAuthProvider | InternalAuthProvider
+  private readonly provider: InternalAuthProvider
 
-  public constructor(providerName: W3iAuthFacade['providerName']) {
-    this.providerName = providerName
+  public constructor() {
     this.emitter = new EventEmitter()
     this.observablesController = new ObservablesController(this.emitter)
-    const ProviderClass = this.providerMap[this.providerName]
-    this.provider = new ProviderClass(this.emitter, providerName)
+    this.provider = new InternalAuthProvider(this.emitter)
   }
 
   // Method to be used by external providers. Not internal use.

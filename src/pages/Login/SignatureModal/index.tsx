@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import { useAccount, useDisconnect } from 'wagmi'
 
 import Button from '@/components/general/Button'
