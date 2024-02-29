@@ -17,6 +17,7 @@ import AppNotificationsEmpty from './AppNotificationsEmpty'
 import AppNotificationsHeader from './AppNotificationsHeader'
 
 import './AppNotifications.scss'
+import { useSubscription } from '@web3inbox/react'
 
 export interface AppNotificationsDragProps {
   id: string
@@ -34,24 +35,17 @@ export const AppNotificationDragContext = createContext<AppNotificationsDragCont
 ])
 
 const AppNotifications = () => {
-  const { topic } = useParams<{ topic: string }>()
-  const { activeSubscriptions } = useContext(W3iContext)
-  const app = activeSubscriptions.find(mock => mock.topic === topic)
+  const { userPubkey } = useContext(W3iContext)
+  const { domain } = useParams<{ domain: string }>()
+  const { data: app } = useSubscription(userPubkey, domain)
   const { isLoading, notifications, intersectionObserverRef, nextPage } =
-    useNotificationsInfiniteScroll(topic)
+    useNotificationsInfiniteScroll(userPubkey, domain)
 
   const ref = useRef<HTMLDivElement>(null)
 
   const [notificationsDrag, setNotificationsDrag] = useState<
     AppNotificationsDragProps[] | undefined
   >()
-
-  useEffect(() => {
-    if (!topic) {
-      return noop
-    }
-
-  }, [topic])
 
   return app?.metadata ? (
     <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>

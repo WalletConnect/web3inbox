@@ -7,4 +7,3 @@
 1. `useSubscribtion` should expose `getSubscription` which takes params. 
 2. `useSubscribtion` should expose `isSubscribed` for convenience. 
 
-
