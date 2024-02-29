@@ -1,5 +1,5 @@
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
-import { BehaviorSubject } from 'rxjs'
+import { valtio } from '@web3inbox/core'
 
 interface IPreferencesModalState {
   preferencesModalAppId?: string
@@ -19,185 +19,180 @@ interface ISubscribeModalState {
   isOpen: boolean
 }
 
-const chatSearchSubject = new BehaviorSubject(false)
-const notifySearchSubject = new BehaviorSubject(false)
-const appSearchSubject = new BehaviorSubject<IAppSearchState>({
-  isOpen: false,
-  searchTerm: undefined
+export const modalsOpen = valtio.proxy({
+  notifySearchSubject: false,
+  appSearchSubject: {
+    isOpen: false,
+    searchTerm: undefined
+  } as IAppSearchState,
+  profileModalSubject: false,
+  shareModalSubject: false,
+  signatureModalSubject: {
+    isOpen: false,
+    signing: false
+  },
+  pwaModalSubject: false,
+  notificationPwaModalSubject: false,
+  contactsModalSubject: false,
+  subscribeModalSubject: {
+    metadata: undefined,
+    isOpen: false
+  } as ISubscribeModalState,
+  preferencesModalSubject: {
+    preferencesModalAppId: undefined,
+    isOpen: false
+  } as IPreferencesModalState,
+  unsubscribeModalSubject: {
+    unsubscribeModalAppId: undefined,
+    isOpen: false
+  } as IUnsubscribeModalState
 })
 
-const profileModalSubject = new BehaviorSubject(false)
-const shareModalSubject = new BehaviorSubject(false)
-const signatureModalSubject = new BehaviorSubject({
-  isOpen: false,
-  signing: false
-})
-const pwaModalSubject = new BehaviorSubject(false)
-const notificationPwaModalSubject = new BehaviorSubject(false)
-const contactsModalSubject = new BehaviorSubject(false)
-const subscribeModalSubject = new BehaviorSubject<ISubscribeModalState>({
-  metadata: undefined,
-  isOpen: false
-})
-const preferencesModalSubject = new BehaviorSubject<IPreferencesModalState>({
-  preferencesModalAppId: undefined,
-  isOpen: false
-})
-const unsubscribeModalSubject = new BehaviorSubject<IUnsubscribeModalState>({
-  unsubscribeModalAppId: undefined,
-  isOpen: false
-})
-
-export const chatSearchService = {
-  toggleSearch: () => chatSearchSubject.next(!chatSearchSubject.value),
-  openSearch: () => chatSearchSubject.next(true),
-  closeSearch: () => chatSearchSubject.next(false),
-  searchState: chatSearchSubject.asObservable()
-}
 export const notifySearchService = {
-  toggleSearch: () => notifySearchSubject.next(!notifySearchSubject.value),
-  openSearch: () => notifySearchSubject.next(true),
-  closeSearch: () => notifySearchSubject.next(false),
-  searchState: notifySearchSubject.asObservable()
+  toggleSearch: () => (modalsOpen.notifySearchSubject = !modalsOpen.notifySearchSubject),
+  openSearch: () => (modalsOpen.notifySearchSubject = true),
+  closeSearch: () => (modalsOpen.notifySearchSubject = false),
+  searchState: modalsOpen.notifySearchSubject
 }
 
 export const appSearchService = {
   toggleSearch: () =>
-    appSearchSubject.next({
+    (modalsOpen.appSearchSubject = {
       searchTerm: undefined,
-      isOpen: !appSearchSubject.value.isOpen
+      isOpen: !modalsOpen.appSearchSubject.isOpen
     }),
   openSearch: () =>
-    appSearchSubject.next({
+    (modalsOpen.appSearchSubject = {
+      searchTerm: undefined,
       isOpen: true
     }),
   closeSearch: () =>
-    appSearchSubject.next({
+    (modalsOpen.appSearchSubject = {
       isOpen: false,
       searchTerm: undefined
     }),
   setSearch: (term: string) =>
-    appSearchSubject.next({
-      ...appSearchSubject.value,
+    (modalsOpen.appSearchSubject = {
+      ...modalsOpen.appSearchSubject,
       searchTerm: term
     }),
-  searchState: appSearchSubject.asObservable()
+  searchState: modalsOpen.appSearchSubject
 }
 
 export const profileModalService = {
-  toggleModal: () => profileModalSubject.next(!profileModalSubject.value),
-  openModal: () => profileModalSubject.next(true),
-  closeModal: () => profileModalSubject.next(false),
-  modalState: profileModalSubject.asObservable()
+  toggleModal: () => (modalsOpen.profileModalSubject = !modalsOpen.profileModalSubject),
+  openModal: () => (modalsOpen.profileModalSubject = true),
+  closeModal: () => (modalsOpen.profileModalSubject = false),
+  modalState: modalsOpen.profileModalSubject
 }
 
 export const shareModalService = {
-  toggleModal: () => shareModalSubject.next(!shareModalSubject.value),
-  openModal: () => shareModalSubject.next(true),
-  closeModal: () => shareModalSubject.next(false),
-  modalState: shareModalSubject.asObservable()
+  toggleModal: () => (modalsOpen.shareModalSubject = !modalsOpen.shareModalSubject),
+  openModal: () => (modalsOpen.shareModalSubject = true),
+  closeModal: () => (modalsOpen.shareModalSubject = false),
+  modalState: modalsOpen.shareModalSubject
 }
 
 export const signatureModalService = {
   toggleModal: () =>
-    signatureModalSubject.next({
-      ...signatureModalSubject.value,
-      isOpen: !signatureModalSubject.value.isOpen
+    (modalsOpen.signatureModalSubject = {
+      ...modalsOpen.signatureModalSubject,
+      isOpen: !modalsOpen.signatureModalSubject.isOpen
     }),
   openModal: () =>
-    signatureModalSubject.next({
-      ...signatureModalSubject.value,
+    (modalsOpen.signatureModalSubject = {
+      ...modalsOpen.signatureModalSubject,
       isOpen: true
     }),
   startSigning: () =>
-    signatureModalSubject.next({
-      ...signatureModalSubject.value,
+    (modalsOpen.signatureModalSubject = {
+      ...modalsOpen.signatureModalSubject,
       signing: true
     }),
   stopSigning: () =>
-    signatureModalSubject.next({
-      ...signatureModalSubject.value,
+    (modalsOpen.signatureModalSubject = {
+      ...modalsOpen.signatureModalSubject,
       signing: false
     }),
   closeModal: () => {
-    signatureModalSubject.next({
-      ...signatureModalSubject.value,
+    modalsOpen.signatureModalSubject = {
+      ...modalsOpen.signatureModalSubject,
       isOpen: false
-    })
+    }
     setTimeout(() => {
-      signatureModalSubject.next({
-        ...signatureModalSubject.value,
+      modalsOpen.signatureModalSubject = {
+        ...modalsOpen.signatureModalSubject,
         signing: false
-      })
+      }
     }, 500)
   },
-  modalState: signatureModalSubject.asObservable()
+  modalState: modalsOpen.signatureModalSubject
 }
 
 export const pwaModalService = {
-  toggleModal: () => pwaModalSubject.next(!pwaModalSubject.value),
-  openModal: () => pwaModalSubject.next(true),
-  closeModal: () => pwaModalSubject.next(false)
+  toggleModal: () => (modalsOpen.pwaModalSubject = !modalsOpen.pwaModalSubject),
+  openModal: () => (modalsOpen.pwaModalSubject = true),
+  closeModal: () => (modalsOpen.pwaModalSubject = false)
 }
 
 export const notificationPwaModalService = {
-  toggleModal: () => notificationPwaModalSubject.next(!pwaModalSubject.value),
-  openModal: () => notificationPwaModalSubject.next(true),
-  closeModal: () => notificationPwaModalSubject.next(false),
-  modalState: notificationPwaModalSubject.asObservable()
+  toggleModal: () => (modalsOpen.notificationPwaModalSubject = !modalsOpen.pwaModalSubject),
+  openModal: () => (modalsOpen.notificationPwaModalSubject = true),
+  closeModal: () => (modalsOpen.notificationPwaModalSubject = false),
+  modalState: modalsOpen.notificationPwaModalSubject
 }
 
 export const preferencesModalService = {
   toggleModal: (appId?: string) =>
-    preferencesModalSubject.next({
+    (modalsOpen.preferencesModalSubject = {
       preferencesModalAppId: appId,
-      isOpen: !preferencesModalSubject.value.isOpen
+      isOpen: !modalsOpen.preferencesModalSubject.isOpen
     }),
   closeModal: () =>
-    preferencesModalSubject.next({
+    (modalsOpen.preferencesModalSubject = {
       preferencesModalAppId: undefined,
       isOpen: false
     }),
-  modalState: preferencesModalSubject.asObservable()
+  modalState: modalsOpen.preferencesModalSubject
 }
 
 export const subscribeModalService = {
   toggleModal: (metadata: NotifyClientTypes.Metadata) => {
-    subscribeModalSubject.next({
+    modalsOpen.subscribeModalSubject = {
       metadata,
-      isOpen: !subscribeModalSubject.value.isOpen
-    })
+      isOpen: !modalsOpen.subscribeModalSubject.isOpen
+    }
   },
   openModal: (metadata: NotifyClientTypes.Metadata) =>
-    subscribeModalSubject.next({
+    (modalsOpen.subscribeModalSubject = {
       metadata,
       isOpen: true
     }),
   closeModal: () =>
-    subscribeModalSubject.next({
+    (modalsOpen.subscribeModalSubject = {
       metadata: undefined,
       isOpen: false
     }),
-  modalState: subscribeModalSubject.asObservable()
+  modalState: modalsOpen.subscribeModalSubject
 }
 
 export const unsubscribeModalService = {
   toggleModal: (appId?: string) =>
-    unsubscribeModalSubject.next({
+    (modalsOpen.unsubscribeModalSubject = {
       unsubscribeModalAppId: appId,
-      isOpen: !unsubscribeModalSubject.value.isOpen
+      isOpen: !modalsOpen.unsubscribeModalSubject.isOpen
     }),
   closeModal: () =>
-    unsubscribeModalSubject.next({
+    (modalsOpen.unsubscribeModalSubject = {
       unsubscribeModalAppId: undefined,
       isOpen: false
     }),
-  modalState: unsubscribeModalSubject.asObservable()
+  modalState: modalsOpen.unsubscribeModalSubject
 }
 
 export const contactsModalService = {
-  toggleModal: () => contactsModalSubject.next(!contactsModalSubject.value),
-  openModal: () => contactsModalSubject.next(true),
-  closeModal: () => contactsModalSubject.next(false),
-  modalState: contactsModalSubject.asObservable()
+  toggleModal: () => (modalsOpen.contactsModalSubject = !modalsOpen.contactsModalSubject),
+  openModal: () => (modalsOpen.contactsModalSubject = true),
+  closeModal: () => (modalsOpen.contactsModalSubject = false),
+  modalState: modalsOpen.contactsModalSubject
 }

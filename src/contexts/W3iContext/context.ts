@@ -3,7 +3,6 @@ import type { Dispatch, SetStateAction } from 'react'
 import { createContext } from 'react'
 
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
-import { noop } from 'rxjs'
 
 export interface UiEnabled {
   chat: boolean
@@ -22,7 +21,7 @@ interface W3iContextState {
 
 const W3iContext = createContext<W3iContextState>({
   notifyRegisteredKey: '',
-  setUserPubkey: noop,
+  setUserPubkey: () => {},
   activeSubscriptions: [],
   watchSubscriptionsComplete: false
 })

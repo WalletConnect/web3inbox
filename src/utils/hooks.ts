@@ -6,11 +6,15 @@ import { useLocation } from 'react-router-dom'
 
 import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/context'
 
+import { valtio } from "@web3inbox/core"
+
+const { useSnapshot } = valtio;
+
 // eslint-disable-next-line no-duplicate-imports
 import {
   appSearchService,
-  chatSearchService,
   contactsModalService,
+  modalsOpen,
   notificationPwaModalService,
   notifySearchService,
   preferencesModalService,
@@ -155,33 +159,24 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
 }
 
 export const useSearch = () => {
-  const [isChatSearchOpen, setIsChatSearchOpen] = useState(false)
   const [isNotifySearchOpen, setIsNotifySearchOpen] = useState(false)
   const [isAppSearchOpen, setIsAppSearchOpen] = useState(false)
   const [appSearchTerm, setAppSearchTerm] = useState<string>()
+
+  const modalsOpenSnapshot = useSnapshot(modalsOpen)
+
+
   useEffect(() => {
-    const chatSearchSubscription = chatSearchService.searchState.subscribe(isOpen => {
-      setIsChatSearchOpen(isOpen)
-    })
-    const notifySearchSubscription = notifySearchService.searchState.subscribe(isOpen => {
-      setIsNotifySearchOpen(isOpen)
-    })
-    const appSearchSubscription = appSearchService.searchState.subscribe(state => {
-      setIsAppSearchOpen(state.isOpen)
-      setAppSearchTerm(state.searchTerm)
-    })
+    setIsNotifySearchOpen(notifySearchService.searchState)
+    setIsAppSearchOpen(appSearchService.searchState.isOpen)
+    setAppSearchTerm(appSearchService.searchState.searchTerm)
+  }, [modalsOpenSnapshot])
 
-    return () => {
-      chatSearchSubscription.unsubscribe()
-      notifySearchSubscription.unsubscribe()
-      appSearchSubscription.unsubscribe()
-    }
-  }, [])
-
-  return { isChatSearchOpen, isNotifySearchOpen, isAppSearchOpen, appSearchTerm }
+  return { isNotifySearchOpen, isAppSearchOpen, appSearchTerm }
 }
 
 export const useModals = () => {
+  const modalsOpenSnapshot = useSnapshot(modalsOpen)
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   // Const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
@@ -199,52 +194,19 @@ export const useModals = () => {
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
-    const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
-      setIsProfileModalOpen(isOpen)
-    })
-    /*
-     * Const subscribeSubscription = subscribeModalService.modalState.subscribe(state => {
-     *   setSubscribeModalMetadata(state.metadata)
-     *   setIsSubscribeModalOpen(state.isOpen)
-     * })
-     */
-    const signatureSubscription = signatureModalService.modalState.subscribe(next => {
-      setIsSignatureModalOpen(next.isOpen)
-    })
-    const isSigningSubscription = signatureModalService.modalState.subscribe(next => {
-      setIsSigning(next.signing)
-    })
-    const contactsSubscription = contactsModalService.modalState.subscribe(isOpen => {
-      setIsContactModalOpen(isOpen)
-    })
-    const shareSubscription = shareModalService.modalState.subscribe(isOpen => {
-      setIsShareModalOpen(isOpen)
-    })
-    const notificationPwaModalSubscription = notificationPwaModalService.modalState.subscribe(
-      isOpen => {
-        setIsNotificationPwaModalOpen(isOpen)
-      }
-    )
-    const preferencesSubscription = preferencesModalService.modalState.subscribe(state => {
-      setPreferencesModalAppId(state.preferencesModalAppId)
-      setIsPreferencesModalOpen(state.isOpen)
-    })
-    const unsubscribeSubscription = unsubscribeModalService.modalState.subscribe(state => {
-      setUnsubscribeModalAppId(state.unsubscribeModalAppId)
-      setIsUnsubscribeModalOpen(state.isOpen)
-    })
+    setIsProfileModalOpen(profileModalService.modalState)
 
-    return () => {
-      profileSubscription.unsubscribe()
-      shareSubscription.unsubscribe()
-      contactsSubscription.unsubscribe()
-      signatureSubscription.unsubscribe()
-      isSigningSubscription.unsubscribe()
-      preferencesSubscription.unsubscribe()
-      unsubscribeSubscription.unsubscribe()
-      notificationPwaModalSubscription.unsubscribe()
-    }
-  }, [])
+    setIsSignatureModalOpen(signatureModalService.modalState.isOpen)
+    setIsSigning(signatureModalService.modalState.signing)
+    setIsContactModalOpen(contactsModalService.modalState)
+    setIsShareModalOpen(shareModalService.modalState)
+    setIsNotificationPwaModalOpen(notificationPwaModalService.modalState)
+    setPreferencesModalAppId(preferencesModalService.modalState.preferencesModalAppId)
+    setIsPreferencesModalOpen(preferencesModalService.modalState.isOpen)
+    setUnsubscribeModalAppId(unsubscribeModalService.modalState.unsubscribeModalAppId)
+    setIsUnsubscribeModalOpen(unsubscribeModalService.modalState.isOpen)
+
+  }, [modalsOpenSnapshot])
 
   return {
     isProfileModalOpen,

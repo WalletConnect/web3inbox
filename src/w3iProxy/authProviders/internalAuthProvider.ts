@@ -4,6 +4,7 @@ import type { EventEmitter } from 'events'
 
 import { getEIPChainString } from '@/utils/chain'
 import { wagmiConfig } from '@/utils/wagmiConfig'
+import { AuthFacadeEvents } from './types'
 
 export default class InternalAuthProvider {
   private readonly methodsListenedTo = ['auth_set_account']
@@ -71,5 +72,17 @@ export default class InternalAuthProvider {
 
   public setChain(chain: string) {
     this.chain = chain
+  }
+
+  public on<K extends keyof AuthFacadeEvents>(eventName: K, listener: (params: AuthFacadeEvents[K]) => void)  {
+    this.emitter.on(eventName, listener)
+
+    return () => this.emitter.off(eventName, listener);
+  }
+
+  public once<K extends keyof AuthFacadeEvents>(eventName: K, listener: (params: AuthFacadeEvents[K]) => void)  {
+    this.emitter.once(eventName, listener)
+
+    return () => this.emitter.off(eventName, listener);
   }
 }

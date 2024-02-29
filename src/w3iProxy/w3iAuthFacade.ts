@@ -2,17 +2,14 @@ import type { JsonRpcRequest } from '@walletconnect/jsonrpc-types'
 import { EventEmitter } from 'events'
 
 import InternalAuthProvider from './authProviders/internalAuthProvider'
-import type { AuthFacadeEvents } from './authProviders/types'
-import { ObservablesController } from './observablesController'
+import { AuthFacadeEvents } from './authProviders/types'
 
 class W3iAuthFacade {
-  private readonly emitter: EventEmitter
-  private readonly observablesController: ObservablesController<AuthFacadeEvents>
+  public readonly emitter: EventEmitter
   private readonly provider: InternalAuthProvider
 
   public constructor() {
     this.emitter = new EventEmitter()
-    this.observablesController = new ObservablesController(this.emitter)
     this.provider = new InternalAuthProvider(this.emitter)
   }
 
@@ -54,13 +51,14 @@ class W3iAuthFacade {
     this.provider.setChain(chain)
   }
 
-  public get observe() {
-    return this.observablesController.observe
+  public on<K extends keyof AuthFacadeEvents>(eventName: K, listener: (params: AuthFacadeEvents[K]) => void)  {
+    return this.provider.on(eventName, listener);
   }
 
-  public get observeOne() {
-    return this.observablesController.observeOne
+  public once<K extends keyof AuthFacadeEvents>(eventName: K, listener: (params: AuthFacadeEvents[K]) => void)  {
+    return this.provider.once(eventName, listener);
   }
+
 }
 
 export default W3iAuthFacade

@@ -5,12 +5,9 @@ import cx from 'classnames'
 import { AnimatePresence, m } from 'framer-motion'
 import debounce from 'lodash.debounce'
 import { useLocation } from 'react-router-dom'
-import { from } from 'rxjs'
 
 import AllAppsIcon from '@/assets/AllApps.svg'
 import SearchIcon from '@/assets/Search.svg'
-import SubmitAppIcon from '@/assets/SubmitApp.svg'
-import ExternalLinkIcon from '@/components/general/Icon/ExternalLinkIcon'
 import Input from '@/components/general/Input'
 import Label from '@/components/general/Label'
 import NavLink from '@/components/general/NavLink'
@@ -47,20 +44,18 @@ const AppSelector: React.FC = () => {
   const fetchApps = async (searchQuery: string) => {
     const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
 
-    from(activeSubscriptions).subscribe({
-      next: app => {
-        if (!loading) {
-          setLoading(false)
-        }
+    if(!loading) {
+      setLoading(false)
+    }
+
+    for(const app of activeSubscriptions) {
         const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
-        if (isAppNameMatch) {
-          newFilteredApps.push(app)
+        if(isAppNameMatch) {
+   	  newFilteredApps.push(app)
         }
-      },
-      complete: () => {
-        setFilteredApps(newFilteredApps)
-      }
-    })
+    }
+
+    setFilteredApps(newFilteredApps)
   }
 
   const searchApps = debounce((searchQuery: string) => {

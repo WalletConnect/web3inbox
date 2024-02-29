@@ -40,7 +40,6 @@
     "react-qr-reader-es6": "^2.2.1-2",
     "react-router-dom": "^6.4.4",
     "react-select": "^5.7.0",
-    "rxjs": "^7.6.0",
     "viem": "2.7.8",
     "vite-plugin-pwa": "^0.16.7",
     "wagmi": "^2.5.7"

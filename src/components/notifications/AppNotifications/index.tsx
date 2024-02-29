@@ -4,7 +4,6 @@ import { useSubscription } from '@web3inbox/react'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
-import { noop } from 'rxjs'
 
 import Label from '@/components/general/Label'
 import MobileHeader from '@/components/layout/MobileHeader'
