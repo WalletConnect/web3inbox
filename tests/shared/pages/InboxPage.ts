@@ -90,6 +90,21 @@ export class InboxPage {
     return notificationsCount - 1;
   }
 
+  /**
+   * Waits for a specific number of dApps to be subscribed.
+   * 
+   * @param {number} expectedCount - The expected number of dApps to wait for.
+   * @returns {Promise<void>}
+   */
+  async waitForSubscriptions(expectedCount: number): Promise<void> {
+    // Wait for a function that checks the length of a list or a set of elements
+    // matching a certain condition to equal the expectedCount.
+    await this.page.waitForFunction(([className, count]) => {
+      const elements = document.getElementsByClassName(className)[1].children;;
+      return elements.length === count;
+    }, ['AppSelector__list', expectedCount] as const, { timeout: 5000 }); 
+  }
+
   async updatePreferences() {
     await this.page.locator('.AppNotificationsHeader__wrapper > .Dropdown').click()
     await this.page.getByRole('button', { name: 'Preferences' }).click()
