@@ -37,7 +37,7 @@ const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
  */
 
 const Settings: React.FC = () => {
-  const { mode,  updateSettings } = useContext(SettingsContext)
+  const { mode, updateSettings } = useContext(SettingsContext)
   const { isContactModalOpen } = useModals()
   const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
 

@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useAllSubscriptions, useSubscribe, useSubscription } from '@web3inbox/react'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 
@@ -13,7 +14,6 @@ import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
 import SubscribeButton from './SubscribeButton'
 
 import './AppCard.scss'
-import { useAllSubscriptions, useSubscribe, useSubscription } from '@web3inbox/react'
 
 interface AppCardProps {
   name: string

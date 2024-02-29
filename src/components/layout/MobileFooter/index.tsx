@@ -10,12 +10,11 @@ import './MobileFooter.scss'
 
 const MobileFooter: React.FC = () => {
   const { pathname } = useLocation()
-  const navItems =
-    [
-      [<NotificationIcon isFilled={pathname.endsWith('/notifications')} />, 'notifications'],
-	[<NewAppIcon isFilled={pathname.includes('/new-app')} />, 'new-app'],
-      [<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings']
-    ] as const
+  const navItems = [
+    [<NotificationIcon isFilled={pathname.endsWith('/notifications')} />, 'notifications'],
+    [<NewAppIcon isFilled={pathname.includes('/new-app')} />, 'new-app'],
+    [<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings']
+  ] as const
 
   return (
     <div className="MobileFooter">

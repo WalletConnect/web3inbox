@@ -34,38 +34,38 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
   return (
     <div className="AppNotificationsHeader">
       <div className="AppNotificationsHeader__content">
-            <div className="AppNotificationsHeader__app">
-              <BackButton backTo="/notifications" />
-              <img
-                className="AppNotificationsHeader__app__logo"
-                src={logo || '/fallback.svg'}
-                alt={`${name} logo`}
-                loading="lazy"
-              />
-              <div className="AppNotificationsHeader__app__name_container">
-                <h2 className="AppNotificationsHeader__app__name">{name}</h2>
-                <Link
-                  to={href}
-                  className="AppNotificationsHeader__app__link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Text variant="link-500">{domain}</Text>
-                  <div>
-                    <ArrowRightTopIcon />
-                  </div>
-                </Link>
+        <div className="AppNotificationsHeader__app">
+          <BackButton backTo="/notifications" />
+          <img
+            className="AppNotificationsHeader__app__logo"
+            src={logo || '/fallback.svg'}
+            alt={`${name} logo`}
+            loading="lazy"
+          />
+          <div className="AppNotificationsHeader__app__name_container">
+            <h2 className="AppNotificationsHeader__app__name">{name}</h2>
+            <Link
+              to={href}
+              className="AppNotificationsHeader__app__link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Text variant="link-500">{domain}</Text>
+              <div>
+                <ArrowRightTopIcon />
               </div>
-            </div>
-            <div className="AppNotificationsHeader__wrapper">
-              <AppNotificationDropdown
-                h="2.5em"
-                w="2.5em"
-                notificationId={id}
-                dropdownPlacement="bottomLeft"
-                closeDropdown={noop}
-              />
-            </div>
+            </Link>
+          </div>
+        </div>
+        <div className="AppNotificationsHeader__wrapper">
+          <AppNotificationDropdown
+            h="2.5em"
+            w="2.5em"
+            notificationId={id}
+            dropdownPlacement="bottomLeft"
+            closeDropdown={noop}
+          />
+        </div>
       </div>
 
       {isMobile && (

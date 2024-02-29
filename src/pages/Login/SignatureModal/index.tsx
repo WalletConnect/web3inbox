@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { usePrepareRegistration, useRegister } from '@web3inbox/react'
 import { useAccount, useDisconnect } from 'wagmi'
 
 import Button from '@/components/general/Button'
@@ -15,15 +16,13 @@ import { signatureModalService } from '@/utils/store'
 import { SignatureLoadingVisual } from './SignatureLoadingVisual'
 
 import './SignatureModal.scss'
-import { usePrepareRegistration, useRegister } from '@web3inbox/react'
 
 export const SignatureModal: React.FC = () => {
   const { status } = useAccount()
   const connected = status === 'connected'
 
-  const { prepareRegistration } = usePrepareRegistration();
-  const { register } = useRegister();
-  
+  const { prepareRegistration } = usePrepareRegistration()
+  const { register } = useRegister()
 
   /*
    * If identity was already signed, and sync was requested then we are in the
@@ -33,15 +32,13 @@ export const SignatureModal: React.FC = () => {
   const { disconnect } = useDisconnect()
 
   const onSign = async () => {
-
     try {
       signatureModalService.startSigning()
 
-      const { message, registerParams } = await prepareRegistration();
-      const signature = await window.web3inbox.signMessage(message);
-      await register({registerParams, signature})
-    }
-    catch {
+      const { message, registerParams } = await prepareRegistration()
+      const signature = await window.web3inbox.signMessage(message)
+      await register({ registerParams, signature })
+    } catch {
       signatureModalService.stopSigning()
     }
   }

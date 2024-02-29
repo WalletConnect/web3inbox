@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 
+import { useSubscription, useUnsubscribe } from '@web3inbox/react'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/general/Button'
@@ -13,7 +14,6 @@ import { unsubscribeModalService } from '@/utils/store'
 import { showDefaultToast, showErrorMessageToast } from '@/utils/toasts'
 
 import './UnsubscribeModal.scss'
-import { useSubscription, useUnsubscribe } from '@web3inbox/react'
 
 export const UnsubscribeModal: React.FC = () => {
   const { unsubscribeModalAppId: domain } = useModals()
@@ -24,11 +24,11 @@ export const UnsubscribeModal: React.FC = () => {
   const handleUnsubscribe = useCallback(async () => {
     if (domain) {
       try {
-	unsubscribe().then(() => {
-            unsubscribeModalService.closeModal()
-            showDefaultToast(`Unsubscribed from ${app ? app.metadata.name : `dapp`}`)
-            navigate('/notifications/new-app')
-	})
+        unsubscribe().then(() => {
+          unsubscribeModalService.closeModal()
+          showDefaultToast(`Unsubscribed from ${app ? app.metadata.name : `dapp`}`)
+          navigate('/notifications/new-app')
+        })
       } catch (error) {
         logError(error)
         showErrorMessageToast(`Unsubscribing failed, please try again`)
@@ -58,8 +58,8 @@ export const UnsubscribeModal: React.FC = () => {
           </div>
           <div className="UnsubscribeModal__content__helper-text">
             <Text variant="small-500">
-              You will stop receiving all notifications from {app.metadata.name} on Web3Inbox
-              and connected wallets.
+              You will stop receiving all notifications from {app.metadata.name} on Web3Inbox and
+              connected wallets.
               <br />
               You can re-subscribe at any time later.
             </Text>

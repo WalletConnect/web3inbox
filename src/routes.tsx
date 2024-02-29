@@ -22,15 +22,15 @@ const ConfiguredRoutes: React.FC = () => {
       <Route path="/qrcode-scan" element={<ScanQrCode />} />
 
       <Route path="/" element={<App />}>
-          <Route path="/notifications" element={<NotificationsLayout />}>
-            <Route path="/notifications/new-app" element={<AppExplorer />} />
-            <Route path="/notifications/:topic" element={<AppNotifications />} />
-          </Route>
-          <Route path="settings" element={<SettingsLayout />}>
-            <Route path="/settings/appearance" element={<AppearanceSettings />} />
-            <Route path="/settings/notification" element={<NotificationsSettings />} />
-            <Route path="/settings/support" element={<SupportSettings />} />
-          </Route>
+        <Route path="/notifications" element={<NotificationsLayout />}>
+          <Route path="/notifications/new-app" element={<AppExplorer />} />
+          <Route path="/notifications/:topic" element={<AppNotifications />} />
+        </Route>
+        <Route path="settings" element={<SettingsLayout />}>
+          <Route path="/settings/appearance" element={<AppearanceSettings />} />
+          <Route path="/settings/notification" element={<NotificationsSettings />} />
+          <Route path="/settings/support" element={<SupportSettings />} />
+        </Route>
       </Route>
 
       <Route index element={<Navigate to={defaultPage} />} />

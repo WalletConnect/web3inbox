@@ -31,15 +31,14 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
   const isMobile = useIsMobile()
   const navItems: [React.ReactNode, string][] = [
     [
-        <NotificationIcon isFilled={pathname.startsWith(NAVIGATION.notifications.index)} />,
-        NAVIGATION.notifications.index
+      <NotificationIcon isFilled={pathname.startsWith(NAVIGATION.notifications.index)} />,
+      NAVIGATION.notifications.index
     ],
     [
-        <SettingIcon isFilled={pathname.startsWith(NAVIGATION.settings.index)} />,
-        NAVIGATION.settings.index
+      <SettingIcon isFilled={pathname.startsWith(NAVIGATION.settings.index)} />,
+      NAVIGATION.settings.index
     ]
   ]
-
 
   // If pathname matches .*/.*/.*
   // As per design, sidebar in mobile is hidden when on "Main" is viewed on messages

@@ -29,7 +29,6 @@ const ContactsModal: React.FC<ContactsModalProps> = ({
   mutedContacts,
   setMutedContacts
 }) => {
-
   const handleContactAction = useCallback(
     (topic: string) => {
       if (status === 'muted') {

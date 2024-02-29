@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
+import { useNotificationTypes, useSubscription } from '@web3inbox/react'
 
 import Button from '@/components/general/Button'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
@@ -11,7 +12,6 @@ import Toggle from '@/components/general/Toggle'
 import { logError } from '@/utils/error'
 import { useModals } from '@/utils/hooks'
 import { preferencesModalService } from '@/utils/store'
-import  { useNotificationTypes, useSubscription } from '@web3inbox/react'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
 
 import './PreferencesModal.scss'
@@ -47,7 +47,7 @@ export const PreferencesModal: React.FC = () => {
           preferencesModalService.closeModal()
           setLoading(false)
           showSuccessMessageToast('Preferences updated successfully')
-	})
+        })
       } catch (error) {
         logError(error)
         showErrorMessageToast('Failed to update preferences')

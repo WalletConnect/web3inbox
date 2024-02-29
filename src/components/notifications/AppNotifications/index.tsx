@@ -1,5 +1,6 @@
 import { Fragment, createContext, useContext, useEffect, useRef, useState } from 'react'
 
+import { useSubscription } from '@web3inbox/react'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
@@ -17,7 +18,6 @@ import AppNotificationsEmpty from './AppNotificationsEmpty'
 import AppNotificationsHeader from './AppNotificationsHeader'
 
 import './AppNotifications.scss'
-import { useSubscription } from '@web3inbox/react'
 
 export interface AppNotificationsDragProps {
   id: string

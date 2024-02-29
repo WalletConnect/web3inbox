@@ -12,8 +12,12 @@ const NOTIFICATION_BATCH_SIZE = 12
 
 export const useNotificationsInfiniteScroll = (account?: string, domain?: string) => {
   const intersectionObserverRef = useRef<HTMLDivElement>(null)
-  const { data: notifications, fetchNextPage, hasMore, isLoadingNextPage } = useNotifications(NOTIFICATION_BATCH_SIZE, true, account, domain)
-
+  const {
+    data: notifications,
+    fetchNextPage,
+    hasMore,
+    isLoadingNextPage
+  } = useNotifications(NOTIFICATION_BATCH_SIZE, true, account, domain)
 
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
@@ -39,6 +43,6 @@ export const useNotificationsInfiniteScroll = (account?: string, domain?: string
     isLoading: isLoadingNextPage,
     notifications: notifications ?? [],
     intersectionObserverRef,
-    nextPage: () => fetchNextPage(),
+    nextPage: () => fetchNextPage()
   }
 }

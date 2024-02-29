@@ -1,4 +1,5 @@
 import { signMessage } from '@wagmi/core'
+
 import { wagmiConfig } from '@/utils/wagmiConfig'
 import W3iAuthFacade from '@/w3iProxy/w3iAuthFacade'
 import { showErrorMessageToast } from '@/utils/toasts'
@@ -11,8 +12,6 @@ declare global {
 
 class Web3InboxProxy {
   private readonly authFacade: W3iAuthFacade
-
-
 
   public readonly signMessage: (message: string) => Promise<string>
 

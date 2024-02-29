@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 
+import { useWeb3InboxClient } from '@web3inbox/react'
 import cn from 'classnames'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
@@ -10,6 +11,7 @@ import PrivacyIcon from '@/components/general/Icon/Privacy'
 import Input from '@/components/general/Input'
 import MobileHeader from '@/components/layout/MobileHeader'
 import SettingsContext from '@/contexts/SettingsContext/context'
+import { getFirebaseToken } from '@/utils/firebase'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
 import { getDbEchoRegistrations } from '@/utils/idb'
 import { notificationsAvailableInBrowser, requireNotifyPermission } from '@/utils/notifications'
@@ -20,8 +22,6 @@ import SettingsItem from '../SettingsItem'
 import SettingsToggle from '../SettingsToggle/Index'
 
 import './NotificationsSettings.scss'
-import { useWeb3InboxClient } from '@web3inbox/react'
-import { getFirebaseToken } from '@/utils/firebase'
 
 const getHelperTooltip = () => {
   switch (window.Notification?.permission) {
@@ -58,7 +58,7 @@ const NotificationsSettings: React.FC = () => {
   }, [])
 
   const handleEnableNotifications = async () => {
-    if (await requireNotifyPermission() && client) {
+    if ((await requireNotifyPermission()) && client) {
       await client.registerWithPushServer(await getFirebaseToken())
     }
   }

@@ -22,7 +22,6 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
   h,
   closeDropdown
 }) => {
-
   const handleUnsubscribe = useCallback(() => {
     closeDropdown()
     unsubscribeModalService.toggleModal(notificationId)
