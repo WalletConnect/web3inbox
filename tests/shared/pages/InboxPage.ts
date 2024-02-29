@@ -12,7 +12,7 @@ export class InboxPage {
   }
 
   async load() {
-    await this.page.goto(`${this.baseURL}`)
+    await this.page.goto(this.baseURL)
   }
 
   async gotoDiscoverPage() {
