@@ -85,8 +85,6 @@ export class InboxPage {
   }
 
   async countSubscribedDapps() {
-
-    const selected = await this.page.locator('AppSelector__list').all()
     const notificationsCount = await this.page.locator('.AppSelector__notifications').count()
     
     return notificationsCount - 1;
