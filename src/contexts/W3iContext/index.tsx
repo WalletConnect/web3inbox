@@ -21,7 +21,9 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
   const { identityKey: notifyRegisteredKey } = useWeb3InboxAccount(userPubkey)
 
   useEffect(() => {
-    registerWithEcho()
+    if(client) {
+      registerWithEcho(client)
+    }
   }, [client])
 
   return (
