@@ -8,7 +8,6 @@ import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/cont
 
 import { valtio } from "@web3inbox/core"
 
-const { useSnapshot } = valtio;
 
 // eslint-disable-next-line no-duplicate-imports
 import {
@@ -163,7 +162,7 @@ export const useSearch = () => {
   const [isAppSearchOpen, setIsAppSearchOpen] = useState(false)
   const [appSearchTerm, setAppSearchTerm] = useState<string>()
 
-  const modalsOpenSnapshot = useSnapshot(modalsOpen)
+  const modalsOpenSnapshot = valtio.useSnapshot(modalsOpen)
 
 
   useEffect(() => {
@@ -176,7 +175,7 @@ export const useSearch = () => {
 }
 
 export const useModals = () => {
-  const modalsOpenSnapshot = useSnapshot(modalsOpen)
+  const modalsOpenSnapshot = valtio.useSnapshot(modalsOpen)
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   // Const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
@@ -194,17 +193,18 @@ export const useModals = () => {
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
-    setIsProfileModalOpen(profileModalService.modalState)
+    console.log({modalsOpenSnapshot: modalsOpenSnapshot.signatureModalSubject.isOpen, profileModalService: profileModalService.getModalState()})
+    setIsProfileModalOpen(profileModalService.getModalState())
 
-    setIsSignatureModalOpen(signatureModalService.modalState.isOpen)
-    setIsSigning(signatureModalService.modalState.signing)
-    setIsContactModalOpen(contactsModalService.modalState)
-    setIsShareModalOpen(shareModalService.modalState)
-    setIsNotificationPwaModalOpen(notificationPwaModalService.modalState)
-    setPreferencesModalAppId(preferencesModalService.modalState.preferencesModalAppId)
-    setIsPreferencesModalOpen(preferencesModalService.modalState.isOpen)
-    setUnsubscribeModalAppId(unsubscribeModalService.modalState.unsubscribeModalAppId)
-    setIsUnsubscribeModalOpen(unsubscribeModalService.modalState.isOpen)
+    setIsSignatureModalOpen(signatureModalService.getModalState().isOpen)
+    setIsSigning(signatureModalService.getModalState().signing)
+    setIsContactModalOpen(contactsModalService.getModalState())
+    setIsShareModalOpen(shareModalService.getModalState())
+    setIsNotificationPwaModalOpen(notificationPwaModalService.getModalState())
+    setPreferencesModalAppId(preferencesModalService.getModalState().preferencesModalAppId)
+    setIsPreferencesModalOpen(preferencesModalService.getModalState().isOpen)
+    setUnsubscribeModalAppId(unsubscribeModalService.getModalState().unsubscribeModalAppId)
+    setIsUnsubscribeModalOpen(unsubscribeModalService.getModalState().isOpen)
 
   }, [modalsOpenSnapshot])
 

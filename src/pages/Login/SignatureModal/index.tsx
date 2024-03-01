@@ -37,7 +37,7 @@ export const SignatureModal: React.FC = () => {
 
       const { message, registerParams } = await prepareRegistration()
       const signature = await window.web3inbox.signMessage(message)
-      await register({ registerParams, signature })
+      await register({ registerParams, signature }).then(() => signatureModalService.closeModal())
     } catch {
       signatureModalService.stopSigning()
     }

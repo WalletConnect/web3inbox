@@ -13,8 +13,9 @@ export const useW3iProxy = () => {
 
   useEffect(() => {
     if (w3iProxy.isInitializing) {
-      return
+      return () => {}
     }
+
     w3iProxy
       .init()
       .then(() => {

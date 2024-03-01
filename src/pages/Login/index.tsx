@@ -13,6 +13,7 @@ import { web3InboxURLs } from '@/constants/navigation'
 import W3iContext from '@/contexts/W3iContext/context'
 
 import './Login.scss'
+import { signatureModalService } from '@/utils/store'
 
 const Login: React.FC = () => {
   const { userPubkey, notifyRegisteredKey } = useContext(W3iContext)
@@ -30,6 +31,9 @@ const Login: React.FC = () => {
 
       if (notifyConditionsPass) {
         nav(path)
+      }
+      else {
+        signatureModalService.openModal()
       }
     }
   }, [userPubkey, next, notifyRegisteredKey])

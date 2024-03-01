@@ -77,12 +77,12 @@ export default class InternalAuthProvider {
   public on<K extends keyof AuthFacadeEvents>(eventName: K, listener: (params: AuthFacadeEvents[K]) => void)  {
     this.emitter.on(eventName, listener)
 
-    return () => this.emitter.off(eventName, listener);
+    return () => { this.emitter.off(eventName, listener) };
   }
 
   public once<K extends keyof AuthFacadeEvents>(eventName: K, listener: (params: AuthFacadeEvents[K]) => void)  {
     this.emitter.once(eventName, listener)
 
-    return () => this.emitter.off(eventName, listener);
+    return () => { this.emitter.off(eventName, listener) };
   }
 }

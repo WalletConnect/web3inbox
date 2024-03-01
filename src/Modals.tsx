@@ -18,7 +18,7 @@ import {
   notificationsAvailableInBrowser
 } from '@/utils/notifications'
 import { isAppleMobile, isMobileButNotInstalledOnHomeScreen, isNonSafari } from '@/utils/pwa'
-import { notificationPwaModalService, signatureModalService } from '@/utils/store'
+import { notificationPwaModalService } from '@/utils/store'
 import { isMobile } from '@/utils/ui'
 
 export const Modals = () => {

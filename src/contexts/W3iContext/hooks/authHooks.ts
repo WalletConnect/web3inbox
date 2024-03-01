@@ -57,6 +57,8 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
       setUserPubkey(formatEthChainsAddress(account, chain))
     }) ?? noop
 
+    console.log({unsub})
+
     return unsub();
   }, [authClient, userPubkey])
 

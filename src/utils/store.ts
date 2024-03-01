@@ -83,14 +83,14 @@ export const profileModalService = {
   toggleModal: () => (modalsOpen.profileModalSubject = !modalsOpen.profileModalSubject),
   openModal: () => (modalsOpen.profileModalSubject = true),
   closeModal: () => (modalsOpen.profileModalSubject = false),
-  modalState: modalsOpen.profileModalSubject
+  getModalState: () => modalsOpen.profileModalSubject
 }
 
 export const shareModalService = {
   toggleModal: () => (modalsOpen.shareModalSubject = !modalsOpen.shareModalSubject),
   openModal: () => (modalsOpen.shareModalSubject = true),
   closeModal: () => (modalsOpen.shareModalSubject = false),
-  modalState: modalsOpen.shareModalSubject
+  getModalState: () => modalsOpen.shareModalSubject
 }
 
 export const signatureModalService = {
@@ -126,7 +126,7 @@ export const signatureModalService = {
       }
     }, 500)
   },
-  modalState: modalsOpen.signatureModalSubject
+  getModalState: () => modalsOpen.signatureModalSubject
 }
 
 export const pwaModalService = {
@@ -139,7 +139,7 @@ export const notificationPwaModalService = {
   toggleModal: () => (modalsOpen.notificationPwaModalSubject = !modalsOpen.pwaModalSubject),
   openModal: () => (modalsOpen.notificationPwaModalSubject = true),
   closeModal: () => (modalsOpen.notificationPwaModalSubject = false),
-  modalState: modalsOpen.notificationPwaModalSubject
+  getModalState: () => modalsOpen.notificationPwaModalSubject
 }
 
 export const preferencesModalService = {
@@ -153,7 +153,7 @@ export const preferencesModalService = {
       preferencesModalAppId: undefined,
       isOpen: false
     }),
-  modalState: modalsOpen.preferencesModalSubject
+  getModalState: () => modalsOpen.preferencesModalSubject
 }
 
 export const subscribeModalService = {
@@ -173,7 +173,7 @@ export const subscribeModalService = {
       metadata: undefined,
       isOpen: false
     }),
-  modalState: modalsOpen.subscribeModalSubject
+  getModalState: () => modalsOpen.subscribeModalSubject
 }
 
 export const unsubscribeModalService = {
@@ -187,12 +187,12 @@ export const unsubscribeModalService = {
       unsubscribeModalAppId: undefined,
       isOpen: false
     }),
-  modalState: modalsOpen.unsubscribeModalSubject
+  getModalState: () => modalsOpen.unsubscribeModalSubject
 }
 
 export const contactsModalService = {
   toggleModal: () => (modalsOpen.contactsModalSubject = !modalsOpen.contactsModalSubject),
   openModal: () => (modalsOpen.contactsModalSubject = true),
   closeModal: () => (modalsOpen.contactsModalSubject = false),
-  modalState: modalsOpen.contactsModalSubject
+  getModalState: () => modalsOpen.contactsModalSubject
 }
