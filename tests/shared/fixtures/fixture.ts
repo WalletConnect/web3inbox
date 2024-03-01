@@ -1,24 +1,38 @@
 import { test as base } from '@playwright/test'
 
-import { ModalPage } from '../pages/InboxPage'
-import { ModalValidator } from '../validators/ModalValidator'
+import { InboxPage } from '../pages/InboxPage'
+import { InboxValidator } from '../validators/ModalValidator'
+import { SettingsPage } from '../pages/SettingsPage'
+import { NotifyServer } from '../helpers/notifyServer'
 
 // Declare the types of fixtures to use
 export interface ModalFixture {
-  modalPage: ModalPage
-  modalValidator: ModalValidator
+  inboxPage: InboxPage
+  inboxValidator: InboxValidator
+  settingsPage: SettingsPage
+  notifyServer: NotifyServer
   library: string
 }
 
 export const test = base.extend<ModalFixture>({
-  modalPage: async ({ page }, use) => {
-    const modalPage = new ModalPage(page)
-    await modalPage.load()
-    await use(modalPage)
+  inboxPage: async ({ page }, use) => {
+    const inboxPage = new InboxPage(page)
+    await inboxPage.load()
+    await use(inboxPage)
   },
-  modalValidator: async ({ modalPage }, use) => {
-    const modalValidator = new ModalValidator(modalPage.page)
+  inboxValidator: async ({ inboxPage }, use) => {
+    const modalValidator = new InboxValidator(inboxPage.page)
     await use(modalValidator)
-  }
+  },
+  // Have to pass same page object to maintain state between pages
+  settingsPage: async({ inboxPage }, use) => {
+    const settingsPage = new SettingsPage(inboxPage.page)
+    settingsPage.load()
+    use(settingsPage)
+  },
+  notifyServer: async({}, use) => {
+    const notifyServer = new NotifyServer();
+    use(notifyServer)
+  },
 })
 export { expect } from '@playwright/test'

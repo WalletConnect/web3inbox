@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
 
-export class ModalValidator {
+export class InboxValidator {
   constructor(public readonly page: Page) {}
 
   async expectConnected() {

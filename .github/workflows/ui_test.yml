@@ -29,6 +29,8 @@ jobs:
         env:
           VITE_PROJECT_ID: ${{ secrets.VITE_DEV_PROJECT_ID }}
           VITE_EXPLORER_API_URL: ${{ secrets.VITE_EXPLORER_API_URL }}
+          TEST_DAPP_PROJECT_ID: ${{ secrets.TEST_DAPP_PROJECT_ID }}
+          TEST_DAPP_PROJECT_SECRET: ${{ secrets.TEST_DAPP_PROJECT_SECRET }}
           VITE_CI: true
       - uses: actions/upload-artifact@v3
         if: always()
