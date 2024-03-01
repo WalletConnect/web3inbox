@@ -5,51 +5,9 @@ import { LocalStorage } from '@/utils/localStorage'
 import { notificationPwaModalService } from '@/utils/store'
 
 import { getFirebaseToken } from './firebase'
-import { getDbEchoRegistrations, getDbSymkeyStore } from './idb'
+import { getDbSymkeyStore } from './idb'
+import { Web3InboxClient } from '@web3inbox/core'
 
-const ECHO_URL = 'https://echo.walletconnect.com'
-
-const callEcho = async (clientId: string, token: string) => {
-  const [getRegistrationToken, putRegistrationToken] = await getDbEchoRegistrations()
-
-  // Check for existing registration to prevent spamming echo
-  const existingRegistrationToken = await getRegistrationToken(clientId)
-
-  // Already registered device.
-  // No need to spam echo
-  if (existingRegistrationToken === token) {
-    // Do not check for existing registration token.
-    // Echo is meant to be called repeatedly to refresh PN token
-    // Console log for purposes of debugging if an error relating to echo
-    // happens
-    console.log(
-      'main-sw > registerWithEcho > user already registered with token',
-      token,
-      're-registering anyway'
-    )
-  }
-
-  const projectId = import.meta.env.VITE_PROJECT_ID
-
-  const echoUrl = `${ECHO_URL}/${projectId}/clients`
-
-  const echoResponse = await fetch(echoUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      client_id: clientId,
-      type: 'fcm',
-      token
-    })
-  })
-
-  if (echoResponse.status === 200) {
-    // Store info to prevent re-registration
-    await putRegistrationToken(clientId, token)
-  }
-}
 
 const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
   const [, putSymkey] = await getDbSymkeyStore()
@@ -107,7 +65,7 @@ export const requireNotifyPermission = async () => {
   }
 }
 
-export const registerWithEcho = async (notifyClient: NotifyClient) => {
+export const registerWithEcho = async (client: Web3InboxClient) => {
   const isSecureContext = window.location.protocol === 'https:'
 
   if (!isSecureContext) {
@@ -116,9 +74,7 @@ export const registerWithEcho = async (notifyClient: NotifyClient) => {
     )
   }
 
-  const clientId = await notifyClient.core.crypto.getClientId()
-
   const token = await getFirebaseToken()
 
-  await callEcho(clientId, token)
+  await client.registerWithPushServer(token, 'fcm')
 }

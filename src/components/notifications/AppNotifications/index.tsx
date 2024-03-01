@@ -36,7 +36,10 @@ export const AppNotificationDragContext = createContext<AppNotificationsDragCont
 const AppNotifications = () => {
   const { userPubkey } = useContext(W3iContext)
   const { domain } = useParams<{ domain: string }>()
-  const { data: app } = useSubscription(userPubkey, domain)
+
+  
+  const { data: app } = useSubscription(undefined, domain)
+
   const { isLoading, notifications, intersectionObserverRef, nextPage } =
     useNotificationsInfiniteScroll(userPubkey, domain)
 
@@ -59,22 +62,22 @@ const AppNotifications = () => {
         >
           <div className="AppNotifications__border"></div>
           <AppNotificationsHeader
-            id={app.topic}
+            id={app.metadata.appDomain}
             name={app.metadata.name}
             logo={app.metadata?.icons?.[0]}
             domain={app.metadata.appDomain}
           />
           <MobileHeader
             back="/notifications"
-            notificationId={app.topic}
+            notificationId={app.metadata.appDomain}
             title={app.metadata.name}
           />
           <AppNotificationsCardMobile />
           {isLoading || notifications.length > 0 ? (
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
-                {notifications.length > 0 ? <Label color="main">Latest</Label> : null}
-                {notifications.map((notification, index) => (
+                {!isLoading && notifications.length > 0 ? <Label color="main">Latest</Label> : null}
+                {!isLoading && notifications.map((notification, index) => (
                   <AppNotificationItem
                     ref={index === notifications.length - 1 ? intersectionObserverRef : null}
                     key={notification.id}

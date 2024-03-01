@@ -70,7 +70,7 @@ const AppCard: React.FC<AppCardProps> = ({
 
       setSubscribing(true)
       try {
-        await subscribe()
+        await subscribe(undefined, host)
       } catch (error) {
         logError(error)
         setSubscribing(false)

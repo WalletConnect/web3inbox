@@ -132,7 +132,7 @@ const AppSelector: React.FC = () => {
                     <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
                       <NavLink
                         key={app.topic}
-                        to={NAVIGATION.notifications.topic(app.topic)}
+                        to={NAVIGATION.notifications.domain(app.metadata.appDomain)}
                         className={cx(
                           'AppSelector__link-item',
                           !subscriptionsFinishedLoading &&

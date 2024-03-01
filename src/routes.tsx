@@ -24,7 +24,7 @@ const ConfiguredRoutes: React.FC = () => {
       <Route path="/" element={<App />}>
         <Route path="/notifications" element={<NotificationsLayout />}>
           <Route path="/notifications/new-app" element={<AppExplorer />} />
-          <Route path="/notifications/:topic" element={<AppNotifications />} />
+          <Route path="/notifications/:domain" element={<AppNotifications />} />
         </Route>
         <Route path="settings" element={<SettingsLayout />}>
           <Route path="/settings/appearance" element={<AppearanceSettings />} />

@@ -18,9 +18,11 @@ import './PreferencesModal.scss'
 
 export const PreferencesModal: React.FC = () => {
   const { preferencesModalAppId: domain } = useModals()
-  const { update } = useNotificationTypes(undefined, domain)
+
+  const { update, data: appScopes } = useNotificationTypes(undefined, domain)
   const { data: app } = useSubscription(undefined, domain)
-  const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>({})
+  const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>(appScopes ?? {})
+  console.log({ app, scopes})
   const [loading, setLoading] = useState(false)
 
   // Reduces the scopes mapping to only an array of enabled scopes
@@ -36,8 +38,8 @@ export const PreferencesModal: React.FC = () => {
   }
 
   useEffect(() => {
-    setScopes(app?.scope ?? {})
-  }, [setScopes, app])
+    setScopes(appScopes ?? {})
+  }, [setScopes, appScopes])
 
   const handleUpdatePreferences = useCallback(async () => {
     setLoading(true)

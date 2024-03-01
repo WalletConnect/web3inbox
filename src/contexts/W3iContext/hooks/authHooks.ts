@@ -6,6 +6,7 @@ import { formatEthChainsAddress, getChain, getEthChainAddress } from '@/utils/ad
 import type Web3InboxProxy from '@/w3iProxy'
 import type W3iAuthFacade from '@/w3iProxy/w3iAuthFacade'
 import { noop } from '@/utils/general'
+import { useWeb3InboxAccount } from '@web3inbox/react'
 
 export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
   const [accountQueryParam, setAccountQueryParam] = useState('')
@@ -14,6 +15,8 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
 
   const account = authClient?.getAccount()
   const chain = authClient?.getChain()
+
+  useWeb3InboxAccount(account && chain ? `eip155:${chain}:${account}` : undefined)
 
   const [userPubkey, setUserPubkey] = useState<string | undefined>(
     formatEthChainsAddress(account, chain)
@@ -56,8 +59,6 @@ export const useAuthState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) => {
     const unsub = authClient?.on('auth_set_account', ({ account, chain}) => {
       setUserPubkey(formatEthChainsAddress(account, chain))
     }) ?? noop
-
-    console.log({unsub})
 
     return unsub();
   }, [authClient, userPubkey])
