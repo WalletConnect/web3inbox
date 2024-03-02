@@ -36,7 +36,7 @@ export default function AppExplorerColumns({ apps }: AppExplorerColumnsProps) {
             description={app.description}
             logo={app.icon}
             url={app.url}
-            isVerified={app.isVerified}
+            isFeatured={app.isFeatured}
             isComingSoon={app.isComingSoon}
             loadingSubscription={checkSubscriptionStatusLoading(app.url)}
           />
@@ -57,7 +57,7 @@ export default function AppExplorerColumns({ apps }: AppExplorerColumnsProps) {
               description={app.description}
               logo={app.icon}
               url={app.url}
-              isVerified={app.isVerified}
+              isFeatured={app.isFeatured}
               isComingSoon={app.isComingSoon}
               loadingSubscription={checkSubscriptionStatusLoading(app.url)}
             />
@@ -73,7 +73,7 @@ export default function AppExplorerColumns({ apps }: AppExplorerColumnsProps) {
               description={app.description}
               logo={app.icon}
               url={app.url}
-              isVerified={app.isVerified}
+              isFeatured={app.isFeatured}
               isComingSoon={app.isComingSoon}
               loadingSubscription={checkSubscriptionStatusLoading(app.url)}
             />
