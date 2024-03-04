@@ -1,0 +1,10 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":prConcurrentLimit10",
+    ":prHourlyLimit2",
+    ":semanticCommits",
+    ":semanticCommitScope(deps)"
+  ]
+}
