@@ -4,7 +4,6 @@ import { useAllSubscriptions, useWeb3InboxAccount, useWeb3InboxClient } from '@w
 
 import W3iContext from '@/contexts/W3iContext/context'
 import { useAuthState } from '@/contexts/W3iContext/hooks/authHooks'
-import { useW3iProxy } from '@/contexts/W3iContext/hooks/w3iProxyHooks'
 import { registerWithEcho } from '@/utils/notifications'
 
 interface W3iContextProviderProps {
@@ -12,7 +11,6 @@ interface W3iContextProviderProps {
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
-  const [] = useW3iProxy()
 
   const { userPubkey, setUserPubkey } = useAuthState()
 

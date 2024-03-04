@@ -16,6 +16,7 @@ import { signatureModalService } from '@/utils/store'
 import { SignatureLoadingVisual } from './SignatureLoadingVisual'
 
 import './SignatureModal.scss'
+import { signMessage } from '@/utils/signature'
 
 export const SignatureModal: React.FC = () => {
   const { status } = useAccount()
@@ -37,9 +38,7 @@ export const SignatureModal: React.FC = () => {
 
       const { message, registerParams } = await prepareRegistration()
 
-      console.log(">>>CACAO", registerParams.cacaoPayload);
-
-      const signature = await window.web3inbox.signMessage(message)
+      const signature = await signMessage(message)
       await register({ registerParams, signature }).then(() => signatureModalService.closeModal())
     } catch {
       signatureModalService.stopSigning()
