@@ -86,7 +86,7 @@ const AppCard: React.FC<AppCardProps> = ({
         const appDomain = new URL(url).host
         const topic = activeSubscriptions?.find(sub => sub.metadata.appDomain === appDomain)?.topic
         if (topic) {
-          nav(`/notifications/${topic}`)
+          nav(`/notifications/${appDomain}`)
         } else {
           throw new Error(`No matching subscription found to domain, ${appDomain}`)
         }
