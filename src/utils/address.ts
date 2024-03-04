@@ -12,7 +12,7 @@ export const formatEthChainsAddress = (address?: string, chain?: string) => {
     return ''
   }
 
-  return `${chain}:${address}`
+  return `eip155:${chain}:${address}`
 }
 
 export const isValidEnsDomain = (domain: string) => {

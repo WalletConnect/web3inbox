@@ -1,8 +1,6 @@
-import * as Sentry from '@sentry/react'
 import type { JsonRpcRequest } from '@walletconnect/jsonrpc-utils'
 import type { NotifyClient } from '@walletconnect/notify-client'
 import type { EventEmitter } from 'events'
-import mixpanel from 'mixpanel-browser'
 
 import { logError } from '@/utils/error'
 import { getDbEchoRegistrations } from '@/utils/idb'
@@ -13,7 +11,6 @@ import {
   setupSubscriptionsSymkeys,
   userEnabledNotification
 } from '@/utils/notifications'
-import { W3iNotifyProvider } from '@/w3iProxy/notifyProviders/types'
 import { isSmartContractWallet } from '@/utils/signature'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {

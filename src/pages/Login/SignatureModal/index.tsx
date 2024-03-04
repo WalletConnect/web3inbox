@@ -36,6 +36,9 @@ export const SignatureModal: React.FC = () => {
       signatureModalService.startSigning()
 
       const { message, registerParams } = await prepareRegistration()
+
+      console.log(">>>CACAO", registerParams.cacaoPayload);
+
       const signature = await window.web3inbox.signMessage(message)
       await register({ registerParams, signature }).then(() => signatureModalService.closeModal())
     } catch {
