@@ -12,9 +12,9 @@ interface W3iContextProviderProps {
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
-  const [w3iProxy, isW3iProxyReady] = useW3iProxy()
+  const [] = useW3iProxy()
 
-  const { userPubkey, setUserPubkey } = useAuthState(w3iProxy, isW3iProxyReady)
+  const { userPubkey, setUserPubkey } = useAuthState()
 
   const { data: client } = useWeb3InboxClient()
   const { data: activeSubscriptions } = useAllSubscriptions()

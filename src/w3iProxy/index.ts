@@ -1,7 +1,6 @@
 import { signMessage } from '@wagmi/core'
 
 import { wagmiConfig } from '@/utils/wagmiConfig'
-import W3iAuthFacade from '@/w3iProxy/w3iAuthFacade'
 import { showErrorMessageToast } from '@/utils/toasts'
 
 declare global {
@@ -11,20 +10,13 @@ declare global {
 }
 
 class Web3InboxProxy {
-  private readonly authFacade: W3iAuthFacade
-
   public readonly signMessage: (message: string) => Promise<string>
-
-  private isInitialized = false
-  private initializing = false
 
   /**
    *
    */
   private constructor() {
     // Bind Auth Properties
-    this.authFacade = new W3iAuthFacade()
-
     this.signMessage = async (message: string) => {
       try {
         const signed = await signMessage(wagmiConfig, {
@@ -48,26 +40,6 @@ class Web3InboxProxy {
     return window.web3inbox
   }
 
-  public get auth(): W3iAuthFacade {
-    return this.authFacade
-  }
-
-  public get isInitializing() {
-    return this.initializing
-  }
-
-  public async init() {
-    if (this.isInitialized) {
-      return
-    }
-
-    this.initializing = true
-
-    await this.authFacade.initInternalProvider()
-
-    this.isInitialized = true
-    this.initializing = false
-  }
 }
 
 export default Web3InboxProxy

@@ -24,9 +24,14 @@ const Login: React.FC = () => {
   const modal = useWeb3Modal()
 
   useEffect(() => {
+    console.log(">>> in useEffect")
     const path = next ? decodeURIComponent(next) : '/'
 
+    console.log(">>> userPubkey: ", userPubkey)
+    console.log(">>> notifyRegisteredKey: ", notifyRegisteredKey)
+    console.log(">>> path: ", path)
     if (userPubkey) {
+      
       const notifyConditionsPass = Boolean(notifyRegisteredKey)
 
       if (notifyConditionsPass) {
@@ -36,7 +41,7 @@ const Login: React.FC = () => {
         signatureModalService.openModal()
       }
     }
-  }, [userPubkey, next, notifyRegisteredKey])
+  }, [userPubkey, next, notifyRegisteredKey, signatureModalService])
 
   return (
     <TransitionDiv className="Login">
