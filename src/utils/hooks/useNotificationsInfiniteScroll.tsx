@@ -11,13 +11,15 @@ const IntersectionObserverOptions = {
 const NOTIFICATION_BATCH_SIZE = 12
 
 export const useNotificationsInfiniteScroll = (account?: string, domain?: string) => {
-  const intersectionObserverRef = useRef<HTMLDivElement>(null)
+
   const {
     data: notifications,
     fetchNextPage,
     hasMore,
     isLoadingNextPage
   } = useNotifications(NOTIFICATION_BATCH_SIZE, true, account, domain)
+
+  const intersectionObserverRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
@@ -37,6 +39,8 @@ export const useNotificationsInfiniteScroll = (account?: string, domain?: string
       }
     }
   }, [intersectionObserverRef, hasMore])
+
+  console.log(">>>", {notifications: Array.from(notifications?.values() ?? [])})
 
   return {
     hasMore,
