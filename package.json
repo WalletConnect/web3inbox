@@ -21,7 +21,7 @@
   "dependencies": {
     "@sentry/react": "^7.93.0",
     "@tanstack/react-query": "^5.20.1",
-    "@walletconnect/core": "2.11.0",
+    "@walletconnect/core": "2.11.2",
     "@walletconnect/identity-keys": "^2.0.1",
     "@walletconnect/notify-client": "^1.1.0",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
