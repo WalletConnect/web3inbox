@@ -23,17 +23,6 @@ export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
     icon: '/gempad.png'
   },
   {
-    id: 'chainspot',
-    name: 'Chainspot',
-    description:
-      'Bridge&swap across 27 chains at the best rates and research data about 100+ Web3 products.',
-    url: 'https://app.chainspot.io/',
-    isComingSoon: true,
-    isVerified: false,
-    isFeatured: false,
-    icon: '/chainspot.png'
-  },
-  {
     id: 'maverick',
     name: 'Maverick Protocol',
     description: 'Maverick Protocol is a leading provider of smart contract solutions in DeFi.',
