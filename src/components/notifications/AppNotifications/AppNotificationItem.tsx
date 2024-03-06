@@ -76,7 +76,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
           )}
         >
           <img
-            src={notification.image ?? appLogo || '/fallback.svg'}
+            src={(notification.image ?? appLogo) || '/fallback.svg'}
             loading="lazy"
             alt="image corresponding to the notification"
           />
