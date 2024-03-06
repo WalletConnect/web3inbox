@@ -23,7 +23,6 @@
     "@tanstack/react-query": "^5.20.1",
     "@walletconnect/core": "2.11.0",
     "@walletconnect/identity-keys": "^2.0.1",
-    "@walletconnect/notify-client": "^1.1.0",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
     "@web3inbox/core": "^1.2.0-5bd35d2",
     "@web3inbox/react": "^1.2.0-5bd35d2",

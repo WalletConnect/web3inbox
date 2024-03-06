@@ -3569,22 +3569,6 @@
     "@walletconnect/modal-core" "2.6.2"
     "@walletconnect/modal-ui" "2.6.2"
 
-"@walletconnect/notify-client@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.1.0.tgz#74280aceaea17e50d2410bb6c4c570dda6c0378e"
-  integrity sha512-5OPhZl22VCMK49sxlLpLtrFsYcwQQQoQE+kq3L4Or+/Lssw8yMhVul5Bf/C4KNEWFhWs0w/VMk4nhSeMqOEBCw==
-  dependencies:
-    "@noble/ed25519" "^1.7.3"
-    "@walletconnect/cacao" "1.0.2"
-    "@walletconnect/core" "^2.11.0-canary.0"
-    "@walletconnect/did-jwt" "2.0.1"
-    "@walletconnect/identity-keys" "^2.0.1"
-    "@walletconnect/jsonrpc-utils" "1.0.7"
-    "@walletconnect/time" "1.0.2"
-    "@walletconnect/utils" "^2.11.0"
-    axios "^1.4.0"
-    jwt-decode "^3.1.2"
-
 "@walletconnect/notify-client@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.1.1.tgz#0a3cef776c6b8ce3d6aacbb86bc2d028efc455c8"
