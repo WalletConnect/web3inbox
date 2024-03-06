@@ -130,7 +130,7 @@ test('it should subscribe, receive messages and unsubscribe', async ({
     accounts: [`eip155:1:${address}`],
     body: 'Test Body',
     title: 'Test Title',
-    type: CUSTOM_TEST_DAPP.messageType,
+    type: CUSTOM_TEST_DAPP.notificationType,
     url: CUSTOM_TEST_DAPP.appDomain,
     icon: CUSTOM_TEST_DAPP.icons[0],
     projectId: CUSTOM_TEST_DAPP.projectId,
