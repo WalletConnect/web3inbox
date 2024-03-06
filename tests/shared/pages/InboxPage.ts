@@ -55,24 +55,34 @@ export class InboxPage {
     return address
   }
 
-  async subscribe(nth: number) {
-    const appCard = this.page.locator('.AppCard__body').nth(nth)
-    await appCard.locator('.AppCard__body__subscribe').click()
+  async subscribe(appName: string) {
+    const appCard = this.page.locator('.AppCard', {
+      has: this.page.locator('.AppCard__body__title', {
+        hasText: appName
+      })
+    })
+    await appCard.locator('.AppCard__body > .AppCard__body__subscribe').click()
 
     await appCard
-      .locator('.AppCard__body__subscribed')
+      .locator('.AppCard__body > .AppCard__body__subscribed')
       .getByText('Subscribed', { exact: false })
       .isVisible()
   }
 
-  async navigateToNewSubscription(nth: number) {
-    await this.page.getByRole('button', { name: 'Subscribed' }).nth(nth).click()
-    await this.page.getByRole('button', { name: 'Subscribed' }).nth(nth).isHidden()
+  async navigateToNewSubscription(appName: string) {
+    const appCard = this.page.locator('.AppCard', {
+      has: this.page.locator('.AppCard__body__title', {
+        hasText: appName
+      })
+    })
+    const subscribeButton = appCard.getByRole('button', { name: 'Subscribed' })
+    await subscribeButton.click()
+    await subscribeButton.isHidden()
   }
 
-  async subscribeAndNavigateToDapp(nth: number) {
-    await this.subscribe(nth)
-    await this.navigateToNewSubscription(nth)
+  async subscribeAndNavigateToDapp(appName: string) {
+    await this.subscribe(appName)
+    await this.navigateToNewSubscription(appName)
   }
 
   async unsubscribe() {
@@ -83,8 +93,12 @@ export class InboxPage {
     await this.page.waitForTimeout(2000)
   }
 
-  async navigateToDappFromSidebar(nth: number) {
-    await this.page.locator('.AppSelector__notifications-link').nth(nth).click()
+  async navigateToDappFromSidebar(appName: string) {
+    await this.page
+      .locator('.AppSelector__notifications-link', {
+        has: this.page.locator('.AppSelector__link__title', { hasText: appName })
+      })
+      .click()
   }
 
   async countSubscribedDapps() {
