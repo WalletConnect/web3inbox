@@ -20,6 +20,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
   useEffect(() => {
     if(client) {
+      console.log("Registering with echo")
       registerWithEcho(client)
     }
   }, [client])

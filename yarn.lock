@@ -3585,6 +3585,22 @@
     axios "^1.4.0"
     jwt-decode "^3.1.2"
 
+"@walletconnect/notify-client@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.1.1.tgz#0a3cef776c6b8ce3d6aacbb86bc2d028efc455c8"
+  integrity sha512-8G2sP++iFprLafN2dSBixdTMItbVVYDJSc76vnfibMXD7YY2hm4/+8mg6VUcVt8SFccXAOVSNx1BxcmqyflABg==
+  dependencies:
+    "@noble/ed25519" "^1.7.3"
+    "@walletconnect/cacao" "1.0.2"
+    "@walletconnect/core" "^2.11.0-canary.0"
+    "@walletconnect/did-jwt" "2.0.1"
+    "@walletconnect/identity-keys" "^2.0.1"
+    "@walletconnect/jsonrpc-utils" "1.0.7"
+    "@walletconnect/time" "1.0.2"
+    "@walletconnect/utils" "^2.11.0"
+    axios "^1.4.0"
+    jwt-decode "^3.1.2"
+
 "@walletconnect/notify-message-decrypter@^0.1.0":
   version "0.1.0"
   resolved "https://registry.npmjs.org/@walletconnect/notify-message-decrypter/-/notify-message-decrypter-0.1.0.tgz"
@@ -3767,6 +3783,22 @@
   dependencies:
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
+
+"@web3inbox/core@^1.2.0-5bd35d2":
+  version "1.2.0-5bd35d2"
+  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.2.0-5bd35d2.tgz#d2a445533246e03cc17b2e0d953098d0df56b3e6"
+  integrity sha512-4kqwDcQzSnPNjm0jUhsGfY9UcVByVcRHjUXaBaRGQEveSGm9arPh4L47dl12gdJbupIh7JEfTKlC9AP+WhUuCQ==
+  dependencies:
+    "@walletconnect/core" "2.11.0"
+    "@walletconnect/notify-client" "^1.1.1"
+    valtio "^1.11.2"
+
+"@web3inbox/react@^1.2.0-5bd35d2":
+  version "1.2.0-5bd35d2"
+  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.2.0-5bd35d2.tgz#d7940b28b2c0a1a961029fb13f041c5265a36b31"
+  integrity sha512-J6DrTpZS3ByXbwfcWqydKJQ/2dRNOUT1ZymY/XVfv3I10IOF7hCzKazBdngMaRQ/lgRIFwkdmZzOKYosDs7kPA==
+  dependencies:
+    react "^18.2.0"
 
 "@web3modal/common@4.0.10":
   version "4.0.10"
@@ -4730,6 +4762,11 @@ denque@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/denque/-/denque-2.1.0.tgz#e93e1a6569fb5e66f16a3c2a2964617d349d6ab1"
   integrity sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==
+
+derive-valtio@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/derive-valtio/-/derive-valtio-0.1.0.tgz#4b9fb393dfefccfef15fcbbddd745dd22d5d63d7"
+  integrity sha512-OCg2UsLbXK7GmmpzMXhYkdO64vhJ1ROUUGaTFyHjVwEdMEcTTRj7W1TxLbSBxdY8QLBPCcp66MTyaSy0RpO17A==
 
 des.js@^1.0.0:
   version "1.1.0"
@@ -7347,6 +7384,11 @@ proxy-compare@2.5.1:
   resolved "https://registry.npmjs.org/proxy-compare/-/proxy-compare-2.5.1.tgz"
   integrity sha512-oyfc0Tx87Cpwva5ZXezSp5V9vht1c7dZBhvuV/y3ctkgMVUmiAGDVeeB0dKhGSyT0v1ZTEQYpe/RXlBVBNuCLA==
 
+proxy-compare@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/proxy-compare/-/proxy-compare-2.6.0.tgz#5e8c8b5c3af7e7f17e839bf6cf1435bcc4d315b0"
+  integrity sha512-8xuCeM3l8yqdmbPoYeLbrAXCBWu19XEYc5/F28f5qOaoAIMyfmBUkl5axiK+x9olUvRlcekvnm98AP9RDngOIw==
+
 proxy-from-env@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
@@ -8565,6 +8607,15 @@ valtio@1.11.2:
   integrity sha512-1XfIxnUXzyswPAPXo1P3Pdx2mq/pIqZICkWN60Hby0d9Iqb+MEIpqgYVlbflvHdrp2YR/q3jyKWRPJJ100yxaw==
   dependencies:
     proxy-compare "2.5.1"
+    use-sync-external-store "1.2.0"
+
+valtio@^1.11.2:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/valtio/-/valtio-1.13.2.tgz#e31d452d5da3550935417670aafd34d832dc7241"
+  integrity sha512-Qik0o+DSy741TmkqmRfjq+0xpZBXi/Y6+fXZLn0xNF1z/waFMbE3rkivv5Zcf9RrMUp6zswf2J7sbh2KBlba5A==
+  dependencies:
+    derive-valtio "0.1.0"
+    proxy-compare "2.6.0"
     use-sync-external-store "1.2.0"
 
 viem@2.7.8:

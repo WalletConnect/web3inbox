@@ -42,6 +42,8 @@ export const userEnabledNotification = () => {
   return false
 }
 
+
+
 /*
  * Trigger notification dialogue if supported
  * Returns true if permissions were granted
@@ -61,18 +63,20 @@ export const requireNotifyPermission = async () => {
       console.warn('User denied permissions')
       return false
     default:
+      const isSecureContext = window.location.protocol === 'https:'
+      
+      if (!isSecureContext) {
+        throw new Error(
+          'Can not set up notification in unsecure context. Expected protocol to be https:'
+        )
+      }
+
       return (await window.Notification?.requestPermission()) === 'granted'
   }
 }
 
 export const registerWithEcho = async (client: Web3InboxClient) => {
-  const isSecureContext = window.location.protocol === 'https:'
-
-  if (!isSecureContext) {
-    throw new Error(
-      'Can not set up notification in unsecure context. Expected protocol to be https:'
-    )
-  }
+  await requireNotifyPermission();
 
   const token = await getFirebaseToken()
 

@@ -1,6 +1,6 @@
-import { Fragment, createContext, useContext, useEffect, useRef, useState } from 'react'
+import { Fragment, createContext, useContext, useRef, useState } from 'react'
 
-import { useSubscription } from '@web3inbox/react'
+import { useNotifications, useSubscription } from '@web3inbox/react'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
@@ -73,11 +73,11 @@ const AppNotifications = () => {
             title={app.metadata.name}
           />
           <AppNotificationsCardMobile />
-          {isLoading || notifications.length > 0 ? (
+          {isLoading || notifications?.length ? (
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
-                {!isLoading && notifications.length > 0 ? <Label color="main">Latest</Label> : null}
-                {!isLoading && notifications.map((notification, index) => (
+                {!isLoading && notifications?.length ? <Label color="main">Latest</Label> : null}
+                {!isLoading && notifications?.map((notification, index) => (
                   <AppNotificationItem
                     ref={index === notifications.length - 1 ? intersectionObserverRef : null}
                     key={notification.id}
