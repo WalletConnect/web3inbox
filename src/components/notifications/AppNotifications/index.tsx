@@ -76,8 +76,8 @@ const AppNotifications = () => {
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
                 {!isLoading && notifications?.length ? <Label color="main">Latest</Label> : null}
-                {!isLoading &&
-                  notifications?.map((notification, index) => (
+                {notifications?.length &&
+                  notifications.map((notification, index) => (
                     <AppNotificationItem
                       ref={index === notifications.length - 1 ? intersectionObserverRef : null}
                       key={notification.id}
