@@ -6,14 +6,13 @@ import Button from '@/components/general/Button'
 import CheckMarkIcon from '@/components/general/Icon/CheckMarkIcon'
 import Text from '@/components/general/Text'
 import SettingsContext from '@/contexts/SettingsContext/context'
-import W3iContext from '@/contexts/W3iContext/context'
 
 import './AppNotificationsCardMobile.scss'
+import { useSubscription } from '@web3inbox/react'
 
 const AppNotificationsCardMobile: React.FC = () => {
-  const { topic } = useParams<{ topic: string }>()
-  const { activeSubscriptions } = useContext(W3iContext)
-  const app = activeSubscriptions.find(mock => mock.topic === topic)
+  const { domain } = useParams<{ domain: string }>()
+  const { data: app } = useSubscription(undefined, domain)
   const { mode } = useContext(SettingsContext)
   const ref = useRef<HTMLDivElement>(null)
 

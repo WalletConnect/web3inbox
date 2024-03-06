@@ -4,20 +4,19 @@ import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import W3iContext from '@/contexts/W3iContext/context'
-
 import AppSelector from '../AppSelector'
 
 import './NotificationsLayout.scss'
+import { useAllSubscriptions } from '@web3inbox/react'
 
 const NotificationsLayout: React.FC = () => {
-  const { activeSubscriptions } = useContext(W3iContext)
+  const { data: activeSubscriptions } = useAllSubscriptions()
   const { pathname } = useLocation()
   const nav = useNavigate()
 
   useEffect(() => {
     if (pathname === '/notifications') {
-      if (!activeSubscriptions.length) {
+      if (!activeSubscriptions?.length) {
         nav('/notifications/new-app')
       }
     }

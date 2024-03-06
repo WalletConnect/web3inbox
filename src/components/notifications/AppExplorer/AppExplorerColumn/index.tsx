@@ -4,6 +4,7 @@ import AppCard from '@/components/notifications/AppExplorer/AppCard'
 import W3iContext from '@/contexts/W3iContext/context'
 import useBreakPoint from '@/hooks/useBreakPoint'
 import { INotifyApp } from '@/utils/types'
+import { useAllSubscriptions } from '@web3inbox/react'
 
 type AppExplorerColumnsProps = {
   apps: Array<INotifyApp>
@@ -11,11 +12,12 @@ type AppExplorerColumnsProps = {
 
 export default function AppExplorerColumns({ apps }: AppExplorerColumnsProps) {
   const { isDesktopLg } = useBreakPoint()
-  const { activeSubscriptions, watchSubscriptionsComplete: watchCompleted } = useContext(W3iContext)
+  const { watchSubscriptionsComplete: watchCompleted } = useContext(W3iContext)
+  const { data: activeSubscriptions } = useAllSubscriptions()
 
   function checkSubscriptionStatusLoading(url: string) {
     if (!watchCompleted) {
-      const existInSubscriptions = activeSubscriptions.find(subscription => {
+      const existInSubscriptions = activeSubscriptions?.find(subscription => {
         const projectURL = new URL(url)
         return projectURL.hostname === subscription.metadata.appDomain
       })

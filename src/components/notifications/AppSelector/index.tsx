@@ -23,6 +23,7 @@ import { handleImageFallback } from '@/utils/ui'
 import LinkItemSkeleton from './LinkItemSkeleton'
 
 import './AppSelector.scss'
+import { useAllSubscriptions } from '@web3inbox/react'
 
 const SUBSCRIPTION_LOADER_TIMEOUT = 3000
 
@@ -34,9 +35,10 @@ const AppSelector: React.FC = () => {
   const isMobile = useIsMobile()
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const [loading, setLoading] = useState(true)
-  const { activeSubscriptions, watchSubscriptionsComplete: subscriptionsFinishedLoading } =
+  const { watchSubscriptionsComplete: subscriptionsFinishedLoading } =
     useContext(W3iContext)
   const { projects } = useNotifyProjects()
+  const { data: activeSubscriptions } = useAllSubscriptions()
 
   const empty = !loading && filteredApps.length === 0
   const subscriptionsLoading = loading || !subscriptionsFinishedLoading
@@ -48,7 +50,7 @@ const AppSelector: React.FC = () => {
       setLoading(false)
     }
 
-    for(const app of activeSubscriptions) {
+    for(const app of (activeSubscriptions ?? [])) {
         const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
         if(isAppNameMatch) {
    	  newFilteredApps.push(app)
@@ -60,7 +62,7 @@ const AppSelector: React.FC = () => {
 
   const searchApps = debounce((searchQuery: string) => {
     if (!searchQuery) {
-      setFilteredApps(activeSubscriptions)
+      setFilteredApps(activeSubscriptions ?? [])
       return
     }
 
