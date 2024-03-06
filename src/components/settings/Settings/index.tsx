@@ -13,8 +13,6 @@ import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/cont
 import SettingsContext from '@/contexts/SettingsContext/context'
 import { useModals } from '@/utils/hooks'
 
-import ContactsModal from '../ContactsModal'
-
 import './Settings.scss'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
@@ -140,13 +138,6 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>*/}
-      {isContactModalOpen && (
-        <ContactsModal
-          status="muted"
-          mutedContacts={mutedContacts}
-          setMutedContacts={setMutedContacts}
-        />
-      )}
     </div>
   )
 }
