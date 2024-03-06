@@ -17,9 +17,9 @@ export class InboxPage {
 
   async gotoDiscoverPage() {
     await this.page.locator('.Sidebar__Navigation__Link[href="/notifications"]').click()
-    await this.page.getByText('Discover Apps').click();
+    await this.page.getByText('Discover Apps').click()
 
-    await this.page.getByText('Discover Web3Inbox').isVisible();
+    await this.page.getByText('Discover Web3Inbox').isVisible()
   }
 
   async copyConnectUriToClipboard() {
@@ -50,16 +50,19 @@ export class InboxPage {
   async getAddress() {
     await this.page.locator('.Avatar').first().click()
     const address = await this.page.locator('wui-avatar').getAttribute('alt')
-    await this.page.locator('wui-icon[name=close]').first().click();
+    await this.page.locator('wui-icon[name=close]').first().click()
 
-    return address;
+    return address
   }
 
   async subscribe(nth: number) {
     const appCard = this.page.locator('.AppCard__body').nth(nth)
     await appCard.locator('.AppCard__body__subscribe').click()
 
-    await appCard.locator('.AppCard__body__subscribed').getByText('Subscribed', { exact: false }).isVisible()
+    await appCard
+      .locator('.AppCard__body__subscribed')
+      .getByText('Subscribed', { exact: false })
+      .isVisible()
   }
 
   async navigateToNewSubscription(nth: number) {
@@ -68,8 +71,8 @@ export class InboxPage {
   }
 
   async subscribeAndNavigateToDapp(nth: number) {
-    await this.subscribe(nth);
-    await this.navigateToNewSubscription(nth);
+    await this.subscribe(nth)
+    await this.navigateToNewSubscription(nth)
   }
 
   async unsubscribe() {
@@ -86,23 +89,27 @@ export class InboxPage {
 
   async countSubscribedDapps() {
     const notificationsCount = await this.page.locator('.AppSelector__notifications').count()
-    
-    return notificationsCount - 1;
+
+    return notificationsCount - 1
   }
 
   /**
    * Waits for a specific number of dApps to be subscribed.
-   * 
+   *
    * @param {number} expectedCount - The expected number of dApps to wait for.
    * @returns {Promise<void>}
    */
   async waitForSubscriptions(expectedCount: number): Promise<void> {
     // Wait for a function that checks the length of a list or a set of elements
     // matching a certain condition to equal the expectedCount.
-    await this.page.waitForFunction(([className, count]) => {
-      const elements = document.getElementsByClassName(className)[1].children;;
-      return elements.length === count;
-    }, ['AppSelector__list', expectedCount] as const, { timeout: 5000 }); 
+    await this.page.waitForFunction(
+      ([className, count]) => {
+        const elements = document.getElementsByClassName(className)[1].children
+        return elements.length === count
+      },
+      ['AppSelector__list', expectedCount] as const,
+      { timeout: 5000 }
+    )
   }
 
   async updatePreferences() {
@@ -119,15 +126,16 @@ export class InboxPage {
 
     await this.page.getByRole('button', { name: 'Update' }).click()
 
-
     await this.page.locator('.AppNotificationsHeader__wrapper > .Dropdown').click()
     await this.page.getByRole('button', { name: 'Preferences' }).click()
 
-    const firstCheckBoxIsCheckedAfterUpdating =  await this.page.isChecked('.Toggle__checkbox:nth-of-type(1)')
+    const firstCheckBoxIsCheckedAfterUpdating = await this.page.isChecked(
+      '.Toggle__checkbox:nth-of-type(1)'
+    )
 
     expect(firstCheckBoxIsChecked).not.toEqual(firstCheckBoxIsCheckedAfterUpdating)
 
-    await this.page.locator('.PreferencesModal__close').click();
+    await this.page.locator('.PreferencesModal__close').click()
   }
 
   async cancelSiwe() {

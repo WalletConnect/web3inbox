@@ -37,7 +37,6 @@ const AppNotifications = () => {
   const { userPubkey } = useContext(W3iContext)
   const { domain } = useParams<{ domain: string }>()
 
-  
   const { data: app } = useSubscription(undefined, domain)
 
   const { isLoading, notifications, intersectionObserverRef, nextPage } =
@@ -77,26 +76,27 @@ const AppNotifications = () => {
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
                 {!isLoading && notifications?.length ? <Label color="main">Latest</Label> : null}
-                {!isLoading && notifications?.map((notification, index) => (
-                  <AppNotificationItem
-                    ref={index === notifications.length - 1 ? intersectionObserverRef : null}
-                    key={notification.id}
-                    onClear={nextPage}
-                    notification={{
-                      timestamp: notification.sentAt,
-                      // We do not manage read status for now.
-                      isRead: true,
-                      id: notification.id.toString(),
-                      message: notification.body,
-                      title: notification.title,
-                      image: notification.type
-                        ? app?.scope[notification.type]?.imageUrls?.md
-                        : undefined,
-                      url: notification.url
-                    }}
-                    appLogo={app.metadata?.icons?.[0]}
-                  />
-                ))}
+                {!isLoading &&
+                  notifications?.map((notification, index) => (
+                    <AppNotificationItem
+                      ref={index === notifications.length - 1 ? intersectionObserverRef : null}
+                      key={notification.id}
+                      onClear={nextPage}
+                      notification={{
+                        timestamp: notification.sentAt,
+                        // We do not manage read status for now.
+                        isRead: true,
+                        id: notification.id.toString(),
+                        message: notification.body,
+                        title: notification.title,
+                        image: notification.type
+                          ? app?.scope[notification.type]?.imageUrls?.md
+                          : undefined,
+                        url: notification.url
+                      }}
+                      appLogo={app.metadata?.icons?.[0]}
+                    />
+                  ))}
                 {isLoading ? (
                   <Fragment>
                     <AppNotificationItemSkeleton />

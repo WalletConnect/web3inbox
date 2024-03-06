@@ -8,10 +8,9 @@ const IntersectionObserverOptions = {
   threshold: 1.0
 }
 
-const NOTIFICATION_BATCH_SIZE = 6;
+const NOTIFICATION_BATCH_SIZE = 6
 
 export const useNotificationsInfiniteScroll = (account?: string, domain?: string) => {
-
   const {
     data: notifications,
     fetchNextPage,
@@ -40,7 +39,7 @@ export const useNotificationsInfiniteScroll = (account?: string, domain?: string
     }
   }, [intersectionObserverRef, hasMore])
 
-  console.log(">>>", {notifications: Array.from(notifications?.values() ?? [])})
+  console.log('>>>', { notifications: Array.from(notifications?.values() ?? []) })
 
   return {
     hasMore,

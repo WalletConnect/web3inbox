@@ -1,10 +1,11 @@
 import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { initWeb3InboxClient } from '@web3inbox/react'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import { BrowserRouter } from 'react-router-dom'
 import { WagmiProvider } from 'wagmi'
 
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from '@/constants/web3Modal'
@@ -19,7 +20,6 @@ import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
 
 import './index.css'
-import { initWeb3InboxClient } from '@web3inbox/react'
 
 polyfill()
 initSentry()
@@ -41,7 +41,7 @@ initWeb3InboxClient({
   projectId,
   allApps: true,
   domain: window.location.hostname,
-  logLevel: import.meta.env.PROD ? 'error' : 'debug',
+  logLevel: import.meta.env.PROD ? 'error' : 'debug'
 })
 
 const queryClient = new QueryClient()
@@ -62,15 +62,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </SettingsContextProvider>
       </QueryClientProvider>
     </WagmiProvider>
-      <Toaster
-        toastOptions={{
-          position: 'bottom-right',
-          duration: 5000,
-          style: {
-            border: '1px solid rgba(0, 0, 0, 0.1)',
-            borderRadius: '1em'
-          }
-        }}
-      />
+    <Toaster
+      toastOptions={{
+        position: 'bottom-right',
+        duration: 5000,
+        style: {
+          border: '1px solid rgba(0, 0, 0, 0.1)',
+          borderRadius: '1em'
+        }
+      }}
+    />
   </React.StrictMode>
 )

@@ -11,9 +11,9 @@ import TransitionDiv from '@/components/general/TransitionDiv'
 import Sidebar from '@/components/layout/Sidebar'
 import { web3InboxURLs } from '@/constants/navigation'
 import W3iContext from '@/contexts/W3iContext/context'
+import { signatureModalService } from '@/utils/store'
 
 import './Login.scss'
-import { signatureModalService } from '@/utils/store'
 
 const Login: React.FC = () => {
   const { userPubkey, notifyRegisteredKey } = useContext(W3iContext)
@@ -29,8 +29,7 @@ const Login: React.FC = () => {
     if (userPubkey) {
       if (notifyRegisteredKey) {
         nav(path)
-      }
-      else {
+      } else {
         signatureModalService.openModal()
       }
     }

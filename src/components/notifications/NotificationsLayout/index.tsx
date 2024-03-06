@@ -1,5 +1,6 @@
 import React, { Fragment, useContext, useEffect } from 'react'
 
+import { useAllSubscriptions } from '@web3inbox/react'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -7,7 +8,6 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import AppSelector from '../AppSelector'
 
 import './NotificationsLayout.scss'
-import { useAllSubscriptions } from '@web3inbox/react'
 
 const NotificationsLayout: React.FC = () => {
   const { data: activeSubscriptions } = useAllSubscriptions()

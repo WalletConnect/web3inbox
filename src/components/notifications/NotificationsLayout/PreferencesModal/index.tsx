@@ -21,8 +21,10 @@ export const PreferencesModal: React.FC = () => {
 
   const { update, data: appScopes } = useNotificationTypes(undefined, domain)
   const { data: app } = useSubscription(undefined, domain)
-  const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>(appScopes ?? {})
-  console.log({ app, scopes})
+  const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>(
+    appScopes ?? {}
+  )
+  console.log({ app, scopes })
   const [loading, setLoading] = useState(false)
 
   // Reduces the scopes mapping to only an array of enabled scopes

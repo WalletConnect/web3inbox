@@ -1,5 +1,6 @@
 import { useContext, useEffect, useMemo, useRef } from 'react'
 
+import { useSubscription } from '@web3inbox/react'
 import { useParams } from 'react-router-dom'
 
 import Button from '@/components/general/Button'
@@ -8,7 +9,6 @@ import Text from '@/components/general/Text'
 import SettingsContext from '@/contexts/SettingsContext/context'
 
 import './AppNotificationsCardMobile.scss'
-import { useSubscription } from '@web3inbox/react'
 
 const AppNotificationsCardMobile: React.FC = () => {
   const { domain } = useParams<{ domain: string }>()

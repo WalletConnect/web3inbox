@@ -1,4 +1,5 @@
 import { NotifyClient } from '@walletconnect/notify-client'
+import { Web3InboxClient } from '@web3inbox/core'
 
 import { localStorageKeys } from '@/constants/localStorage'
 import { LocalStorage } from '@/utils/localStorage'
@@ -6,8 +7,6 @@ import { notificationPwaModalService } from '@/utils/store'
 
 import { getFirebaseToken } from './firebase'
 import { getDbSymkeyStore } from './idb'
-import { Web3InboxClient } from '@web3inbox/core'
-
 
 const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
   const [, putSymkey] = await getDbSymkeyStore()
@@ -42,8 +41,6 @@ export const userEnabledNotification = () => {
   return false
 }
 
-
-
 /*
  * Trigger notification dialogue if supported
  * Returns true if permissions were granted
@@ -64,7 +61,7 @@ export const requireNotifyPermission = async () => {
       return false
     default:
       const isSecureContext = window.location.protocol === 'https:'
-      
+
       if (!isSecureContext) {
         throw new Error(
           'Can not set up notification in unsecure context. Expected protocol to be https:'
@@ -76,9 +73,9 @@ export const requireNotifyPermission = async () => {
 }
 
 export const registerWithEcho = async (client: Web3InboxClient) => {
-  await requireNotifyPermission();
+  if (await requireNotifyPermission()) {
+    const token = await getFirebaseToken()
 
-  const token = await getFirebaseToken()
-
-  await client.registerWithPushServer(token, 'fcm')
+    await client.registerWithPushServer(token, 'fcm')
+  }
 }

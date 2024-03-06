@@ -1,10 +1,11 @@
 import { Fragment, useContext } from 'react'
 
+import { useAllSubscriptions } from '@web3inbox/react'
+
 import AppCard from '@/components/notifications/AppExplorer/AppCard'
 import W3iContext from '@/contexts/W3iContext/context'
 import useBreakPoint from '@/hooks/useBreakPoint'
 import { INotifyApp } from '@/utils/types'
-import { useAllSubscriptions } from '@web3inbox/react'
 
 type AppExplorerColumnsProps = {
   apps: Array<INotifyApp>

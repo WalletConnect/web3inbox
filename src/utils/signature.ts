@@ -1,18 +1,18 @@
 import { signMessage as wagmiSignMessage } from '@wagmi/core'
-
 import { getBytecode } from '@wagmi/core'
-import { wagmiConfig } from './wagmiConfig';
-import { showErrorMessageToast } from './toasts';
 
+import { showErrorMessageToast } from './toasts'
+import { wagmiConfig } from './wagmiConfig'
 
 export const isSmartContractWallet = async (address: `0x${string}`) => {
   const bytecode = await getBytecode(wagmiConfig, {
     address
   })
 
-  const nonContractBytecode = !bytecode || bytecode === '0x' || bytecode === '0x0' || bytecode === '0x00';
+  const nonContractBytecode =
+    !bytecode || bytecode === '0x' || bytecode === '0x0' || bytecode === '0x00'
 
-  return !nonContractBytecode;
+  return !nonContractBytecode
 }
 
 export const signMessage = async (message: string) => {
@@ -23,7 +23,7 @@ export const signMessage = async (message: string) => {
 
     return signed
   } catch (e: any) {
-    showErrorMessageToast("Failed to sign message. Consider using different wallet.")
+    showErrorMessageToast('Failed to sign message. Consider using different wallet.')
     throw new Error(`Failed to sign message. ${e.message}`)
   }
 }

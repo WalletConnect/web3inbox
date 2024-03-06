@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 
-import { formatEthChainsAddress } from '@/utils/address'
 import { useWeb3InboxAccount } from '@web3inbox/react'
 import { useAccount } from 'wagmi'
 
+import { formatEthChainsAddress } from '@/utils/address'
+
 export const useAuthState = () => {
-  const { address, chainId: chain} = useAccount();
-  const formattedAddress = formatEthChainsAddress(address, `${chain}`);
+  const { address, chainId: chain } = useAccount()
+  const formattedAddress = formatEthChainsAddress(address, `${chain}`)
 
   useWeb3InboxAccount(formattedAddress ?? undefined)
 

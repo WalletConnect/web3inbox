@@ -1,28 +1,19 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
 
 import W3iContext from '@/contexts/W3iContext/context'
 import { useAuthState } from '@/contexts/W3iContext/hooks/authHooks'
-import { registerWithEcho } from '@/utils/notifications'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
-
   const { userPubkey, setUserPubkey } = useAuthState()
 
   const { data: client } = useWeb3InboxClient()
   const { identityKey: notifyRegisteredKey } = useWeb3InboxAccount(userPubkey)
-
-  useEffect(() => {
-    if(client) {
-      console.log("Registering with echo")
-      registerWithEcho(client)
-    }
-  }, [client])
 
   return (
     <W3iContext.Provider

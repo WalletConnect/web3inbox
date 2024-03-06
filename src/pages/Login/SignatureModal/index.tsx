@@ -11,12 +11,12 @@ import { Modal } from '@/components/general/Modal/Modal'
 import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
 import { useModals } from '@/utils/hooks'
+import { signMessage } from '@/utils/signature'
 import { signatureModalService } from '@/utils/store'
 
 import { SignatureLoadingVisual } from './SignatureLoadingVisual'
 
 import './SignatureModal.scss'
-import { signMessage } from '@/utils/signature'
 
 export const SignatureModal: React.FC = () => {
   const { status } = useAccount()

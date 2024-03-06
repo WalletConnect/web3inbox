@@ -2,12 +2,10 @@ import type { RefObject } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
+import { valtio } from '@web3inbox/core'
 import { useLocation } from 'react-router-dom'
 
 import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/context'
-
-import { valtio } from "@web3inbox/core"
-
 
 // eslint-disable-next-line no-duplicate-imports
 import {
@@ -164,7 +162,6 @@ export const useSearch = () => {
 
   const modalsOpenSnapshot = valtio.useSnapshot(modalsOpen)
 
-
   useEffect(() => {
     setIsNotifySearchOpen(notifySearchService.searchState)
     setIsAppSearchOpen(appSearchService.searchState.isOpen)
@@ -193,7 +190,10 @@ export const useModals = () => {
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
-    console.log({modalsOpenSnapshot: modalsOpenSnapshot.signatureModalSubject.isOpen, profileModalService: profileModalService.getModalState()})
+    console.log({
+      modalsOpenSnapshot: modalsOpenSnapshot.signatureModalSubject.isOpen,
+      profileModalService: profileModalService.getModalState()
+    })
     setIsProfileModalOpen(profileModalService.getModalState())
 
     setIsSignatureModalOpen(signatureModalService.getModalState().isOpen)
@@ -205,7 +205,6 @@ export const useModals = () => {
     setIsPreferencesModalOpen(preferencesModalService.getModalState().isOpen)
     setUnsubscribeModalAppId(unsubscribeModalService.getModalState().unsubscribeModalAppId)
     setIsUnsubscribeModalOpen(unsubscribeModalService.getModalState().isOpen)
-
   }, [modalsOpenSnapshot])
 
   return {

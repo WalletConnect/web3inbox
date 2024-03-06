@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
+import { useAllSubscriptions } from '@web3inbox/react'
 import cx from 'classnames'
 import { AnimatePresence, m } from 'framer-motion'
 import debounce from 'lodash.debounce'
@@ -23,7 +24,6 @@ import { handleImageFallback } from '@/utils/ui'
 import LinkItemSkeleton from './LinkItemSkeleton'
 
 import './AppSelector.scss'
-import { useAllSubscriptions } from '@web3inbox/react'
 
 const SUBSCRIPTION_LOADER_TIMEOUT = 3000
 
@@ -35,8 +35,7 @@ const AppSelector: React.FC = () => {
   const isMobile = useIsMobile()
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const [loading, setLoading] = useState(true)
-  const { watchSubscriptionsComplete: subscriptionsFinishedLoading } =
-    useContext(W3iContext)
+  const { watchSubscriptionsComplete: subscriptionsFinishedLoading } = useContext(W3iContext)
   const { projects } = useNotifyProjects()
   const { data: activeSubscriptions } = useAllSubscriptions()
 
@@ -46,15 +45,15 @@ const AppSelector: React.FC = () => {
   const fetchApps = async (searchQuery: string) => {
     const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
 
-    if(!loading) {
+    if (!loading) {
       setLoading(false)
     }
 
-    for(const app of (activeSubscriptions ?? [])) {
-        const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
-        if(isAppNameMatch) {
-   	  newFilteredApps.push(app)
-        }
+    for (const app of activeSubscriptions ?? []) {
+      const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
+      if (isAppNameMatch) {
+        newFilteredApps.push(app)
+      }
     }
 
     setFilteredApps(newFilteredApps)
