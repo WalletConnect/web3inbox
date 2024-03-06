@@ -1,7 +1,7 @@
 import { type Locator, type Page, expect } from '@playwright/test'
 
-import { BASE_URL } from '../constants'
 import { assertDefined } from '../../../src/utils/assertDefined'
+import { BASE_URL } from '../constants'
 
 export class InboxPage {
   private readonly baseURL = BASE_URL

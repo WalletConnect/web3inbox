@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
 
 import SettingsContext from '@/contexts/SettingsContext/context'
+import { assertDefined } from '@/utils/assertDefined'
 
 import './DevTimeStamp.scss'
-import { assertDefined } from '@/utils/assertDefined'
 
 const getTimeStampFormatted = (rawTimestamp: number) => {
   const timestamp = new Date(rawTimestamp)
@@ -17,9 +17,11 @@ const getTimeStampFormatted = (rawTimestamp: number) => {
   const minutes = timestamp.getMinutes().toString().padStart(2, '0')
   const seconds = timestamp.getSeconds().toString().padStart(2, '0')
 
-  const timeZone = assertDefined(new Intl.DateTimeFormat('en', { timeZoneName: 'short' })
-    .formatToParts(timestamp)
-    .find(part => part.type === 'timeZoneName')).value
+  const timeZone = assertDefined(
+    new Intl.DateTimeFormat('en', { timeZoneName: 'short' })
+      .formatToParts(timestamp)
+      .find(part => part.type === 'timeZoneName')
+  ).value
 
   const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${timeZone}`
 
