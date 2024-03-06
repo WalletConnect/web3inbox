@@ -21,12 +21,12 @@ export interface ChatFacadeEvents {
   sync_update: never
 }
 
-type NextAction<T extends 'subscribe' | 'update' | 'deleteSubscription'> = {
+interface NextAction<T extends 'deleteSubscription' | 'subscribe' | 'update'> {
   type: T
   params: Parameters<NotifyClient[T]>[0]
 }
 
-type NextActions = NextAction<'subscribe'> | NextAction<'update'> | NextAction<'deleteSubscription'>
+type NextActions = NextAction<'deleteSubscription'> | NextAction<'subscribe'> | NextAction<'update'>
 
 export interface NotifyFacadeEvents {
   notify_message: NotifyClientTypes.EventArguments['notify_message']

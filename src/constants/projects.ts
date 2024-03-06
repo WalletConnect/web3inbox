@@ -1,6 +1,6 @@
-import { INotifyApp } from '@/utils/types'
+import type { INotifyApp } from '@/utils/types'
 
-export const COMING_SOON_PROJECTS: Array<INotifyApp> = [
+export const COMING_SOON_PROJECTS: INotifyApp[] = [
   {
     id: 'galxe',
     name: 'Galxe',

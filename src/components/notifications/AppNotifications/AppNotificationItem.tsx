@@ -33,7 +33,9 @@ const AppNotificationItemLink: React.FC<{
   url: string | null
   className?: string
 }> = ({ children, url, ...props }) => {
-  if (!url) return <div {...props}>{children}</div>
+  if (!url) {
+    return <div {...props}>{children}</div>
+  }
 
   return (
     <Link to={url} target="_blank" {...props}>
@@ -60,7 +62,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
 
     const body =
       textClamped && !showMore
-        ? notification.message.slice(0, MAX_BODY_LENGTH) + '...'
+        ? `${notification.message.slice(0, MAX_BODY_LENGTH)}...`
         : notification.message
 
     return (
@@ -74,7 +76,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
           )}
         >
           <img
-            src={notification.image || appLogo || '/fallback.svg'}
+            src={notification.image ?? appLogo || '/fallback.svg'}
             loading="lazy"
             alt="image corresponding to the notification"
           />

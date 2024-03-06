@@ -1,6 +1,6 @@
 import React from 'react'
 
-type CrossIconProps = {
+interface CrossIconProps {
   className?: string
 }
 

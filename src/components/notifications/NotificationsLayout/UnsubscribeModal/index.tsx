@@ -61,7 +61,7 @@ export const UnsubscribeModal: React.FC = () => {
           </button>
         </div>
         <div className="UnsubscribeModal__hero">
-          <img src={app?.metadata?.icons?.[0] || '/fallback.svg'} alt="logo" />
+          <img src={app.metadata.icons[0] || '/fallback.svg'} alt="logo" />
         </div>
         <div className="UnsubscribeModal__content">
           <div className="UnsubscribeModal__content__title">

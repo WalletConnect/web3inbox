@@ -12,7 +12,7 @@ interface IAppNotificationsEmptyProps {
 const AppNotificationsEmpty: React.FC<IAppNotificationsEmptyProps> = ({ icon, name }) => {
   const backgroundRef = useRef<HTMLDivElement>(null)
 
-  const iconURL = icon || '/fallback.svg'
+  const iconURL = icon ?? '/fallback.svg'
 
   useEffect(() => {
     if (backgroundRef.current) {

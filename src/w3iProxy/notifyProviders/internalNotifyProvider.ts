@@ -14,7 +14,7 @@ import {
   userEnabledNotification
 } from '@/utils/notifications'
 import { isSmartContractWallet } from '@/utils/signature'
-import { W3iNotifyProvider } from '@/w3iProxy/notifyProviders/types'
+import type { W3iNotifyProvider } from '@/w3iProxy/notifyProviders/types'
 
 export default class InternalNotifyProvider implements W3iNotifyProvider {
   private notifyClient: NotifyClient | undefined
@@ -70,7 +70,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
    * the service worker echo registration logic is also idempotent
    */
   private async ensureEchoRegistration() {
-    // impossible case, just here to please typescript
+    // Impossible case, just here to please typescript
     if (!this.notifyClient) {
       return
     }
@@ -112,13 +112,14 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
   // ------------------- Method-forwarding for NotifyClient -------------------
 
   public hasFinishedInitialLoad() {
-    return this.notifyClient?.hasFinishedInitialLoad() || false
+    return this.notifyClient?.hasFinishedInitialLoad() ?? false
   }
 
   public async unregister(params: { account: string }) {
     if (!this.notifyClient) {
       throw new Error(this.formatClientRelatedError('unregister'))
     }
+
     return this.notifyClient.unregister(params)
   }
 
@@ -130,22 +131,22 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
     const props = {
       account: params.account,
       domain: params.domain,
-      allApps: !Boolean(params.isLimited)
+      allApps: !params.isLimited
     }
 
     if (this.notifyClient.isRegistered(props)) {
       return this.notifyClient.identityKeys.getIdentity({ account: props.account })
-    } else {
-      // this means that there is a stale registration
-      if (await this.notifyClient.identityKeys.hasIdentity({ account: props.account })) {
-        await this.notifyClient.unregister({ account: props.account })
-      }
+    }
+    // This means that there is a stale registration
+    if (await this.notifyClient.identityKeys.hasIdentity({ account: props.account })) {
+      await this.notifyClient.unregister({ account: props.account })
     }
 
     const preparedRegistration = await this.notifyClient.prepareRegistration(props)
 
     const signature = await (async message => {
       this.emitter.emit('notify_signature_requested', { message })
+
       return new Promise<string>(resolve => {
         this.emitter.on(
           'notify_signature_delivered',
@@ -189,10 +190,11 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
           params
         }
       })
+
       return false
     }
 
-    let subscribed: boolean = false
+    let subscribed = false
     try {
       subscribed = await this.notifyClient.subscribe({
         ...params
@@ -234,6 +236,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
           params
         }
       })
+
       return false
     }
 
@@ -261,6 +264,7 @@ export default class InternalNotifyProvider implements W3iNotifyProvider {
           params
         }
       })
+
       return
     }
 

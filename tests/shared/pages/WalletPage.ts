@@ -10,16 +10,16 @@ export class WalletPage {
   private readonly gotoHome: Locator
   private readonly vercelPreview: Locator
 
-  constructor(public readonly page: Page) {
+  public constructor(public readonly page: Page) {
     this.gotoHome = this.page.getByTestId('wc-connect')
     this.vercelPreview = this.page.locator('css=vercel-live-feedback')
   }
 
-  async load() {
+  public async load() {
     await this.page.goto(this.baseURL)
   }
 
-  async connect() {
+  public async connect() {
     const isVercelPreview = (await this.vercelPreview.count()) > 0
     if (isVercelPreview) {
       await this.vercelPreview.evaluate((iframe: HTMLIFrameElement) => iframe.remove())
@@ -40,7 +40,7 @@ export class WalletPage {
    * @param optAccounts - optional account numbers to select ex/ ['1', '2']
    * @param accept - accept or reject the session
    */
-  async handleSessionProposal(opts: SessionParams) {
+  public async handleSessionProposal(opts: SessionParams) {
     const variant = opts.accept ? `approve` : `reject`
     // `.click` doesn't work here, so we use `.focus` and `Space`
     await this.page.getByTestId(`session-${variant}-button`).isEnabled()
@@ -48,7 +48,7 @@ export class WalletPage {
     await this.page.keyboard.press('Space')
   }
 
-  async handleRequest({ accept }: { accept: boolean }) {
+  public async handleRequest({ accept }: { accept: boolean }) {
     const variant = accept ? `approve` : `reject`
     // `.click` doesn't work here, so we use `.focus` and `Space`
     await this.page.getByTestId(`session-${variant}-button`).isEnabled()

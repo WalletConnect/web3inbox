@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test'
 
 export class NotifyServer {
-  private notifyBaseUrl = 'https://notify.walletconnect.com'
+  private readonly notifyBaseUrl = 'https://notify.walletconnect.com'
 
   public async sendMessage({
     projectId,

@@ -23,7 +23,7 @@ import SettingsToggle from '../SettingsToggle/Index'
 import './NotificationsSettings.scss'
 
 const getHelperTooltip = () => {
-  switch (window.Notification?.permission) {
+  switch (window.Notification.permission) {
     case 'denied':
       return 'You have explicitly disabled notifications. Please enable them via your browser or system settings'
     case 'granted':
@@ -136,7 +136,7 @@ const NotificationsSettings: React.FC = () => {
               </SettingsItem>
             </div>
 
-            {tokenEntries?.length ? (
+            {tokenEntries.length ? (
               <div
                 className="NotificationsSettings__debug"
                 style={{ opacity: isDevModeEnabled ? 1 : 0 }}

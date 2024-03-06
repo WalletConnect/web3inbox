@@ -52,7 +52,7 @@ const AppNotificationsHeader: React.FC<IAppNotificationsHeaderProps> = ({
               <BackButton backTo="/notifications" />
               <img
                 className="AppNotificationsHeader__app__logo"
-                src={logo || '/fallback.svg'}
+                src={logo ?? '/fallback.svg'}
                 alt={`${name} logo`}
                 loading="lazy"
               />

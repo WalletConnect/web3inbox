@@ -76,6 +76,7 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
   await inboxPage.page.waitForFunction(() => {
     // Using 1 here since the first `AppSelector__list` is the one with `Discover Apps`
     const apps = document.getElementsByClassName('AppSelector__list')[1].children.length
+
     return apps === 2
   })
 
@@ -85,8 +86,10 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
   await inboxPage.unsubscribe()
   expect(await inboxPage.countSubscribedDapps()).toEqual(1)
 
-  // select 0 again since we unsubscribed from the second dapp
-  // so there is only one item
+  /*
+   * Select 0 again since we unsubscribed from the second dapp
+   * so there is only one item
+   */
   await inboxPage.navigateToDappFromSidebar(0)
   await inboxPage.unsubscribe()
 })

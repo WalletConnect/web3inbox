@@ -22,6 +22,7 @@ export default class InternalAuthProvider {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!data.address) {
           this.emitter.emit('auth_set_account', { account: null, chain: null })
+
           return
         }
 

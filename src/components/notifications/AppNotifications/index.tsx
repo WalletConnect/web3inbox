@@ -77,7 +77,7 @@ const AppNotifications = () => {
           <AppNotificationsHeader
             id={app.topic}
             name={app.metadata.name}
-            logo={app.metadata?.icons?.[0]}
+            logo={app.metadata.icons[0]}
             domain={app.metadata.appDomain}
           />
           <MobileHeader
@@ -103,11 +103,11 @@ const AppNotifications = () => {
                       message: notification.body,
                       title: notification.title,
                       image: notification.type
-                        ? app?.scope[notification.type]?.imageUrls?.md
+                        ? app.scope[notification.type].imageUrls.md
                         : undefined,
                       url: notification.url
                     }}
-                    appLogo={app.metadata?.icons?.[0]}
+                    appLogo={app.metadata.icons[0]}
                   />
                 ))}
                 {isLoading ? (
@@ -120,7 +120,7 @@ const AppNotifications = () => {
               </div>
             </div>
           ) : (
-            <AppNotificationsEmpty icon={app.metadata?.icons?.[0]} name={app.metadata.name} />
+            <AppNotificationsEmpty icon={app.metadata.icons[0]} name={app.metadata.name} />
           )}
         </motion.div>
       </AnimatePresence>

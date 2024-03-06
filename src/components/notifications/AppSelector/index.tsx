@@ -66,6 +66,7 @@ const AppSelector: React.FC = () => {
   const searchApps = debounce((searchQuery: string) => {
     if (!searchQuery) {
       setFilteredApps(activeSubscriptions)
+
       return
     }
 
@@ -81,15 +82,16 @@ const AppSelector: React.FC = () => {
   }, [search])
 
   useEffect(() => {
-    if (filteredApps?.length) {
+    if (filteredApps.length) {
       setLoading(false)
+
       return
     }
 
     setTimeout(() => {
       setLoading(false)
     }, SUBSCRIPTION_LOADER_TIMEOUT)
-  }, [filteredApps?.length])
+  }, [filteredApps.length])
 
   return (
     <div className="AppSelector">
@@ -131,7 +133,7 @@ const AppSelector: React.FC = () => {
           {!empty || subscriptionsLoading ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
             {!loading &&
-              filteredApps?.map((app, idx, fullApps) => {
+              filteredApps.map((app, idx, fullApps) => {
                 return (
                   <AnimatePresence key={app.topic}>
                     <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -150,7 +152,7 @@ const AppSelector: React.FC = () => {
                             <div className="AppSelector__link__logo">
                               <img
                                 className="AppSelector__link__logo__image"
-                                src={app.metadata.icons?.[0] || '/fallback.svg'}
+                                src={app.metadata.icons[0] || '/fallback.svg'}
                                 alt={`${app.metadata.name} logo`}
                                 onError={handleImageFallback}
                                 loading="lazy"

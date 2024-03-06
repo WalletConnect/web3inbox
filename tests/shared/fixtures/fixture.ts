@@ -27,12 +27,12 @@ export const test = base.extend<ModalFixture>({
   // Have to pass same page object to maintain state between pages
   settingsPage: async ({ inboxPage }, use) => {
     const settingsPage = new SettingsPage(inboxPage.page)
-    settingsPage.load()
-    use(settingsPage)
+    await use(settingsPage)
   },
+  // eslint-disable-next-line no-empty-pattern
   notifyServer: async ({}, use) => {
     const notifyServer = new NotifyServer()
-    use(notifyServer)
+    await use(notifyServer)
   }
 })
 export { expect } from '@playwright/test'

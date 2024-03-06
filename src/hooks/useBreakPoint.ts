@@ -8,7 +8,9 @@ export default function useBreakPoint() {
 
   useEffect(() => {
     function handleResize() {
-      if (typeof window === 'undefined') return
+      if (typeof window === 'undefined') {
+        return
+      }
       setWindowWidth(window.innerWidth)
     }
 

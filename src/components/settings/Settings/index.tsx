@@ -58,8 +58,10 @@ const Settings: React.FC = () => {
   const handleThemeChange = useCallback(
     (modeId: SettingsContextSimpleState['mode']) => {
       updateSettings({ mode: modeId })
-      // Can't set `mode` directly due it being able to be 'system'
-      // setThemeMode(mode === 'dark' ? 'dark' : 'light')
+      /*
+       * Can't set `mode` directly due it being able to be 'system'
+       * setThemeMode(mode === 'dark' ? 'dark' : 'light')
+       */
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (localStorage) {

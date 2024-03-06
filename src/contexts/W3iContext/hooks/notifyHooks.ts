@@ -59,6 +59,7 @@ export const useNotifyState = (w3iProxy: Web3InboxProxy, proxyReady: boolean) =>
     const intervalId = setInterval(() => {
       if (notifyClient?.hasFinishedInitialLoad()) {
         setWatchSubscriptionsComplete(true)
+
         return noop
       }
       refreshNotifyState()

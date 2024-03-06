@@ -49,7 +49,10 @@ export const screenBreakPoints = {
 }
 
 export const isMobile = () => {
-  if (typeof window === 'undefined') return false
+  if (typeof window === 'undefined') {
+    return false
+  }
+
   return window.innerWidth < screenBreakPoints.md
 }
 

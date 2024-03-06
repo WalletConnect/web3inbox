@@ -23,7 +23,7 @@ const ChatInvites: React.FC = () => {
   const handleAcceptInvite = useCallback(() => {
     if (invitesSelected.length) {
       Promise.all(
-        invitesSelected.map(id => {
+        invitesSelected.map(async id => {
           return chatClientProxy?.accept({ id })
         })
       ).then(() => {
@@ -32,7 +32,7 @@ const ChatInvites: React.FC = () => {
       })
     } else {
       Promise.all(
-        invites.map(invite => {
+        invites.map(async invite => {
           return chatClientProxy?.accept({ id: invite.id })
         })
       ).then(() => {
@@ -45,7 +45,7 @@ const ChatInvites: React.FC = () => {
   const handleDeclineInvite = useCallback(() => {
     if (invitesSelected.length) {
       Promise.all(
-        invitesSelected.map(id => {
+        invitesSelected.map(async id => {
           return chatClientProxy?.reject({ id })
         })
       ).then(() => {
@@ -54,7 +54,7 @@ const ChatInvites: React.FC = () => {
       })
     } else {
       Promise.all(
-        invites.map(({ id }) => {
+        invites.map(async ({ id }) => {
           return chatClientProxy?.reject({ id })
         })
       ).then(() => {

@@ -5,7 +5,7 @@ import Text from '@/components/general/Text'
 
 import './Banner.scss'
 
-type BannerProps = {
+interface BannerProps {
   children: React.ReactNode
   className?: string
   onClose?: () => void
