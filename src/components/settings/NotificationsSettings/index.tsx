@@ -58,7 +58,7 @@ const NotificationsSettings: React.FC = () => {
   }, [])
 
   const handleEnableNotifications = async () => {
-    if ((await requireNotifyPermission()) && client) {
+    if (client) {
       await client.registerWithPushServer(await getFirebaseToken())
     }
   }
