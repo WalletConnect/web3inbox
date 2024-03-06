@@ -97,7 +97,7 @@ const AppNotifications = () => {
                       appLogo={app.metadata?.icons?.[0]}
                     />
                   ))}
-                {isLoading ? (
+                {isLoading && !notifications?.length ? (
                   <Fragment>
                     <AppNotificationItemSkeleton />
                     <AppNotificationItemSkeleton />
