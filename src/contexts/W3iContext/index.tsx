@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
+import { useAllSubscriptions, useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
 
 import W3iContext from '@/contexts/W3iContext/context'
 import { useAuthState } from '@/contexts/W3iContext/hooks/authHooks'
+import { setupSubscriptionsSymkeys } from '@/utils/notifications'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
@@ -14,6 +15,11 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
 
   const { data: client } = useWeb3InboxClient()
   const { identityKey: notifyRegisteredKey } = useWeb3InboxAccount(userPubkey)
+  const { data: activeSubscriptions } = useAllSubscriptions()
+
+  useEffect(() => {
+    setupSubscriptionsSymkeys(activeSubscriptions?.map(sub => [sub.topic, sub.symKey]) ?? [])
+  }, [activeSubscriptions])
 
   return (
     <W3iContext.Provider
