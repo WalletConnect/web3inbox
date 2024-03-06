@@ -14,7 +14,7 @@ import './NotificationPwaModal.scss'
 export const NotificationPwaModal: React.FC = () => {
   const { notifyClientProxy } = useContext(W3iContext)
 
-  const explicitlyDeniedPermissionForNotifications = window.Notification?.permission === 'denied'
+  const explicitlyDeniedPermissionForNotifications = window.Notification.permission === 'denied'
 
   const handleEnableNotifications = async () => {
     const notificationPermissionGranted = await requireNotifyPermission()

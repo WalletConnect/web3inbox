@@ -3,10 +3,10 @@ import { Fragment, useContext } from 'react'
 import AppCard from '@/components/notifications/AppExplorer/AppCard'
 import W3iContext from '@/contexts/W3iContext/context'
 import useBreakPoint from '@/hooks/useBreakPoint'
-import { INotifyApp } from '@/utils/types'
+import type { INotifyApp } from '@/utils/types'
 
-type AppExplorerColumnsProps = {
-  apps: Array<INotifyApp>
+interface AppExplorerColumnsProps {
+  apps: INotifyApp[]
 }
 
 export default function AppExplorerColumns({ apps }: AppExplorerColumnsProps) {
@@ -17,10 +17,11 @@ export default function AppExplorerColumns({ apps }: AppExplorerColumnsProps) {
     if (!watchCompleted) {
       const existInSubscriptions = activeSubscriptions.find(subscription => {
         const projectURL = new URL(url)
+
         return projectURL.hostname === subscription.metadata.appDomain
       })
 
-      return existInSubscriptions ? false : true
+      return !existInSubscriptions
     }
 
     return false

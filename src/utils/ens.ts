@@ -1,4 +1,4 @@
-import { PublicClient } from 'viem'
+import type { PublicClient } from 'viem'
 import { normalize } from 'viem/ens'
 
 declare const localStorage: Storage | undefined

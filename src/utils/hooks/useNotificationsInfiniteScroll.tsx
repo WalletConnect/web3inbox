@@ -58,7 +58,7 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
     })
   }, [notifyClientProxy, dispatch, topic])
 
-  const topicState = topic ? state?.[topic] : undefined
+  const topicState = topic ? state[topic] : undefined
   const topicNotifications = topicState ? topicState.fullNotifications : []
   const isLoading = topicState ? topicState.isLoading : []
   const hasMore = topicState ? topicState.hasMore : false
@@ -95,7 +95,7 @@ export const useNotificationsInfiniteScroll = (topic?: string) => {
     isLoading,
     notifications: topicNotifications,
     intersectionObserverRef,
-    nextPage: () => nextPageInternal(lastMessageId),
+    nextPage: async () => nextPageInternal(lastMessageId),
     unshiftNewMessage
   }
 }

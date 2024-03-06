@@ -43,7 +43,7 @@ const SettingsContextProvider: React.FC<ThemeContextProviderProps> = ({ children
   }, [themeColors])
 
   useEffect(() => {
-    localStorage?.setItem(LOCAL_SETTINGS_KEY, JSON.stringify(settingsState))
+    localStorage.setItem(LOCAL_SETTINGS_KEY, JSON.stringify(settingsState))
   }, [settingsState])
 
   return (

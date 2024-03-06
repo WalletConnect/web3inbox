@@ -11,6 +11,6 @@ export class LocalStorage {
       return undefined
     }
 
-    return localStorage.setItem(key, value)
+    localStorage.setItem(key, value)
   }
 }

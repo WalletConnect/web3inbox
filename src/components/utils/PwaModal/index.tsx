@@ -29,13 +29,17 @@ export const getPlatformInstallText = () => {
   const browser = detect()
   switch (browser?.name) {
     case 'firefox':
-    // Firefox on iOS is called Fxios
-    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent/Firefox#focus_for_ios
+    /*
+     * Firefox on iOS is called Fxios
+     * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent/Firefox#focus_for_ios
+     */
     case 'fxios':
       return 'Install'
     case 'chrome':
-    // Chrome on iOS is called Crios
-    // https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/ios/user_agent.md
+    /*
+     * Chrome on iOS is called Crios
+     * https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/ios/user_agent.md
+     */
     case 'crios':
     case 'edge-chromium':
       return 'Install App'

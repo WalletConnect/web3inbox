@@ -21,7 +21,7 @@ const Header: React.FC = () => {
           width="1.5em"
           height="1.5em"
         />
-        <span>{ensName ?? truncate(getEthChainAddress(userPubkey) ?? '', 5)}</span>
+        <span>{ensName ?? truncate(getEthChainAddress(userPubkey), 5)}</span>
       </div>
     </div>
   )

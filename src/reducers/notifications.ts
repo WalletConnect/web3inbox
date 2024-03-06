@@ -1,4 +1,4 @@
-import { NotifyClientTypes } from '@walletconnect/notify-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 
 export interface TopicNotificationsState {
   fullNotifications: NotifyClientTypes.NotifyNotification[]
@@ -7,9 +7,7 @@ export interface TopicNotificationsState {
   isLoading: boolean
 }
 
-export interface NotificationsState {
-  [topic: string]: TopicNotificationsState
-}
+export type NotificationsState = Record<string, TopicNotificationsState>
 
 export type NotificationsActions =
   | {
@@ -28,9 +26,11 @@ export type NotificationsActions =
       topic: string
     }
 
-// Opted for a reducer since the state changes are complex enough to warrant
-// changes to a set and an array. Having all that inside the hooks would
-// cause too many updates to the hooks, causing unnecessary rerenders.
+/*
+ * Opted for a reducer since the state changes are complex enough to warrant
+ * changes to a set and an array. Having all that inside the hooks would
+ * cause too many updates to the hooks, causing unnecessary rerenders.
+ */
 export const notificationsReducer = (
   state: NotificationsState,
   action: NotificationsActions
@@ -38,12 +38,12 @@ export const notificationsReducer = (
   const topicState = state[action.topic] as TopicNotificationsState | undefined
 
   function getTopicState(notifications: NotifyClientTypes.NotifyNotification[]) {
-    const ids = topicState?.existingIds || new Set<string>()
+    const ids = topicState?.existingIds ?? new Set<string>()
     const filteredNotifications = notifications.filter(val => !ids.has(val.id))
     const notificationIds = notifications.map(notification => notification.id)
 
-    const fullNotifications = topicState?.fullNotifications || []
-    const newFullIdsSet = new Set(topicState?.existingIds || [])
+    const fullNotifications = topicState?.fullNotifications ?? []
+    const newFullIdsSet = new Set(topicState?.existingIds ?? [])
 
     for (const val of notificationIds) {
       newFullIdsSet.add(val)
@@ -67,6 +67,7 @@ export const notificationsReducer = (
           }
         }
       }
+
       return state
     }
     case 'UNSHIFT_NEW_NOTIFICATIONS': {
@@ -81,7 +82,7 @@ export const notificationsReducer = (
           ...topicState,
           existingIds: newFullIdsSet,
           fullNotifications: unshiftedNotifications,
-          hasMore: topicState?.hasMore || false,
+          hasMore: topicState?.hasMore ?? false,
           isLoading: false
         }
       }

@@ -18,7 +18,7 @@ const Invite: React.FC<InviteProps> = ({ address, onSuccessfulAccept, id, messag
 
   return (
     <div
-      onClick={() => chatClientProxy?.accept({ id }).then(onSuccessfulAccept)}
+      onClick={async () => chatClientProxy?.accept({ id }).then(onSuccessfulAccept)}
       className="Invite"
     >
       <div className="Invite__inviter" id={id.toString()}>

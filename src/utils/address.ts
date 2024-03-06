@@ -4,6 +4,7 @@ export const getEthChainAddress = (address?: string) => {
   if (!address) {
     return ''
   }
+
   return address.split(':')[2] as `0x${string}`
 }
 

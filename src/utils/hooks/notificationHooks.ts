@@ -6,8 +6,10 @@ export const useNotificationPermissionState = () => {
   const [notificationPermissionGranted, setNotificationPermissionGranted] =
     useState(userEnabledNotification())
 
-  // Can not use navigator.permissions.query({name: 'notifications'}) as it won't work on most
-  // mobile browsers
+  /*
+   * Can not use navigator.permissions.query({name: 'notifications'}) as it won't work on most
+   * mobile browsers
+   */
 
   useEffect(() => {
     const permissionInterval = setInterval(() => {

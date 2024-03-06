@@ -51,10 +51,7 @@ const ThreadWindow: React.FC = () => {
     [topic, sentInvites, peer]
   )
   const inviteStatus: ChatClientTypes.SentInvite['status'] = useMemo(
-    () =>
-      topic.includes('invite:')
-        ? (topic.split(':')[1] as ChatClientTypes.SentInvite['status'])
-        : 'approved',
+    () => (topic.includes('invite:') ? topic.split(':')[1] : 'approved'),
     [topic]
   )
 

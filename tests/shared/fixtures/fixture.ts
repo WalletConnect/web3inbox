@@ -1,9 +1,9 @@
 import { test as base } from '@playwright/test'
 
-import { InboxPage } from '../pages/InboxPage'
-import { InboxValidator } from '../validators/ModalValidator'
-import { SettingsPage } from '../pages/SettingsPage'
 import { NotifyServer } from '../helpers/notifyServer'
+import { InboxPage } from '../pages/InboxPage'
+import { SettingsPage } from '../pages/SettingsPage'
+import { InboxValidator } from '../validators/ModalValidator'
 
 // Declare the types of fixtures to use
 export interface ModalFixture {
@@ -25,14 +25,14 @@ export const test = base.extend<ModalFixture>({
     await use(modalValidator)
   },
   // Have to pass same page object to maintain state between pages
-  settingsPage: async({ inboxPage }, use) => {
+  settingsPage: async ({ inboxPage }, use) => {
     const settingsPage = new SettingsPage(inboxPage.page)
-    settingsPage.load()
-    use(settingsPage)
+    await use(settingsPage)
   },
-  notifyServer: async({}, use) => {
-    const notifyServer = new NotifyServer();
-    use(notifyServer)
-  },
+  // eslint-disable-next-line no-empty-pattern
+  notifyServer: async ({}, use) => {
+    const notifyServer = new NotifyServer()
+    await use(notifyServer)
+  }
 })
 export { expect } from '@playwright/test'

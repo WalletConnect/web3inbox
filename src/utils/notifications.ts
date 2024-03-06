@@ -1,4 +1,4 @@
-import { NotifyClient } from '@walletconnect/notify-client'
+import type { NotifyClient } from '@walletconnect/notify-client'
 
 import { localStorageKeys } from '@/constants/localStorage'
 import { LocalStorage } from '@/utils/localStorage'
@@ -15,13 +15,17 @@ const callEcho = async (clientId: string, token: string) => {
   // Check for existing registration to prevent spamming echo
   const existingRegistrationToken = await getRegistrationToken(clientId)
 
-  // Already registered device.
-  // No need to spam echo
+  /*
+   * Already registered device.
+   * No need to spam echo
+   */
   if (existingRegistrationToken === token) {
-    // Do not check for existing registration token.
-    // Echo is meant to be called repeatedly to refresh PN token
-    // Console log for purposes of debugging if an error relating to echo
-    // happens
+    /*
+     * Do not check for existing registration token.
+     * Echo is meant to be called repeatedly to refresh PN token
+     * Console log for purposes of debugging if an error relating to echo
+     * happens
+     */
     console.log(
       'main-sw > registerWithEcho > user already registered with token',
       token,
@@ -70,6 +74,7 @@ export const closeNotificationModal = () => {
 
 export const checkIfNotificationModalClosed = () => {
   const storageValue = LocalStorage.get(localStorageKeys.notificationModalClosed)
+
   return storageValue === 'true'
 }
 
@@ -79,8 +84,9 @@ export const notificationsAvailableInBrowser = () => {
 
 export const userEnabledNotification = () => {
   if (notificationsAvailableInBrowser()) {
-    return window.Notification?.permission === 'granted'
+    return window.Notification.permission === 'granted'
   }
+
   return false
 }
 
@@ -91,19 +97,23 @@ export const userEnabledNotification = () => {
 export const requireNotifyPermission = async () => {
   if (!notificationsAvailableInBrowser()) {
     console.warn('This browser does not support desktop push notifications')
+
     return false
   }
 
-  // No need to explicitly check for Notifications here since
-  // the above check ensures it exists
-  switch (window.Notification?.permission) {
+  /*
+   * No need to explicitly check for Notifications here since
+   * the above check ensures it exists
+   */
+  switch (window.Notification.permission) {
     case 'granted':
       return true
     case 'denied':
       console.warn('User denied permissions')
+
       return false
     default:
-      return (await window.Notification?.requestPermission()) === 'granted'
+      return (await window.Notification.requestPermission()) === 'granted'
   }
 }
 

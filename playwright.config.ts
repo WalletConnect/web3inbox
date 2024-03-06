@@ -1,5 +1,6 @@
-import { config } from 'dotenv'
 import { defineConfig, devices } from '@playwright/test'
+import { config } from 'dotenv'
+
 config({ path: './.env' })
 
 const baseURL = 'http://localhost:5173'
@@ -12,7 +13,7 @@ export default defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: Boolean(process.env.CI),
   /* Retry on CI only */
   retries: 0,
   /* Parallel tests currently blocked. */
@@ -38,7 +39,7 @@ export default defineConfig({
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] }
-    },
+    }
   ],
 
   /* Run your local dev server before starting the tests */

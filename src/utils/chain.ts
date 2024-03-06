@@ -10,5 +10,5 @@ export const getEIPChainString = (chainId?: number) => {
     return undefined
   }
 
-  return EIPNumberPrefix.concat(chainId?.toString() || '')
+  return EIPNumberPrefix.concat(chainId.toString() || '')
 }

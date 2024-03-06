@@ -16,7 +16,8 @@ export const ECHO_REGISTRATION_STORE = 'echo-registration-store'
 
 const STORE_NAMES = [SYMKEY_OBJ_STORE, ECHO_REGISTRATION_STORE]
 
-/* DATABASE_VERSION should be incremented if and when any schema changes occur
+/*
+ * DATABASE_VERSION should be incremented if and when any schema changes occur
  * This involves changing store names above, adding stores, or changing the schema
  * in any other way.
  */
@@ -45,15 +46,15 @@ export const getIndexedDbStore = async (
     }
   })
 
-  const getItem = (key: string): Promise<any> => {
+  const getItem = async (key: string): Promise<any> => {
     return db.get(storeName, key)
   }
 
-  const setItem = (key: string, value: string): Promise<IDBValidKey> => {
+  const setItem = async (key: string, value: string): Promise<IDBValidKey> => {
     return db.put(storeName, value, key)
   }
 
-  const getAllKeys = (): Promise<IDBValidKey[]> => {
+  const getAllKeys = async (): Promise<IDBValidKey[]> => {
     return db.getAllKeys(storeName)
   }
 
