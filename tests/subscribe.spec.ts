@@ -19,6 +19,7 @@ test.afterEach(async ({ inboxValidator, walletValidator }) => {
 test('it should subscribe and unsubscribe', async ({
   inboxPage,
   walletPage,
+  settingsPage,
   walletValidator,
   browserName
 }) => {
@@ -30,13 +31,19 @@ test('it should subscribe and unsubscribe', async ({
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()
-  await inboxPage.subscribeAndNavigateToDapp(0)
+
+  await settingsPage.goToNotificationSettings()
+  await settingsPage.displayCustomDapp(CUSTOM_TEST_DAPP.appDomain)
+  await inboxPage.gotoDiscoverPage()
+
+  await inboxPage.subscribeAndNavigateToDapp(CUSTOM_TEST_DAPP.name)
   await inboxPage.unsubscribe()
 })
 
 test('it should subscribe, update preferences and unsubscribe', async ({
   inboxPage,
   walletPage,
+  settingsPage,
   walletValidator,
   browserName
 }) => {
@@ -48,7 +55,12 @@ test('it should subscribe, update preferences and unsubscribe', async ({
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()
-  await inboxPage.subscribeAndNavigateToDapp(0)
+
+  await settingsPage.goToNotificationSettings()
+  await settingsPage.displayCustomDapp(CUSTOM_TEST_DAPP.appDomain)
+  await inboxPage.gotoDiscoverPage()
+
+  await inboxPage.subscribeAndNavigateToDapp(CUSTOM_TEST_DAPP.name)
   await inboxPage.updatePreferences()
   await inboxPage.unsubscribe()
 })
@@ -56,6 +68,7 @@ test('it should subscribe, update preferences and unsubscribe', async ({
 test('it should subscribe and unsubscribe to and from multiple dapps', async ({
   inboxPage,
   walletPage,
+  settingsPage,
   walletValidator,
   browserName
 }) => {
@@ -67,8 +80,13 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()
-  await inboxPage.subscribe(0)
-  await inboxPage.subscribe(1)
+
+  await settingsPage.goToNotificationSettings()
+  await settingsPage.displayCustomDapp(CUSTOM_TEST_DAPP.appDomain)
+  await inboxPage.gotoDiscoverPage()
+
+  await inboxPage.subscribe(CUSTOM_TEST_DAPP.name)
+  await inboxPage.subscribe('GM Dapp')
 
   await inboxPage.waitForSubscriptions(2)
 
@@ -82,7 +100,7 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
 
   expect(await inboxPage.countSubscribedDapps()).toEqual(2)
 
-  await inboxPage.navigateToDappFromSidebar(0)
+  await inboxPage.navigateToDappFromSidebar(CUSTOM_TEST_DAPP.name)
   await inboxPage.unsubscribe()
   expect(await inboxPage.countSubscribedDapps()).toEqual(1)
 
@@ -90,7 +108,7 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
    * Select 0 again since we unsubscribed from the second dapp
    * so there is only one item
    */
-  await inboxPage.navigateToDappFromSidebar(0)
+  await inboxPage.navigateToDappFromSidebar('GM Dapp')
   await inboxPage.unsubscribe()
 })
 
@@ -120,12 +138,8 @@ test('it should subscribe, receive messages and unsubscribe', async ({
   await inboxPage.page.getByText('Notify Swift', { exact: false }).waitFor({ state: 'visible' })
 
   expect(await inboxPage.page.getByText('Notify Swift', { exact: false }).isVisible()).toEqual(true)
-
-  await inboxPage.subscribeAndNavigateToDapp(0)
-
-  if (!CUSTOM_TEST_DAPP.projectId || !CUSTOM_TEST_DAPP.projectSecret) {
-    throw new Error('TEST_DAPP_SECRET and TEST_DAPP_ID are required')
-  }
+  
+  await inboxPage.subscribeAndNavigateToDapp(CUSTOM_TEST_DAPP.name)
 
   const address = await inboxPage.getAddress()
 
