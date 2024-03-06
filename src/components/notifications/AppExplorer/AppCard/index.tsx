@@ -42,9 +42,6 @@ const AppCard: React.FC<AppCardProps> = ({
   const { data: activeSubscriptions } = useAllSubscriptions()
   const { subscribe } = useSubscribe()
 
-  // todo: pass params to subscribe
-  // subscribe()
-
   const host = new URL(url).host
   const projectURL = new URL(url)
 
