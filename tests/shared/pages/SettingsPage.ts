@@ -15,7 +15,6 @@ export class SettingsPage {
 
   async displayCustomDapp(dappUrl: string) {
     await this.page.getByPlaceholder('app.example.com').fill(dappUrl)
-    await this.page.getByRole('button', { name: "Save", exact: true}).click()
+    await this.page.getByRole('button', { name: 'Save', exact: true }).click()
   }
-
 }

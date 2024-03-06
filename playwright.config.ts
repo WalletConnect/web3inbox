@@ -1,5 +1,6 @@
-import { config } from 'dotenv'
 import { defineConfig, devices } from '@playwright/test'
+import { config } from 'dotenv'
+
 config({ path: './.env' })
 
 const baseURL = 'http://localhost:5173'
@@ -38,7 +39,7 @@ export default defineConfig({
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] }
-    },
+    }
   ],
 
   /* Run your local dev server before starting the tests */

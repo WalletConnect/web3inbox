@@ -69,8 +69,8 @@ export const UnsubscribeModal: React.FC = () => {
           </div>
           <div className="UnsubscribeModal__content__helper-text">
             <Text variant="small-500">
-              You will stop receiving all notifications from {app.metadata.name} on Web3Inbox
-              and connected wallets.
+              You will stop receiving all notifications from {app.metadata.name} on Web3Inbox and
+              connected wallets.
               <br />
               You can re-subscribe at any time later.
             </Text>
