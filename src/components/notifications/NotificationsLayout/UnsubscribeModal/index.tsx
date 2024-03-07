@@ -17,7 +17,7 @@ import './UnsubscribeModal.scss'
 
 export const UnsubscribeModal: React.FC = () => {
   const { unsubscribeModalAppId: domain } = useModals()
-  const { data: app } = useSubscription(undefined, domain)
+  const { data: subscription } = useSubscription(undefined, domain)
   const { unsubscribe, isLoading: loading } = useUnsubscribe(undefined, domain)
   const navigate = useNavigate()
 
@@ -26,7 +26,7 @@ export const UnsubscribeModal: React.FC = () => {
       try {
         unsubscribe().then(() => {
           unsubscribeModalService.closeModal()
-          showDefaultToast(`Unsubscribed from ${app ? app.metadata.name : `dapp`}`)
+          showDefaultToast(`Unsubscribed from ${subscription ? subscription.metadata.name : `dapp`}`)
           navigate('/notifications/new-app')
         })
       } catch (error) {
@@ -36,7 +36,7 @@ export const UnsubscribeModal: React.FC = () => {
     }
   }, [domain])
 
-  if (!app) {
+  if (!subscription) {
     return null
   }
 
@@ -50,15 +50,15 @@ export const UnsubscribeModal: React.FC = () => {
           </button>
         </div>
         <div className="UnsubscribeModal__hero">
-          <img src={app?.metadata?.icons?.[0] || '/fallback.svg'} alt="logo" />
+          <img src={subscription?.metadata?.icons?.[0] || '/fallback.svg'} alt="logo" />
         </div>
         <div className="UnsubscribeModal__content">
           <div className="UnsubscribeModal__content__title">
-            <Text variant="large-600">Unsubscribe from {app.metadata.name}</Text>
+            <Text variant="large-600">Unsubscribe from {subscription.metadata.name}</Text>
           </div>
           <div className="UnsubscribeModal__content__helper-text">
             <Text variant="small-500">
-              You will stop receiving all notifications from {app.metadata.name} on Web3Inbox and
+              You will stop receiving all notifications from {subscription.metadata.name} on Web3Inbox and
               connected wallets.
               <br />
               You can re-subscribe at any time later.

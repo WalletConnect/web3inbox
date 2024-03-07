@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import type { NotifyClientTypes } from '@walletconnect/notify-client'
-import { useNotificationTypes, useSubscription } from '@web3inbox/react'
+import { useNotificationTypes } from '@web3inbox/react'
 
 import Button from '@/components/general/Button'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
@@ -20,11 +20,9 @@ export const PreferencesModal: React.FC = () => {
   const { preferencesModalAppId: domain } = useModals()
 
   const { update, data: appScopes } = useNotificationTypes(undefined, domain)
-  const { data: app } = useSubscription(undefined, domain)
   const [scopes, setScopes] = useState<NotifyClientTypes.NotifySubscription['scope']>(
     appScopes ?? {}
   )
-  console.log({ app, scopes })
   const [loading, setLoading] = useState(false)
 
   // Reduces the scopes mapping to only an array of enabled scopes

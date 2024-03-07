@@ -37,7 +37,7 @@ const AppNotifications = () => {
   const { userPubkey } = useContext(W3iContext)
   const { domain } = useParams<{ domain: string }>()
 
-  const { data: app } = useSubscription(undefined, domain)
+  const { data: subscription } = useSubscription(undefined, domain)
 
   const { isLoading, notifications, intersectionObserverRef, nextPage } =
     useNotificationsInfiniteScroll(userPubkey, domain)
@@ -48,7 +48,7 @@ const AppNotifications = () => {
     AppNotificationsDragProps[] | undefined
   >()
 
-  return app?.metadata ? (
+  return subscription?.metadata ? (
     <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>
       <AnimatePresence>
         <motion.div
@@ -61,15 +61,15 @@ const AppNotifications = () => {
         >
           <div className="AppNotifications__border"></div>
           <AppNotificationsHeader
-            id={app.metadata.appDomain}
-            name={app.metadata.name}
-            logo={app.metadata?.icons?.[0]}
-            domain={app.metadata.appDomain}
+            id={subscription.metadata.appDomain}
+            name={subscription.metadata.name}
+            logo={subscription.metadata?.icons?.[0]}
+            domain={subscription.metadata.appDomain}
           />
           <MobileHeader
             back="/notifications"
-            notificationId={app.metadata.appDomain}
-            title={app.metadata.name}
+            notificationId={subscription.metadata.appDomain}
+            title={subscription.metadata.name}
           />
           <AppNotificationsCardMobile />
           {isLoading || notifications?.length ? (
@@ -90,11 +90,11 @@ const AppNotifications = () => {
                         message: notification.body,
                         title: notification.title,
                         image: notification.type
-                          ? app?.scope[notification.type]?.imageUrls?.md
+                          ? subscription?.scope[notification.type]?.imageUrls?.md
                           : undefined,
                         url: notification.url
                       }}
-                      appLogo={app.metadata?.icons?.[0]}
+                      appLogo={subscription.metadata?.icons?.[0]}
                     />
                   )) : null}
                 {isLoading && !notifications?.length ? (
@@ -107,7 +107,7 @@ const AppNotifications = () => {
               </div>
             </div>
           ) : (
-            <AppNotificationsEmpty icon={app.metadata?.icons?.[0]} name={app.metadata.name} />
+            <AppNotificationsEmpty icon={subscription.metadata?.icons?.[0]} name={subscription.metadata.name} />
           )}
         </motion.div>
       </AnimatePresence>
