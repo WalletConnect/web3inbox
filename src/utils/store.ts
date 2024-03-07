@@ -149,10 +149,12 @@ export const preferencesModalService = {
       isOpen: !modalsOpen.preferencesModalSubject.isOpen
     }),
   closeModal: () =>
-    (modalsOpen.preferencesModalSubject = {
-      preferencesModalAppId: undefined,
-      isOpen: false
-    }),
+    {
+      setTimeout(() => {
+        modalsOpen.preferencesModalSubject.preferencesModalAppId = undefined
+      }, 50)
+      modalsOpen.preferencesModalSubject.isOpen = false
+    },
   getModalState: () => modalsOpen.preferencesModalSubject
 }
 

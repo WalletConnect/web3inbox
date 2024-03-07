@@ -31,7 +31,7 @@ export const Modals = () => {
   useWeb3Modal()
   useWeb3ModalState()
 
-  const { notifyRegisteredKey } = useContext(W3iContext)
+  const { notifyRegisteredKey, userPubkey, clientReady } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
 
@@ -40,7 +40,7 @@ export const Modals = () => {
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
   const shouldShowChangeBrowserModal = isAppleMobile ? isNonSafari : false
   const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
-  const shouldShowSignatureModal = isSignatureModalOpen && !shouldShowChangeBrowserModal
+  const shouldShowSignatureModal = (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) && !shouldShowChangeBrowserModal
   const shouldShowUnsubscribeModalOpen = isUnsubscribeModalOpen && !shouldShowChangeBrowserModal
   const shouldShowPreferencesModalOpen = isPreferencesModalOpen && !shouldShowChangeBrowserModal
 

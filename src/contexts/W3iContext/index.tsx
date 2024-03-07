@@ -27,7 +27,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
         userPubkey,
         notifyRegisteredKey,
         setUserPubkey,
-        watchSubscriptionsComplete: Boolean(client)
+        clientReady: Boolean(client)
       }}
     >
       {children}

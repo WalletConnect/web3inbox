@@ -13,13 +13,13 @@ interface W3iContextState {
   setUserPubkey: Dispatch<SetStateAction<string | undefined>>
   userPubkey?: string
   notifyRegisteredKey: string | null
-  watchSubscriptionsComplete: boolean
+  clientReady: boolean
 }
 
 const W3iContext = createContext<W3iContextState>({
   notifyRegisteredKey: '',
   setUserPubkey: () => {},
-  watchSubscriptionsComplete: false
+  clientReady: false
 })
 
 export default W3iContext

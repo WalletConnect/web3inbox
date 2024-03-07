@@ -35,7 +35,7 @@ const AppSelector: React.FC = () => {
   const isMobile = useIsMobile()
   const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
   const [loading, setLoading] = useState(true)
-  const { watchSubscriptionsComplete: subscriptionsFinishedLoading } = useContext(W3iContext)
+  const { clientReady: subscriptionsFinishedLoading } = useContext(W3iContext)
   const { projects } = useNotifyProjects()
   const { data: activeSubscriptions } = useAllSubscriptions()
 

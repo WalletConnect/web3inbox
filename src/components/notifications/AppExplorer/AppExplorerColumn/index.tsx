@@ -13,7 +13,7 @@ type AppExplorerColumnsProps = {
 
 export default function AppExplorerColumns({ apps }: AppExplorerColumnsProps) {
   const { isDesktopLg } = useBreakPoint()
-  const { watchSubscriptionsComplete: watchCompleted } = useContext(W3iContext)
+  const { clientReady: watchCompleted } = useContext(W3iContext)
   const { data: activeSubscriptions } = useAllSubscriptions()
 
   function checkSubscriptionStatusLoading(url: string) {

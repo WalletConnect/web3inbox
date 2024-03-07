@@ -16,9 +16,7 @@ export const useAuthState = () => {
   )
 
   useEffect(() => {
-    if (formattedAddress) {
-      setUserPubkey(formattedAddress)
-    }
+    setUserPubkey(formattedAddress)
   }, [address, chain, formattedAddress])
 
   return { userPubkey, setUserPubkey }
