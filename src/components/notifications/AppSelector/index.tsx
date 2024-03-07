@@ -104,14 +104,14 @@ const AppSelector: React.FC = () => {
           icon={SearchIcon}
         />
       )}
-      <TargetTitle className="AppSelector__target-title" to="/notifications/new-app">
+      <TargetTitle className="AppSelector__target-title" to={NAVIGATION.notifications.index}>
         <Text variant="large-700">Inbox</Text>
       </TargetTitle>
       <div className="AppSelector__lists">
         <div className="AppSelector__wrapper">
           <Label color="main">Discover</Label>
           <ul className="AppSelector__list">
-            <NavLink to={`/notifications/new-app`} end className="AppSelector__link-appsItem">
+            <NavLink to={NAVIGATION.notifications.index} end className="AppSelector__link-appsItem">
               <div className="AppSelector__notifications">
                 <div className="AppSelector__notifications-apps">
                   <img

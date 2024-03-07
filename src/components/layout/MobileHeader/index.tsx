@@ -9,6 +9,7 @@ import Text from '@/components/general/Text'
 import AppNotificationDropdown from '@/components/notifications/AppNotifications/AppNotificationDropdown'
 import W3iContext from '@/contexts/W3iContext/context'
 import { getEthChainAddress } from '@/utils/address'
+import { NAVIGATION } from '@/utils/constants'
 
 import './MobileHeader.scss'
 
@@ -35,7 +36,7 @@ const MobileHeader: React.FC<IMobileHeaderProps> = ({ title, back, notificationI
           <ArrowLeftIcon />
         </div>
       ) : (
-        <Link className="MobileHeader__icon" to={`/notifications/new-app`}>
+        <Link className="MobileHeader__icon" to={NAVIGATION.notifications.index}>
           <img alt="Web3Inbox icon" className="wc-icon" src="/icon.png" />
         </Link>
       )}

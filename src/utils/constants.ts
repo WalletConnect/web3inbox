@@ -16,7 +16,7 @@ export const NAVIGATION = {
     index: '/messages'
   },
   notifications: {
-    index: '/notifications',
+    index: '/notifications/discover',
     topic: (topic: string) => `/notifications/${topic}`
   },
   settings: {

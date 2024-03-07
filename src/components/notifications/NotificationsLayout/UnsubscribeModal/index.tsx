@@ -8,6 +8,7 @@ import { Modal } from '@/components/general/Modal/Modal'
 import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
+import { NAVIGATION } from '@/utils/constants'
 import { logError } from '@/utils/error'
 import { useModals } from '@/utils/hooks'
 import { unsubscribeModalService } from '@/utils/store'
@@ -35,7 +36,7 @@ export const UnsubscribeModal: React.FC = () => {
             unsubscribeModalService.closeModal()
             showDefaultToast(`Unsubscribed from ${app ? app.metadata.name : `dapp`}`)
             setLoading(false)
-            navigate('/notifications/new-app')
+            navigate(NAVIGATION.notifications.index)
           }
         })
         await notifyClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
@@ -69,8 +70,8 @@ export const UnsubscribeModal: React.FC = () => {
           </div>
           <div className="UnsubscribeModal__content__helper-text">
             <Text variant="small-500">
-              You will stop receiving all notifications from {app.metadata.name} on Web3Inbox
-              and connected wallets.
+              You will stop receiving all notifications from {app.metadata.name} on Web3Inbox and
+              connected wallets.
               <br />
               You can re-subscribe at any time later.
             </Text>

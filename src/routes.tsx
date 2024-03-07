@@ -1,10 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import { useContext } from 'react'
 
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, redirect } from 'react-router-dom'
 
 import App from '@/App'
 import AppExplorer from '@/components/notifications/AppExplorer'
+import AppExplorerPrevious from '@/components/notifications/AppExplorer/Previous'
 import AppNotifications from '@/components/notifications/AppNotifications'
 import NotificationsLayout from '@/components/notifications/NotificationsLayout'
 import AppearanceSettings from '@/components/settings/AppearanceSettings'
@@ -30,13 +31,18 @@ const ConfiguredRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-
       <Route path="/qrcode-scan" element={<ScanQrCode />} />
-
       <Route path="/" element={<App />}>
         {uiEnabled.notify ? (
           <Route path="/notifications" element={<NotificationsLayout />}>
-            <Route path="/notifications/new-app" element={<AppExplorer />} />
+            <Route
+              path="/notifications/new-app"
+              action={() => {
+                return redirect('/notifications/discover')
+              }}
+              element={<AppExplorerPrevious />}
+            />
+            <Route path="/notifications/discover" element={<AppExplorer />} />
             <Route path="/notifications/:topic" element={<AppNotifications />} />
           </Route>
         ) : null}

@@ -69,7 +69,7 @@ const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
     <div className="Sidebar">
       {!isMobile && (
         <SidebarItem>
-          <Link to={`/notifications/new-app`}>
+          <Link to={NAVIGATION.notifications.index}>
             <img alt="Web3Inbox icon" className="wc-icon" src="/icon.png" />
           </Link>
         </SidebarItem>
