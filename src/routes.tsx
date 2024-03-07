@@ -12,8 +12,10 @@ import SupportSettings from '@/components/settings/SupportSettings'
 import Login from '@/pages/Login'
 import ScanQrCode from '@/pages/ScanQrCode'
 
+import { NAVIGATION } from './utils/constants'
+
 const ConfiguredRoutes: React.FC = () => {
-  const defaultPage = '/notifications'
+  const defaultPage = NAVIGATION.notifications.index
 
   return (
     <Routes>
