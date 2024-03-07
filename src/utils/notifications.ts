@@ -64,7 +64,7 @@ export const requireNotifyPermission = async () => {
 
       if (!isSecureContext) {
         throw new Error(
-          'Can not set up notification in unsecure context. Expected protocol to be https:'
+          'Cannot set up notification in unsecure context. Expected protocol to be https:'
         )
       }
 
