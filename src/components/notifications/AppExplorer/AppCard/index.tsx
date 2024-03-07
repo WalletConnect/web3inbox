@@ -8,13 +8,13 @@ import SpannerSVG from '@/assets/Spanner.svg'
 import Badge from '@/components/general/Badge'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
+import { NAVIGATION } from '@/utils/constants'
 import { logError } from '@/utils/error'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
 
 import SubscribeButton from './SubscribeButton'
 
 import './AppCard.scss'
-import { NAVIGATION } from '@/utils/constants'
 
 interface AppCardProps {
   name: string
