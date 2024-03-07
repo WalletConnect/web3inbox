@@ -25,7 +25,7 @@
     "@walletconnect/identity-keys": "^2.0.1",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
     "@web3inbox/core": "^1.2.0-5bd35d2",
-    "@web3inbox/react": "^1.2.0-5bd35d2",
+    "@web3inbox/react": "^1.2.0-5fd9098",
     "@web3modal/wagmi": "4.0.10",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
