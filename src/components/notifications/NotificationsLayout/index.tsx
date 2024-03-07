@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import W3iContext from '@/contexts/W3iContext/context'
+import { NAVIGATION } from '@/utils/constants'
 
 import AppSelector from '../AppSelector'
 
@@ -16,9 +17,9 @@ const NotificationsLayout: React.FC = () => {
   const nav = useNavigate()
 
   useEffect(() => {
-    if (pathname === '/notifications') {
+    if (pathname === '/notifications/' || pathname === '/notifications') {
       if (!activeSubscriptions.length) {
-        nav('/notifications/new-app')
+        nav(NAVIGATION.notifications.index, { replace: true })
       }
     }
   }, [])

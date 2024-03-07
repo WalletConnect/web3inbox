@@ -6,6 +6,7 @@ import NewAppIcon from '@/components/general/Icon/NewAppIcon'
 import NotificationIcon from '@/components/general/Icon/NotificationIcon'
 import SettingIcon from '@/components/general/Icon/SettingIcon'
 import W3iContext from '@/contexts/W3iContext/context'
+import { NAVIGATION } from '@/utils/constants'
 
 import './MobileFooter.scss'
 
@@ -23,11 +24,17 @@ const MobileFooter: React.FC = () => {
     }
 
     if (uiEnabled.notify) {
-      items.push([<NewAppIcon isFilled={pathname.includes('/new-app')} />, 'notifications/new-app'])
+      items.push([
+        <NotificationIcon isFilled={pathname.startsWith(NAVIGATION.notifications.index)} />,
+        NAVIGATION.notifications.index
+      ])
     }
 
     if (uiEnabled.settings) {
-      items.push([<SettingIcon isFilled={pathname.includes('/settings')} />, 'settings'])
+      items.push([
+        <SettingIcon isFilled={pathname.startsWith(NAVIGATION.settings.index)} />,
+        NAVIGATION.settings.index
+      ])
     }
 
     return items
