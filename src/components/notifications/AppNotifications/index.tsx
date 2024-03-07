@@ -76,27 +76,28 @@ const AppNotifications = () => {
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
                 {!isLoading && notifications?.length ? <Label color="main">Latest</Label> : null}
-                {notifications?.length ?
-                  notifications.map((notification, index) => (
-                    <AppNotificationItem
-                      ref={index === notifications.length - 1 ? intersectionObserverRef : null}
-                      key={notification.id}
-                      onClear={nextPage}
-                      notification={{
-                        timestamp: notification.sentAt,
-                        // We do not manage read status for now.
-                        isRead: true,
-                        id: notification.id.toString(),
-                        message: notification.body,
-                        title: notification.title,
-                        image: notification.type
-                          ? subscription?.scope[notification.type]?.imageUrls?.md
-                          : undefined,
-                        url: notification.url
-                      }}
-                      appLogo={subscription.metadata?.icons?.[0]}
-                    />
-                  )) : null}
+                {notifications?.length
+                  ? notifications.map((notification, index) => (
+                      <AppNotificationItem
+                        ref={index === notifications.length - 1 ? intersectionObserverRef : null}
+                        key={notification.id}
+                        onClear={nextPage}
+                        notification={{
+                          timestamp: notification.sentAt,
+                          // We do not manage read status for now.
+                          isRead: true,
+                          id: notification.id.toString(),
+                          message: notification.body,
+                          title: notification.title,
+                          image: notification.type
+                            ? subscription?.scope[notification.type]?.imageUrls?.md
+                            : undefined,
+                          url: notification.url
+                        }}
+                        appLogo={subscription.metadata?.icons?.[0]}
+                      />
+                    ))
+                  : null}
                 {isLoading && !notifications?.length ? (
                   <Fragment>
                     <AppNotificationItemSkeleton />
@@ -107,7 +108,10 @@ const AppNotifications = () => {
               </div>
             </div>
           ) : (
-            <AppNotificationsEmpty icon={subscription.metadata?.icons?.[0]} name={subscription.metadata.name} />
+            <AppNotificationsEmpty
+              icon={subscription.metadata?.icons?.[0]}
+              name={subscription.metadata.name}
+            />
           )}
         </motion.div>
       </AnimatePresence>

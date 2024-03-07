@@ -26,7 +26,9 @@ export const UnsubscribeModal: React.FC = () => {
       try {
         unsubscribe().then(() => {
           unsubscribeModalService.closeModal()
-          showDefaultToast(`Unsubscribed from ${subscription ? subscription.metadata.name : `dapp`}`)
+          showDefaultToast(
+            `Unsubscribed from ${subscription ? subscription.metadata.name : `dapp`}`
+          )
           navigate('/notifications/new-app')
         })
       } catch (error) {
@@ -58,8 +60,8 @@ export const UnsubscribeModal: React.FC = () => {
           </div>
           <div className="UnsubscribeModal__content__helper-text">
             <Text variant="small-500">
-              You will stop receiving all notifications from {subscription.metadata.name} on Web3Inbox and
-              connected wallets.
+              You will stop receiving all notifications from {subscription.metadata.name} on
+              Web3Inbox and connected wallets.
               <br />
               You can re-subscribe at any time later.
             </Text>

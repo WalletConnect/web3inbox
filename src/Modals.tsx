@@ -40,7 +40,9 @@ export const Modals = () => {
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
   const shouldShowChangeBrowserModal = isAppleMobile ? isNonSafari : false
   const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
-  const shouldShowSignatureModal = (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) && !shouldShowChangeBrowserModal
+  const shouldShowSignatureModal =
+    (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) &&
+    !shouldShowChangeBrowserModal
   const shouldShowUnsubscribeModalOpen = isUnsubscribeModalOpen && !shouldShowChangeBrowserModal
   const shouldShowPreferencesModalOpen = isPreferencesModalOpen && !shouldShowChangeBrowserModal
 
