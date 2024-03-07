@@ -46,11 +46,6 @@ export class NotifyServer {
       body: request
     })
 
-    console.log({
-      fetchResultsStatus: fetchResults.status,
-      fetchResults: await fetchResults.text()
-    })
-
     expect(fetchResults.status).toEqual(200)
   }
 }

@@ -28,8 +28,6 @@ export const Modals = () => {
     isSignatureModalOpen,
     isNotificationPwaModalOpen
   } = useModals()
-  useWeb3Modal()
-  useWeb3ModalState()
 
   const { notifyRegisteredKey, userPubkey, clientReady } = useContext(W3iContext)
 

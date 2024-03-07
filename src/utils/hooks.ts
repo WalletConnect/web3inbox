@@ -190,10 +190,6 @@ export const useModals = () => {
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
-    console.log({
-      modalsOpenSnapshot: modalsOpenSnapshot.signatureModalSubject.isOpen,
-      profileModalService: profileModalService.getModalState()
-    })
     setIsProfileModalOpen(profileModalService.getModalState())
 
     setIsSignatureModalOpen(signatureModalService.getModalState().isOpen)
