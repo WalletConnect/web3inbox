@@ -39,7 +39,6 @@ export const useNotificationsInfiniteScroll = (account?: string, domain?: string
     }
   }, [intersectionObserverRef, hasMore])
 
-  console.log('>>>', { notifications: Array.from(notifications?.values() ?? []) })
 
   return {
     hasMore,
