@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react'
 
-import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react'
 import { AnimatePresence } from 'framer-motion'
 
 import { PreferencesModal } from '@/components/notifications/NotificationsLayout/PreferencesModal'
