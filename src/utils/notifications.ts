@@ -1,4 +1,3 @@
-import { NotifyClient } from '@walletconnect/notify-client'
 import { Web3InboxClient } from '@web3inbox/core'
 
 import { localStorageKeys } from '@/constants/localStorage'
