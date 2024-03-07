@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 import { useAllSubscriptions, useSubscribe, useSubscription } from '@web3inbox/react'
 import classNames from 'classnames'
@@ -14,6 +14,7 @@ import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
 import SubscribeButton from './SubscribeButton'
 
 import './AppCard.scss'
+import { NAVIGATION } from '@/utils/constants'
 
 interface AppCardProps {
   name: string
@@ -40,6 +41,7 @@ const AppCard: React.FC<AppCardProps> = ({
   const { userPubkey } = useContext(W3iContext)
 
   const { data: activeSubscriptions } = useAllSubscriptions()
+  const { getSubscription } = useSubscription()
   const { subscribe } = useSubscribe()
 
   const host = new URL(url).host
@@ -81,9 +83,9 @@ const AppCard: React.FC<AppCardProps> = ({
     if (subscribed) {
       try {
         const appDomain = new URL(url).host
-        const topic = activeSubscriptions?.find(sub => sub.metadata.appDomain === appDomain)?.topic
-        if (topic) {
-          nav(`/notifications/${appDomain}`)
+        const subExists = Boolean(getSubscription(undefined, appDomain))
+        if (subExists) {
+          nav(NAVIGATION.notifications.domain(appDomain))
         } else {
           throw new Error(`No matching subscription found to domain, ${appDomain}`)
         }
