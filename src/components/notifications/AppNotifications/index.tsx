@@ -76,7 +76,7 @@ const AppNotifications = () => {
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
                 {!isLoading && notifications?.length ? <Label color="main">Latest</Label> : null}
-                {notifications?.length &&
+                {notifications?.length ?
                   notifications.map((notification, index) => (
                     <AppNotificationItem
                       ref={index === notifications.length - 1 ? intersectionObserverRef : null}
@@ -96,7 +96,7 @@ const AppNotifications = () => {
                       }}
                       appLogo={app.metadata?.icons?.[0]}
                     />
-                  ))}
+                  )) : null}
                 {isLoading && !notifications?.length ? (
                   <Fragment>
                     <AppNotificationItemSkeleton />
