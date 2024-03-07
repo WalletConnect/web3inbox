@@ -23,7 +23,7 @@ export const signMessage = async (message: string) => {
 
     return signed
   } catch (e: any) {
-    showErrorMessageToast('Failed to sign message. Consider using different wallet.')
+    showErrorMessageToast('Failed to sign message. Consider using a different wallet.')
     throw new Error(`Failed to sign message. ${e.message}`)
   }
 }
