@@ -72,19 +72,13 @@ export const requireNotifyPermission = async () => {
 }
 
 export const registerWithEcho = async (client: Web3InboxClient) => {
-  console.log(">>> Registering with echo...")
   if (await requireNotifyPermission()) {
-    console.log(">>> Got permission")
     const token = await getFirebaseToken()
-    console.log(">>> Got token", token)
 
     const clientId = await client.registerWithPushServer(token, 'fcm')
-    console.log(">>> Got clientId", clientId)
 
-    const [, putRegistrationToken ] = await getDbEchoRegistrations()
+    const [, putRegistrationToken] = await getDbEchoRegistrations()
 
     await putRegistrationToken(clientId, token)
-
-    console.log(">>> put token")
   }
 }

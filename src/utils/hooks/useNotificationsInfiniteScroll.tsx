@@ -39,7 +39,6 @@ export const useNotificationsInfiniteScroll = (account?: string, domain?: string
     }
   }, [intersectionObserverRef, hasMore])
 
-
   return {
     hasMore,
     isLoading: isLoadingNextPage,
