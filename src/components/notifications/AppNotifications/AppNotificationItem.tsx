@@ -54,7 +54,8 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
       setTextClamped(notification.message.length > MAX_BODY_LENGTH)
     }, [notification.message])
 
-    const handleToggleDescription = () => {
+    const handleToggleDescription = (e: Event) => {
+      e.preventDefault()
       setShowMore(prevState => !prevState)
     }
 
