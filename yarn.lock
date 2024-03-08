@@ -3335,7 +3335,7 @@
     lodash.isequal "4.5.0"
     uint8arrays "^3.1.0"
 
-"@walletconnect/core@2.11.1", "@walletconnect/core@^2.10.1", "@walletconnect/core@^2.11.0-canary.0":
+"@walletconnect/core@2.11.1", "@walletconnect/core@^2.10.1":
   version "2.11.1"
   resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-2.11.1.tgz#da2be26b8b6514c74f06dc9a5ffb450bdec3456d"
   integrity sha512-T57Vd7YdbHPsy3tthBuwrhaZNafN0+PqjISFRNeJy/bsKdXxpJg2hGSARuOTpCO7V6VcaatqlaSMuG3DrnG5rA==
@@ -3353,6 +3353,29 @@
     "@walletconnect/time" "^1.0.2"
     "@walletconnect/types" "2.11.1"
     "@walletconnect/utils" "2.11.1"
+    events "^3.3.0"
+    isomorphic-unfetch "3.1.0"
+    lodash.isequal "4.5.0"
+    uint8arrays "^3.1.0"
+
+"@walletconnect/core@^2.11.0-canary.0":
+  version "2.11.2"
+  resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-2.11.2.tgz#35286be92c645fa461fecc0dfe25de9f076fca8f"
+  integrity sha512-bB4SiXX8hX3/hyBfVPC5gwZCXCl+OPj+/EDVM71iAO3TDsh78KPbrVAbDnnsbHzZVHlsMohtXX3j5XVsheN3+g==
+  dependencies:
+    "@walletconnect/heartbeat" "1.2.1"
+    "@walletconnect/jsonrpc-provider" "1.0.13"
+    "@walletconnect/jsonrpc-types" "1.0.3"
+    "@walletconnect/jsonrpc-utils" "1.0.8"
+    "@walletconnect/jsonrpc-ws-connection" "1.0.14"
+    "@walletconnect/keyvaluestorage" "^1.1.1"
+    "@walletconnect/logger" "^2.0.1"
+    "@walletconnect/relay-api" "^1.0.9"
+    "@walletconnect/relay-auth" "^1.0.4"
+    "@walletconnect/safe-json" "^1.0.2"
+    "@walletconnect/time" "^1.0.2"
+    "@walletconnect/types" "2.11.2"
+    "@walletconnect/utils" "2.11.2"
     events "^3.3.0"
     isomorphic-unfetch "3.1.0"
     lodash.isequal "4.5.0"
@@ -3569,10 +3592,10 @@
     "@walletconnect/modal-core" "2.6.2"
     "@walletconnect/modal-ui" "2.6.2"
 
-"@walletconnect/notify-client@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.1.1.tgz#0a3cef776c6b8ce3d6aacbb86bc2d028efc455c8"
-  integrity sha512-8G2sP++iFprLafN2dSBixdTMItbVVYDJSc76vnfibMXD7YY2hm4/+8mg6VUcVt8SFccXAOVSNx1BxcmqyflABg==
+"@walletconnect/notify-client@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.1.2.tgz#c9655f2c7cf742be41200313eeb68968ccda7e14"
+  integrity sha512-M96SzudXYO7qTXjZaOpylKCdp1NPpH+xmc03ai/3zlmQgAz9ftWDbDgiTG1s3wzUJjJYxNHXtqLBkwxD5h4t6w==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
@@ -3678,6 +3701,18 @@
     "@walletconnect/logger" "^2.0.1"
     events "^3.3.0"
 
+"@walletconnect/types@2.11.2":
+  version "2.11.2"
+  resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-2.11.2.tgz#d0359dd4106fcaa1634241a00428d3ea08d0d3c7"
+  integrity sha512-p632MFB+lJbip2cvtXPBQslpUdiw1sDtQ5y855bOlAGquay+6fZ4h1DcDePeKQDQM3P77ax2a9aNPZxV6y/h1Q==
+  dependencies:
+    "@walletconnect/events" "^1.0.1"
+    "@walletconnect/heartbeat" "1.2.1"
+    "@walletconnect/jsonrpc-types" "1.0.3"
+    "@walletconnect/keyvaluestorage" "^1.1.1"
+    "@walletconnect/logger" "^2.0.1"
+    events "^3.3.0"
+
 "@walletconnect/universal-provider@2.11.1":
   version "2.11.1"
   resolved "https://registry.yarnpkg.com/@walletconnect/universal-provider/-/universal-provider-2.11.1.tgz#988f2a78325eb52ef7481a220851a56efb209d64"
@@ -3733,7 +3768,7 @@
     query-string "7.1.3"
     uint8arrays "^3.1.0"
 
-"@walletconnect/utils@2.11.1", "@walletconnect/utils@^2.10.1", "@walletconnect/utils@^2.11.0":
+"@walletconnect/utils@2.11.1", "@walletconnect/utils@^2.10.1":
   version "2.11.1"
   resolved "https://registry.yarnpkg.com/@walletconnect/utils/-/utils-2.11.1.tgz#56116d9c410c6f2ae8d562017cf6876cccb366f1"
   integrity sha512-wRFDHN86dZ05mCET1H3912odIeQa8j7cZKxl1FlWRpV2YsILj9HCYSX6Uq2brwO02Kv2vryke44G1r8XI/LViA==
@@ -3747,6 +3782,26 @@
     "@walletconnect/safe-json" "^1.0.2"
     "@walletconnect/time" "^1.0.2"
     "@walletconnect/types" "2.11.1"
+    "@walletconnect/window-getters" "^1.0.1"
+    "@walletconnect/window-metadata" "^1.0.1"
+    detect-browser "5.3.0"
+    query-string "7.1.3"
+    uint8arrays "^3.1.0"
+
+"@walletconnect/utils@2.11.2", "@walletconnect/utils@^2.11.0":
+  version "2.11.2"
+  resolved "https://registry.yarnpkg.com/@walletconnect/utils/-/utils-2.11.2.tgz#dee0f19adf5e38543612cbe9fa4de7ed28eb7e85"
+  integrity sha512-LyfdmrnZY6dWqlF4eDrx5jpUwsB2bEPjoqR5Z6rXPiHJKUOdJt7az+mNOn5KTSOlRpd1DmozrBrWr+G9fFLYVw==
+  dependencies:
+    "@stablelib/chacha20poly1305" "1.0.1"
+    "@stablelib/hkdf" "1.0.1"
+    "@stablelib/random" "^1.0.2"
+    "@stablelib/sha256" "1.0.1"
+    "@stablelib/x25519" "^1.0.3"
+    "@walletconnect/relay-api" "^1.0.9"
+    "@walletconnect/safe-json" "^1.0.2"
+    "@walletconnect/time" "^1.0.2"
+    "@walletconnect/types" "2.11.2"
     "@walletconnect/window-getters" "^1.0.1"
     "@walletconnect/window-metadata" "^1.0.1"
     detect-browser "5.3.0"
@@ -3768,19 +3823,19 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3inbox/core@^1.2.0-5bd35d2":
-  version "1.2.0-5bd35d2"
-  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.2.0-5bd35d2.tgz#d2a445533246e03cc17b2e0d953098d0df56b3e6"
-  integrity sha512-4kqwDcQzSnPNjm0jUhsGfY9UcVByVcRHjUXaBaRGQEveSGm9arPh4L47dl12gdJbupIh7JEfTKlC9AP+WhUuCQ==
+"@web3inbox/core@^1.2.0-1b3d9b8":
+  version "1.2.0-1b3d9b8"
+  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.2.0-1b3d9b8.tgz#f46e15964e6ce39aab5b4f8a3a593b1ecb2da3cb"
+  integrity sha512-motTbWpXGOxAwcWss7vT3Xk5Z54UG9GFGcsMKSqc1kM/f27odEGhSaGcZcNXZCuyiXZaRfPEeItqOczO1tnhZQ==
   dependencies:
     "@walletconnect/core" "2.11.0"
-    "@walletconnect/notify-client" "^1.1.1"
+    "@walletconnect/notify-client" "^1.1.2"
     valtio "^1.11.2"
 
-"@web3inbox/react@^1.2.0-5fd9098":
-  version "1.2.0-5fd9098"
-  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.2.0-5fd9098.tgz#e231cbc370a840e2dd5ace24119c36375c9294e5"
-  integrity sha512-ZSzOTFPOUjW+hpKfdbj+XtROosvF11/w5sQyNBxqixBGUGlAlzctNlOWRjvLcAipB4OENUbqMIYjPMoT4sTFtQ==
+"@web3inbox/react@^1.2.0-2fe9a9d":
+  version "1.2.0-2fe9a9d"
+  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.2.0-2fe9a9d.tgz#7e8bce1e14773ddb22061df012915d8b8b543332"
+  integrity sha512-Yu+Y5fP42XKRXLRINith/UR3lYLj2qpiZs8v13OOxVF8rWO37jQvBFwkZNGObxxD9fUZ3CXCKHlKCJsgBqVm8Q==
   dependencies:
     react "^18.2.0"
 
