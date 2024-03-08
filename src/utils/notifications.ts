@@ -5,7 +5,7 @@ import { LocalStorage } from '@/utils/localStorage'
 import { notificationPwaModalService } from '@/utils/store'
 
 import { getFirebaseToken } from './firebase'
-import { getDbSymkeyStore } from './idb'
+import { getDbEchoRegistrations, getDbSymkeyStore } from './idb'
 
 const setupSubscriptionSymkey = async (topic: string, symkey: string) => {
   const [, putSymkey] = await getDbSymkeyStore()
@@ -75,6 +75,10 @@ export const registerWithEcho = async (client: Web3InboxClient) => {
   if (await requireNotifyPermission()) {
     const token = await getFirebaseToken()
 
-    await client.registerWithPushServer(token, 'fcm')
+    const clientId = await client.registerWithPushServer(token, 'fcm')
+
+    const [, putRegistrationToken ] = await getDbEchoRegistrations()
+
+    await putRegistrationToken(clientId, token)
   }
 }
