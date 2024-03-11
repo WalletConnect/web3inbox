@@ -25,7 +25,7 @@ const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => 
     // register on client init
     // check for permissions granted to prevent asking for permissions
     // immediately after page load
-    if (client && window?.Notification.permission === 'granted') {
+    if (client && window?.Notification?.permission === 'granted') {
       registerWithEcho(client)
     }
   }, [client])
