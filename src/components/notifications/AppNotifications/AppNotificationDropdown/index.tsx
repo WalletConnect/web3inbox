@@ -30,7 +30,7 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
   const handleOpenNotificationPreferencesModal = useCallback(() => {
     preferencesModalService.toggleModal(notificationId)
     closeDropdown()
-  }, [closeDropdown])
+  }, [closeDropdown, notificationId])
 
   return (
     <Dropdown btnShape="square" h={h} w={w} dropdownPlacement={dropdownPlacement}>
