@@ -1,6 +1,6 @@
 import { Fragment, createContext, useContext, useRef, useState } from 'react'
 
-import { useNotifications, useSubscription } from '@web3inbox/react'
+import { useSubscription } from '@web3inbox/react'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
