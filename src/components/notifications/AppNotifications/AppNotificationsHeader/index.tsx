@@ -1,12 +1,9 @@
-import { useContext } from 'react'
-
 import { Link } from 'react-router-dom'
 
 import BackButton from '@/components/general/BackButton'
 import Button from '@/components/general/Button'
 import ArrowRightTopIcon from '@/components/general/Icon/ArrowRightTopIcon'
 import Text from '@/components/general/Text'
-import W3iContext from '@/contexts/W3iContext/context'
 import { noop } from '@/utils/general'
 import { useIsMobile } from '@/utils/hooks'
 import getDomainHref from '@/utils/url'
