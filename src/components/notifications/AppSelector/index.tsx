@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 
-import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useAllSubscriptions } from '@web3inbox/react'
 import cx from 'classnames'
 import { AnimatePresence, m } from 'framer-motion'
-import debounce from 'lodash.debounce'
 import { useLocation } from 'react-router-dom'
 
 import AllAppsIcon from '@/assets/AllApps.svg'
@@ -18,14 +16,11 @@ import MobileHeader from '@/components/layout/MobileHeader'
 import W3iContext from '@/contexts/W3iContext/context'
 import { NAVIGATION } from '@/utils/constants'
 import { useIsMobile } from '@/utils/hooks'
-import useNotifyProjects from '@/utils/hooks/useNotifyProjects'
 import { handleImageFallback } from '@/utils/ui'
 
 import LinkItemSkeleton from './LinkItemSkeleton'
 
 import './AppSelector.scss'
-
-const SUBSCRIPTION_LOADER_TIMEOUT = 3000
 
 const SkeletonItems = Array.from({ length: 3 }, (_, idx) => <LinkItemSkeleton key={idx} />)
 
@@ -33,59 +28,8 @@ const AppSelector: React.FC = () => {
   const { pathname } = useLocation()
   const [search, setSearch] = useState('')
   const isMobile = useIsMobile()
-  const [filteredApps, setFilteredApps] = useState<NotifyClientTypes.NotifySubscription[]>([])
-  const [loading, setLoading] = useState(true)
   const { clientReady: subscriptionsFinishedLoading } = useContext(W3iContext)
-  const { projects } = useNotifyProjects()
   const { data: activeSubscriptions } = useAllSubscriptions()
-
-  const empty = !loading && filteredApps.length === 0
-  const subscriptionsLoading = loading || !subscriptionsFinishedLoading
-
-  const fetchApps = async (searchQuery: string) => {
-    const newFilteredApps = [] as NotifyClientTypes.NotifySubscription[]
-
-    if (!loading) {
-      setLoading(false)
-    }
-
-    for (const app of activeSubscriptions ?? []) {
-      const isAppNameMatch = app.metadata.name.toLowerCase().includes(searchQuery.toLowerCase())
-      if (isAppNameMatch) {
-        newFilteredApps.push(app)
-      }
-    }
-
-    setFilteredApps(newFilteredApps)
-  }
-
-  const searchApps = debounce((searchQuery: string) => {
-    if (!searchQuery) {
-      setFilteredApps(activeSubscriptions ?? [])
-      return
-    }
-
-    fetchApps(searchQuery)
-  }, 100)
-
-  useEffect(() => {
-    fetchApps(search)
-  }, [activeSubscriptions, projects])
-
-  useEffect(() => {
-    searchApps(search)
-  }, [search])
-
-  useEffect(() => {
-    if (filteredApps?.length) {
-      setLoading(false)
-      return
-    }
-
-    setTimeout(() => {
-      setLoading(false)
-    }, SUBSCRIPTION_LOADER_TIMEOUT)
-  }, [filteredApps?.length])
 
   return (
     <div className="AppSelector">
@@ -124,10 +68,16 @@ const AppSelector: React.FC = () => {
           </ul>
         </div>
         <div className="AppSelector__wrapper">
-          {!empty || subscriptionsLoading ? <Label color="main">Subscribed</Label> : null}
+          {!activeSubscriptions?.length || !subscriptionsFinishedLoading ? <Label color="main">Subscribed</Label> : null}
           <ul className="AppSelector__list">
-            {!loading &&
-              filteredApps?.map((app, idx, fullApps) => {
+            {subscriptionsFinishedLoading &&
+              activeSubscriptions?.filter((sub) => {
+		if(search) {
+		  return sub.metadata.name.toLowerCase().includes(search.toLowerCase())
+		}
+		return true;
+
+	      }).map((app, idx, fullApps) => {
                 return (
                   <AnimatePresence key={app.topic}>
                     <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -168,7 +118,7 @@ const AppSelector: React.FC = () => {
                   </AnimatePresence>
                 )
               })}
-            {loading || !subscriptionsFinishedLoading ? SkeletonItems : null}
+            {!subscriptionsFinishedLoading ? SkeletonItems : null}
           </ul>
         </div>
       </div>
