@@ -3848,9 +3848,9 @@
     valtio "^1.11.2"
 
 "@web3inbox/react@^1.2.0-2fe9a9d":
-  version "1.2.0-2fe9a9d"
-  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.2.0-2fe9a9d.tgz#7e8bce1e14773ddb22061df012915d8b8b543332"
-  integrity sha512-Yu+Y5fP42XKRXLRINith/UR3lYLj2qpiZs8v13OOxVF8rWO37jQvBFwkZNGObxxD9fUZ3CXCKHlKCJsgBqVm8Q==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.2.0.tgz#6403bbedee59c902119b776c5151c3ca4267942d"
+  integrity sha512-4e+HAdJFLhj370qFxPpubt5PlayO7t5J3of498BlC1CWc/PM7QSwGam+3A9e5bos0znuxeAH1Bm6UznvAfJoiQ==
   dependencies:
     react "^18.2.0"
 
