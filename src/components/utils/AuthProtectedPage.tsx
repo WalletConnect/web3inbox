@@ -9,11 +9,11 @@ interface AuthProtectedPageProps {
 }
 
 const AuthProtectedPage: React.FC<AuthProtectedPageProps> = ({ children }) => {
-  const { userPubkey, authProvider } = useContext(W3iContext)
+  const { userPubkey } = useContext(W3iContext)
   const loc = useLocation()
   const next = `${loc.pathname}${loc.search}`
 
-  if (!userPubkey && authProvider === 'internal') {
+  if (!userPubkey) {
     const query = next.length > 1 ? `?next=${encodeURIComponent(next)}` : ''
 
     return <Navigate to={`/login${query}`} />

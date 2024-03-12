@@ -7,7 +7,6 @@ import Avatar from '@/components/account/Avatar'
 import MessageIcon from '@/components/general/Icon/MessageIcon'
 import NotificationIcon from '@/components/general/Icon/NotificationIcon'
 import SettingIcon from '@/components/general/Icon/SettingIcon'
-import WalletConnectIcon from '@/components/general/Icon/WalletConnectIcon'
 import ConnectWalletButton from '@/components/login/ConnectWalletButton'
 import W3iContext from '@/contexts/W3iContext/context'
 import { getEthChainAddress } from '@/utils/address'
@@ -28,35 +27,18 @@ const SidebarItem: React.FC<{ children?: React.ReactNode; isDisabled?: boolean }
 const Sidebar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
   const { pathname } = useLocation()
   const navigationPaths = useMemo(() => pathname.split('/'), [pathname])
-  const { userPubkey, uiEnabled } = useContext(W3iContext)
+  const { userPubkey } = useContext(W3iContext)
   const isMobile = useIsMobile()
-
-  const navItems = useMemo(() => {
-    const items: [React.ReactNode, string][] = []
-
-    if (uiEnabled.chat) {
-      items.push([
-        <MessageIcon isFilled={pathname.startsWith(NAVIGATION.messages.index)} />,
-        NAVIGATION.messages.index
-      ])
-    }
-
-    if (uiEnabled.notify) {
-      items.push([
-        <NotificationIcon isFilled={pathname.startsWith(NAVIGATION.notifications.index)} />,
-        NAVIGATION.notifications.index
-      ])
-    }
-
-    if (uiEnabled.settings) {
-      items.push([
-        <SettingIcon isFilled={pathname.startsWith(NAVIGATION.settings.index)} />,
-        NAVIGATION.settings.index
-      ])
-    }
-
-    return items
-  }, [pathname, uiEnabled])
+  const navItems: [React.ReactNode, string][] = [
+    [
+      <NotificationIcon isFilled={pathname.startsWith(NAVIGATION.notifications.index)} />,
+      NAVIGATION.notifications.index
+    ],
+    [
+      <SettingIcon isFilled={pathname.startsWith(NAVIGATION.settings.index)} />,
+      NAVIGATION.settings.index
+    ]
+  ]
 
   // If pathname matches .*/.*/.*
   // As per design, sidebar in mobile is hidden when on "Main" is viewed on messages

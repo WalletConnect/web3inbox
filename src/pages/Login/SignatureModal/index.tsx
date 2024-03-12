@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { formatJsonRpcRequest } from '@walletconnect/jsonrpc-utils'
+import { usePrepareRegistration, useRegister } from '@web3inbox/react'
 import { useAccount, useDisconnect } from 'wagmi'
 
 import Button from '@/components/general/Button'
@@ -11,17 +11,19 @@ import { Modal } from '@/components/general/Modal/Modal'
 import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
 import { useModals } from '@/utils/hooks'
+import { signMessage } from '@/utils/signature'
 import { signatureModalService } from '@/utils/store'
 
 import { SignatureLoadingVisual } from './SignatureLoadingVisual'
 
 import './SignatureModal.scss'
 
-export const SignatureModal: React.FC<{
-  message: string
-}> = ({ message }) => {
+export const SignatureModal: React.FC = () => {
   const { status } = useAccount()
   const connected = status === 'connected'
+
+  const { prepareRegistration } = usePrepareRegistration()
+  const { register } = useRegister()
 
   /*
    * If identity was already signed, and sync was requested then we are in the
@@ -30,19 +32,17 @@ export const SignatureModal: React.FC<{
   const { isSigning } = useModals()
   const { disconnect } = useDisconnect()
 
-  const onSign = () => {
-    signatureModalService.startSigning()
-    window.web3inbox
-      .signMessage(message)
-      .then(signature => {
-        window.web3inbox.notify.postMessage(
-          formatJsonRpcRequest('notify_signature_delivered', { signature })
-        )
-      })
-      .catch(() => {
-        console.error('Failed to sign message')
-        signatureModalService.stopSigning()
-      })
+  const onSign = async () => {
+    try {
+      signatureModalService.startSigning()
+
+      const { message, registerParams } = await prepareRegistration()
+
+      const signature = await signMessage(message)
+      await register({ registerParams, signature }).then(() => signatureModalService.closeModal())
+    } catch {
+      signatureModalService.stopSigning()
+    }
   }
 
   return (

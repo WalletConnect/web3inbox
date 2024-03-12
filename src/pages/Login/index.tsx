@@ -11,11 +11,12 @@ import TransitionDiv from '@/components/general/TransitionDiv'
 import Sidebar from '@/components/layout/Sidebar'
 import { web3InboxURLs } from '@/constants/navigation'
 import W3iContext from '@/contexts/W3iContext/context'
+import { signatureModalService } from '@/utils/store'
 
 import './Login.scss'
 
 const Login: React.FC = () => {
-  const { userPubkey, uiEnabled, notifyRegisteredKey } = useContext(W3iContext)
+  const { userPubkey, notifyRegisteredKey } = useContext(W3iContext)
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
@@ -26,15 +27,13 @@ const Login: React.FC = () => {
     const path = next ? decodeURIComponent(next) : '/'
 
     if (userPubkey) {
-      const notifyConditionsPass = Boolean(
-        (!uiEnabled.chat || uiEnabled.notify) && notifyRegisteredKey
-      )
-
-      if (notifyConditionsPass) {
+      if (notifyRegisteredKey) {
         nav(path)
+      } else {
+        signatureModalService.openModal()
       }
     }
-  }, [userPubkey, next, notifyRegisteredKey, uiEnabled])
+  }, [userPubkey, next, notifyRegisteredKey, signatureModalService])
 
   return (
     <TransitionDiv className="Login">

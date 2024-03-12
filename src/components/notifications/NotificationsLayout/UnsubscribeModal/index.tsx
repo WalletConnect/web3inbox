@@ -1,5 +1,6 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react'
+import React, { useCallback } from 'react'
 
+import { useSubscription, useUnsubscribe } from '@web3inbox/react'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/general/Button'
@@ -7,7 +8,6 @@ import CrossIcon from '@/components/general/Icon/CrossIcon'
 import { Modal } from '@/components/general/Modal/Modal'
 import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
-import W3iContext from '@/contexts/W3iContext/context'
 import { logError } from '@/utils/error'
 import { useModals } from '@/utils/hooks'
 import { unsubscribeModalService } from '@/utils/store'
@@ -16,38 +16,29 @@ import { showDefaultToast, showErrorMessageToast } from '@/utils/toasts'
 import './UnsubscribeModal.scss'
 
 export const UnsubscribeModal: React.FC = () => {
-  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
-  const { unsubscribeModalAppId } = useModals()
-  const [loading, setLoading] = useState(false)
+  const { unsubscribeModalAppId: domain } = useModals()
+  const { data: subscription } = useSubscription(undefined, domain)
+  const { unsubscribe, isLoading: loading } = useUnsubscribe(undefined, domain)
   const navigate = useNavigate()
 
-  const app = useMemo(
-    () => activeSubscriptions.find(activeApp => activeApp.topic === unsubscribeModalAppId),
-    [unsubscribeModalAppId]
-  )
-
   const handleUnsubscribe = useCallback(async () => {
-    setLoading(true)
-    if (notifyClientProxy && unsubscribeModalAppId) {
+    if (domain) {
       try {
-        notifyClientProxy.observeOne('notify_delete', {
-          next: () => {
-            unsubscribeModalService.closeModal()
-            showDefaultToast(`Unsubscribed from ${app ? app.metadata.name : `dapp`}`)
-            setLoading(false)
-            navigate('/notifications/new-app')
-          }
+        unsubscribe().then(() => {
+          unsubscribeModalService.closeModal()
+          showDefaultToast(
+            `Unsubscribed from ${subscription ? subscription.metadata.name : `dapp`}`
+          )
+          navigate('/notifications/new-app')
         })
-        await notifyClientProxy.deleteSubscription({ topic: unsubscribeModalAppId })
       } catch (error) {
         logError(error)
         showErrorMessageToast(`Unsubscribing failed, please try again`)
-        setLoading(false)
       }
     }
-  }, [notifyClientProxy, unsubscribeModalAppId])
+  }, [domain])
 
-  if (!app) {
+  if (!subscription) {
     return null
   }
 
@@ -61,16 +52,16 @@ export const UnsubscribeModal: React.FC = () => {
           </button>
         </div>
         <div className="UnsubscribeModal__hero">
-          <img src={app?.metadata?.icons?.[0] || '/fallback.svg'} alt="logo" />
+          <img src={subscription?.metadata?.icons?.[0] || '/fallback.svg'} alt="logo" />
         </div>
         <div className="UnsubscribeModal__content">
           <div className="UnsubscribeModal__content__title">
-            <Text variant="large-600">Unsubscribe from {app.metadata.name}</Text>
+            <Text variant="large-600">Unsubscribe from {subscription.metadata.name}</Text>
           </div>
           <div className="UnsubscribeModal__content__helper-text">
             <Text variant="small-500">
-              You will stop receiving all notifications from {app.metadata.name} on Web3Inbox
-              and connected wallets.
+              You will stop receiving all notifications from {subscription.metadata.name} on
+              Web3Inbox and connected wallets.
               <br />
               You can re-subscribe at any time later.
             </Text>

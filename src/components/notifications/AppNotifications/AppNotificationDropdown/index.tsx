@@ -3,7 +3,6 @@ import { useCallback, useContext } from 'react'
 import Dropdown from '@/components/general/Dropdown/Dropdown'
 import CrossIcon2 from '@/components/general/Icon/CrossIcon2'
 import PreferencesIcon from '@/components/general/Icon/PreferencesIcon'
-import W3iContext from '@/contexts/W3iContext/context'
 import { preferencesModalService, unsubscribeModalService } from '@/utils/store'
 
 import './AppNotificationDropdown.scss'
@@ -23,17 +22,15 @@ const AppNotificationDropdown: React.FC<IAppNotificationDropdownProps> = ({
   h,
   closeDropdown
 }) => {
-  const { notifyClientProxy } = useContext(W3iContext)
-
   const handleUnsubscribe = useCallback(() => {
     closeDropdown()
     unsubscribeModalService.toggleModal(notificationId)
-  }, [notificationId, closeDropdown, unsubscribeModalService, notifyClientProxy])
+  }, [notificationId, closeDropdown, unsubscribeModalService])
 
   const handleOpenNotificationPreferencesModal = useCallback(() => {
     preferencesModalService.toggleModal(notificationId)
     closeDropdown()
-  }, [closeDropdown])
+  }, [closeDropdown, notificationId])
 
   return (
     <Dropdown btnShape="square" h={h} w={w} dropdownPlacement={dropdownPlacement}>

@@ -1,30 +1,27 @@
 import React, { Fragment, useContext } from 'react'
 
+import { useWeb3InboxClient } from '@web3inbox/react'
+
 import BackgroundImage from '@/assets/IntroBackground.png'
 import Button from '@/components/general/Button'
 import CrossIcon from '@/components/general/Icon/CrossIcon'
 import { Modal } from '@/components/general/Modal/Modal'
 import Text from '@/components/general/Text'
-import W3iContext from '@/contexts/W3iContext/context'
+import { getFirebaseToken } from '@/utils/firebase'
 import { closeNotificationModal, requireNotifyPermission } from '@/utils/notifications'
 import { pwaModalService } from '@/utils/store'
 
 import './NotificationPwaModal.scss'
 
 export const NotificationPwaModal: React.FC = () => {
-  const { notifyClientProxy } = useContext(W3iContext)
-
   const explicitlyDeniedPermissionForNotifications = window.Notification?.permission === 'denied'
+  const { data: client } = useWeb3InboxClient()
 
   const handleEnableNotifications = async () => {
     const notificationPermissionGranted = await requireNotifyPermission()
 
-    if (!notifyClientProxy) {
-      return
-    }
-
-    if (notificationPermissionGranted) {
-      await notifyClientProxy.registerWithEcho()
+    if (notificationPermissionGranted && client) {
+      await client.registerWithPushServer(await getFirebaseToken())
     }
   }
 

@@ -1,23 +1,17 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 
-import { useWeb3ModalTheme } from '@web3modal/wagmi/react'
 import cn from 'classnames'
-import { useLocation } from 'react-router-dom'
 
 import ArtistPalette from '@/assets/ArtistPalette.png'
 import ColoredNotificationBell from '@/assets/ColoredNotificationBell.png'
 import DarkCity from '@/assets/DarkCity.png'
 import HalfHalfCity from '@/assets/HalfHalfCity.png'
-import Handshake from '@/assets/Handshake.png'
 import LightCity from '@/assets/LightCity.png'
 import IconWrapper from '@/components/general/Icon/IconWrapper/IconWrapper'
 import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/context'
 // eslint-disable-next-line no-duplicate-imports
 import SettingsContext from '@/contexts/SettingsContext/context'
-import W3iContext from '@/contexts/W3iContext/context'
-import { useIsMobile, useModals } from '@/utils/hooks'
-
-import ContactsModal from '../ContactsModal'
+import { useModals } from '@/utils/hooks'
 
 import './Settings.scss'
 
@@ -25,12 +19,6 @@ const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
   { id: 'light', icon: LightCity },
   { id: 'dark', icon: DarkCity },
   { id: 'system', icon: HalfHalfCity }
-]
-
-const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: string }[] = [
-  { id: 'require-invite', label: 'Require new contacts to send me a chat invite' },
-  { id: 'reject-new', label: 'Decline all chat invites from new contacts' },
-  { id: 'accept-new', label: 'Accept all chat invites from new contacts' }
 ]
 
 /*
@@ -47,13 +35,9 @@ const newContactModes: { id: SettingsContextSimpleState['newContacts']; label: s
  */
 
 const Settings: React.FC = () => {
-  const { mode, newContacts, isDevModeEnabled, updateSettings } = useContext(SettingsContext)
+  const { mode, updateSettings } = useContext(SettingsContext)
   const { isContactModalOpen } = useModals()
-  const { uiEnabled } = useContext(W3iContext)
   const [mutedContacts, setMutedContacts] = useState<{ topic: string; address: string }[]>([])
-  const { pathname } = useLocation()
-  const { setThemeMode } = useWeb3ModalTheme()
-  const isMobile = useIsMobile()
 
   const handleThemeChange = useCallback(
     (modeId: SettingsContextSimpleState['mode']) => {
@@ -134,73 +118,6 @@ const Settings: React.FC = () => {
         </div>
       </div>
 
-      {uiEnabled.chat ? (
-        <div className="Settings__section Settings__contacts">
-          <div className="Settings__section-title">
-            <IconWrapper shape="square" bgColor="purple">
-              <img src={Handshake} alt="contacts-icon" />
-            </IconWrapper>
-            <span>Contacts</span>
-          </div>
-          <div className="Settings__section-settings">
-            <div className="Settings__section-subtitle">New Contacts</div>
-            {/* {newContactModes.map(({ id, label }) => (
-              <Radio
-                name="new-contacts"
-                id={id}
-                key={id}
-                label={label}
-                checked={newContacts === id}
-                onCheck={() => updateSettings({ newContacts: id })}
-              />
-            ))} */}
-            <div className="Settings__section-helper-text">
-              People that want to message you will need to send an invite first that you can accept
-              or decline. Think of it as a polite handshake to start the conversation.
-            </div>
-            {/*
-          <div className="Settings__setting">
-            <div className="Settings__toggle-label">
-              Decline new contacts without any transactions onchain
-            </div>
-            <Toggle name="decline-new-contacts" id="decline-new-contacts" />
-          </div>
-          <div className="Settings__section-helper-text">
-            People with no transaction history will be blocked from contacting you. Enabling this
-            can help weed out spam.
-          </div>
-					*/}
-            {/*
-             <div
-
-              className="Settings__setting"
-              onClick={() => {
-                chatClientProxy?.getMutedContacts().then(({ length }) => {
-                  if (length) {
-                    contactsModalService.openModal()
-                  }
-                })
-              }}
-            >
-              <div>Muted contacts</div>
-              <div className="Settings__toggle-dropdown">
-                <CircleBadge>{mutedContacts.length}</CircleBadge>
-                <ArrowRightIcon />
-              </div>
-            </div>
-            */}
-            {/*
-          <div className="Settings__setting">
-            <div>Blocked contacts</div>
-            <div className="Settings__toggle-dropdown">
-              <CircleBadge>0</CircleBadge>
-              <ArrowRightIcon />
-            </div>
-          </div>
-					*/}
-          </div>
-        </div>
-      ) : null}
       {/*
       <div className="Settings__section Settings_crypto">
         <div className="Settings__section-title">
@@ -221,13 +138,6 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>*/}
-      {isContactModalOpen && (
-        <ContactsModal
-          status="muted"
-          mutedContacts={mutedContacts}
-          setMutedContacts={setMutedContacts}
-        />
-      )}
     </div>
   )
 }

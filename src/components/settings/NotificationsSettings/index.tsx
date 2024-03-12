@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 
+import { useWeb3InboxClient } from '@web3inbox/react'
 import cn from 'classnames'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
@@ -10,7 +11,7 @@ import PrivacyIcon from '@/components/general/Icon/Privacy'
 import Input from '@/components/general/Input'
 import MobileHeader from '@/components/layout/MobileHeader'
 import SettingsContext from '@/contexts/SettingsContext/context'
-import W3iContext from '@/contexts/W3iContext/context'
+import { getFirebaseToken } from '@/utils/firebase'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
 import { getDbEchoRegistrations } from '@/utils/idb'
 import { notificationsAvailableInBrowser, requireNotifyPermission } from '@/utils/notifications'
@@ -35,7 +36,6 @@ const getHelperTooltip = () => {
 
 const NotificationsSettings: React.FC = () => {
   const { isDevModeEnabled, updateSettings, filterAppDomain } = useContext(SettingsContext)
-  const { notifyClientProxy } = useContext(W3iContext)
   const [domain, setDomain] = useState(filterAppDomain)
 
   const canSave = domain !== filterAppDomain
@@ -43,6 +43,8 @@ const NotificationsSettings: React.FC = () => {
   const notificationsEnabled = useNotificationPermissionState()
 
   const [tokenEntries, setTokenEntries] = useState<[IDBValidKey, any][]>([])
+
+  const { data: client } = useWeb3InboxClient()
 
   useEffect(() => {
     const getEntries = async () => {
@@ -56,12 +58,8 @@ const NotificationsSettings: React.FC = () => {
   }, [])
 
   const handleEnableNotifications = async () => {
-    if (!notifyClientProxy) {
-      return
-    }
-
-    if (await requireNotifyPermission()) {
-      await notifyClientProxy.registerWithEcho()
+    if (client) {
+      await client.registerWithPushServer(await getFirebaseToken())
     }
   }
 

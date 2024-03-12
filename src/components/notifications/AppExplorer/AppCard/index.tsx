@@ -1,5 +1,6 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 
+import { useAllSubscriptions, useSubscribe, useSubscription } from '@web3inbox/react'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 
@@ -7,6 +8,7 @@ import SpannerSVG from '@/assets/Spanner.svg'
 import Badge from '@/components/general/Badge'
 import Text from '@/components/general/Text'
 import W3iContext from '@/contexts/W3iContext/context'
+import { NAVIGATION } from '@/utils/constants'
 import { logError } from '@/utils/error'
 import { showErrorMessageToast, showSuccessMessageToast } from '@/utils/toasts'
 
@@ -36,8 +38,11 @@ const AppCard: React.FC<AppCardProps> = ({
   const [subscribing, setSubscribing] = useState(false)
   const nav = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
-  const { notifyClientProxy, userPubkey } = useContext(W3iContext)
-  const { activeSubscriptions } = useContext(W3iContext)
+  const { userPubkey } = useContext(W3iContext)
+
+  const { data: activeSubscriptions } = useAllSubscriptions()
+  const { getSubscription } = useSubscription()
+  const { subscribe } = useSubscribe()
 
   const host = new URL(url).host
   const projectURL = new URL(url)
@@ -49,7 +54,7 @@ const AppCard: React.FC<AppCardProps> = ({
 
   const subscribed =
     userPubkey &&
-    activeSubscriptions.some(element => {
+    activeSubscriptions?.some(element => {
       return projectURL.hostname === element.metadata.appDomain
     })
   const logoURL = logo || '/fallback.svg'
@@ -64,26 +69,23 @@ const AppCard: React.FC<AppCardProps> = ({
 
       setSubscribing(true)
       try {
-        await notifyClientProxy?.subscribe({
-          account: userPubkey,
-          appDomain: new URL(url).host
-        })
+        await subscribe(undefined, host)
       } catch (error) {
         logError(error)
         setSubscribing(false)
         showErrorMessageToast(`Failed to subscribe to ${name}`)
       }
     },
-    [userPubkey, name, description, logo, url, setSubscribing, subscribed, notifyClientProxy]
+    [userPubkey, name, description, logo, url, setSubscribing, subscribed]
   )
 
   const handleNavigateApp = () => {
     if (subscribed) {
       try {
         const appDomain = new URL(url).host
-        const topic = activeSubscriptions.find(sub => sub.metadata.appDomain === appDomain)?.topic
-        if (topic) {
-          nav(`/notifications/${topic}`)
+        const subExists = Boolean(getSubscription(undefined, appDomain))
+        if (subExists) {
+          nav(NAVIGATION.notifications.domain(appDomain))
         } else {
           throw new Error(`No matching subscription found to domain, ${appDomain}`)
         }

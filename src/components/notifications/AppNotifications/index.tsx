@@ -1,9 +1,9 @@
-import { Fragment, createContext, useContext, useEffect, useRef, useState } from 'react'
+import { Fragment, createContext, useContext, useRef, useState } from 'react'
 
+import { useSubscription } from '@web3inbox/react'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
-import { noop } from 'rxjs'
 
 import Label from '@/components/general/Label'
 import MobileHeader from '@/components/layout/MobileHeader'
@@ -34,11 +34,13 @@ export const AppNotificationDragContext = createContext<AppNotificationsDragCont
 ])
 
 const AppNotifications = () => {
-  const { topic } = useParams<{ topic: string }>()
-  const { activeSubscriptions, notifyClientProxy } = useContext(W3iContext)
-  const app = activeSubscriptions.find(mock => mock.topic === topic)
-  const { isLoading, notifications, intersectionObserverRef, nextPage, unshiftNewMessage } =
-    useNotificationsInfiniteScroll(topic)
+  const { userPubkey } = useContext(W3iContext)
+  const { domain } = useParams<{ domain: string }>()
+
+  const { data: subscription } = useSubscription(undefined, domain)
+
+  const { isLoading, notifications, intersectionObserverRef, nextPage } =
+    useNotificationsInfiniteScroll(userPubkey, domain)
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -46,23 +48,7 @@ const AppNotifications = () => {
     AppNotificationsDragProps[] | undefined
   >()
 
-  useEffect(() => {
-    if (!(notifyClientProxy && topic)) {
-      return noop
-    }
-
-    const notifyMessageSentSub = notifyClientProxy.observe('notify_message', {
-      next: () => {
-        unshiftNewMessage()
-      }
-    })
-
-    return () => {
-      notifyMessageSentSub.unsubscribe()
-    }
-  }, [notifyClientProxy, nextPage, topic])
-
-  return app?.metadata ? (
+  return subscription?.metadata ? (
     <AppNotificationDragContext.Provider value={[notificationsDrag, setNotificationsDrag]}>
       <AnimatePresence>
         <motion.div
@@ -75,42 +61,44 @@ const AppNotifications = () => {
         >
           <div className="AppNotifications__border"></div>
           <AppNotificationsHeader
-            id={app.topic}
-            name={app.metadata.name}
-            logo={app.metadata?.icons?.[0]}
-            domain={app.metadata.appDomain}
+            id={subscription.metadata.appDomain}
+            name={subscription.metadata.name}
+            logo={subscription.metadata?.icons?.[0]}
+            domain={subscription.metadata.appDomain}
           />
           <MobileHeader
             back="/notifications"
-            notificationId={app.topic}
-            title={app.metadata.name}
+            notificationId={subscription.metadata.appDomain}
+            title={subscription.metadata.name}
           />
           <AppNotificationsCardMobile />
-          {isLoading || notifications.length > 0 ? (
+          {isLoading || notifications?.length ? (
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
-                {notifications.length > 0 ? <Label color="main">Latest</Label> : null}
-                {notifications.map((notification, index) => (
-                  <AppNotificationItem
-                    ref={index === notifications.length - 1 ? intersectionObserverRef : null}
-                    key={notification.id}
-                    onClear={nextPage}
-                    notification={{
-                      timestamp: notification.sentAt,
-                      // We do not manage read status for now.
-                      isRead: true,
-                      id: notification.id.toString(),
-                      message: notification.body,
-                      title: notification.title,
-                      image: notification.type
-                        ? app?.scope[notification.type]?.imageUrls?.md
-                        : undefined,
-                      url: notification.url
-                    }}
-                    appLogo={app.metadata?.icons?.[0]}
-                  />
-                ))}
-                {isLoading ? (
+                {!isLoading && notifications?.length ? <Label color="main">Latest</Label> : null}
+                {notifications?.length
+                  ? notifications.map((notification, index) => (
+                      <AppNotificationItem
+                        ref={index === notifications.length - 1 ? intersectionObserverRef : null}
+                        key={notification.id}
+                        onClear={nextPage}
+                        notification={{
+                          timestamp: notification.sentAt,
+                          // We do not manage read status for now.
+                          isRead: true,
+                          id: notification.id.toString(),
+                          message: notification.body,
+                          title: notification.title,
+                          image: notification.type
+                            ? subscription?.scope[notification.type]?.imageUrls?.md
+                            : undefined,
+                          url: notification.url
+                        }}
+                        appLogo={subscription.metadata?.icons?.[0]}
+                      />
+                    ))
+                  : null}
+                {isLoading && !notifications?.length ? (
                   <Fragment>
                     <AppNotificationItemSkeleton />
                     <AppNotificationItemSkeleton />
@@ -120,7 +108,10 @@ const AppNotifications = () => {
               </div>
             </div>
           ) : (
-            <AppNotificationsEmpty icon={app.metadata?.icons?.[0]} name={app.metadata.name} />
+            <AppNotificationsEmpty
+              icon={subscription.metadata?.icons?.[0]}
+              name={subscription.metadata.name}
+            />
           )}
         </motion.div>
       </AnimatePresence>

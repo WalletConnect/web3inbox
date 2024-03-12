@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react'
 
-import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react'
 import { AnimatePresence } from 'framer-motion'
 
 import { PreferencesModal } from '@/components/notifications/NotificationsLayout/PreferencesModal'
@@ -18,7 +17,7 @@ import {
   notificationsAvailableInBrowser
 } from '@/utils/notifications'
 import { isAppleMobile, isMobileButNotInstalledOnHomeScreen, isNonSafari } from '@/utils/pwa'
-import { notificationPwaModalService, signatureModalService } from '@/utils/store'
+import { notificationPwaModalService } from '@/utils/store'
 import { isMobile } from '@/utils/ui'
 
 export const Modals = () => {
@@ -28,10 +27,8 @@ export const Modals = () => {
     isSignatureModalOpen,
     isNotificationPwaModalOpen
   } = useModals()
-  const { close: closeWeb3Modal } = useWeb3Modal()
-  const { open: isWeb3ModalOpen } = useWeb3ModalState()
 
-  const { notifyRegisterMessage, notifyRegisteredKey, userPubkey } = useContext(W3iContext)
+  const { notifyRegisteredKey, userPubkey, clientReady } = useContext(W3iContext)
 
   const notificationsEnabled = useNotificationPermissionState()
 
@@ -40,7 +37,9 @@ export const Modals = () => {
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
   const shouldShowChangeBrowserModal = isAppleMobile ? isNonSafari : false
   const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
-  const shouldShowSignatureModal = isSignatureModalOpen && !shouldShowChangeBrowserModal
+  const shouldShowSignatureModal =
+    (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) &&
+    !shouldShowChangeBrowserModal
   const shouldShowUnsubscribeModalOpen = isUnsubscribeModalOpen && !shouldShowChangeBrowserModal
   const shouldShowPreferencesModalOpen = isPreferencesModalOpen && !shouldShowChangeBrowserModal
 
@@ -53,26 +52,6 @@ export const Modals = () => {
     !isSignatureModalOpen &&
     !notificationModalClosed &&
     !shouldShowChangeBrowserModal
-
-  useEffect(() => {
-    const notifySignatureRequired = Boolean(notifyRegisterMessage) && !notifyRegisteredKey
-    if (userPubkey && notifySignatureRequired) {
-      if (isWeb3ModalOpen) {
-        // Close web3modal in case user is switching accounts
-        // closeWeb3Modal()
-      }
-      signatureModalService.openModal()
-    } else {
-      signatureModalService.closeModal()
-    }
-  }, [
-    userPubkey,
-    closeWeb3Modal,
-    notifyRegisteredKey,
-    notifyRegisterMessage,
-    isWeb3ModalOpen,
-    signatureModalService
-  ])
 
   useEffect(() => {
     // Create an artificial delay to prevent modals being spammed one after the other
@@ -91,7 +70,7 @@ export const Modals = () => {
 
       {shouldShowPreferencesModalOpen && <PreferencesModal />}
 
-      {shouldShowSignatureModal && <SignatureModal message={notifyRegisterMessage ?? ''} />}
+      {shouldShowSignatureModal && <SignatureModal />}
 
       {shouldShowPWAModal && <PwaModal />}
 

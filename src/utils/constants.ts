@@ -17,7 +17,7 @@ export const NAVIGATION = {
   },
   notifications: {
     index: '/notifications',
-    topic: (topic: string) => `/notifications/${topic}`
+    domain: (domain: string) => `/notifications/${domain}`
   },
   settings: {
     index: '/settings',

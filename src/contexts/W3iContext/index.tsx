@@ -1,59 +1,42 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { noop } from 'rxjs'
+import { useAllSubscriptions, useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
 
 import W3iContext from '@/contexts/W3iContext/context'
 import { useAuthState } from '@/contexts/W3iContext/hooks/authHooks'
-import { useDappOrigin } from '@/contexts/W3iContext/hooks/dappOrigin'
-import { useNotifyState } from '@/contexts/W3iContext/hooks/notifyHooks'
-import { useProviderQueries } from '@/contexts/W3iContext/hooks/providerQueryHooks'
-import { useUiState } from '@/contexts/W3iContext/hooks/uiHooks'
-import { useW3iProxy } from '@/contexts/W3iContext/hooks/w3iProxyHooks'
+import { registerWithEcho, setupSubscriptionsSymkeys } from '@/utils/notifications'
 
 interface W3iContextProviderProps {
   children: React.ReactNode | React.ReactNode[]
 }
 
 const W3iContextProvider: React.FC<W3iContextProviderProps> = ({ children }) => {
-  const { uiEnabled } = useUiState()
-  const { dappOrigin, dappIcon, dappName, dappNotificationDescription } = useDappOrigin()
-  const { notifyProvider, authProvider } = useProviderQueries()
-  const [w3iProxy, isW3iProxyReady] = useW3iProxy()
+  const { userPubkey, setUserPubkey } = useAuthState()
 
-  const { userPubkey, setUserPubkey } = useAuthState(w3iProxy, isW3iProxyReady)
+  const { data: client } = useWeb3InboxClient()
+  const { identityKey: notifyRegisteredKey } = useWeb3InboxAccount(userPubkey)
+  const { data: activeSubscriptions } = useAllSubscriptions()
 
-  const {
-    notifyClient,
-    activeSubscriptions,
-    refreshNotifyState,
-    registerMessage: notifyRegisterMessage,
-    registeredKey: notifyRegisteredKey,
-    watchSubscriptionsComplete
-  } = useNotifyState(w3iProxy, isW3iProxyReady)
+  useEffect(() => {
+    setupSubscriptionsSymkeys(activeSubscriptions?.map(sub => [sub.topic, sub.symKey]) ?? [])
+  }, [activeSubscriptions])
+
+  useEffect(() => {
+    // register on client init
+    // check for permissions granted to prevent asking for permissions
+    // immediately after page load
+    if (client && window?.Notification?.permission === 'granted') {
+      registerWithEcho(client)
+    }
+  }, [client])
 
   return (
     <W3iContext.Provider
       value={{
-        chatClientProxy: null,
-        notifyProvider,
-        authProvider,
         userPubkey,
-        uiEnabled: { ...uiEnabled, chat: false },
-        dappOrigin,
-        dappName,
-        dappNotificationDescription,
-        dappIcon,
-        refreshNotifications: refreshNotifyState,
-        refreshThreadsAndInvites: noop,
-        activeSubscriptions,
         notifyRegisteredKey,
         setUserPubkey,
-        notifyRegisterMessage,
-        notifyClientProxy: notifyClient,
-        sentInvites: [],
-        threads: [],
-        invites: [],
-        watchSubscriptionsComplete
+        clientReady: Boolean(client)
       }}
     >
       {children}

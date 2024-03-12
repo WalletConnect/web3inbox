@@ -2,6 +2,7 @@ import type { RefObject } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
+import { valtio } from '@web3inbox/core'
 import { useLocation } from 'react-router-dom'
 
 import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/context'
@@ -9,8 +10,8 @@ import type { SettingsContextSimpleState } from '@/contexts/SettingsContext/cont
 // eslint-disable-next-line no-duplicate-imports
 import {
   appSearchService,
-  chatSearchService,
   contactsModalService,
+  modalsOpen,
   notificationPwaModalService,
   notifySearchService,
   preferencesModalService,
@@ -155,33 +156,23 @@ export const useColorModeValue = (mode: SettingsContextSimpleState['mode']) => {
 }
 
 export const useSearch = () => {
-  const [isChatSearchOpen, setIsChatSearchOpen] = useState(false)
   const [isNotifySearchOpen, setIsNotifySearchOpen] = useState(false)
   const [isAppSearchOpen, setIsAppSearchOpen] = useState(false)
   const [appSearchTerm, setAppSearchTerm] = useState<string>()
+
+  const modalsOpenSnapshot = valtio.useSnapshot(modalsOpen)
+
   useEffect(() => {
-    const chatSearchSubscription = chatSearchService.searchState.subscribe(isOpen => {
-      setIsChatSearchOpen(isOpen)
-    })
-    const notifySearchSubscription = notifySearchService.searchState.subscribe(isOpen => {
-      setIsNotifySearchOpen(isOpen)
-    })
-    const appSearchSubscription = appSearchService.searchState.subscribe(state => {
-      setIsAppSearchOpen(state.isOpen)
-      setAppSearchTerm(state.searchTerm)
-    })
+    setIsNotifySearchOpen(notifySearchService.searchState)
+    setIsAppSearchOpen(appSearchService.searchState.isOpen)
+    setAppSearchTerm(appSearchService.searchState.searchTerm)
+  }, [modalsOpenSnapshot])
 
-    return () => {
-      chatSearchSubscription.unsubscribe()
-      notifySearchSubscription.unsubscribe()
-      appSearchSubscription.unsubscribe()
-    }
-  }, [])
-
-  return { isChatSearchOpen, isNotifySearchOpen, isAppSearchOpen, appSearchTerm }
+  return { isNotifySearchOpen, isAppSearchOpen, appSearchTerm }
 }
 
 export const useModals = () => {
+  const modalsOpenSnapshot = valtio.useSnapshot(modalsOpen)
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   // Const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
@@ -199,52 +190,18 @@ export const useModals = () => {
   const [unsubscribeModalAppId, setUnsubscribeModalAppId] = useState<string>()
 
   useEffect(() => {
-    const profileSubscription = profileModalService.modalState.subscribe(isOpen => {
-      setIsProfileModalOpen(isOpen)
-    })
-    /*
-     * Const subscribeSubscription = subscribeModalService.modalState.subscribe(state => {
-     *   setSubscribeModalMetadata(state.metadata)
-     *   setIsSubscribeModalOpen(state.isOpen)
-     * })
-     */
-    const signatureSubscription = signatureModalService.modalState.subscribe(next => {
-      setIsSignatureModalOpen(next.isOpen)
-    })
-    const isSigningSubscription = signatureModalService.modalState.subscribe(next => {
-      setIsSigning(next.signing)
-    })
-    const contactsSubscription = contactsModalService.modalState.subscribe(isOpen => {
-      setIsContactModalOpen(isOpen)
-    })
-    const shareSubscription = shareModalService.modalState.subscribe(isOpen => {
-      setIsShareModalOpen(isOpen)
-    })
-    const notificationPwaModalSubscription = notificationPwaModalService.modalState.subscribe(
-      isOpen => {
-        setIsNotificationPwaModalOpen(isOpen)
-      }
-    )
-    const preferencesSubscription = preferencesModalService.modalState.subscribe(state => {
-      setPreferencesModalAppId(state.preferencesModalAppId)
-      setIsPreferencesModalOpen(state.isOpen)
-    })
-    const unsubscribeSubscription = unsubscribeModalService.modalState.subscribe(state => {
-      setUnsubscribeModalAppId(state.unsubscribeModalAppId)
-      setIsUnsubscribeModalOpen(state.isOpen)
-    })
+    setIsProfileModalOpen(profileModalService.getModalState())
 
-    return () => {
-      profileSubscription.unsubscribe()
-      shareSubscription.unsubscribe()
-      contactsSubscription.unsubscribe()
-      signatureSubscription.unsubscribe()
-      isSigningSubscription.unsubscribe()
-      preferencesSubscription.unsubscribe()
-      unsubscribeSubscription.unsubscribe()
-      notificationPwaModalSubscription.unsubscribe()
-    }
-  }, [])
+    setIsSignatureModalOpen(signatureModalService.getModalState().isOpen)
+    setIsSigning(signatureModalService.getModalState().signing)
+    setIsContactModalOpen(contactsModalService.getModalState())
+    setIsShareModalOpen(shareModalService.getModalState())
+    setIsNotificationPwaModalOpen(notificationPwaModalService.getModalState())
+    setPreferencesModalAppId(preferencesModalService.getModalState().preferencesModalAppId)
+    setIsPreferencesModalOpen(preferencesModalService.getModalState().isOpen)
+    setUnsubscribeModalAppId(unsubscribeModalService.getModalState().unsubscribeModalAppId)
+    setIsUnsubscribeModalOpen(unsubscribeModalService.getModalState().isOpen)
+  }, [modalsOpenSnapshot])
 
   return {
     isProfileModalOpen,
