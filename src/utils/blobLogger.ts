@@ -15,16 +15,18 @@ export class ArrayLogStream {
 
     // @ts-ignore
     window.downloadLogsBlob = () => {
-      this.downloadLogsBlobInBrowser({ clientId: "N/A" })
+      this.downloadLogsBlobInBrowser({ clientId: 'N/A' })
       this.clearLogs()
     }
   }
 
   write(chunk: any): void {
-    this.logs.push(JSON.stringify({
-      timestamp: new Date().toISOString(),
-      log: chunk,
-    }))
+    this.logs.push(
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        log: chunk
+      })
+    )
 
     // Using splice with a margin instead of unshift because logging
     // is a very frequent procedure and having to unshift every log after 200
@@ -42,7 +44,7 @@ export class ArrayLogStream {
   }
 
   public logsToBlob(clientMetadata: LogClientMetadata) {
-    this.logs.push(JSON.stringify({clientMetadata}))
+    this.logs.push(JSON.stringify({ clientMetadata }))
     const blob = new Blob(this.logs, { type: 'application/json' })
     return blob
   }

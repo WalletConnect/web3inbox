@@ -173,8 +173,10 @@ const NotificationsSettings: React.FC = () => {
               {isDevModeEnabled ? (
                 <Button
                   onClick={() => {
-                    // @ts-ignore
-                    window.downloadLogsBlob({ clientId: await client?.getClientId() })
+                    client?.getClientId().then(clientId => {
+                      // @ts-ignore
+                      window.downloadLogsBlob({ clientId })
+                    })
                   }}
                   customType="outline"
                   tabIndex={4}
