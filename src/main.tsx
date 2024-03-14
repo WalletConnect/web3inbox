@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
 import { BrowserRouter } from 'react-router-dom'
 import { WagmiProvider } from 'wagmi'
+import pino from 'pino'
 
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from '@/constants/web3Modal'
 import SettingsContextProvider from '@/contexts/SettingsContext'
@@ -16,13 +17,17 @@ import { polyfill } from '@/utils/polyfill'
 import { initSentry } from '@/utils/sentry'
 import { metadata, wagmiConfig } from '@/utils/wagmiConfig'
 
+
 import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
 
 import './index.css'
+import { ArrayLogStream } from './utils/blobLogger'
 
 polyfill()
 initSentry()
+
+const logStream = new ArrayLogStream()
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 
@@ -41,7 +46,14 @@ initWeb3InboxClient({
   projectId,
   allApps: true,
   domain: window.location.hostname,
-  logLevel: import.meta.env.PROD ? 'error' : 'debug'
+  logger: pino({
+    level: import.meta.env.PROD ? 'error' : 'debug',
+    browser: {
+      write: (chunk) => {
+	logStream.write(chunk)
+      }
+    }
+  })
 })
 
 const queryClient = new QueryClient()

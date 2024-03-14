@@ -14,7 +14,7 @@ import SettingsContext from '@/contexts/SettingsContext/context'
 import { getFirebaseToken } from '@/utils/firebase'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
 import { getDbEchoRegistrations } from '@/utils/idb'
-import { notificationsAvailableInBrowser, requireNotifyPermission } from '@/utils/notifications'
+import { notificationsAvailableInBrowser } from '@/utils/notifications'
 import { showSuccessMessageToast } from '@/utils/toasts'
 
 import SettingsHeader from '../SettingsHeader'
@@ -169,6 +169,19 @@ const NotificationsSettings: React.FC = () => {
                 title="Display tokens for debugging"
                 active={true}
               />
+
+	    { isDevModeEnabled? (
+                <Button
+                  onClick={() => {
+		    // @ts-ignore
+		    window.downloadLogsBlob();
+		  }}
+                  customType="outline"
+                  tabIndex={4}
+                >
+                  Get Logs
+                </Button>
+	    ) : null}
             </SettingsItem>
           </div>
         </div>

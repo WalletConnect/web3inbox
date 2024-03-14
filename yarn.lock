@@ -3607,7 +3607,7 @@
     "@walletconnect/modal-core" "2.6.2"
     "@walletconnect/modal-ui" "2.6.2"
 
-"@walletconnect/notify-client@1.1.3":
+"@walletconnect/notify-client@^1.1.2":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.1.3.tgz#29dd640dc53a45669fe27c690ce33a2401155bb5"
   integrity sha512-mUGsIRPVMxfvHRbfk00+FeeNLbVNvDnnDqcmYtpzdzo40jO2T3Rjh2L/tw24CF/FI9xbhvhzMzibhIduOQF+fw==
@@ -3838,19 +3838,19 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3inbox/core@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.2.1.tgz#4588127735c41e4314d77fa782f685f8ecc45587"
-  integrity sha512-eon3IJAkTTC69afq0SfZYHdKHbBkKZxUBxtosCz+8wupXxvcbdphUbSL4JnCi0CDG+tJWKfpouqavSeLxwwOxw==
+"@web3inbox/core@^1.3.0-d2ca9ea":
+  version "1.3.0-d2ca9ea"
+  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.3.0-d2ca9ea.tgz#fe3e849e950b1086194f6a792575fb8f3ce1fae5"
+  integrity sha512-4N4QBadr3AsyueR43dnSuP4xg4UHZbJiouCKteldFZ2h/sYR2oaN7AEKxUJfPtjjbOqcVOqqsUcksJ2UOsx7jw==
   dependencies:
     "@walletconnect/core" "2.11.0"
-    "@walletconnect/notify-client" "1.1.3"
+    "@walletconnect/notify-client" "^1.1.2"
     valtio "^1.11.2"
 
-"@web3inbox/react@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.2.1.tgz#a3118cf5d77fe07580e10a837c97c69cb919d98f"
-  integrity sha512-AJo4nmfjyg4S1huSBighgFyFRrooh/IMM+1EHyBD5gu6xMSoYVPOzzLBjJOqRHt13+cDQ/++Qdmrw7FCFq/m9g==
+"@web3inbox/react@^1.3.0-77efcbd":
+  version "1.3.0-77efcbd"
+  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.3.0-77efcbd.tgz#7a5b707ffcda6a8c786ce127a2c3b4684f388495"
+  integrity sha512-9Icw7D44ziaMoQWrjsdhzw7aVulQVepwwbIAIy0JVO87dG8PjKsomrox1qof7geaK3yNqUQAacUaNtbW+4sJCA==
   dependencies:
     react "^18.2.0"
 
