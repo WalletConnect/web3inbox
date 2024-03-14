@@ -1,6 +1,6 @@
 export class ArrayLogStream {
   private logs: string[]
-  private MAX_LOG_SIZE = 200
+  private MAX_LOG_SIZE = 1000
   private MAX_LOG_SIZE_MARGIN = 50
 
   public constructor() {
