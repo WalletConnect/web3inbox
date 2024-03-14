@@ -14,8 +14,8 @@ export class ArrayLogStream {
     window.w3iLogger = this
 
     // @ts-ignore
-    window.downloadLogsBlob = () => {
-      this.downloadLogsBlobInBrowser({ clientId: 'N/A' })
+    window.downloadLogsBlob = (clientMetadata?: LogClientMetadata) => {
+      this.downloadLogsBlobInBrowser(clientMetadata ?? { clientId: 'N/A' })
       this.clearLogs()
     }
   }
