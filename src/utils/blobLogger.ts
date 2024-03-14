@@ -1,3 +1,7 @@
+export interface LogClientMetadata {
+  clientId: string
+}
+
 export class ArrayLogStream {
   private logs: string[]
   private MAX_LOG_SIZE = 1000
@@ -11,7 +15,7 @@ export class ArrayLogStream {
 
     // @ts-ignore
     window.downloadLogsBlob = () => {
-      this.downloadLogsBlobInBrowser()
+      this.downloadLogsBlobInBrowser({ clientId: "N/A" })
       this.clearLogs()
     }
   }
@@ -37,13 +41,14 @@ export class ArrayLogStream {
     this.logs = []
   }
 
-  public logsToBlob() {
+  public logsToBlob(clientMetadata: LogClientMetadata) {
+    this.logs.push(JSON.stringify({clientMetadata}))
     const blob = new Blob(this.logs, { type: 'application/json' })
     return blob
   }
 
-  public downloadLogsBlobInBrowser() {
-    const url = URL.createObjectURL(this.logsToBlob())
+  public downloadLogsBlobInBrowser(clientMetadata: LogClientMetadata) {
+    const url = URL.createObjectURL(this.logsToBlob(clientMetadata))
     const anchor = document.createElement('a')
     anchor.href = url
     anchor.download = `w3i-logs-${new Date().toISOString()}.txt`

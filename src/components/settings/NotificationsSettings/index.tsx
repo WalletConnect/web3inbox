@@ -174,7 +174,7 @@ const NotificationsSettings: React.FC = () => {
                 <Button
                   onClick={() => {
                     // @ts-ignore
-                    window.downloadLogsBlob()
+                    window.downloadLogsBlob({ clientId: await client?.getClientId() })
                   }}
                   customType="outline"
                   tabIndex={4}

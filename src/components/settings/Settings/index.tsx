@@ -14,6 +14,7 @@ import SettingsContext from '@/contexts/SettingsContext/context'
 import { useModals } from '@/utils/hooks'
 
 import './Settings.scss'
+import { useWeb3InboxClient } from '@web3inbox/react'
 
 const themeModes: { id: SettingsContextSimpleState['mode']; icon: string }[] = [
   { id: 'light', icon: LightCity },
