@@ -17,7 +17,10 @@ export class ArrayLogStream {
   }
 
   write(chunk: any): void {
-    this.logs.push(JSON.stringify(chunk))
+    this.logs.push(JSON.stringify({
+      timestamp: new Date().toISOString(),
+      log: chunk,
+    }))
 
     // Using splice with a margin instead of unshift because logging
     // is a very frequent procedure and having to unshift every log after 200
