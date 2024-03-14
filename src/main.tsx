@@ -3,11 +3,11 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { initWeb3InboxClient } from '@web3inbox/react'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
+import pino from 'pino'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
 import { BrowserRouter } from 'react-router-dom'
 import { WagmiProvider } from 'wagmi'
-import pino from 'pino'
 
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from '@/constants/web3Modal'
 import SettingsContextProvider from '@/contexts/SettingsContext'
@@ -17,12 +17,11 @@ import { polyfill } from '@/utils/polyfill'
 import { initSentry } from '@/utils/sentry'
 import { metadata, wagmiConfig } from '@/utils/wagmiConfig'
 
-
 import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
+import { ArrayLogStream } from './utils/blobLogger'
 
 import './index.css'
-import { ArrayLogStream } from './utils/blobLogger'
 
 polyfill()
 initSentry()
@@ -47,10 +46,10 @@ initWeb3InboxClient({
   allApps: true,
   domain: window.location.hostname,
   logger: pino({
-    level: import.meta.env.PROD ? 'error' : 'debug',
+    level: 'debug',
     browser: {
-      write: (chunk) => {
-	logStream.write(chunk)
+      write: chunk => {
+        logStream.write(chunk)
       }
     }
   })

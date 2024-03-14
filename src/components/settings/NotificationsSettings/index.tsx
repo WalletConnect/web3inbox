@@ -170,18 +170,18 @@ const NotificationsSettings: React.FC = () => {
                 active={true}
               />
 
-	    { isDevModeEnabled? (
+              {isDevModeEnabled ? (
                 <Button
                   onClick={() => {
-		    // @ts-ignore
-		    window.downloadLogsBlob();
-		  }}
+                    // @ts-ignore
+                    window.downloadLogsBlob()
+                  }}
                   customType="outline"
                   tabIndex={4}
                 >
                   Get Logs
                 </Button>
-	    ) : null}
+              ) : null}
             </SettingsItem>
           </div>
         </div>
