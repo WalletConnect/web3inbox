@@ -73,6 +73,6 @@
     "workbox-precaching": "^6.5.4",
     "workbox-routing": "^6.5.4",
     "workbox-window": "^6.5.4",
-    "dotenv": "16.3.1"
+    "dotenv": "16.4.5"
   }
 }
