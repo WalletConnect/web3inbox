@@ -1,4 +1,6 @@
+import { config } from 'dotenv'
 import { defineConfig, devices } from '@playwright/test'
+config({ path: './.env' })
 
 const baseURL = 'http://localhost:5173'
 
