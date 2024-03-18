@@ -15,6 +15,7 @@
     "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'",
     "playwright:install": "playwright install --with-deps",
     "playwright:test": "playwright test",
+    "playwright:test:canary": "playwright test --retries=0 --grep canary.spec.ts",
     "playwright:start": "VITE_CI=true yarn dev",
     "playwright:debug": "playwright test --debug"
   },
@@ -45,6 +46,7 @@
     "wagmi": "^2.5.7"
   },
   "devDependencies": {
+    "@aws-sdk/client-cloudwatch": "^3.535.0",
     "@playwright/test": "^1.40.1",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/lodash.debounce": "^4.0.7",
@@ -57,6 +59,7 @@
     "@vitejs/plugin-react": "^2.2.0",
     "@walletconnect/types": "2.11.0",
     "autoprefixer": "^10.4.14",
+    "dotenv": "16.4.5",
     "esbuild": "^0.20.0",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
@@ -72,7 +75,6 @@
     "workbox-core": "^6.5.4",
     "workbox-precaching": "^6.5.4",
     "workbox-routing": "^6.5.4",
-    "workbox-window": "^6.5.4",
-    "dotenv": "16.4.5"
+    "workbox-window": "^6.5.4"
   }
 }
