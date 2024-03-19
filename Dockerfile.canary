@@ -6,8 +6,6 @@ COPY ../ ./
 RUN npm ci
 RUN npm run build
 
-WORKDIR .
-
 RUN npm run playwright:install
 
 CMD ["npm", "run", "playwright:test:canary"]
