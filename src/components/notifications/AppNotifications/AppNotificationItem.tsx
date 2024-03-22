@@ -19,6 +19,7 @@ export interface IAppNotification {
   title: string
   message: string
   isRead: boolean
+  read: () => void
   timestamp: number
   url: string | null
 }
@@ -44,6 +45,7 @@ const AppNotificationItemLink: React.FC<{
 
 const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
   ({ notification, appLogo }, ref) => {
+    console.log({notification})
     const formattedTime = useFormattedTime(notification.timestamp)
     const [textClamped, setTextClamped] = useState<boolean>(
       notification.message.length > MAX_BODY_LENGTH
@@ -80,7 +82,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
             alt="image corresponding to the notification"
           />
 
-          <div key={notification.id} className="AppNotifications__item__content" ref={ref}>
+          <div key={notification.id} onMouseOver={notification.read} className="AppNotifications__item__content" ref={ref}>
             <div className="AppNotifications__item__header">
               <div className="AppNotifications__item__title">
                 <Text variant="paragraph-500">{notification.title}</Text>

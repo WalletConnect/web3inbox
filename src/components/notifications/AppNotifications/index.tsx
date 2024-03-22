@@ -85,7 +85,9 @@ const AppNotifications = () => {
                         notification={{
                           timestamp: notification.sentAt,
                           // We do not manage read status for now.
-                          isRead: true,
+                          isRead: notification.isRead,
+			  //@ts-ignore
+			  read: notification.read,
                           id: notification.id.toString(),
                           message: notification.body,
                           title: notification.title,

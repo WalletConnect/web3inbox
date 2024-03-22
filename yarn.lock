@@ -3618,10 +3618,10 @@
     "@walletconnect/modal-core" "2.6.2"
     "@walletconnect/modal-ui" "2.6.2"
 
-"@walletconnect/notify-client@1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.1.3.tgz#29dd640dc53a45669fe27c690ce33a2401155bb5"
-  integrity sha512-mUGsIRPVMxfvHRbfk00+FeeNLbVNvDnnDqcmYtpzdzo40jO2T3Rjh2L/tw24CF/FI9xbhvhzMzibhIduOQF+fw==
+"@walletconnect/notify-client@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.2.0.tgz#880112d0bf063cd4c88968bf4215f0723f79bc5e"
+  integrity sha512-e0mcA4a9HNCQlEgunVnoMDT/Iwzwz5iaTnzOJIRk2CQd54aAqR8vjYjOS7ELMKE2YWcruQ6cq+7gyjhSG1u6Yg==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
@@ -3849,19 +3849,19 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3inbox/core@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.2.1.tgz#4588127735c41e4314d77fa782f685f8ecc45587"
-  integrity sha512-eon3IJAkTTC69afq0SfZYHdKHbBkKZxUBxtosCz+8wupXxvcbdphUbSL4JnCi0CDG+tJWKfpouqavSeLxwwOxw==
+"@web3inbox/core@^1.3.0-f4e0d8b":
+  version "1.3.0-f4e0d8b"
+  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.3.0-f4e0d8b.tgz#fe989d2e673d88a70fe8ead9c75761ae27041bc5"
+  integrity sha512-tV4cdOzVl4NLFn4DzSC52hVDGEVW6s3em4Q+YO5Au6QQPhJtNSiZ0qbK+o0uPO7/3z3y66RNnL++6s/Oegoh+A==
   dependencies:
     "@walletconnect/core" "2.11.0"
-    "@walletconnect/notify-client" "1.1.3"
+    "@walletconnect/notify-client" "^1.2.0"
     valtio "^1.11.2"
 
-"@web3inbox/react@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.2.1.tgz#a3118cf5d77fe07580e10a837c97c69cb919d98f"
-  integrity sha512-AJo4nmfjyg4S1huSBighgFyFRrooh/IMM+1EHyBD5gu6xMSoYVPOzzLBjJOqRHt13+cDQ/++Qdmrw7FCFq/m9g==
+"@web3inbox/react@^1.3.0-f4e0d8b":
+  version "1.3.0-f4e0d8b"
+  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.3.0-f4e0d8b.tgz#2df54952bd1cdfa04bfbc1727cbb5f2f490c3652"
+  integrity sha512-BrrfBc1ZB/63N/7nS8dThhrJkCSmdRymgzbThaiXxr29sbfmL1QnidP4bYJPcJvCxfS0JwX4HTcnEQhxLnMpLg==
   dependencies:
     react "^18.2.0"
 
