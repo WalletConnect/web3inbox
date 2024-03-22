@@ -45,7 +45,6 @@ const AppNotificationItemLink: React.FC<{
 
 const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
   ({ notification, appLogo }, ref) => {
-    console.log({notification})
     const formattedTime = useFormattedTime(notification.timestamp)
     const [textClamped, setTextClamped] = useState<boolean>(
       notification.message.length > MAX_BODY_LENGTH
