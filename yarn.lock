@@ -3618,10 +3618,10 @@
     "@walletconnect/modal-core" "2.6.2"
     "@walletconnect/modal-ui" "2.6.2"
 
-"@walletconnect/notify-client@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.2.0.tgz#880112d0bf063cd4c88968bf4215f0723f79bc5e"
-  integrity sha512-e0mcA4a9HNCQlEgunVnoMDT/Iwzwz5iaTnzOJIRk2CQd54aAqR8vjYjOS7ELMKE2YWcruQ6cq+7gyjhSG1u6Yg==
+"@walletconnect/notify-client@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.2.1.tgz#2203ab4e367f0590b97a8dced76f8402b53b40a7"
+  integrity sha512-wfFlcbCtNtmZ8GQ5kikbN2JYDFR6rQJYTbs9Dz8p5y57ZSUgQgOXImYzs/6MS0nUZwgo4phGYnCIlz/MJDxnsg==
   dependencies:
     "@noble/ed25519" "^1.7.3"
     "@walletconnect/cacao" "1.0.2"
@@ -3849,19 +3849,19 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3inbox/core@^1.3.0-e3ba69f":
-  version "1.3.0-e3ba69f"
-  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.3.0-e3ba69f.tgz#29c4b986eba072d0cdea02d98fcac85f9c615541"
-  integrity sha512-RPOmxC3AchLNsTfSzSXQdnhjSCrlGwn0NdlD/Fv5oI492LRD3V3f857r3Lq4A2wIaF0yyMmzFazQOAe6Eo/R0w==
+"@web3inbox/core@^1.3.0-a8e32fb":
+  version "1.3.0-a8e32fb"
+  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.3.0-a8e32fb.tgz#fcc09d3b7d9b2721931f8dc9f47761a2a8021614"
+  integrity sha512-2toFso14U6aZp7ioFlI+e6M8MJJDo1ealwc44JZyIj8u37iq6zN6EBp83WhT5gTYFp/RL0mRyL3f2SYZ+rsrwg==
   dependencies:
     "@walletconnect/core" "2.11.0"
-    "@walletconnect/notify-client" "^1.2.0"
+    "@walletconnect/notify-client" "^1.2.1"
     valtio "^1.11.2"
 
-"@web3inbox/react@^1.3.0-e3ba69f":
-  version "1.3.0-e3ba69f"
-  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.3.0-e3ba69f.tgz#7e9c5e3fb978d360857f70d03cf67e0e04fe1f3b"
-  integrity sha512-e9gRo+qAjpjC3pioQEwdD1Mr3yVS2r2Ea9xojqLsXMLDrrZluniRarmZIfiUkhcLy24k/QZAeGdQ8he8UoK8WA==
+"@web3inbox/react@^1.3.0-a8e32fb":
+  version "1.3.0-a8e32fb"
+  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.3.0-a8e32fb.tgz#18bbd1670da3370faccfe8d02e8d98f809e8753d"
+  integrity sha512-IGrqCUN6lwhRG/VTkBWtMtNmOU0uKyjt7wcI8khu+IBwgPob2qN8MKg9Jdg6JOhZPcyItOMezDiNPVJ+bU7hfw==
   dependencies:
     react "^18.2.0"
 
