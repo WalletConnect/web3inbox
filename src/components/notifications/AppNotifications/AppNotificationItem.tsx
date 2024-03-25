@@ -67,70 +67,66 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
 
     return (
       <LazyMotion features={domMax}>
-	<div onMouseOver={notification.read}>
-        <AppNotificationItemLink
-          url={notification.url}
-          className={cn(
-            'AppNotifications__item',
-            notification.isRead ? '' : 'AppNotifications__item--blue',
-            notification.url ? 'AppNotifications__item__link' : ''
-          )}
-        >
-          <img
-            src={notification.image || appLogo || '/fallback.svg'}
-            loading="lazy"
-            alt="image corresponding to the notification"
-          />
-
-          <div
-            key={notification.id}
-            className="AppNotifications__item__content"
-            ref={ref}
+        <div onMouseOver={notification.read}>
+          <AppNotificationItemLink
+            url={notification.url}
+            className={cn(
+              'AppNotifications__item',
+              notification.isRead ? '' : 'AppNotifications__item--blue',
+              notification.url ? 'AppNotifications__item__link' : ''
+            )}
           >
-            <div className="AppNotifications__item__header">
-              <div className="AppNotifications__item__title">
-                <Text variant="paragraph-500">{notification.title}</Text>
-                {notification.url ? (
-                  <ArrowRightTopIcon className="AppNotifications__item__title__external-link-icon" />
-                ) : null}
-              </div>
-              <div className="AppNotifications__item__header__wrapper">
-                {formattedTime ? (
-                  <Text
-                    className="AppNotifications__item__header__wrapper__date"
-                    variant="tiny-500"
-                  >
-                    {formattedTime}
-                  </Text>
-                ) : null}
-                {notification.url ? (
-                  <div className="AppNotifications__item__header__wrapper__visit-link">
-                    <Text variant="link-500">Visit Link</Text>
-                    <ArrowRightTopIcon />
+            <img
+              src={notification.image || appLogo || '/fallback.svg'}
+              loading="lazy"
+              alt="image corresponding to the notification"
+            />
+
+            <div key={notification.id} className="AppNotifications__item__content" ref={ref}>
+              <div className="AppNotifications__item__header">
+                <div className="AppNotifications__item__title">
+                  <Text variant="paragraph-500">{notification.title}</Text>
+                  {notification.url ? (
+                    <ArrowRightTopIcon className="AppNotifications__item__title__external-link-icon" />
+                  ) : null}
+                </div>
+                <div className="AppNotifications__item__header__wrapper">
+                  {formattedTime ? (
+                    <Text
+                      className="AppNotifications__item__header__wrapper__date"
+                      variant="tiny-500"
+                    >
+                      {formattedTime}
+                    </Text>
+                  ) : null}
+                  {notification.url ? (
+                    <div className="AppNotifications__item__header__wrapper__visit-link">
+                      <Text variant="link-500">Visit Link</Text>
+                      <ArrowRightTopIcon />
+                    </div>
+                  ) : null}
+                  <div className="AppNotifications__item__status">
+                    {!notification.isRead && <CircleIcon />}
                   </div>
-                ) : null}
-                <div className="AppNotifications__item__status">
-                  {!notification.isRead && <CircleIcon />}
                 </div>
               </div>
-            </div>
-            <Text
-              className={cn('AppNotifications__item__message', showMore ? 'show_more' : '')}
-              variant="small-400"
-            >
-              {body}
-            </Text>
-            {textClamped && (
-              <button
-                onClick={handleToggleDescription}
-                className="AppNotifications__item__show_button"
+              <Text
+                className={cn('AppNotifications__item__message', showMore ? 'show_more' : '')}
+                variant="small-400"
               >
-                <Text variant="small-400">{showMore ? 'Show less' : 'Show more'}</Text>
-              </button>
-            )}
-          </div>
-        </AppNotificationItemLink>
-	  </div>
+                {body}
+              </Text>
+              {textClamped && (
+                <button
+                  onClick={handleToggleDescription}
+                  className="AppNotifications__item__show_button"
+                >
+                  <Text variant="small-400">{showMore ? 'Show less' : 'Show more'}</Text>
+                </button>
+              )}
+            </div>
+          </AppNotificationItemLink>
+        </div>
       </LazyMotion>
     )
   }
