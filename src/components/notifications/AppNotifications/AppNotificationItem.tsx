@@ -67,6 +67,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
 
     return (
       <LazyMotion features={domMax}>
+	<div onMouseOver={notification.read}>
         <AppNotificationItemLink
           url={notification.url}
           className={cn(
@@ -83,7 +84,6 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
 
           <div
             key={notification.id}
-            onMouseOver={notification.read}
             className="AppNotifications__item__content"
             ref={ref}
           >
@@ -130,6 +130,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
             )}
           </div>
         </AppNotificationItemLink>
+	  </div>
       </LazyMotion>
     )
   }

@@ -75,10 +75,8 @@
       opacity: 0.5;
     }
 
-    &__unread {
-      span {
-        font-weight: 700 !important;
-      }
+    &-label {
+      color: var(--fg-color-1);
     }
   }
 
