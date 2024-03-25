@@ -81,7 +81,12 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
             alt="image corresponding to the notification"
           />
 
-          <div key={notification.id} onMouseOver={notification.read} className="AppNotifications__item__content" ref={ref}>
+          <div
+            key={notification.id}
+            onMouseOver={notification.read}
+            className="AppNotifications__item__content"
+            ref={ref}
+          >
             <div className="AppNotifications__item__header">
               <div className="AppNotifications__item__title">
                 <Text variant="paragraph-500">{notification.title}</Text>
