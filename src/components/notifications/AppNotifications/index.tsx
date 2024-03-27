@@ -75,17 +75,22 @@ const AppNotifications = () => {
           {isLoading || notifications?.length ? (
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
-                {!isLoading && notifications?.length ? <Label color="main">Latest</Label> : null}
+                {!isLoading && notifications?.length ? (
+                  <Label color="main">Latest</Label>
+                ) : null}
                 {notifications?.length
                   ? notifications.map((notification, index) => (
                       <AppNotificationItem
-                        ref={index === notifications.length - 1 ? intersectionObserverRef : null}
+                        ref={
+                          index === notifications.length - 1 ? intersectionObserverRef : null
+                        }
                         key={notification.id}
                         onClear={nextPage}
                         notification={{
                           timestamp: notification.sentAt,
                           // We do not manage read status for now.
-                          isRead: true,
+                          isRead: notification.isRead,
+                          read: notification.read,
                           id: notification.id.toString(),
                           message: notification.body,
                           title: notification.title,

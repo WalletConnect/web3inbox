@@ -19,6 +19,7 @@ export interface IAppNotification {
   title: string
   message: string
   isRead: boolean
+  read: () => void
   timestamp: number
   url: string | null
 }
@@ -32,6 +33,7 @@ const AppNotificationItemLink: React.FC<{
   children: React.ReactNode
   url: string | null
   className?: string
+  onMouseOver?: () => void
 }> = ({ children, url, ...props }) => {
   if (!url) return <div {...props}>{children}</div>
 
@@ -68,6 +70,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
       <LazyMotion features={domMax}>
         <AppNotificationItemLink
           url={notification.url}
+          onMouseOver={notification.read}
           className={cn(
             'AppNotifications__item',
             notification.isRead ? '' : 'AppNotifications__item--blue',

@@ -135,7 +135,7 @@ test('it should subscribe, receive messages and unsubscribe', async ({
   await inboxPage.page.getByText('Notify Swift', { exact: false }).waitFor({ state: 'visible' })
 
   expect(await inboxPage.page.getByText('Notify Swift', { exact: false }).isVisible()).toEqual(true)
-  
+
   await inboxPage.subscribeAndNavigateToDapp(CUSTOM_TEST_DAPP.name)
 
   const address = await inboxPage.getAddress()
