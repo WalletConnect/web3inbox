@@ -42,9 +42,6 @@ const AppNotifications = () => {
   const { isLoading, notifications, intersectionObserverRef, nextPage } =
     useNotificationsInfiniteScroll(userPubkey, domain)
 
-  const unreadNotifications = notifications?.filter(notification => !notification.isRead)
-  const readNotifications = notifications?.filter(notification => notification.isRead)
-
   const ref = useRef<HTMLDivElement>(null)
 
   const [notificationsDrag, setNotificationsDrag] = useState<
@@ -78,51 +75,14 @@ const AppNotifications = () => {
           {isLoading || notifications?.length ? (
             <div className="AppNotifications__list">
               <div className="AppNotifications__list__content">
-                {!isLoading && unreadNotifications?.length ? (
-                  <Label color="main">Unread</Label>
-                ) : null}
-                {unreadNotifications?.length
-                  ? unreadNotifications.map((notification, index) => (
-                      <AppNotificationItem
-                        ref={
-                          index === unreadNotifications.length - 1 ? intersectionObserverRef : null
-                        }
-                        key={notification.id}
-                        onClear={nextPage}
-                        notification={{
-                          timestamp: notification.sentAt,
-                          // We do not manage read status for now.
-                          isRead: notification.isRead,
-                          read: notification.read,
-                          id: notification.id.toString(),
-                          message: notification.body,
-                          title: notification.title,
-                          image: notification.type
-                            ? subscription?.scope[notification.type]?.imageUrls?.md
-                            : undefined,
-                          url: notification.url
-                        }}
-                        appLogo={subscription.metadata?.icons?.[0]}
-                      />
-                    ))
-                  : null}
-                {isLoading && !notifications?.length ? (
-                  <Fragment>
-                    <AppNotificationItemSkeleton />
-                    <AppNotificationItemSkeleton />
-                    <AppNotificationItemSkeleton />
-                  </Fragment>
-                ) : null}
-              </div>
-              <div className="AppNotifications__list__content">
-                {!isLoading && readNotifications?.length ? (
+                {!isLoading && notifications?.length ? (
                   <Label color="main">Latest</Label>
                 ) : null}
-                {readNotifications?.length
-                  ? readNotifications.map((notification, index) => (
+                {notifications?.length
+                  ? notifications.map((notification, index) => (
                       <AppNotificationItem
                         ref={
-                          index === readNotifications.length - 1 ? intersectionObserverRef : null
+                          index === notifications.length - 1 ? intersectionObserverRef : null
                         }
                         key={notification.id}
                         onClear={nextPage}
