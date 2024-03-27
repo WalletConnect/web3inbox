@@ -22,6 +22,8 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
+      - name: Build app
+        run: yarn build
       - name: Install Playwright Browsers
         run: yarn playwright:install
       - name: Run Playwright tests
