@@ -43,7 +43,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'yarn playwright:start',
+    command: process.env.CI ? 'yarn preview' : 'VITE_CI=true yarn dev',
     url: baseURL,
     reuseExistingServer: !process.env.CI
   }
