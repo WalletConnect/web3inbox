@@ -33,6 +33,7 @@ const AppNotificationItemLink: React.FC<{
   children: React.ReactNode
   url: string | null
   className?: string
+  onMouseOver?: () => void
 }> = ({ children, url, ...props }) => {
   if (!url) return <div {...props}>{children}</div>
 
@@ -67,9 +68,9 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
 
     return (
       <LazyMotion features={domMax}>
-        <div onMouseOver={notification.read}>
           <AppNotificationItemLink
             url={notification.url}
+	    onMouseOver={notification.read}
             className={cn(
               'AppNotifications__item',
               notification.isRead ? '' : 'AppNotifications__item--blue',
@@ -126,7 +127,6 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
               )}
             </div>
           </AppNotificationItemLink>
-        </div>
       </LazyMotion>
     )
   }
