@@ -2,7 +2,7 @@ import { config } from 'dotenv'
 import { defineConfig, devices } from '@playwright/test'
 config({ path: './.env' })
 
-const baseURL = process.env.CI ? 'http://localhost:4173/' : 'http://localhost:5173'
+const baseURL = process.env.PRE_BUILD ? 'http://localhost:4173/' : 'http://localhost:5173'
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -43,7 +43,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: process.env.CI ? 'yarn preview' : 'VITE_CI=true yarn dev',
+    command: process.env.PRE_BUILD ? 'yarn preview' : 'VITE_CI=true yarn dev',
     url: baseURL,
     reuseExistingServer: !process.env.CI
   }

@@ -8,4 +8,5 @@ RUN yarn build
 
 RUN yarn playwright:install
 
+ENV PRE_BUILD=true
 CMD ["npm", "run", "playwright:test:canary"]
