@@ -15,8 +15,8 @@ export interface ModalFixture {
 }
 
 export const test = base.extend<ModalFixture>({
-  inboxPage: async ({ page }, use) => {
-    const inboxPage = new InboxPage(page)
+  inboxPage: async ({ page, baseURL }, use) => {
+    const inboxPage = new InboxPage(page, baseURL!)
     await inboxPage.load()
     await use(inboxPage)
   },
@@ -25,8 +25,8 @@ export const test = base.extend<ModalFixture>({
     await use(modalValidator)
   },
   // Have to pass same page object to maintain state between pages
-  settingsPage: async ({ inboxPage }, use) => {
-    const settingsPage = new SettingsPage(inboxPage.page)
+  settingsPage: async ({ inboxPage, baseURL }, use) => {
+    const settingsPage = new SettingsPage(inboxPage.page, baseURL!)
     settingsPage.load()
     use(settingsPage)
   },

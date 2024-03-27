@@ -1,13 +1,9 @@
 import { type Locator, type Page, expect } from '@playwright/test'
 
-import { BASE_URL } from '../constants'
-
 export class InboxPage {
-  private readonly baseURL = BASE_URL
-
   private readonly connectButton: Locator
 
-  constructor(public readonly page: Page) {
+  constructor(public readonly page: Page, private readonly baseURL: string) {
     this.connectButton = this.page.getByRole('button', { name: 'Connect Wallet' })
   }
 
