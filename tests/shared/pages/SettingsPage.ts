@@ -1,11 +1,7 @@
 import { type Locator, type Page, expect } from '@playwright/test'
 
-import { BASE_URL } from '../../shared/constants'
-
 export class SettingsPage {
-  private readonly baseURL = BASE_URL
-
-  constructor(public readonly page: Page) {}
+  constructor(public readonly page: Page, private readonly baseURL: string) {}
 
   async load() {}
 

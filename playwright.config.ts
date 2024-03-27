@@ -2,7 +2,7 @@ import { config } from 'dotenv'
 import { defineConfig, devices } from '@playwright/test'
 config({ path: './.env' })
 
-const baseURL = process.env.PRE_BUILD ? 'http://localhost:4173/' : 'http://localhost:5173'
+const baseURL = process.env['BASE_URL'] || (process.env.PRE_BUILD ? 'http://localhost:4173/' : 'http://localhost:5173')
 
 /**
  * See https://playwright.dev/docs/test-configuration.
