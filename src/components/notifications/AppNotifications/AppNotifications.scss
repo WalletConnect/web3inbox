@@ -230,9 +230,9 @@
     &__message {
       color: var(--fg-color-1);
       display: -webkit-box;
-      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      line-height: 18px;
       margin-top: 0.25rem;
       letter-spacing: -0.14px;
 
