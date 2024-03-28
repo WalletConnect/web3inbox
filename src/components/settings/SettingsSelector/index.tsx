@@ -56,9 +56,8 @@ const SettingsSelector: React.FC = () => {
                           Appearance
                         </Text>
                         <Text className="SettingsSelector__link__description" variant="small-500">
-                          Change how you want Web3Inbox to look, select your preferred currency and
-                          interface language.
-                        </Text>
+                          Change how you want Web3Inbox to look.
+			</Text>
                       </div>
                       <ChevronRightIcon />
                     </div>
