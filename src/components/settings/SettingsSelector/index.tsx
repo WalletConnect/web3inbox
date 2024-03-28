@@ -47,22 +47,6 @@ const SettingsSelector: React.FC = () => {
                     </div>
                   </div>
                 </NavLink>
-                <NavLink to={NAVIGATION.settings.appearance} end className="SettingsSelector__link">
-                  <div className="SettingsSelector__link__wrapper">
-                    <AppearanceIcon />
-                    <div className="SettingsSelector__link__icon__wrapper">
-                      <div className="SettingsSelector__link__title__wrapper">
-                        <Text className="SettingsSelector__link__title" variant="small-500">
-                          Appearance
-                        </Text>
-                        <Text className="SettingsSelector__link__description" variant="small-500">
-                          Change how you want Web3Inbox to look.
-			</Text>
-                      </div>
-                      <ChevronRightIcon />
-                    </div>
-                  </div>
-                </NavLink>
                 <NavLink to={NAVIGATION.settings.support} end className="SettingsSelector__link">
                   <div className="SettingsSelector__link__wrapper">
                     <CircleQuestionIcon />
@@ -89,14 +73,6 @@ const SettingsSelector: React.FC = () => {
                 <NotificationIcon />
                 <Text className="SettingsSelector__link__title" variant="small-500">
                   Notifications
-                </Text>
-              </div>
-            </NavLink>
-            <NavLink to={NAVIGATION.settings.appearance} end className="SettingsSelector__link">
-              <div className="SettingsSelector__link__wrapper">
-                <AppearanceIcon />
-                <Text className="SettingsSelector__link__title" variant="small-500">
-                  Appearance
                 </Text>
               </div>
             </NavLink>
