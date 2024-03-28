@@ -1,8 +1,9 @@
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 
 import cn from 'classnames'
 import { LazyMotion, domMax } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import debounce from "lodash.debounce"
 
 import ArrowRightTopIcon from '@/components/general/Icon/ArrowRightTopIcon'
 import CircleIcon from '@/components/general/Icon/CircleIcon'
@@ -11,7 +12,9 @@ import { useFormattedTime } from '@/utils/hooks'
 
 import './AppNotifications.scss'
 
-const MAX_BODY_LENGTH = 180
+const CLAMPED_LENGTH = 120;
+const MESSAGE_LINE_HEIGHT_IN_PX = 18;
+const MESSAGE_MAX_LINES = 3;
 
 export interface IAppNotification {
   id: string
@@ -46,13 +49,42 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
   ({ notification, appLogo }, ref) => {
     const formattedTime = useFormattedTime(notification.timestamp)
     const [textClamped, setTextClamped] = useState<boolean>(
-      notification.message.length > MAX_BODY_LENGTH
+      false
     )
     const [showMore, setShowMore] = useState<boolean>(false)
 
+    const notificationBodyRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
-      setTextClamped(notification.message.length > MAX_BODY_LENGTH)
-    }, [notification.message])
+      if(!notificationBodyRef.current) return;
+
+      const resizeObserver = new ResizeObserver((entries) => {
+	const divHeight = entries[0].contentRect.height;
+
+        const lineHeight = MESSAGE_LINE_HEIGHT_IN_PX;
+
+        const linesInDiv = Math.ceil(divHeight/lineHeight);
+
+        if(linesInDiv > MESSAGE_MAX_LINES) {
+          setTextClamped(true);
+        }
+	// Only if user takes manual action and the linesInDiv are less than message max lines
+	// can we safely remove text clamping. There is a risk in having infinite loops of
+	// setting the clamp off and on if we don't guard this
+	else if(showMore) {
+          setTextClamped(false);
+	  setShowMore(false);
+	}
+      })
+
+      resizeObserver.observe(notificationBodyRef.current)
+
+      return () => {
+	if(notificationBodyRef.current) {
+	  resizeObserver.unobserve(notificationBodyRef.current)
+	}
+      }
+    }, [notification.message, notificationBodyRef, showMore])
 
     const handleToggleDescription = (e: React.MouseEvent) => {
       e.preventDefault()
@@ -61,7 +93,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
 
     const body =
       textClamped && !showMore
-        ? notification.message.slice(0, MAX_BODY_LENGTH) + '...'
+        ? notification.message.slice(0, CLAMPED_LENGTH) + '...'
         : notification.message
 
     return (
@@ -111,6 +143,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
             <Text
               className={cn('AppNotifications__item__message', showMore ? 'show_more' : '')}
               variant="small-400"
+	      ref={notificationBodyRef}
             >
               {body}
             </Text>
