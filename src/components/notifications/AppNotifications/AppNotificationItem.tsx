@@ -3,7 +3,6 @@ import { forwardRef, useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import { LazyMotion, domMax } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import debounce from "lodash.debounce"
 
 import ArrowRightTopIcon from '@/components/general/Icon/ArrowRightTopIcon'
 import CircleIcon from '@/components/general/Icon/CircleIcon'
