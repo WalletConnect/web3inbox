@@ -227,10 +227,12 @@
         }
       }
     }
+
     &__message {
       color: var(--fg-color-1);
       display: -webkit-box;
       -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
       overflow: hidden;
       line-height: 18px;
       margin-top: 0.25rem;
@@ -243,11 +245,14 @@
       + .Anchor {
         margin-top: 0.75rem;
       }
+
+      &.show_more {
+        color: red;
+        max-height: unset;
+        -webkit-line-clamp: unset;
+      }
     }
-    &__message.show_more {
-      max-height: unset;
-      -webkit-line-clamp: unset;
-    }
+
     &__show_button {
       color: var(--accent-color-1);
       background: none;
