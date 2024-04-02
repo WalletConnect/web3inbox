@@ -42,40 +42,40 @@ const AppNotificationItemLink: React.FC<{
 
 const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
   ({ notification, appLogo }, ref) => {
-
     const formattedTime = useFormattedTime(notification.timestamp)
 
-    const [showMore, setShowMore] = useState(false);
+    const [showMore, setShowMore] = useState(false)
 
-    const notificationBodyRef = useRef<HTMLDivElement>(null);
+    const notificationBodyRef = useRef<HTMLDivElement>(null)
 
-    const body = notification.message;
+    const body = notification.message
 
     const [isClamped, setIsClamped] = useState(false)
 
-
     useEffect(() => {
-      if(!notificationBodyRef.current) return;
+      if (!notificationBodyRef.current) return
 
       const resizeObserver = new ResizeObserver(() => {
-	if(!showMore) {
-	setIsClamped(notificationBodyRef.current ?
-      notificationBodyRef.current.scrollHeight > notificationBodyRef.current.clientHeight
-	  : false)
-	}
+        if (!showMore) {
+          setIsClamped(
+            notificationBodyRef.current
+              ? notificationBodyRef.current.scrollHeight > notificationBodyRef.current.clientHeight
+              : false
+          )
+        }
       })
 
-      resizeObserver.observe(notificationBodyRef.current);
+      resizeObserver.observe(notificationBodyRef.current)
 
       return () => {
-	if(!notificationBodyRef.current) return;
-	resizeObserver.unobserve(notificationBodyRef.current)
+        if (!notificationBodyRef.current) return
+        resizeObserver.unobserve(notificationBodyRef.current)
       }
     })
 
     const handleToggleReadMore = (e: React.MouseEvent) => {
-      e.preventDefault();
-      setShowMore((currentShowMore) => !currentShowMore)
+      e.preventDefault()
+      setShowMore(currentShowMore => !currentShowMore)
     }
 
     return (
@@ -124,7 +124,7 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
             </div>
             <Text
               className={cn('AppNotifications__item__message', showMore && 'show_more')}
-	      ref={notificationBodyRef}
+              ref={notificationBodyRef}
               variant="small-400"
             >
               {body}
@@ -136,7 +136,8 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
               >
                 <Text variant="small-400">{showMore ? 'Show less' : 'Show more'}</Text>
               </button>
-            )}          </div>
+            )}{' '}
+          </div>
         </AppNotificationItemLink>
       </LazyMotion>
     )

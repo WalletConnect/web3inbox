@@ -68,56 +68,63 @@ const AppSelector: React.FC = () => {
           </ul>
         </div>
         <div className="AppSelector__wrapper">
-          {!activeSubscriptions?.length || !subscriptionsFinishedLoading ? <Label color="main">Subscribed</Label> : null}
+          {!activeSubscriptions?.length || !subscriptionsFinishedLoading ? (
+            <Label color="main">Subscribed</Label>
+          ) : null}
           <ul className="AppSelector__list">
             {subscriptionsFinishedLoading &&
-              activeSubscriptions?.filter((sub) => {
-		if(search) {
-		  return sub.metadata.name.toLowerCase().includes(search.toLowerCase())
-		}
-		return true;
-
-	      }).map((app, idx, fullApps) => {
-                return (
-                  <AnimatePresence key={app.topic}>
-                    <m.div initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                      <NavLink
-                        key={app.topic}
-                        to={NAVIGATION.notifications.domain(app.metadata.appDomain)}
-                        className={cx(
-                          'AppSelector__link-item',
-                          !subscriptionsFinishedLoading &&
-                            fullApps.length - idx + 1 === 0 &&
-                            'AppSelector__link-item-loading-in'
-                        )}
+              activeSubscriptions
+                ?.filter(sub => {
+                  if (search) {
+                    return sub.metadata.name.toLowerCase().includes(search.toLowerCase())
+                  }
+                  return true
+                })
+                .map((app, idx, fullApps) => {
+                  return (
+                    <AnimatePresence key={app.topic}>
+                      <m.div
+                        initial={{ opacity: 0 }}
+                        exit={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                       >
-                        <div className="AppSelector__notifications">
-                          <div className="AppSelector__notifications-link">
-                            <div className="AppSelector__link__logo">
-                              <img
-                                className="AppSelector__link__logo__image"
-                                src={app.metadata.icons?.[0] || '/fallback.svg'}
-                                alt={`${app.metadata.name} logo`}
-                                onError={handleImageFallback}
-                                loading="lazy"
-                              />
-                            </div>
+                        <NavLink
+                          key={app.topic}
+                          to={NAVIGATION.notifications.domain(app.metadata.appDomain)}
+                          className={cx(
+                            'AppSelector__link-item',
+                            !subscriptionsFinishedLoading &&
+                              fullApps.length - idx + 1 === 0 &&
+                              'AppSelector__link-item-loading-in'
+                          )}
+                        >
+                          <div className="AppSelector__notifications">
+                            <div className="AppSelector__notifications-link">
+                              <div className="AppSelector__link__logo">
+                                <img
+                                  className="AppSelector__link__logo__image"
+                                  src={app.metadata.icons?.[0] || '/fallback.svg'}
+                                  alt={`${app.metadata.name} logo`}
+                                  onError={handleImageFallback}
+                                  loading="lazy"
+                                />
+                              </div>
 
-                            <div className="AppSelector__link__wrapper">
-                              <Text className="AppSelector__link__title" variant="small-500">
-                                {app.metadata.name}
-                              </Text>
-                              <Text className="AppSelector__link__subtitle" variant="small-500">
-                                {app.metadata.description}
-                              </Text>
+                              <div className="AppSelector__link__wrapper">
+                                <Text className="AppSelector__link__title" variant="small-500">
+                                  {app.metadata.name}
+                                </Text>
+                                <Text className="AppSelector__link__subtitle" variant="small-500">
+                                  {app.metadata.description}
+                                </Text>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </NavLink>
-                    </m.div>
-                  </AnimatePresence>
-                )
-              })}
+                        </NavLink>
+                      </m.div>
+                    </AnimatePresence>
+                  )
+                })}
             {!subscriptionsFinishedLoading ? SkeletonItems : null}
           </ul>
         </div>
