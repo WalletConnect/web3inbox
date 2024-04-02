@@ -7,13 +7,9 @@ import { Link } from 'react-router-dom'
 import ArrowRightTopIcon from '@/components/general/Icon/ArrowRightTopIcon'
 import CircleIcon from '@/components/general/Icon/CircleIcon'
 import Text from '@/components/general/Text'
-import { useFormattedTime } from '@/utils/hooks'
+import { useFormattedTime, useIsMobile } from '@/utils/hooks'
 
 import './AppNotifications.scss'
-
-const CLAMPED_LENGTH = 120;
-const MESSAGE_LINE_HEIGHT_IN_PX = 18;
-const MESSAGE_MAX_LINES = 3;
 
 export interface IAppNotification {
   id: string
@@ -46,53 +42,30 @@ const AppNotificationItemLink: React.FC<{
 
 const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
   ({ notification, appLogo }, ref) => {
+    const isMobile = useIsMobile()
+
+    const maxBodyLength = isMobile? 120 : 180;
+
     const formattedTime = useFormattedTime(notification.timestamp)
     const [textClamped, setTextClamped] = useState<boolean>(
-      false
+      notification.message.length > maxBodyLength
     )
     const [showMore, setShowMore] = useState<boolean>(false)
 
     const notificationBodyRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-      if(!notificationBodyRef.current) return;
-
-      const resizeObserver = new ResizeObserver((entries) => {
-	const divHeight = entries[0].contentRect.height;
-
-        const lineHeight = MESSAGE_LINE_HEIGHT_IN_PX;
-
-        const linesInDiv = Math.ceil(divHeight/lineHeight);
-
-        if(linesInDiv > MESSAGE_MAX_LINES) {
-          setTextClamped(true);
-        }
-	// Only if user takes manual action and the linesInDiv are less than message max lines
-	// can we safely remove text clamping. There is a risk in having infinite loops of
-	// setting the clamp off and on if we don't guard this
-	else if(showMore) {
-          setTextClamped(false);
-	  setShowMore(false);
-	}
-      })
-
-      resizeObserver.observe(notificationBodyRef.current)
-
-      return () => {
-	if(notificationBodyRef.current) {
-	  resizeObserver.unobserve(notificationBodyRef.current)
-	}
-      }
-    }, [notification.message, notificationBodyRef, showMore])
 
     const handleToggleDescription = (e: React.MouseEvent) => {
       e.preventDefault()
       setShowMore(prevState => !prevState)
     }
 
+    useEffect(() => {
+      setTextClamped(notification.message.length > maxBodyLength)
+    }, [notification.message, maxBodyLength])
+
     const body =
       textClamped && !showMore
-        ? notification.message.slice(0, CLAMPED_LENGTH) + '...'
+        ? notification.message.slice(0, maxBodyLength) + '...'
         : notification.message
 
     return (
