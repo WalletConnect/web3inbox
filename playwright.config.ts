@@ -25,7 +25,7 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure'
   },
@@ -44,7 +44,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: process.env.PRE_BUILD ? 'yarn preview' : 'VITE_CI=true yarn dev',
+    command: process.env.PRE_BUILD ? 'npm run preview' : 'VITE_CI=true npm run dev',
     url: baseURL,
     reuseExistingServer: !process.env.CI
   }
