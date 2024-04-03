@@ -2,6 +2,9 @@ import { arbitrum, avalanche, bsc, mainnet, polygon } from '@wagmi/core/chains'
 import { defaultWagmiConfig } from '@web3modal/wagmi'
 
 const projectId = import.meta.env.VITE_PROJECT_ID
+if (!projectId) {
+  throw new Error('VITE_PROJECT_ID is required')
+}
 
 export const metadata = {
   name: 'Web3Inbox',

@@ -44,7 +44,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: process.env.PRE_BUILD ? 'npm run preview' : 'VITE_CI=true npm run dev',
+    command: process.env.PRE_BUILD ? 'yarn preview' : 'VITE_CI=true yarn dev',
     url: baseURL,
     reuseExistingServer: !process.env.CI
   }

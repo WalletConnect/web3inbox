@@ -24,13 +24,14 @@ jobs:
         run: yarn
       - name: Build app
         run: yarn build
+        env:
+          VITE_PROJECT_ID: ${{ secrets.VITE_DEV_PROJECT_ID }}
+          VITE_EXPLORER_API_URL: ${{ secrets.VITE_EXPLORER_API_URL }}
       - name: Install Playwright Browsers
         run: yarn playwright:install
       - name: Run Playwright tests
         run: yarn playwright:test
         env:
-          VITE_PROJECT_ID: ${{ secrets.VITE_DEV_PROJECT_ID }}
-          VITE_EXPLORER_API_URL: ${{ secrets.VITE_EXPLORER_API_URL }}
           TEST_DAPP_PROJECT_ID: ${{ secrets.TEST_DAPP_PROJECT_ID }}
           TEST_DAPP_PROJECT_SECRET: ${{ secrets.TEST_DAPP_PROJECT_SECRET }}
           VITE_CI: true

@@ -7,7 +7,7 @@ We use Playwright as our functional test runner. It's configured to try multiple
 ## Running Tests
 
 - `npx playwright test` to run in default mode (make sure your `.env` is set up)
-- `npm run playwright:debug` to step by step see what the tests are doing
+- `yarn run playwright:debug` to step by step see what the tests are doing
 
 ## Debugging
 

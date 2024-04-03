@@ -25,6 +25,9 @@ polyfill()
 initSentry()
 
 const projectId = import.meta.env.VITE_PROJECT_ID
+if (!projectId) {
+  throw new Error('VITE_PROJECT_ID is required')
+}
 
 createWeb3Modal({
   wagmiConfig,
