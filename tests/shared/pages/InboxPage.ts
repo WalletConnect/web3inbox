@@ -53,8 +53,10 @@ export class InboxPage {
 
   async rejectNotifications() {
     // Wait for login to succeed before checking for notifications
-    // Maybe there's a race condition here, but it seems to be reliable
     await expect(this.page.locator('.Avatar').first()).toBeVisible()
+
+    // Modal shows 500ms after login via setTimeout
+    await this.page.waitForTimeout(1000)
 
     const closeButton = this.page.locator('.NotificationPwaModal__close-button').first()
     if (await closeButton.isVisible()) {
