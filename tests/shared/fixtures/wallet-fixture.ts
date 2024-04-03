@@ -9,12 +9,7 @@ interface ModalWalletFixture {
 }
 
 export const testWallet = base.extend<ModalWalletFixture>({
-  walletPage: async ({ context, browserName }, use) => {
-    // WalletPage needs clipboard permissions with chromium to paste URI
-    if (browserName === 'chromium') {
-      await context.grantPermissions(['clipboard-read', 'clipboard-write'])
-    }
-
+  walletPage: async ({ context }, use) => {
     // Use a new page, to open alongside the modal
     const walletPage = new WalletPage(await context.newPage())
     await walletPage.load()

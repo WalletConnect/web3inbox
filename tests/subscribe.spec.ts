@@ -2,12 +2,8 @@ import { CUSTOM_TEST_DAPP, DEFAULT_SESSION_PARAMS } from './shared/constants'
 import { expect, testWallet as test } from './shared/fixtures/wallet-fixture'
 
 test.beforeEach(async ({ inboxPage, walletPage, browserName }) => {
-  if (browserName === 'webkit') {
-    // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
-    test.skip()
-  }
-  await inboxPage.copyConnectUriToClipboard()
-  await walletPage.connect()
+  const uri = await inboxPage.getConnectUri()
+  await walletPage.connectWithUri(uri)
   await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)
 })
 
@@ -20,13 +16,8 @@ test('it should subscribe and unsubscribe', async ({
   inboxPage,
   walletPage,
   settingsPage,
-  walletValidator,
-  browserName
+  walletValidator
 }) => {
-  if (browserName === 'webkit') {
-    // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
-    test.skip()
-  }
   await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
@@ -44,13 +35,8 @@ test('it should subscribe, update preferences and unsubscribe', async ({
   inboxPage,
   walletPage,
   settingsPage,
-  walletValidator,
-  browserName
+  walletValidator
 }) => {
-  if (browserName === 'webkit') {
-    // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
-    test.skip()
-  }
   await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
@@ -69,13 +55,8 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
   inboxPage,
   walletPage,
   settingsPage,
-  walletValidator,
-  browserName
+  walletValidator
 }) => {
-  if (browserName === 'webkit') {
-    // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
-    test.skip()
-  }
   await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
@@ -97,11 +78,11 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
     return apps === 2
   })
 
-  expect(await inboxPage.countSubscribedDapps()).toEqual(2)
+  await expect(inboxPage.page.locator('.AppSelector__notifications')).toHaveCount(2 + 1)
 
   await inboxPage.navigateToDappFromSidebar(CUSTOM_TEST_DAPP.name)
   await inboxPage.unsubscribe()
-  expect(await inboxPage.countSubscribedDapps()).toEqual(1)
+  await expect(inboxPage.page.locator('.AppSelector__notifications')).toHaveCount(1 + 1)
 
   // select 0 again since we unsubscribed from the second dapp
   // so there is only one item
@@ -114,13 +95,8 @@ test('it should subscribe, receive messages and unsubscribe', async ({
   walletPage,
   settingsPage,
   walletValidator,
-  browserName,
   notifyServer
 }) => {
-  if (browserName === 'webkit') {
-    // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
-    test.skip()
-  }
   await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })

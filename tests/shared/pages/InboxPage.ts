@@ -18,12 +18,28 @@ export class InboxPage {
     await this.page.getByText('Discover Web3Inbox').isVisible()
   }
 
-  async copyConnectUriToClipboard() {
+  assertDefined<T>(value: T | undefined | null): T {
+    expect(value).toBeDefined()
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return value!
+  }
+
+  async getConnectUri(): Promise<string> {
     await this.page.goto(this.baseURL)
     await this.connectButton.click()
-    await this.page.getByTestId('wallet-selector-walletconnect').click()
-    await this.page.waitForTimeout(2000)
-    await this.page.getByTestId('copy-wc2-uri').click()
+    const connect = this.page.getByTestId('wallet-selector-walletconnect')
+    await connect.waitFor({
+      state: 'visible',
+      timeout: 5000
+    })
+    await connect.click()
+
+    // Using getByTestId() doesn't work on my machine, I'm guessing because this element is inside of a <slot>
+    const qrCode = this.page.locator('wui-qr-code')
+    await expect(qrCode).toBeVisible()
+
+    return this.assertDefined(await qrCode.getAttribute('uri'))
   }
 
   async disconnect() {
@@ -36,11 +52,14 @@ export class InboxPage {
   }
 
   async rejectNotifications() {
-    // Allow for the modal to pop up
-    await this.page.waitForTimeout(4000)
-    const isVisible = (await this.page.locator('.NotificationPwaModal__close-button').count()) > 0
-    if (!isVisible) return
-    await this.page.locator('.NotificationPwaModal__close-button').first().click()
+    // Wait for login to succeed before checking for notifications
+    // Maybe there's a race condition here, but it seems to be reliable
+    await expect(this.page.locator('.Avatar').first()).toBeVisible()
+
+    const closeButton = this.page.locator('.NotificationPwaModal__close-button').first()
+    if (await closeButton.isVisible()) {
+      await closeButton.click()
+    }
   }
 
   async getAddress() {
@@ -86,7 +105,6 @@ export class InboxPage {
     await this.page.getByRole('button', { name: 'Unsubscribe' }).click()
     await this.page.getByRole('button', { name: 'Unsubscribe' }).nth(1).click()
     await this.page.getByText('Unsubscribed from', { exact: false }).isVisible()
-    await this.page.waitForTimeout(2000)
   }
 
   async navigateToDappFromSidebar(appName: string) {
@@ -95,12 +113,6 @@ export class InboxPage {
         has: this.page.locator('.AppSelector__link__title', { hasText: appName })
       })
       .click()
-  }
-
-  async countSubscribedDapps() {
-    const notificationsCount = await this.page.locator('.AppSelector__notifications').count()
-
-    return notificationsCount - 1
   }
 
   /**
