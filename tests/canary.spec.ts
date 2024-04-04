@@ -11,7 +11,8 @@ test.beforeEach(async ({ inboxPage, walletPage }) => {
   await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)
 })
 
-test.afterEach(async ({ inboxValidator, walletValidator }) => {
+test.afterEach(async ({ inboxPage, inboxValidator, walletValidator }) => {
+  await inboxPage.disconnect()
   await inboxValidator.expectDisconnected()
   await walletValidator.expectDisconnected()
 })

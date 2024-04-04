@@ -1,13 +1,14 @@
 import { CUSTOM_TEST_DAPP, DEFAULT_SESSION_PARAMS } from './shared/constants'
 import { expect, testWallet as test } from './shared/fixtures/wallet-fixture'
 
-test.beforeEach(async ({ inboxPage, walletPage, browserName }) => {
+test.beforeEach(async ({ inboxPage, walletPage }) => {
   const uri = await inboxPage.getConnectUri()
   await walletPage.connectWithUri(uri)
   await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)
 })
 
-test.afterEach(async ({ inboxValidator, walletValidator }) => {
+test.afterEach(async ({ inboxPage, inboxValidator, walletValidator }) => {
+  await inboxPage.disconnect()
   await inboxValidator.expectDisconnected()
   await walletValidator.expectDisconnected()
 })
@@ -111,7 +112,7 @@ test('it should subscribe, receive messages and unsubscribe', async ({
   await inboxPage.page.getByText('Notify Swift', { exact: false }).waitFor({ state: 'visible' })
 
   expect(await inboxPage.page.getByText('Notify Swift', { exact: false }).isVisible()).toEqual(true)
-  
+
   await inboxPage.subscribeAndNavigateToDapp(CUSTOM_TEST_DAPP.name)
 
   const address = await inboxPage.getAddress()
