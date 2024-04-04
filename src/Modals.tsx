@@ -38,6 +38,7 @@ export const Modals = () => {
   const shouldShowChangeBrowserModal = isAppleMobile ? isNonSafari : false
   const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
   const shouldShowSignatureModal =
+    !notifyRegisteredKey &&
     (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) &&
     !shouldShowChangeBrowserModal
   const shouldShowUnsubscribeModalOpen = isUnsubscribeModalOpen && !shouldShowChangeBrowserModal
