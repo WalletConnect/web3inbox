@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { usePrepareRegistration, useRegister } from '@web3inbox/react'
+import { usePrepareRegistration, useRegister, useWeb3InboxAccount } from '@web3inbox/react'
 import { useAccount, useDisconnect } from 'wagmi'
 
 import Button from '@/components/general/Button'
@@ -23,6 +23,8 @@ export const SignatureModal: React.FC = () => {
   const connected = status === 'connected'
 
   const { prepareRegistration } = usePrepareRegistration()
+  const { identityKey } = useWeb3InboxAccount()
+
   const { register } = useRegister()
 
   /*
@@ -43,6 +45,10 @@ export const SignatureModal: React.FC = () => {
     } catch {
       signatureModalService.stopSigning()
     }
+  }
+
+  if(identityKey) {
+    signatureModalService.closeModal()
   }
 
   return (
