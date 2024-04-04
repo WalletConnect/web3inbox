@@ -1,0 +1,11 @@
+FROM node:20-bookworm
+
+WORKDIR /src
+
+COPY ../ ./
+RUN npm ci
+RUN npm run build
+
+RUN npm run playwright:install
+
+CMD ["npm", "run", "playwright:test:canary"]
