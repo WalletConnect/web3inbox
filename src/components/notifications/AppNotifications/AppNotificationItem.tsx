@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 
 import cn from 'classnames'
 import { LazyMotion, domMax } from 'framer-motion'
@@ -10,8 +10,6 @@ import Text from '@/components/general/Text'
 import { useFormattedTime } from '@/utils/hooks'
 
 import './AppNotifications.scss'
-
-const MAX_BODY_LENGTH = 180
 
 export interface IAppNotification {
   id: string
@@ -45,24 +43,43 @@ const AppNotificationItemLink: React.FC<{
 const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
   ({ notification, appLogo }, ref) => {
     const formattedTime = useFormattedTime(notification.timestamp)
-    const [textClamped, setTextClamped] = useState<boolean>(
-      notification.message.length > MAX_BODY_LENGTH
-    )
-    const [showMore, setShowMore] = useState<boolean>(false)
+
+    const [showMore, setShowMore] = useState(false)
+
+    const notificationBodyRef = useRef<HTMLDivElement>(null)
+
+    const body = notification.message
+
+    const [isClamped, setIsClamped] = useState(false)
 
     useEffect(() => {
-      setTextClamped(notification.message.length > MAX_BODY_LENGTH)
-    }, [notification.message])
+      if (!notificationBodyRef.current) return
 
-    const handleToggleDescription = (e: React.MouseEvent) => {
+      // Need to use resize observer in the case of browsers resizing the window.
+      const resizeObserver = new ResizeObserver(() => {
+	// If it's expanded then we don't need to check for clamping.
+        if (!showMore) {
+          setIsClamped(
+            notificationBodyRef.current
+	      // Depend on dom as single source of truth for clamping.
+              ? notificationBodyRef.current.scrollHeight > notificationBodyRef.current.clientHeight
+              : false
+          )
+        }
+      })
+
+      resizeObserver.observe(notificationBodyRef.current)
+
+      return () => {
+        if (!notificationBodyRef.current) return
+        resizeObserver.unobserve(notificationBodyRef.current)
+      }
+    })
+
+    const handleToggleReadMore = (e: React.MouseEvent) => {
       e.preventDefault()
-      setShowMore(prevState => !prevState)
+      setShowMore(currentShowMore => !currentShowMore)
     }
-
-    const body =
-      textClamped && !showMore
-        ? notification.message.slice(0, MAX_BODY_LENGTH) + '...'
-        : notification.message
 
     return (
       <LazyMotion features={domMax}>
@@ -109,19 +126,20 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
               </div>
             </div>
             <Text
-              className={cn('AppNotifications__item__message', showMore ? 'show_more' : '')}
+              className={cn('AppNotifications__item__message', showMore && 'show_more')}
+              ref={notificationBodyRef}
               variant="small-400"
             >
               {body}
             </Text>
-            {textClamped && (
+            {isClamped && (
               <button
-                onClick={handleToggleDescription}
+                onClick={handleToggleReadMore}
                 className="AppNotifications__item__show_button"
               >
                 <Text variant="small-400">{showMore ? 'Show less' : 'Show more'}</Text>
               </button>
-            )}
+            )}{' '}
           </div>
         </AppNotificationItemLink>
       </LazyMotion>
