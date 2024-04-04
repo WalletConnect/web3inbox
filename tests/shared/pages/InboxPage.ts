@@ -43,7 +43,7 @@ export class InboxPage {
   }
 
   async disconnect() {
-    await this.page.getByTestId('account-button').click()
+    await this.page.locator('.Avatar').click()
     await this.page.getByTestId('disconnect-button').click()
   }
 
