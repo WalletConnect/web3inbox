@@ -4725,10 +4725,10 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3inbox/core@^1.3.0-6d359e8":
-  version "1.3.0-6d359e8"
-  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.3.0-6d359e8.tgz#b2ba3636241b6671543d9a8b2846a594fb8c165f"
-  integrity sha512-Co9vUha5y+j9bl8y0Nr2PKZy1U04n3W4oEStDLUmOkKOdZrSEICJbwyzNS76Rcr2z0p5nSMC49EoNhw87uBNYA==
+"@web3inbox/core@^1.3.0-6d7e33a":
+  version "1.3.0-6d7e33a"
+  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.3.0-6d7e33a.tgz#02cf91cba5dcba7ccd3d455a4f77216aae83fdd5"
+  integrity sha512-JlQvNtdWony83CYaHdPB8dZTLBR2BknY40N0QlPikg4gQZzewhCujPlkzFdBHI+6zDtrpug4ZLecnxt42rAVTw==
   dependencies:
     "@walletconnect/core" "2.11.0"
     "@walletconnect/notify-client" "^1.2.2"
