@@ -44,7 +44,7 @@ initWeb3InboxClient({
   projectId,
   allApps: true,
   domain: window.location.hostname,
-  logLevel: import.meta.env.PROD ? 'error' : 'debug'
+  logLevel: import.meta.env.PROD ? 'error' : import.meta.env.NEXT_PUBLIC_LOG_LEVEL || 'debug'
 })
 
 const queryClient = new QueryClient()

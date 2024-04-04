@@ -25,6 +25,7 @@ jobs:
       - name: Build app
         run: yarn build
         env:
+          NEXT_PUBLIC_LOG_LEVEL: true
           VITE_PROJECT_ID: ${{ secrets.VITE_DEV_PROJECT_ID }}
           VITE_EXPLORER_API_URL: ${{ secrets.VITE_EXPLORER_API_URL }}
       - name: Install Playwright Browsers
