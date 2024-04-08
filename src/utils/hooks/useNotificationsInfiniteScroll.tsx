@@ -4,8 +4,7 @@ import { useNotifications } from '@web3inbox/react'
 
 const IntersectionObserverOptions = {
   root: null,
-  rootMargin: '0px',
-  threshold: 1.0
+  threshold: 0.5
 }
 
 const NOTIFICATION_BATCH_SIZE = 12
@@ -15,6 +14,7 @@ export const useNotificationsInfiniteScroll = (account?: string, domain?: string
     data: notifications,
     fetchNextPage,
     hasMore,
+    hasMoreUnread,
     isLoadingNextPage
   } = useNotifications(NOTIFICATION_BATCH_SIZE, true, account, domain)
 
@@ -23,7 +23,7 @@ export const useNotificationsInfiniteScroll = (account?: string, domain?: string
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       const target = entries[0]
-      if (target.isIntersecting && hasMore) {
+      if (target.isIntersecting && (hasMore || hasMoreUnread)) {
         fetchNextPage()
       }
     }, IntersectionObserverOptions)
@@ -37,7 +37,7 @@ export const useNotificationsInfiniteScroll = (account?: string, domain?: string
         observer.unobserve(intersectionObserverRef.current)
       }
     }
-  }, [intersectionObserverRef, hasMore])
+  }, [intersectionObserverRef, fetchNextPage, hasMore, hasMoreUnread])
 
   return {
     hasMore,

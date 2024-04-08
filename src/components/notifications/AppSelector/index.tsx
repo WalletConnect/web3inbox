@@ -80,8 +80,9 @@ const AppSelector: React.FC = () => {
           ) : null}
           <div className="AppSelector__list">
             <ul className="AppSelector__list-unread">
-              {subscriptionsFinishedLoading &&
-                unreadDapps?.length? <Label color="main">Unread</Label> : null}
+              {subscriptionsFinishedLoading && unreadDapps?.length ? (
+                <Label color="main">Unread</Label>
+              ) : null}
               {subscriptionsFinishedLoading &&
                 unreadDapps
                   ?.filter(sub => {
@@ -138,8 +139,9 @@ const AppSelector: React.FC = () => {
             </ul>
 
             <ul className="AppSelector__list-read">
-              {subscriptionsFinishedLoading &&
-                readDapps?.length? <Label color="main">Read</Label> : null}
+              {subscriptionsFinishedLoading && readDapps?.length ? (
+                <Label color="main">Read</Label>
+              ) : null}
               {subscriptionsFinishedLoading &&
                 readDapps
                   ?.filter(sub => {
