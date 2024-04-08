@@ -132,7 +132,7 @@ const AppNotifications = () => {
               <div className="AppNotifications__list">
                 <div className="AppNotifications__list__content">
                   {!isLoading && notificationsWrapper?.unreadNotifications.length ? (
-                    <Label color="main">Unread</Label>
+                    <Label color="accent">Unread</Label>
                   ) : null}
                   {notificationsWrapper?.unreadNotifications.length
                     ? notificationsWrapper.unreadNotifications.map((notification, index) => (
@@ -162,13 +162,6 @@ const AppNotifications = () => {
                         />
                       ))
                     : null}
-                  {isLoading && !notifications?.length ? (
-                    <Fragment>
-                      <AppNotificationItemSkeleton />
-                      <AppNotificationItemSkeleton />
-                      <AppNotificationItemSkeleton />
-                    </Fragment>
-                  ) : null}
                 </div>
                 <div className="AppNotifications__list__content">
                   {!isLoading &&
