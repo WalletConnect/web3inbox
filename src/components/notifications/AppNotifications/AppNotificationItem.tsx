@@ -59,12 +59,12 @@ const AppNotificationItem = forwardRef<HTMLDivElement, IAppNotificationProps>(
 
       // Need to use resize observer in the case of browsers resizing the window.
       const resizeObserver = new ResizeObserver(() => {
-	// If it's expanded then we don't need to check for clamping.
+        // If it's expanded then we don't need to check for clamping.
         if (!showMore) {
           setIsClamped(
             notificationBodyRef.current
-	      // Depend on dom as single source of truth for clamping.
-              ? notificationBodyRef.current.scrollHeight > notificationBodyRef.current.clientHeight
+              ? // Depend on dom as single source of truth for clamping.
+                notificationBodyRef.current.scrollHeight > notificationBodyRef.current.clientHeight
               : false
           )
         }
