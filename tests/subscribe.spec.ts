@@ -93,8 +93,8 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
   // Wait for the 2 dapps to be subscribed to.
   await inboxPage.page.waitForFunction(() => {
     // Using 1 here since the first `AppSelector__list` is the one with `Discover Apps`
-    const apps = document.getElementsByClassName('AppSelector__list')[1].children.length
-    return apps === 2
+    const appsRead = document.getElementsByClassName('AppSelector__notifications')
+    return appsRead.length > 1
   })
 
   expect(await inboxPage.countSubscribedDapps()).toEqual(2)
