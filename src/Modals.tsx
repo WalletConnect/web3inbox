@@ -17,7 +17,7 @@ import {
   notificationsAvailableInBrowser
 } from '@/utils/notifications'
 import { isAppleMobile, isMobileButNotInstalledOnHomeScreen, isNonSafari } from '@/utils/pwa'
-import { notificationPwaModalService } from '@/utils/store'
+import { notificationPwaModalService, signatureModalService } from '@/utils/store'
 import { isMobile } from '@/utils/ui'
 
 export const Modals = () => {
@@ -25,7 +25,8 @@ export const Modals = () => {
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,
     isSignatureModalOpen,
-    isNotificationPwaModalOpen
+    isNotificationPwaModalOpen,
+    isSigning
   } = useModals()
 
   const { notifyRegisteredKey, userPubkey, clientReady } = useContext(W3iContext)
@@ -37,10 +38,7 @@ export const Modals = () => {
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
   const shouldShowChangeBrowserModal = isAppleMobile ? isNonSafari : false
   const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
-  const shouldShowSignatureModal =
-    !notifyRegisteredKey &&
-    (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) &&
-    !shouldShowChangeBrowserModal
+  const shouldShowSignatureModal = isSignatureModalOpen && !shouldShowChangeBrowserModal;
   const shouldShowUnsubscribeModalOpen = isUnsubscribeModalOpen && !shouldShowChangeBrowserModal
   const shouldShowPreferencesModalOpen = isPreferencesModalOpen && !shouldShowChangeBrowserModal
 
@@ -53,6 +51,22 @@ export const Modals = () => {
     !isSignatureModalOpen &&
     !notificationModalClosed &&
     !shouldShowChangeBrowserModal
+
+  useEffect(() => {
+    const shouldOpenSignatureModal = !notifyRegisteredKey &&
+    (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) &&
+    !shouldShowChangeBrowserModal
+
+    if(shouldOpenSignatureModal) {
+      if(!isSigning) {
+        signatureModalService.openModal()
+      }
+    }
+    else {
+      signatureModalService.closeModal()
+    }
+
+  }, [isSigning, isSignatureModalOpen, notifyRegisteredKey, userPubkey, clientReady, shouldShowChangeBrowserModal])
 
   useEffect(() => {
     // Create an artificial delay to prevent modals being spammed one after the other
