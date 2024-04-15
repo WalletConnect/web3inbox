@@ -4802,9 +4802,9 @@
     valtio "^1.11.2"
 
 "@web3inbox/react@^1.3.0-069f40b":
-  version "1.3.0-069f40b"
-  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.3.0-069f40b.tgz#bac28d135ee8da3924456d88665d7890293d1f02"
-  integrity sha512-ajdUZZJ/LNgkYJ/gXsQnduhskBKIQHDp5JpS7w7A/ffeNHA+dsEMN6f3ipisdSZZ4ast4UxPh7djjJogqIU5dQ==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.3.0.tgz#6bd7990d87d9b4d1198d7e99ac4d2430688c8a26"
+  integrity sha512-9swMGMac3iSjabqSWoii39BzJLPWtYYVcxdUcWEkNcn8R4jLO4I8kZjAl6L3NrJVMYRqIyg3q+A6anzxc+MZhg==
   dependencies:
     react "^18.2.0"
 
