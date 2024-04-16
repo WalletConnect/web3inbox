@@ -14,6 +14,7 @@ export const getFirebaseToken = async () => {
 
   const messaging = getMessaging(firebaseApp)
 
+  console.log("Retrieving token")
   return getToken(messaging, {
     vapidKey: import.meta.env.VITE_VAPID_KEY
   })
