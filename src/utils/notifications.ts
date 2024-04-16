@@ -75,6 +75,10 @@ export const registerWithEcho = async (client: Web3InboxClient) => {
   if (await requireNotifyPermission()) {
     const token = await getFirebaseToken()
 
+    if(!token) {
+      return;
+    }
+
     const clientId = await client.registerWithPushServer(token, 'fcm')
 
     const [, putRegistrationToken] = await getDbEchoRegistrations()

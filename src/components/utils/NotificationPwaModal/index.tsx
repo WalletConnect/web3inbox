@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment } from 'react'
 
 import { useWeb3InboxClient } from '@web3inbox/react'
 
@@ -21,7 +21,10 @@ export const NotificationPwaModal: React.FC = () => {
     const notificationPermissionGranted = await requireNotifyPermission()
 
     if (notificationPermissionGranted && client) {
-      await client.registerWithPushServer(await getFirebaseToken())
+      const token = await getFirebaseToken();
+      if(token) {
+        await client.registerWithPushServer(token)
+      }
     }
   }
 
