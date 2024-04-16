@@ -1,8 +1,7 @@
 export const getFirebaseToken = async (retryCount = 0): Promise<string | null> => {
-  if(retryCount >= 3) {
-    return null;
+  if (retryCount >= 3) {
+    return null
   }
-
 
   const { initializeApp } = await import('firebase/app')
   const { getMessaging, getToken } = await import('firebase/messaging')
@@ -23,8 +22,7 @@ export const getFirebaseToken = async (retryCount = 0): Promise<string | null> =
     return getToken(messaging, {
       vapidKey: import.meta.env.VITE_VAPID_KEY
     })
-  }
-  catch (e) {
+  } catch (e) {
     return getFirebaseToken(retryCount + 1)
   }
 }

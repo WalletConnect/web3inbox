@@ -21,8 +21,8 @@ export const NotificationPwaModal: React.FC = () => {
     const notificationPermissionGranted = await requireNotifyPermission()
 
     if (notificationPermissionGranted && client) {
-      const token = await getFirebaseToken();
-      if(token) {
+      const token = await getFirebaseToken()
+      if (token) {
         await client.registerWithPushServer(token)
       }
     }
