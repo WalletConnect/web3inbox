@@ -1,11 +1,14 @@
 import { CUSTOM_TEST_DAPP, DEFAULT_SESSION_PARAMS } from './shared/constants'
 import { expect, testWallet as test } from './shared/fixtures/wallet-fixture'
 
-test.beforeEach(async ({ inboxPage, walletPage }) => {
-  const uri = await inboxPage.getConnectUri()
-  await walletPage.connectWithUri(uri)
-  await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)
-})
+test.beforeEach(async ({ inboxPage, walletPage, browserName }) => {
+  if (browserName === 'webkit') {
+    // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
+    test.skip()
+  }
+  await inboxPage.copyConnectUriToClipboard()
+  await walletPage.connect()
+  await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)})
 
 test.afterEach(async ({ inboxPage, inboxValidator, walletValidator }) => {
   await inboxPage.disconnect()
