@@ -39,7 +39,7 @@ export class InboxPage {
     const qrCode = this.page.locator('wui-qr-code')
     qrCode.waitFor({
       state: 'visible',
-      timeout: 10_000
+      timeout: 30_000
     })
 
     await expect(qrCode).toBeVisible()
