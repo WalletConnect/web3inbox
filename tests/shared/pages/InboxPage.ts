@@ -25,14 +25,6 @@ export class InboxPage {
     return value!
   }
 
-  async copyConnectUriToClipboard() {
-    await this.page.goto(this.baseURL)
-    await this.connectButton.click()
-    await this.page.getByTestId('wallet-selector-walletconnect').click()
-    await this.page.waitForTimeout(2000)
-    await this.page.getByTestId('copy-wc2-uri').click()
-  }
-
   async getConnectUri(): Promise<string> {
     await this.page.goto(this.baseURL)
     await this.connectButton.click()
@@ -45,6 +37,11 @@ export class InboxPage {
 
     // Using getByTestId() doesn't work on my machine, I'm guessing because this element is inside of a <slot>
     const qrCode = this.page.locator('wui-qr-code')
+    qrCode.waitFor({
+      state: 'visible',
+      timeout: 10_000
+    })
+
     await expect(qrCode).toBeVisible()
 
     return this.assertDefined(await qrCode.getAttribute('uri'))

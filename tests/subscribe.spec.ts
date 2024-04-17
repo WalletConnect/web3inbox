@@ -6,8 +6,8 @@ test.beforeEach(async ({ inboxPage, walletPage, browserName }) => {
     // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
     test.skip()
   }
-  await inboxPage.copyConnectUriToClipboard()
-  await walletPage.connect()
+  const uri = await inboxPage.getConnectUri()
+  await walletPage.connectWithUri(uri)
   await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)})
 
 test.afterEach(async ({ inboxPage, inboxValidator, walletValidator }) => {
