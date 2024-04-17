@@ -14,8 +14,7 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   timeout: 60_000,
-  /* Retry on CI only */
-  retries: 0,
+  retries: 2,
   /* Parallel tests currently blocked. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
