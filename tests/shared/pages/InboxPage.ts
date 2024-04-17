@@ -31,9 +31,13 @@ export class InboxPage {
     let retryModal = 0;
     let qrCodeVisible = false;
 
-    const qrCode = this.page.locator('wui-qr-code')
+      const qrCode = this.page.locator('wui-qr-code')
 
     while(retryModal < 3 && !qrCodeVisible) {
+      await this.connectButton.waitFor({
+	state: 'visible'
+      })
+
       await this.connectButton.click()
       const connect = this.page.getByTestId('wallet-selector-walletconnect')
       await connect.waitFor({
@@ -43,7 +47,7 @@ export class InboxPage {
       await connect.click()
 
       retryModal++;
-      qrCode.waitFor({
+      await qrCode.waitFor({
         state: 'visible',
         timeout: 10_000
       })
