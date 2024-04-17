@@ -27,20 +27,37 @@ export class InboxPage {
 
   async getConnectUri(): Promise<string> {
     await this.page.goto(this.baseURL)
-    await this.connectButton.click()
-    const connect = this.page.getByTestId('wallet-selector-walletconnect')
-    await connect.waitFor({
-      state: 'visible',
-      timeout: 5000
-    })
-    await connect.click()
 
-    // Using getByTestId() doesn't work on my machine, I'm guessing because this element is inside of a <slot>
-    const qrCode = this.page.locator('wui-qr-code')
-    qrCode.waitFor({
-      state: 'visible',
-      timeout: 30_000
-    })
+    let retryModal = 0;
+    let qrCodeVisible = false;
+
+      const qrCode = this.page.locator('wui-qr-code')
+
+    while(retryModal < 3 && !qrCodeVisible) {
+      await this.connectButton.waitFor({
+	state: 'visible'
+      })
+
+      await this.connectButton.click()
+      const connect = this.page.getByTestId('wallet-selector-walletconnect')
+      await connect.waitFor({
+        state: 'visible',
+        timeout: 5000
+      })
+      await connect.click()
+
+      retryModal++;
+      await qrCode.waitFor({
+        state: 'visible',
+        timeout: 10_000
+      })
+
+      qrCodeVisible = await qrCode.isVisible();
+
+      if(!qrCodeVisible) {
+	this.page.getByTestId('w3m-header-close').click()
+      }
+    }
 
     await expect(qrCode).toBeVisible()
 
