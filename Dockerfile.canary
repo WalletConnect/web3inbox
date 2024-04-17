@@ -3,9 +3,16 @@ FROM node:20-bookworm
 WORKDIR /src
 
 COPY ../ ./
-RUN npm ci
-RUN npm run build
+RUN yarn
 
-RUN npm run playwright:install
+ARG VITE_PROJECT_ID
+ARG VITE_EXPLORER_API_URL
+ENV VITE_PROJECT_ID=$VITE_PROJECT_ID
+ENV VITE_EXPLORER_API_URL=$VITE_EXPLORER_API_URL
+ENV NEXT_PUBLIC_LOG_LEVEL=true
+RUN yarn build
 
-CMD ["npm", "run", "playwright:test:canary"]
+RUN yarn playwright:install
+
+ENV PRE_BUILD=true
+CMD ["yarn", "playwright:test:canary"]

@@ -16,7 +16,6 @@
     "playwright:install": "playwright install --with-deps",
     "playwright:test": "playwright test",
     "playwright:test:canary": "playwright test --retries=0 --grep canary.spec.ts",
-    "playwright:start": "VITE_CI=true yarn dev",
     "playwright:debug": "playwright test --debug"
   },
   "dependencies": {

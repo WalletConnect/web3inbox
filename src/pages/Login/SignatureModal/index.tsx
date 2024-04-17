@@ -23,6 +23,7 @@ export const SignatureModal: React.FC = () => {
   const connected = status === 'connected'
 
   const { prepareRegistration } = usePrepareRegistration()
+
   const { register } = useRegister()
 
   /*

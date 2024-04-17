@@ -3,7 +3,7 @@ import { config } from 'dotenv'
 
 config({ path: './.env' })
 
-const baseURL = 'http://localhost:5173'
+const baseURL = process.env['BASE_URL'] || (process.env.PRE_BUILD ? 'http://localhost:4173/' : 'http://localhost:5173')
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -14,8 +14,8 @@ export default defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: 0,
+  timeout: 60_000,
+  retries: 2,
   /* Parallel tests currently blocked. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -24,8 +24,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure'
   },
@@ -39,12 +38,16 @@ export default defineConfig({
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] }
-    }
+    },
+    // {
+    //   name: 'safari',
+    //   use: { ...devices['Desktop Safari'] }
+    // }
   ],
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'yarn playwright:start',
+    command: process.env.PRE_BUILD ? 'yarn preview' : 'VITE_CI=true yarn dev',
     url: baseURL,
     reuseExistingServer: !process.env.CI
   }

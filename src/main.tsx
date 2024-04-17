@@ -25,6 +25,9 @@ polyfill()
 initSentry()
 
 const projectId = import.meta.env.VITE_PROJECT_ID
+if (!projectId) {
+  throw new Error('VITE_PROJECT_ID is required')
+}
 
 createWeb3Modal({
   wagmiConfig,
@@ -41,7 +44,7 @@ initWeb3InboxClient({
   projectId,
   allApps: true,
   domain: window.location.hostname,
-  logLevel: import.meta.env.PROD ? 'error' : 'debug'
+  logLevel: import.meta.env.PROD ? 'error' : import.meta.env.NEXT_PUBLIC_LOG_LEVEL || 'debug'
 })
 
 const queryClient = new QueryClient()

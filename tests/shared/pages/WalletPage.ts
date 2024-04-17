@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import type { Locator, Page } from '@playwright/test'
+import { expect, type Locator, type Page } from '@playwright/test'
 
 import { WALLET_URL } from '../constants'
 import type { SessionParams } from '../types'
@@ -19,19 +19,26 @@ export class WalletPage {
     await this.page.goto(this.baseURL)
   }
 
-  async connect() {
+  /**
+   * Connect by inserting provided URI into the input element
+   */
+  async connectWithUri(uri: string) {
     const isVercelPreview = (await this.vercelPreview.count()) > 0
     if (isVercelPreview) {
       await this.vercelPreview.evaluate((iframe: HTMLIFrameElement) => iframe.remove())
     }
     await this.gotoHome.click()
-    await this.page.getByTestId('uri-input').click()
-
-    // Paste clipboard
-    const isMac = process.platform === 'darwin'
-    const modifier = isMac ? 'Meta' : 'Control'
-    await this.page.keyboard.press(`${modifier}+KeyV`)
-    await this.page.getByTestId('uri-connect-button').click()
+    const input = this.page.getByTestId('uri-input')
+    await input.waitFor({
+      state: 'visible',
+      timeout: 5000
+    })
+    await input.fill(uri)
+    const connectButton = this.page.getByTestId('uri-connect-button')
+    await expect(connectButton, 'Connect button should be enabled').toBeEnabled({
+      timeout: 5000
+    })
+    await connectButton.click()
   }
 
   /**

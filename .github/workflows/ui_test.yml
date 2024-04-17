@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   test:
-    timeout-minutes: 10
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -22,16 +22,21 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
+      - name: Build app
+        run: yarn build
+        env:
+          NEXT_PUBLIC_LOG_LEVEL: true
+          VITE_PROJECT_ID: ${{ secrets.VITE_DEV_PROJECT_ID }}
+          VITE_EXPLORER_API_URL: ${{ secrets.VITE_EXPLORER_API_URL }}
       - name: Install Playwright Browsers
         run: yarn playwright:install
       - name: Run Playwright tests
         run: yarn playwright:test
         env:
-          VITE_PROJECT_ID: ${{ secrets.VITE_DEV_PROJECT_ID }}
-          VITE_EXPLORER_API_URL: ${{ secrets.VITE_EXPLORER_API_URL }}
           TEST_DAPP_PROJECT_ID: ${{ secrets.TEST_DAPP_PROJECT_ID }}
           TEST_DAPP_PROJECT_SECRET: ${{ secrets.TEST_DAPP_PROJECT_SECRET }}
           VITE_CI: true
+          PRE_BUILD: true
       - uses: actions/upload-artifact@v3
         if: always()
         with:

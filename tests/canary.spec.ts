@@ -5,17 +5,14 @@ import { uploadCanaryResultsToCloudWatch } from './shared/utils/metrics'
 const ENV = process.env['ENVIRONMENT'] || 'dev'
 const REGION = process.env['REGION'] || 'eu-central-1'
 
-test.beforeEach(async ({ inboxPage, walletPage, browserName }) => {
-  if (browserName === 'webkit') {
-    // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
-    test.skip()
-  }
-  await inboxPage.copyConnectUriToClipboard()
-  await walletPage.connect()
+test.beforeEach(async ({ inboxPage, walletPage }) => {
+  const uri = await inboxPage.getConnectUri()
+  await walletPage.connectWithUri(uri)
   await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)
 })
 
-test.afterEach(async ({ inboxValidator, walletValidator }) => {
+test.afterEach(async ({ inboxPage, inboxValidator, walletValidator }) => {
+  await inboxPage.disconnect()
   await inboxValidator.expectDisconnected()
   await walletValidator.expectDisconnected()
 })
@@ -25,14 +22,8 @@ test('it should subscribe, receive messages and unsubscribe', async ({
   walletPage,
   settingsPage,
   walletValidator,
-  browserName,
   notifyServer
 }) => {
-  if (browserName === 'webkit') {
-    // Clipboard doesn't work here. Remove this when we moved away from Clipboard in favor of links
-    test.skip()
-  }
-
   let startTime = Date.now()
 
   await inboxPage.promptSiwe()
