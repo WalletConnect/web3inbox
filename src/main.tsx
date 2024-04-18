@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { initWeb3InboxClient } from '@web3inbox/react'
+import { createSIWEConfig, formatMessage } from '@web3modal/siwe'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
@@ -20,14 +21,78 @@ import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
 
 import './index.css'
+import { Web3InboxClient } from '@web3inbox/core'
+
+import { getAccount, disconnect } from '@wagmi/core'
 
 polyfill()
 initSentry()
+
+let client: Web3InboxClient | null = null;
 
 const projectId = import.meta.env.VITE_PROJECT_ID
 if (!projectId) {
   throw new Error('VITE_PROJECT_ID is required')
 }
+
+const siweConfig = createSIWEConfig({
+  getMessageParams: async () => {
+    if(!client) {
+      throw new Error("Client not ready yet")
+    }
+
+    const account = getAccount(wagmiConfig)
+
+    const { cacaoPayload } = await client.prepareRegistrationViaRecaps({
+      domain: window.location.hostname,
+      recapObject: {
+	att: {
+	  "https://notify.walletconnect.com": {
+	    "manage/all-apps-notifications": [{}]
+	  }
+	}
+      }
+    })
+
+    return {
+      chains: [account.chainId ?? 1],
+      domain: cacaoPayload.domain,
+      statement: cacaoPayload.statement ?? undefined,
+      uri: cacaoPayload.uri,
+      resources: cacaoPayload.resources,
+    }
+  },
+  createMessage: ({ address, ...args}) => formatMessage(args, address),
+  getSession: async () => {
+    const { address, chainId } = getAccount({ ...wagmiConfig })
+
+    if(!(address && chainId)) {
+      throw new Error("Failed to get session")
+    }
+
+    return {
+      address,
+      chainId
+    }
+  },
+  getNonce: async () => {
+    return Date.now().toString()
+  },
+  signOut: async () => {
+    try {
+      await disconnect(wagmiConfig)
+      return true;
+    }
+    catch (e) {
+      return false;
+    }
+  },
+  verifyMessage: async (params) => {
+    console.log(">>> Verified!", params)
+    return true
+  }
+  
+})
 
 createWeb3Modal({
   wagmiConfig,
@@ -36,6 +101,7 @@ createWeb3Modal({
   termsConditionsUrl: TERMS_OF_SERVICE_URL,
   privacyPolicyUrl: PRIVACY_POLICY_URL,
   themeMode: 'light',
+  siweConfig,
   themeVariables: { '--w3m-z-index': 9999 },
   metadata
 })
@@ -45,7 +111,7 @@ initWeb3InboxClient({
   allApps: true,
   domain: window.location.hostname,
   logLevel: import.meta.env.PROD ? 'error' : import.meta.env.NEXT_PUBLIC_LOG_LEVEL || 'debug'
-})
+}).then(w3iClient => client = w3iClient)
 
 const queryClient = new QueryClient()
 
