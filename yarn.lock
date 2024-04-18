@@ -4454,7 +4454,7 @@
     "@walletconnect/time" "^1.0.2"
     tslib "1.14.1"
 
-"@walletconnect/identity-keys@2.0.1", "@walletconnect/identity-keys@^2.0.1":
+"@walletconnect/identity-keys@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@walletconnect/identity-keys/-/identity-keys-2.0.1.tgz#dbf8eb364d05c3aaaddd2ba328eaff593021cbdd"
   integrity sha512-/U7YhUHFRtHUT0QZ0Q19sdescEDZsP3zCFIJcZhSwSw0M65refhg7CmJmgFAtjC5YtwFoEnkDuG3AYJ8vBJKHw==
@@ -4465,6 +4465,20 @@
     "@walletconnect/cacao" "1.0.2"
     "@walletconnect/core" "^2.10.1"
     "@walletconnect/did-jwt" "2.0.3"
+    "@walletconnect/types" "^2.10.1"
+    "@walletconnect/utils" "^2.10.1"
+    axios "^1.3.5"
+
+"@walletconnect/identity-keys@^2.1.0-3116e5d":
+  version "2.1.0-3116e5d"
+  resolved "https://registry.yarnpkg.com/@walletconnect/identity-keys/-/identity-keys-2.1.0-3116e5d.tgz#c3644ef98a4bebdcd4cf91dec0f148c9b71341eb"
+  integrity sha512-ApscwOUdc2+gZCFsrzEpke6kTKpsMkxnXJ086gr7gsj4vJQvIEwxxoOs0lzrepiFY74tWs5A930KJ18ivcl13Q==
+  dependencies:
+    "@ethersproject/hash" "^5.7.0"
+    "@ethersproject/transactions" "^5.7.0"
+    "@noble/ed25519" "^1.7.1"
+    "@walletconnect/cacao" "1.0.2"
+    "@walletconnect/core" "^2.10.1"
     "@walletconnect/types" "^2.10.1"
     "@walletconnect/utils" "^2.10.1"
     axios "^1.3.5"
@@ -4585,16 +4599,16 @@
     "@walletconnect/modal-core" "2.6.2"
     "@walletconnect/modal-ui" "2.6.2"
 
-"@walletconnect/notify-client@1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.3.1.tgz#3445dec415128e16668b513c10fb6ef487e6cd8a"
-  integrity sha512-nMBXGSR5/+vkqkd+qSsOjGNEeOGIztTq1XUOee5PKDcApqxoGbRKGeaegjuH/9WXDadTtpaBxf1onQ/XUsg5hQ==
+"@walletconnect/notify-client@^1.4.0-64f2233":
+  version "1.4.0-64f2233"
+  resolved "https://registry.yarnpkg.com/@walletconnect/notify-client/-/notify-client-1.4.0-64f2233.tgz#5e57fc781473ed11aac3c11dce64516fc01afe3f"
+  integrity sha512-yzBmLGxSDI5N7KAqqPuuuDYAlD+aamEWaT2GjFuZ0p4YbEfiAVZ4bZugqiztCymO8K5+NEA99iszrfEhHcdFOg==
   dependencies:
     "@noble/ed25519" "1.7.3"
     "@walletconnect/cacao" "1.0.2"
     "@walletconnect/core" "2.12.2"
     "@walletconnect/did-jwt" "2.0.1"
-    "@walletconnect/identity-keys" "2.0.1"
+    "@walletconnect/identity-keys" "^2.1.0-3116e5d"
     "@walletconnect/jsonrpc-utils" "1.0.7"
     "@walletconnect/time" "1.0.2"
     "@walletconnect/utils" "2.12.2"
@@ -4816,19 +4830,19 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3inbox/core@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.3.0.tgz#d3a158fda829438dead675f8bd8885143f384bc5"
-  integrity sha512-jRGf2iLcwM7kojyJv3grjCbBNOT9PQYsdmXicQ5/h8v8VeM2s2auopZlT0Led1DvOpUIJxNvrDs94/TObivHiw==
+"@web3inbox/core@^1.4.0-fffaaeb":
+  version "1.4.0-fffaaeb"
+  resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.4.0-fffaaeb.tgz#e9c70ae60527fe9fd3f0b512168a254d72e732b2"
+  integrity sha512-4PZNc9+dGBi7gDWE8zGFLERZBM9yr+QdKOd22fqM/Sj9YAwafr5J97grbWr3U8EILYRaQkUCsXk8XXVZpUDgXw==
   dependencies:
     "@walletconnect/core" "2.12.2"
-    "@walletconnect/notify-client" "1.3.1"
+    "@walletconnect/notify-client" "^1.4.0-64f2233"
     valtio "1.11.2"
 
-"@web3inbox/react@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.3.0.tgz#6bd7990d87d9b4d1198d7e99ac4d2430688c8a26"
-  integrity sha512-9swMGMac3iSjabqSWoii39BzJLPWtYYVcxdUcWEkNcn8R4jLO4I8kZjAl6L3NrJVMYRqIyg3q+A6anzxc+MZhg==
+"@web3inbox/react@^1.4.0-efaaba3":
+  version "1.4.0-efaaba3"
+  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.4.0-efaaba3.tgz#42ca5e255cc181c5b9c73ccfd1e0218bdbb8486e"
+  integrity sha512-HGKpQbFMZWnVVyuA+WLhi/Oyq5BQA/ig62mktRx2ev/ArbJAFYcnK+McgNBlc5wxeDws6tj0xBT0ZFyqfSST1w==
   dependencies:
     react "^18.2.0"
 

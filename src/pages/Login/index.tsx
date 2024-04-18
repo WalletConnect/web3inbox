@@ -3,6 +3,8 @@ import React, { useContext, useEffect } from 'react'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
+import { usePrepareRegistrationViaRecaps } from '@web3inbox/react'
+
 import Button from '@/components/general/Button'
 import IntroWallet from '@/components/general/Icon/IntroWallet'
 import IntroContent from '@/components/general/IntroContent'
@@ -20,6 +22,8 @@ const Login: React.FC = () => {
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
   const nav = useNavigate()
+
+  const {data, error, isLoading, prepareRegistrationViaRecaps} = usePrepareRegistrationViaRecaps();
 
   const modal = useWeb3Modal()
 
