@@ -4868,7 +4868,7 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@web3inbox/core@^1.4.0-e6b0da9":
+"@web3inbox/core@1.4.0-e6b0da9":
   version "1.4.0-e6b0da9"
   resolved "https://registry.yarnpkg.com/@web3inbox/core/-/core-1.4.0-e6b0da9.tgz#9374fb6e0faefbcaf1f6f8b75c21cd2b0e8c126b"
   integrity sha512-2Yu2JyxpgapIPwSQYRJm5raEVID7uAYni3ElSySg248JC0ad80F8TOTPArEBbKBfMoQaOWRWIG7nmgC8B1kGcg==
@@ -4962,7 +4962,7 @@
     lit "3.1.0"
     qrcode "1.5.3"
 
-"@web3modal/wagmi@^4.1.10-sign-2.5.0":
+"@web3modal/wagmi@4.1.10-sign-2.5.0":
   version "4.1.10-sign-2.5.0"
   resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-4.1.10-sign-2.5.0.tgz#0bc9ceff4ef3cb74c4efec6b14c0e09f839db8ae"
   integrity sha512-YoU4FVsj/h+7J8up1hSYPMT6pFXJ9GI7nO7/aLP9lvCCmB4HDk07+F5SpMERmSn4UuL+G+142jjqXSV/c7EOTA==
