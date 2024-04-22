@@ -2,7 +2,7 @@ import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { initWeb3InboxClient } from '@web3inbox/react'
-import { createSIWEConfig, formatMessage } from '@web3modal/siwe'
+import { createSIWEConfig, formatMessage, getAddressFromMessage, getChainIdFromMessage } from '@web3modal/siwe'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
@@ -35,6 +35,8 @@ if (!projectId) {
   throw new Error('VITE_PROJECT_ID is required')
 }
 
+let registerParams: Awaited<ReturnType<Web3InboxClient['prepareRegistrationViaRecaps']>> | null = null;
+
 const siweConfig = createSIWEConfig({
   getMessageParams: async () => {
     if(!client) {
@@ -43,7 +45,7 @@ const siweConfig = createSIWEConfig({
 
     const account = getAccount(wagmiConfig)
 
-    const { cacaoPayload } = await client.prepareRegistrationViaRecaps({
+    registerParams = await client.prepareRegistrationViaRecaps({
       domain: window.location.hostname,
       recapObject: {
 	att: {
@@ -53,6 +55,8 @@ const siweConfig = createSIWEConfig({
 	}
       }
     })
+
+    const { cacaoPayload } = registerParams;
 
     return {
       chains: [account.chainId ?? 1],
@@ -76,7 +80,7 @@ const siweConfig = createSIWEConfig({
     }
   },
   getNonce: async () => {
-    return Date.now().toString()
+    return registerParams?.cacaoPayload.nonce ?? "FAILED_NONCE";
   },
   signOut: async () => {
     try {
@@ -88,10 +92,37 @@ const siweConfig = createSIWEConfig({
     }
   },
   verifyMessage: async (params) => {
-    console.log(">>> Verified!", params)
+    if(!client) {
+      throw new Error("Failed to verify message - no client")
+    }
+
+    if(!registerParams) {
+      throw new Error("Failed to verify message - no registerParams saved")
+    }
+
+    const account = `eip155:${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`
+
+    console.log({message: params.message}, "<<<<")
+
+    await client.register({
+      registerParams: {
+	cacaoPayload: {
+	  aud: registerParams.cacaoPayload.aud,
+	  domain: registerParams.cacaoPayload.domain,
+	  iat: registerParams.cacaoPayload.iat,
+	  nonce: registerParams.cacaoPayload.nonce,
+	  version: registerParams.cacaoPayload.version,
+	  iss: account,
+	  resources: registerParams.cacaoPayload.resources,
+	  statement: registerParams.cacaoPayload.statement ?? undefined,
+	},
+	privateIdentityKey: registerParams.privateIdentityKey
+      },
+      signature: params.signature
+    })
+    
     return true
   }
-  
 })
 
 createWeb3Modal({
