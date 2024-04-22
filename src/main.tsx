@@ -46,7 +46,7 @@ const siweConfig = createSIWEConfig({
     const account = getAccount(wagmiConfig)
 
     registerParams = await client.prepareRegistrationViaRecaps({
-      domain: window.location.hostname,
+      domain: `app.web3inbox.com`,
       recapObject: {
 	att: {
 	  "https://notify.walletconnect.com": {
@@ -102,7 +102,9 @@ const siweConfig = createSIWEConfig({
 
     const account = `eip155:${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`
 
-    console.log({message: params.message}, "<<<<")
+    console.log(">>>>", {message: params.message, cacao: params.cacao, registerParams}, "<<<<")
+
+    console.log(">>>> Private identity key registered", registerParams.privateIdentityKey)
 
     await client.register({
       registerParams: {
@@ -114,13 +116,14 @@ const siweConfig = createSIWEConfig({
 	  version: registerParams.cacaoPayload.version,
 	  iss: account,
 	  resources: registerParams.cacaoPayload.resources,
-	  statement: registerParams.cacaoPayload.statement ?? undefined,
+	  ...params.cacao?.p
 	},
 	privateIdentityKey: registerParams.privateIdentityKey
       },
       signature: params.signature
     })
     
+    console.log(">>>>> return true")
     return true
   }
 })
