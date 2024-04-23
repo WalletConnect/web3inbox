@@ -4884,103 +4884,103 @@
   dependencies:
     react "^18.2.0"
 
-"@web3modal/common@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/common/-/common-4.1.10-sign-2.5.0.tgz#d966f4491c5a433918f2e114890cf57629455e1c"
-  integrity sha512-qB1JB7g4g4IklRxTH8PaqktJJ0crFDlUzEIXph0/qlN35jVn4Vni+Zc2t0u+/hIaF2dOYEBYUJk8FqUk7IrgUQ==
+"@web3modal/common@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/common/-/common-4.1.10-sign-2.5.1.tgz#b27d836cbb767b533e93bbf8db3e3065366ea827"
+  integrity sha512-8/AiloKu+jbEuLAcnabh++a/QcQle/sRlo7c+MXroC78tf40cUL6TMaRZacA4lHvnlk2GbYgONH5NangqD2+Vw==
   dependencies:
     bignumber.js "9.1.2"
     dayjs "1.11.10"
 
-"@web3modal/core@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-4.1.10-sign-2.5.0.tgz#5b9d10d3186eb24e1aab95cda282207d7e62c3a6"
-  integrity sha512-VHW+eGFYgJfUlX4/y2MKWhbRaeRksREh2iMt9LDlBSX8tVXqmr2LfRNPH1QOeQncSXj8GvptEUreCleC0845jg==
+"@web3modal/core@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/core/-/core-4.1.10-sign-2.5.1.tgz#9914b8062e330f53f94cf4706b7d447f80aa0f1d"
+  integrity sha512-PO6e4IZ8niuw4Z3H31LWBRCfuJeKlJHS1p4v4XozEO/O6etFN5pJowBqxFsC607Q5nuv5C3mb0DBVWyghOXyqg==
   dependencies:
-    "@web3modal/common" "4.1.10-sign-2.5.0"
-    "@web3modal/wallet" "4.1.10-sign-2.5.0"
+    "@web3modal/common" "4.1.10-sign-2.5.1"
+    "@web3modal/wallet" "4.1.10-sign-2.5.1"
     valtio "1.11.2"
 
-"@web3modal/polyfills@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/polyfills/-/polyfills-4.1.10-sign-2.5.0.tgz#2ee1fd4b3d0681c47cd91987dd088f936babd827"
-  integrity sha512-frD3Y9G6gg48JOfcTnAQeNdnWqBnDeei9knLMZrnpdF+3zYjJtP+zGyaEOPuiK0htgvXLYIcirCDo5je2hyhLg==
+"@web3modal/polyfills@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/polyfills/-/polyfills-4.1.10-sign-2.5.1.tgz#1c42aa088c6ae77e4fe4de05169f44700490ebbf"
+  integrity sha512-hB2PCtdsWJ+DTDqTJ6LLNRE4Fh3jJ0c5Vhi86gYFB88kInetYzWq0wiTOFHX16CZcgYtRL0Gdox7TRTI0k/4Kg==
   dependencies:
     buffer "6.0.3"
 
-"@web3modal/scaffold-react@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-react/-/scaffold-react-4.1.10-sign-2.5.0.tgz#cb622efc0fd8f95cb282fcd936ff93aec6fd5b4c"
-  integrity sha512-Ue+0ERraGAx51KLOKRbOHLKGzlfnk4dUtwzKhRhBDmWO99AY30IoVis/eI84wRKW0DkUnGrXTzVAhme/xzK7oQ==
+"@web3modal/scaffold-react@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-react/-/scaffold-react-4.1.10-sign-2.5.1.tgz#838e7968e7bbcf791b8e9c33052da852d2f3840e"
+  integrity sha512-Y2rqi5m6zKekf141PO6SWRM6u1wxXWAGCT+I+unZ1DM6poCfp4mPi3Iij14YPOFXgZG5Dy2xmArCbUJEqxWX8w==
   dependencies:
-    "@web3modal/scaffold" "4.1.10-sign-2.5.0"
+    "@web3modal/scaffold" "4.1.10-sign-2.5.1"
 
-"@web3modal/scaffold-utils@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-utils/-/scaffold-utils-4.1.10-sign-2.5.0.tgz#422c10acba54233e978983f0b8a2e98b05528cf7"
-  integrity sha512-ZRHXgzIbddMKstPLo4B3i7GXY0FAbMDimWiwNqIrryuLNG5w4UM1t0b1oyNeb5TkOmOb0oPRz+K/BJvM+WjRhA==
+"@web3modal/scaffold-utils@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-utils/-/scaffold-utils-4.1.10-sign-2.5.1.tgz#0e0da1e52c433e1620d34359e920cac85220ac3b"
+  integrity sha512-j4ZKVAiTMzxXQZZbo52QLfxnTsOonZ1Ftzbo68YqwwERi/hJKlzeZQWR0vI1fyt0Kzz3FIj+UN5B8xKeEl0amg==
   dependencies:
-    "@web3modal/core" "4.1.10-sign-2.5.0"
-    "@web3modal/polyfills" "4.1.10-sign-2.5.0"
+    "@web3modal/core" "4.1.10-sign-2.5.1"
+    "@web3modal/polyfills" "4.1.10-sign-2.5.1"
     valtio "1.11.2"
 
-"@web3modal/scaffold-vue@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-vue/-/scaffold-vue-4.1.10-sign-2.5.0.tgz#9ad9ad14851e9340689d4ba6b9ee62470fb44c80"
-  integrity sha512-OKcZHMm3F8YBT1iuwzrAQQFEi9zXNMPgdY6Fh+HyUip6ChwXc7L+Vwrmapw7IstRvmaLI/U7WSpquWIvpxXDtA==
+"@web3modal/scaffold-vue@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold-vue/-/scaffold-vue-4.1.10-sign-2.5.1.tgz#25d62a5eaf165d9f0da9841c0fc8e0e7ef109bb2"
+  integrity sha512-Yes5/RYDtvDpKNOXBoGry+d47BiuJqWDWo8cn1jTqEreR1LEKFXgouz1/qL/ni+53eVtgcms5q0gBeqFbsOWDg==
   dependencies:
-    "@web3modal/scaffold" "4.1.10-sign-2.5.0"
+    "@web3modal/scaffold" "4.1.10-sign-2.5.1"
 
-"@web3modal/scaffold@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/scaffold/-/scaffold-4.1.10-sign-2.5.0.tgz#bb918dc9a7acc00a4f1814093e8fdc3e4dbc22e2"
-  integrity sha512-kWpim+sY1+PtL9z/baWJpJNkOlIrZnX89OtuLa6h/+t2N86qTDcf8IN8EuuoRQ58EsE2Ef6ymhw9jdNHmX1xbQ==
+"@web3modal/scaffold@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/scaffold/-/scaffold-4.1.10-sign-2.5.1.tgz#64580bc730e0d8d2352592e1cd17fac60a029b76"
+  integrity sha512-/Az66zNEHOmSTHXUilyfSIK4IV/QuQWxZsDmD8tSKsVsrGEtB8peGrHfCuBxOmb7wkzjjc3apkqyV1F6cljKkA==
   dependencies:
-    "@web3modal/common" "4.1.10-sign-2.5.0"
-    "@web3modal/core" "4.1.10-sign-2.5.0"
-    "@web3modal/siwe" "4.1.10-sign-2.5.0"
-    "@web3modal/ui" "4.1.10-sign-2.5.0"
-    "@web3modal/wallet" "4.1.10-sign-2.5.0"
+    "@web3modal/common" "4.1.10-sign-2.5.1"
+    "@web3modal/core" "4.1.10-sign-2.5.1"
+    "@web3modal/siwe" "4.1.10-sign-2.5.1"
+    "@web3modal/ui" "4.1.10-sign-2.5.1"
+    "@web3modal/wallet" "4.1.10-sign-2.5.1"
     lit "3.1.0"
 
-"@web3modal/siwe@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/siwe/-/siwe-4.1.10-sign-2.5.0.tgz#0f5148691e89a1fc6774f21344e9491bd4cf4702"
-  integrity sha512-N6HyAuOQfnA7kjJdBGaP82f45I0RKWQf1jM35Jh+kv/M9+BpLplwjwVYgBJcWeIVgsPkjd0yii+7zld7CRFazw==
+"@web3modal/siwe@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/siwe/-/siwe-4.1.10-sign-2.5.1.tgz#426756f50c161b90872251747efae729089ab2cb"
+  integrity sha512-HH4tR5478EjtvgQzxnDFndy2UY75iMEXbhxzdH2onAKSQQ7Ioueevsu8Za6EeH27VtT2Hf78tfTdCzflYq8lkA==
   dependencies:
     "@walletconnect/utils" "2.12.0"
-    "@web3modal/core" "4.1.10-sign-2.5.0"
-    "@web3modal/scaffold-utils" "4.1.10-sign-2.5.0"
+    "@web3modal/core" "4.1.10-sign-2.5.1"
+    "@web3modal/scaffold-utils" "4.1.10-sign-2.5.1"
     lit "3.1.0"
     valtio "1.11.2"
 
-"@web3modal/ui@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-4.1.10-sign-2.5.0.tgz#2e2c27cdbbf59c0034c87acb0a1e1fb7b5c9e477"
-  integrity sha512-8Z6MrV7JJC0Bdo+JLkqHrg08NLHoXUFGdv6UAmUKSXLyIonsYckcWt/IpYjyjEwGaT5XUfitmUX5aeVXP5ffyg==
+"@web3modal/ui@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/ui/-/ui-4.1.10-sign-2.5.1.tgz#0e062dd122389e8a5431cd35ae8146ef64f1c4ad"
+  integrity sha512-EY54VrCPH1v+DbZcYdqomMIqQVGGqSJGYjXzVLnw4ZBd9iATdnmFMF8IAJ1aeUuOhul/UOswosbvWRMl1BP0bA==
   dependencies:
     lit "3.1.0"
     qrcode "1.5.3"
 
-"@web3modal/wagmi@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-4.1.10-sign-2.5.0.tgz#0bc9ceff4ef3cb74c4efec6b14c0e09f839db8ae"
-  integrity sha512-YoU4FVsj/h+7J8up1hSYPMT6pFXJ9GI7nO7/aLP9lvCCmB4HDk07+F5SpMERmSn4UuL+G+142jjqXSV/c7EOTA==
+"@web3modal/wagmi@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-4.1.10-sign-2.5.1.tgz#48fb0fbd092b39854d6c7c2c450af7e4507ab01d"
+  integrity sha512-ie22QY4hmsukNY149BOyarfMdWiwLGkUhAjnQvTlvwkq4zMyMx5tUoAy0XY6avdlZoLjvBeRpZ8ImPVmLnqoLw==
   dependencies:
     "@walletconnect/ethereum-provider" "2.12.1"
-    "@web3modal/polyfills" "4.1.10-sign-2.5.0"
-    "@web3modal/scaffold" "4.1.10-sign-2.5.0"
-    "@web3modal/scaffold-react" "4.1.10-sign-2.5.0"
-    "@web3modal/scaffold-utils" "4.1.10-sign-2.5.0"
-    "@web3modal/scaffold-vue" "4.1.10-sign-2.5.0"
-    "@web3modal/siwe" "4.1.10-sign-2.5.0"
+    "@web3modal/polyfills" "4.1.10-sign-2.5.1"
+    "@web3modal/scaffold" "4.1.10-sign-2.5.1"
+    "@web3modal/scaffold-react" "4.1.10-sign-2.5.1"
+    "@web3modal/scaffold-utils" "4.1.10-sign-2.5.1"
+    "@web3modal/scaffold-vue" "4.1.10-sign-2.5.1"
+    "@web3modal/siwe" "4.1.10-sign-2.5.1"
 
-"@web3modal/wallet@4.1.10-sign-2.5.0":
-  version "4.1.10-sign-2.5.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/wallet/-/wallet-4.1.10-sign-2.5.0.tgz#ea4354e35f3839a0542d97dd6228096f6bf65a0c"
-  integrity sha512-pox/hOk9t9SCUWsH4qHmS/MO7Tc1K2Tzu3TcddWeQ8AKKe+OMY9wDP5y2mgZjNfGwPn5snv2NGATrEd47hfR4Q==
+"@web3modal/wallet@4.1.10-sign-2.5.1":
+  version "4.1.10-sign-2.5.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/wallet/-/wallet-4.1.10-sign-2.5.1.tgz#f89d5a062b03fcb5a1141c47482c1ed01e3efea2"
+  integrity sha512-SNF2cGa0bVzKrgoe+m5K2amLFC0AajKesLYAkEY1sRv/j+S8PeNiEkKKiLXCNBDD+3+eTFkNbbC6vGTjl1SF3w==
   dependencies:
-    "@web3modal/polyfills" "4.1.10-sign-2.5.0"
+    "@web3modal/polyfills" "4.1.10-sign-2.5.1"
     zod "3.22.4"
 
 "@webassemblyjs/ast@1.12.1", "@webassemblyjs/ast@^1.12.1":

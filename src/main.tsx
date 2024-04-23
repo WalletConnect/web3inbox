@@ -100,11 +100,22 @@ const siweConfig = createSIWEConfig({
       throw new Error("Failed to verify message - no registerParams saved")
     }
 
-    const account = `eip155:${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`
+    const account = `${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`
 
     console.log(">>>>", {message: params.message, cacao: params.cacao, registerParams}, "<<<<")
 
     console.log(">>>> Private identity key registered", registerParams.privateIdentityKey)
+
+    console.log(">>> Account is registered", account, await client.getAccountIsRegistered(account));
+
+    try {
+      // Unregister account if registered
+      await client.unregister({ account })
+      console.log(">>> successfully unregister", account)
+    }
+    catch(e) {
+      console.log(">>> failed to unregister", account)
+    }
 
     await client.register({
       registerParams: {
