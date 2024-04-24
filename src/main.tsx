@@ -23,7 +23,7 @@ import DevTimeStamp from './components/dev/DevTimeStamp'
 import './index.css'
 import { Web3InboxClient } from '@web3inbox/core'
 
-import { getAccount, disconnect } from '@wagmi/core'
+import { getAccount } from '@wagmi/core'
 
 polyfill()
 initSentry()
@@ -43,23 +43,15 @@ const siweConfig = createSIWEConfig({
       throw new Error("Client not ready yet")
     }
 
-    const account = getAccount(wagmiConfig)
-
     registerParams = await client.prepareRegistrationViaRecaps({
-      domain: `app.web3inbox.com`,
-      recapObject: {
-	att: {
-	  "https://notify.walletconnect.com": {
-	    "manage/all-apps-notifications": [{}]
-	  }
-	}
-      }
+      domain: window.location.hostname,
+      allApps: true
     })
 
     const { cacaoPayload } = registerParams;
 
     return {
-      chains: [account.chainId ?? 1],
+      chains: wagmiConfig.chains.map(chain => chain.id),
       domain: cacaoPayload.domain,
       statement: cacaoPayload.statement ?? undefined,
       uri: cacaoPayload.uri,
@@ -67,12 +59,15 @@ const siweConfig = createSIWEConfig({
     }
   },
   createMessage: ({ address, ...args}) => formatMessage(args, address),
+  enabled: true,
   getSession: async () => {
+    console.log(">>> getSession")
+
     const { address, chainId } = getAccount({ ...wagmiConfig })
 
-    if(!(address && chainId)) {
-      throw new Error("Failed to get session")
-    }
+    console.log(">>> getSession > returning", { address ,chainId })
+
+    if(!(address && chainId)) return null;
 
     return {
       address,
@@ -80,17 +75,10 @@ const siweConfig = createSIWEConfig({
     }
   },
   getNonce: async () => {
+    console.log(">>> getNonce")
     return registerParams?.cacaoPayload.nonce ?? "FAILED_NONCE";
   },
-  signOut: async () => {
-    try {
-      await disconnect(wagmiConfig)
-      return true;
-    }
-    catch (e) {
-      return false;
-    }
-  },
+  signOut: () => Promise.resolve(false),
   verifyMessage: async (params) => {
     if(!client) {
       throw new Error("Failed to verify message - no client")
@@ -133,7 +121,7 @@ const siweConfig = createSIWEConfig({
       },
       signature: params.signature
     })
-    
+
     console.log(">>>>> return true")
     return true
   }
