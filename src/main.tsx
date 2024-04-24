@@ -24,6 +24,7 @@ import './index.css'
 import { Web3InboxClient } from '@web3inbox/core'
 
 import { getAccount } from '@wagmi/core'
+import { signatureModalService } from './utils/store'
 
 polyfill()
 initSentry()
@@ -49,6 +50,10 @@ const siweConfig = createSIWEConfig({
     })
 
     const { cacaoPayload } = registerParams;
+
+    // Start signing the signature modal so it does not show up
+    // in sign 2.5
+    signatureModalService.startSigning()
 
     return {
       chains: wagmiConfig.chains.map(chain => chain.id),
@@ -88,6 +93,10 @@ const siweConfig = createSIWEConfig({
       throw new Error("Failed to verify message - no registerParams saved")
     }
 
+    // Start signing the signature modal so it does not show up
+    // in sign 2.5
+    signatureModalService.startSigning()
+
     const account = `${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`
 
     console.log(">>>>", {message: params.message, cacao: params.cacao, registerParams}, "<<<<")
@@ -124,7 +133,7 @@ const siweConfig = createSIWEConfig({
       signature: params.signature
     })
 
-    console.log(">>>>> return true")
+
     return true
   }
 })

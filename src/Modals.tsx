@@ -60,10 +60,16 @@ export const Modals = () => {
 
     if (shouldOpenSignatureModal) {
       if (!isSigning) {
+
+    if(shouldOpenSignatureModal) {
+
+      if(!isSigning) {
         signatureModalService.openModal()
       }
     } else {
       signatureModalService.closeModal()
+    }
+      }
     }
   }, [
     isSigning,
