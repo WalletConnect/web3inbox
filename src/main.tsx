@@ -107,6 +107,7 @@ const siweConfig = createSIWEConfig({
 
     await client.register({
       registerParams: {
+	allApps: true,
 	cacaoPayload: {
 	  aud: registerParams.cacaoPayload.aud,
 	  domain: registerParams.cacaoPayload.domain,
@@ -118,6 +119,7 @@ const siweConfig = createSIWEConfig({
 	  ...params.cacao?.p
 	},
 	privateIdentityKey: registerParams.privateIdentityKey
+	
       },
       signature: params.signature
     })
