@@ -145,6 +145,7 @@ createWeb3Modal({
   termsConditionsUrl: TERMS_OF_SERVICE_URL,
   privacyPolicyUrl: PRIVACY_POLICY_URL,
   themeMode: 'light',
+  enableWalletFeatures: true,
   siweConfig,
   themeVariables: { '--w3m-z-index': 9999 },
   metadata
