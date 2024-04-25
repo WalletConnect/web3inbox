@@ -27,11 +27,6 @@ export const modalsOpen = valtio.proxy({
   } as IAppSearchState,
   profileModalSubject: false,
   shareModalSubject: false,
-  signatureModalSubject: {
-    isOpen: false,
-    signing: false,
-    oneClickAuthMode: false
-  },
   pwaModalSubject: false,
   notificationPwaModalSubject: false,
   contactsModalSubject: false,
@@ -93,57 +88,6 @@ export const shareModalService = {
   closeModal: () => (modalsOpen.shareModalSubject = false),
   getModalState: () => modalsOpen.shareModalSubject
 }
-
-export const signatureModalService = {
-  setSign25ModeOn: () =>
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      oneClickAuthMode: true
-    }),
-  setSign25ModeOff: () => {
-    console.log("Setting sign 25 mode off")
-    modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      oneClickAuthMode: true
-    }
-  },
-  toggleModal: () =>
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      isOpen: !modalsOpen.signatureModalSubject.isOpen
-    }),
-  openModal: () =>
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      isOpen: true
-    }),
-  startSigning: () =>
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      signing: true
-    }),
-  stopSigning: () =>
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      signing: false
-    }),
-  onModalUnmounted: () => 
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      oneClickAuthMode: false,
-      signing: false
-    }),
-  closeModal: () => {
-    modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      isOpen: false,
-    }
-  },
-  getModalState: () => modalsOpen.signatureModalSubject
-}
-
-// @ts-ignore
-window.signatureModalService = signatureModalService;
 
 export const pwaModalService = {
   toggleModal: () => (modalsOpen.pwaModalSubject = !modalsOpen.pwaModalSubject),

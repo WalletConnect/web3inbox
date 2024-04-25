@@ -11,7 +11,6 @@ import TransitionDiv from '@/components/general/TransitionDiv'
 import Sidebar from '@/components/layout/Sidebar'
 import { web3InboxURLs } from '@/constants/navigation'
 import W3iContext from '@/contexts/W3iContext/context'
-import { signatureModalService } from '@/utils/store'
 
 import './Login.scss'
 
@@ -26,14 +25,8 @@ const Login: React.FC = () => {
   useEffect(() => {
     const path = next ? decodeURIComponent(next) : '/'
 
-    if (userPubkey) {
-      if (notifyRegisteredKey) {
-        nav(path)
-      } else {
-        signatureModalService.openModal()
-      }
-    }
-  }, [userPubkey, next, notifyRegisteredKey, signatureModalService])
+    if (userPubkey && notifyRegisteredKey) nav(path)
+  }, [userPubkey, next, notifyRegisteredKey])
 
   return (
     <TransitionDiv className="Login">

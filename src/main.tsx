@@ -20,11 +20,12 @@ import { metadata, wagmiConfig } from '@/utils/wagmiConfig'
 import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
 
-import './index.css'
 import { Web3InboxClient } from '@web3inbox/core'
+import { composeDidPkh } from '@walletconnect/did-jwt'
 
 import { getAccount } from '@wagmi/core'
-import { signatureModalService } from './utils/store'
+
+import './index.css'
 
 polyfill()
 initSentry()
@@ -47,9 +48,7 @@ const verifySiweMessage = async (params: SIWEVerifyMessageArgs) => {
 
     // Start signing the signature modal so it does not show up
     // in sign 2.5
-    signatureModalService.startSigning()
-
-    const account = `${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`
+    const account = composeDidPkh(`${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`)
 
     if ( await client.getAccountIsRegistered(account) ) {
       return true;
@@ -58,18 +57,15 @@ const verifySiweMessage = async (params: SIWEVerifyMessageArgs) => {
     // Unregister account if registered with a faulty registration.
     try { await client.unregister({ account }) } catch(e) {}
 
+    console.log({registerParams, paramsCacao: params.cacao?.p})
+
     await client.register({
       registerParams: {
 	allApps: true,
 	cacaoPayload: {
-	  aud: registerParams.cacaoPayload.aud,
-	  domain: registerParams.cacaoPayload.domain,
-	  iat: registerParams.cacaoPayload.iat,
-	  nonce: registerParams.cacaoPayload.nonce,
-	  version: registerParams.cacaoPayload.version,
+	  ...registerParams.cacaoPayload,
+	  ...params.cacao?.p,
 	  iss: account,
-	  resources: registerParams.cacaoPayload.resources,
-	  ...params.cacao?.p
 	},
 	privateIdentityKey: registerParams.privateIdentityKey
 	
@@ -84,10 +80,13 @@ const verifySiweMessage = async (params: SIWEVerifyMessageArgs) => {
 let registerParams: Awaited<ReturnType<Web3InboxClient['prepareRegistrationViaRecaps']>> | null = null;
 
 const siweConfig = createSIWEConfig({
+  enabled: true,
   getMessageParams: async () => {
     if(!client) {
       throw new Error("Client not ready yet")
     }
+
+    console.log(">>> getMessageParams")
 
     registerParams = await client.prepareRegistrationViaRecaps({
       domain: window.location.hostname,
@@ -96,52 +95,81 @@ const siweConfig = createSIWEConfig({
 
     const { cacaoPayload } = registerParams;
 
-    // Start signing the signature modal so it does not show up
-    // in sign 2.5
-    signatureModalService.setSign25ModeOn()
-
     return {
       chains: wagmiConfig.chains.map(chain => chain.id),
       domain: cacaoPayload.domain,
       statement: cacaoPayload.statement ?? undefined,
       uri: cacaoPayload.uri,
       resources: cacaoPayload.resources,
+      
     }
   },
-  createMessage: ({ address, ...args}) => formatMessage(args, address),
-  enabled: true,
+  createMessage: ({ address, ...args}) => {
+    if(!registerParams) {
+      throw new Error("Can't create message if registerParams is undefined")
+    }
+
+    registerParams = {
+      ...registerParams,
+      cacaoPayload: {
+	...registerParams?.cacaoPayload,
+	...args,
+      }
+    };
+
+    const message = formatMessage(registerParams.cacaoPayload, address)
+
+    // statement is generated in format message and not part of original payload.
+    const statement = message.split('\n')[3];
+    registerParams.cacaoPayload.statement = statement;
+
+    console.log(">>> formatted message", message, "with params", registerParams.cacaoPayload, "and overrides", args)
+
+    return message;
+  },
+  getNonce: async () => {
+    console.log(">>> getNonce")
+    return registerParams?.cacaoPayload.nonce ?? "FAILED_NONCE";
+  },
   getSession: async () => {
+
+    await new Promise<void>((resolve) => {
+      setInterval(() => {
+	if(client) {
+	  resolve()
+	}
+      }, 100)
+    })
+
     console.log(">>> getSession")
 
     const { address, chainId } = getAccount({ ...wagmiConfig })
 
-    console.log(">>> getSession > returning", { address ,chainId })
+    const account = `eip155:${chainId}:${address}`
+    console.log(">>> getSession for account", account)
 
-    if(!(address && chainId)) return null;
+    const identityKey = await client?.getAccountIsRegistered(account)
+
+    console.log(">>> getSession > returning", { address ,chainId, identityKey })
+
+    if(!(address && chainId && identityKey)) return null;
 
     return {
       address,
       chainId
     }
   },
-  getNonce: async () => {
-    console.log(">>> getNonce")
-    return registerParams?.cacaoPayload.nonce ?? "FAILED_NONCE";
-  },
-  signOut: () => Promise.resolve(false),
   verifyMessage: async (params) => {
-    signatureModalService.setSign25ModeOn()
     try {
       const messageIsValid = await verifySiweMessage(params);
-      if (!messageIsValid) signatureModalService.setSign25ModeOff() 
 
       return messageIsValid;
     }
-    catch {
-      signatureModalService.setSign25ModeOff()
+    catch(e) {
       return false
     }
-  }
+  },
+  signOut: () => Promise.resolve(false),
 })
 
 createWeb3Modal({
