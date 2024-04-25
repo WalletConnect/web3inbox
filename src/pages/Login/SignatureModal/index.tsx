@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { usePrepareRegistration, useRegister } from '@web3inbox/react'
 import { useAccount, useDisconnect } from 'wagmi'
@@ -30,7 +30,7 @@ export const SignatureModal: React.FC = () => {
    * If identity was already signed, and sync was requested then we are in the
    * final step.
    */
-  const { isSigning } = useModals()
+  const { isSigning, oneClickAuthMode } = useModals()
   const { disconnect } = useDisconnect()
 
   const onSign = async () => {
@@ -39,11 +39,32 @@ export const SignatureModal: React.FC = () => {
 
       const { message, registerParams } = await prepareRegistration()
 
+      console.log(";;; Prepared message", message)
+
       const signature = await signMessage(message)
+
+      console.log(";;; signature", signature)
+
       await register({ registerParams, signature }).then(() => signatureModalService.closeModal())
+
+      console.log(";;; registered")
+
     } catch {
       signatureModalService.stopSigning()
     }
+  }
+
+  if(oneClickAuthMode) {
+    return (
+      <Modal onCloseModal={signatureModalService.closeModal}>
+      <div className="SignatureModal">
+        <SignatureLoadingVisual />
+        <Text className="SignatureModal__title" variant="large-600">
+	  Logging you in via one click auth...
+        </Text>
+      </div>
+    </Modal>
+    )
   }
 
   return (

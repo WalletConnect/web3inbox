@@ -2,7 +2,7 @@ import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { initWeb3InboxClient } from '@web3inbox/react'
-import { createSIWEConfig, formatMessage, getAddressFromMessage, getChainIdFromMessage } from '@web3modal/siwe'
+import { createSIWEConfig, formatMessage, getAddressFromMessage, getChainIdFromMessage, SIWEVerifyMessageArgs } from '@web3modal/siwe'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
@@ -36,6 +36,51 @@ if (!projectId) {
   throw new Error('VITE_PROJECT_ID is required')
 }
 
+const verifySiweMessage = async (params: SIWEVerifyMessageArgs) => {
+    if(!client) {
+      throw new Error("Failed to verify message - no client")
+    }
+
+    if(!registerParams) {
+      throw new Error("Failed to verify message - no registerParams saved")
+    }
+
+    // Start signing the signature modal so it does not show up
+    // in sign 2.5
+    signatureModalService.startSigning()
+
+    const account = `${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`
+
+    if ( await client.getAccountIsRegistered(account) ) {
+      return true;
+    }
+
+    // Unregister account if registered with a faulty registration.
+    try { await client.unregister({ account }) } catch(e) {}
+
+    await client.register({
+      registerParams: {
+	allApps: true,
+	cacaoPayload: {
+	  aud: registerParams.cacaoPayload.aud,
+	  domain: registerParams.cacaoPayload.domain,
+	  iat: registerParams.cacaoPayload.iat,
+	  nonce: registerParams.cacaoPayload.nonce,
+	  version: registerParams.cacaoPayload.version,
+	  iss: account,
+	  resources: registerParams.cacaoPayload.resources,
+	  ...params.cacao?.p
+	},
+	privateIdentityKey: registerParams.privateIdentityKey
+	
+      },
+      signature: params.signature
+    })
+
+
+    return true
+}
+
 let registerParams: Awaited<ReturnType<Web3InboxClient['prepareRegistrationViaRecaps']>> | null = null;
 
 const siweConfig = createSIWEConfig({
@@ -53,7 +98,7 @@ const siweConfig = createSIWEConfig({
 
     // Start signing the signature modal so it does not show up
     // in sign 2.5
-    signatureModalService.startSigning()
+    signatureModalService.setSign25ModeOn()
 
     return {
       chains: wagmiConfig.chains.map(chain => chain.id),
@@ -85,56 +130,17 @@ const siweConfig = createSIWEConfig({
   },
   signOut: () => Promise.resolve(false),
   verifyMessage: async (params) => {
-    if(!client) {
-      throw new Error("Failed to verify message - no client")
-    }
-
-    if(!registerParams) {
-      throw new Error("Failed to verify message - no registerParams saved")
-    }
-
-    // Start signing the signature modal so it does not show up
-    // in sign 2.5
-    signatureModalService.startSigning()
-
-    const account = `${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`
-
-    console.log(">>>>", {message: params.message, cacao: params.cacao, registerParams}, "<<<<")
-
-    console.log(">>>> Private identity key registered", registerParams.privateIdentityKey)
-
-    console.log(">>> Account is registered", account, await client.getAccountIsRegistered(account));
-
+    signatureModalService.setSign25ModeOn()
     try {
-      // Unregister account if registered
-      await client.unregister({ account })
-      console.log(">>> successfully unregister", account)
+      const messageIsValid = await verifySiweMessage(params);
+      if (!messageIsValid) signatureModalService.setSign25ModeOff() 
+
+      return messageIsValid;
     }
-    catch(e) {
-      console.log(">>> failed to unregister", account)
+    catch {
+      signatureModalService.setSign25ModeOff()
+      return false
     }
-
-    await client.register({
-      registerParams: {
-	allApps: true,
-	cacaoPayload: {
-	  aud: registerParams.cacaoPayload.aud,
-	  domain: registerParams.cacaoPayload.domain,
-	  iat: registerParams.cacaoPayload.iat,
-	  nonce: registerParams.cacaoPayload.nonce,
-	  version: registerParams.cacaoPayload.version,
-	  iss: account,
-	  resources: registerParams.cacaoPayload.resources,
-	  ...params.cacao?.p
-	},
-	privateIdentityKey: registerParams.privateIdentityKey
-	
-      },
-      signature: params.signature
-    })
-
-
-    return true
   }
 })
 

@@ -26,7 +26,8 @@ export const Modals = () => {
     isUnsubscribeModalOpen,
     isSignatureModalOpen,
     isNotificationPwaModalOpen,
-    isSigning
+    isSigning,
+    oneClickAuthMode
   } = useModals()
 
   const { notifyRegisteredKey, userPubkey, clientReady } = useContext(W3iContext)
@@ -53,32 +54,18 @@ export const Modals = () => {
     !shouldShowChangeBrowserModal
 
   useEffect(() => {
-    const shouldOpenSignatureModal =
-      !notifyRegisteredKey &&
-      (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) &&
-      !shouldShowChangeBrowserModal
-
-    if (shouldOpenSignatureModal) {
-      if (!isSigning) {
+    const shouldOpenSignatureModal = !notifyRegisteredKey && !oneClickAuthMode &&
+    (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) &&
+    !shouldShowChangeBrowserModal
 
     if(shouldOpenSignatureModal) {
-
       if(!isSigning) {
         signatureModalService.openModal()
       }
     } else {
       signatureModalService.closeModal()
     }
-      }
-    }
-  }, [
-    isSigning,
-    isSignatureModalOpen,
-    notifyRegisteredKey,
-    userPubkey,
-    clientReady,
-    shouldShowChangeBrowserModal
-  ])
+  }, [isSigning, oneClickAuthMode, isSignatureModalOpen, notifyRegisteredKey, userPubkey, clientReady, shouldShowChangeBrowserModal])
 
   useEffect(() => {
     // Create an artificial delay to prevent modals being spammed one after the other

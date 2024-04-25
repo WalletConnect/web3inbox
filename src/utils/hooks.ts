@@ -180,6 +180,7 @@ export const useModals = () => {
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
   const [isSigning, setIsSigning] = useState(false)
+  const [oneClickAuthMode, setOneClickAuthMode] = useState(false)
   const [isNotificationPwaModalOpen, setIsNotificationPwaModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
@@ -194,6 +195,7 @@ export const useModals = () => {
 
     setIsSignatureModalOpen(signatureModalService.getModalState().isOpen)
     setIsSigning(signatureModalService.getModalState().signing)
+    setOneClickAuthMode(signatureModalService.getModalState().oneClickAuthMode)
     setIsContactModalOpen(contactsModalService.getModalState())
     setIsShareModalOpen(shareModalService.getModalState())
     setIsNotificationPwaModalOpen(notificationPwaModalService.getModalState())
@@ -208,6 +210,7 @@ export const useModals = () => {
     isShareModalOpen,
     isSignatureModalOpen,
     isSigning,
+    oneClickAuthMode,
     isContactModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,

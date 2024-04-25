@@ -29,7 +29,8 @@ export const modalsOpen = valtio.proxy({
   shareModalSubject: false,
   signatureModalSubject: {
     isOpen: false,
-    signing: false
+    signing: false,
+    oneClickAuthMode: false
   },
   pwaModalSubject: false,
   notificationPwaModalSubject: false,
@@ -94,6 +95,18 @@ export const shareModalService = {
 }
 
 export const signatureModalService = {
+  setSign25ModeOn: () =>
+    (modalsOpen.signatureModalSubject = {
+      ...modalsOpen.signatureModalSubject,
+      oneClickAuthMode: true
+    }),
+  setSign25ModeOff: () => {
+    console.log("Setting sign 25 mode off")
+    modalsOpen.signatureModalSubject = {
+      ...modalsOpen.signatureModalSubject,
+      oneClickAuthMode: true
+    }
+  },
   toggleModal: () =>
     (modalsOpen.signatureModalSubject = {
       ...modalsOpen.signatureModalSubject,
@@ -114,20 +127,23 @@ export const signatureModalService = {
       ...modalsOpen.signatureModalSubject,
       signing: false
     }),
+  onModalUnmounted: () => 
+    (modalsOpen.signatureModalSubject = {
+      ...modalsOpen.signatureModalSubject,
+      oneClickAuthMode: false,
+      signing: false
+    }),
   closeModal: () => {
     modalsOpen.signatureModalSubject = {
       ...modalsOpen.signatureModalSubject,
-      isOpen: false
+      isOpen: false,
     }
-    setTimeout(() => {
-      modalsOpen.signatureModalSubject = {
-        ...modalsOpen.signatureModalSubject,
-        signing: false
-      }
-    }, 500)
   },
   getModalState: () => modalsOpen.signatureModalSubject
 }
+
+// @ts-ignore
+window.signatureModalService = signatureModalService;
 
 export const pwaModalService = {
   toggleModal: () => (modalsOpen.pwaModalSubject = !modalsOpen.pwaModalSubject),
