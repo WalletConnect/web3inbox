@@ -17,5 +17,5 @@ export const wagmiConfig = defaultWagmiConfig({
   chains: [mainnet, arbitrum, avalanche, bsc, polygon],
   projectId,
   metadata,
-  enableEmail: true,
+  enableEmail: true
 })

@@ -20,11 +20,7 @@ import { notificationPwaModalService } from '@/utils/store'
 import { isMobile } from '@/utils/ui'
 
 export const Modals = () => {
-  const {
-    isPreferencesModalOpen,
-    isUnsubscribeModalOpen,
-    isNotificationPwaModalOpen,
-  } = useModals()
+  const { isPreferencesModalOpen, isUnsubscribeModalOpen, isNotificationPwaModalOpen } = useModals()
 
   const { notifyRegisteredKey } = useContext(W3iContext)
 
