@@ -30,6 +30,7 @@ import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
 
 import './index.css'
+import { waitFor } from './utils/general'
 
 polyfill()
 initSentry()
@@ -85,15 +86,13 @@ const verifySiweMessage = async (params: SIWEVerifyMessageArgs) => {
 
 let registerParams: Awaited<ReturnType<Web3InboxClient['prepareRegistrationViaRecaps']>> | null =
   null
+let verifyingMessage = false;
 
 const siweConfig = createSIWEConfig({
-  enabled: true,
   getMessageParams: async () => {
     if (!client) {
       throw new Error('Client not ready yet')
     }
-
-    console.log('>>> getMessageParams')
 
     registerParams = await client.prepareRegistrationViaRecaps({
       domain: window.location.hostname,
@@ -123,7 +122,7 @@ const siweConfig = createSIWEConfig({
       }
     }
 
-    const message = formatMessage(registerParams.cacaoPayload, address)
+    const message = formatMessage(args, address)
 
     // statement is generated in format message and not part of original payload.
     const statement = message.split('\n')[3]
@@ -145,13 +144,11 @@ const siweConfig = createSIWEConfig({
     return registerParams?.cacaoPayload.nonce ?? 'FAILED_NONCE'
   },
   getSession: async () => {
-    await new Promise<void>(resolve => {
-      setInterval(() => {
-        if (client) {
-          resolve()
-        }
-      }, 100)
-    })
+    await waitFor(async () => !!client)
+
+    if(verifyingMessage) {
+      await waitFor(async () => !verifyingMessage)
+    }
 
     console.log('>>> getSession')
 
@@ -173,14 +170,27 @@ const siweConfig = createSIWEConfig({
   },
   verifyMessage: async params => {
     try {
+      verifyingMessage = true;
       const messageIsValid = await verifySiweMessage(params)
 
+      const account = `${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`;
+
+      console.log(">>>>>>>>> OOOOOOOOOOOOOOO", { messageIsValid })
+
+      if(messageIsValid) {
+	await waitFor(() => client!.getAccountIsRegistered(account))
+      }
+
+      verifyingMessage = false;
       return messageIsValid
     } catch (e) {
+      verifyingMessage = false;
       return false
     }
   },
-  signOut: () => Promise.resolve(false)
+  signOut: () => Promise.resolve(false),
+  sessionRefetchIntervalMs: 50,
+  nonceRefetchIntervalMs: 50,
 })
 
 createWeb3Modal({
