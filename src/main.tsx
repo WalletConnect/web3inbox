@@ -122,7 +122,7 @@ const siweConfig = createSIWEConfig({
       }
     }
 
-    const message = formatMessage(args, address)
+    const message = formatMessage(registerParams.cacaoPayload, address)
 
     // statement is generated in format message and not part of original payload.
     const statement = message.split('\n')[3]
@@ -159,38 +159,44 @@ const siweConfig = createSIWEConfig({
 
     const identityKey = await client?.getAccountIsRegistered(account)
 
-    console.log('>>> getSession > returning', { address, chainId, identityKey })
 
-    if (!(address && chainId && identityKey)) return null
+    const invalidSession = !(address && chainId && identityKey);
+
+    console.log('>>> getSession > returning', { address, chainId, identityKey }, { invalidSession })
+
+    if (invalidSession) return null
 
     return {
       address,
-      chainId
+      chainId,
     }
   },
   verifyMessage: async params => {
     try {
       verifyingMessage = true;
+      console.log(">>>>>>>>> OOOOOOOOOOOOOOOOOOOO verifying")
       const messageIsValid = await verifySiweMessage(params)
 
       const account = `${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`;
 
-      console.log(">>>>>>>>> OOOOOOOOOOOOOOO", { messageIsValid })
+      console.log(">>>>>>>>> [][][][]", { messageIsValid })
 
       if(messageIsValid) {
 	await waitFor(() => client!.getAccountIsRegistered(account))
       }
 
       verifyingMessage = false;
+
+      console.log(">>>>>> [][][][] ABSOLUTELY RETURNING, NOT THROWING", { messageIsValid })
+      
       return messageIsValid
     } catch (e) {
+      console.log(">>>>>>>>> [][][][] verifying failed", e)
       verifyingMessage = false;
       return false
     }
   },
-  signOut: () => Promise.resolve(false),
-  sessionRefetchIntervalMs: 50,
-  nonceRefetchIntervalMs: 50,
+  signOut: () => Promise.resolve(true),
 })
 
 createWeb3Modal({
