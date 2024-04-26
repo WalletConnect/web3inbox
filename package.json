@@ -15,7 +15,7 @@
     "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx,scss}'",
     "playwright:install": "playwright install --with-deps",
     "playwright:test": "playwright test",
-    "playwright:test:canary": "playwright test --retries=0 --grep canary.spec.ts",
+    "playwright:test:canary": "playwright test --retries=0 --grep canary.spec.ts --project=chromium",
     "playwright:debug": "playwright test --debug"
   },
   "dependencies": {
