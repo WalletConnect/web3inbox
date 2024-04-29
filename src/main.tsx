@@ -144,27 +144,18 @@ const siweConfig = createSIWEConfig({
     return registerParams?.cacaoPayload.nonce ?? 'FAILED_NONCE'
   },
   getSession: async () => {
-    await waitFor(async () => !!client)
-
-    if(verifyingMessage) {
-      await waitFor(async () => !verifyingMessage)
-    }
+    const { address, chainId } = getAccount({ ...wagmiConfig })
 
     console.log('>>> getSession')
-
-    const { address, chainId } = getAccount({ ...wagmiConfig })
 
     const account = `eip155:${chainId}:${address}`
     console.log('>>> getSession for account', account)
 
     const identityKey = await client?.getAccountIsRegistered(account)
 
-
     const invalidSession = !(address && chainId && identityKey);
 
-    console.log('>>> getSession > returning', { address, chainId, identityKey }, { invalidSession })
-
-    if (invalidSession) return null
+    if (invalidSession) throw new Error("Failed to get account")
 
     return {
       address,
