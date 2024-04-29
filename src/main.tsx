@@ -3,9 +3,7 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Web3InboxClient } from '@web3inbox/core'
 import { initWeb3InboxClient } from '@web3inbox/react'
-import {
-  createSIWEConfig
-} from '@web3modal/siwe'
+import { createSIWEConfig } from '@web3modal/siwe'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
@@ -22,9 +20,9 @@ import { metadata, wagmiConfig } from '@/utils/wagmiConfig'
 
 import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
+import { createMessage, getMessageParams, getNonce, getSession, verifyMessage } from './utils/siwe'
 
 import './index.css'
-import { createMessage, getMessageParams, getNonce, getSession, verifyMessage } from './utils/siwe'
 
 polyfill()
 initSentry()
@@ -34,6 +32,7 @@ if (!projectId) {
   throw new Error('VITE_PROJECT_ID is required')
 }
 
+let client: Web3InboxClient | null = null
 
 initWeb3InboxClient({
   projectId,
@@ -41,27 +40,29 @@ initWeb3InboxClient({
   domain: window.location.hostname,
   logLevel: import.meta.env.PROD ? 'error' : import.meta.env.NEXT_PUBLIC_LOG_LEVEL || 'debug'
 }).then(w3iClient => {
-  const siweConfig = createSIWEConfig({
-    getMessageParams: () => getMessageParams(w3iClient),
-    createMessage: (params) => createMessage(params),
-    getNonce: () => getNonce(),
-    getSession: () => getSession(w3iClient),
-    verifyMessage: (params) => verifyMessage(params, w3iClient),
-    signOut: () => Promise.resolve(true),
-  })
+  client = w3iClient
+})
 
-  createWeb3Modal({
-    wagmiConfig,
-    enableAnalytics: import.meta.env.PROD,
-    projectId,
-    termsConditionsUrl: TERMS_OF_SERVICE_URL,
-    privacyPolicyUrl: PRIVACY_POLICY_URL,
-    themeMode: 'light',
-    enableWalletFeatures: true,
-    siweConfig,
-    themeVariables: { '--w3m-z-index': 9999 },
-    metadata
-  })
+const siweConfig = createSIWEConfig({
+  getMessageParams: () => getMessageParams(client),
+  createMessage: params => createMessage(params),
+  getNonce: () => getNonce(),
+  getSession: () => getSession(client),
+  verifyMessage: params => verifyMessage(params, client),
+  signOut: () => Promise.resolve(true)
+})
+
+createWeb3Modal({
+  wagmiConfig,
+  enableAnalytics: import.meta.env.PROD,
+  projectId,
+  termsConditionsUrl: TERMS_OF_SERVICE_URL,
+  privacyPolicyUrl: PRIVACY_POLICY_URL,
+  themeMode: 'light',
+  enableWalletFeatures: true,
+  siweConfig,
+  themeVariables: { '--w3m-z-index': 9999 },
+  metadata
 })
 
 const queryClient = new QueryClient()

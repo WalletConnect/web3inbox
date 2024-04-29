@@ -1,61 +1,61 @@
-import { Web3InboxClient } from "@web3inbox/core"
-import { composeDidPkh } from '@walletconnect/did-jwt'
-import { wagmiConfig } from '@/utils/wagmiConfig'
 import { getAccount } from '@wagmi/core'
-import { waitFor } from '@/utils/general'
-
+import { composeDidPkh } from '@walletconnect/did-jwt'
+import { Web3InboxClient } from '@web3inbox/core'
 import {
-  SIWEVerifyMessageArgs,
   SIWECreateMessageArgs,
+  SIWEVerifyMessageArgs,
   formatMessage,
   getAddressFromMessage,
   getChainIdFromMessage
 } from '@web3modal/siwe'
 
+import { waitFor } from '@/utils/general'
+import { wagmiConfig } from '@/utils/wagmiConfig'
+
 let registerParams: Awaited<ReturnType<Web3InboxClient['prepareRegistrationViaRecaps']>> | null =
   null
 
 export const getMessageParams = async (client: Web3InboxClient | null) => {
-    if (!client) {
-      throw new Error('Client not ready yet')
-    }
+  if (!client) {
+    throw new Error('Client not ready yet')
+  }
 
-    registerParams = await client.prepareRegistrationViaRecaps({
-      domain: window.location.hostname,
-      allApps: true
-    })
+  registerParams = await client.prepareRegistrationViaRecaps({
+    domain: window.location.hostname,
+    allApps: true
+  })
 
-    const { cacaoPayload } = registerParams
+  const { cacaoPayload } = registerParams
 
-    return {
-      chains: wagmiConfig.chains.map(chain => chain.id),
-      domain: cacaoPayload.domain,
-      statement: cacaoPayload.statement ?? undefined,
-      uri: cacaoPayload.uri,
-      resources: cacaoPayload.resources
-    }
+  return {
+    chains: wagmiConfig.chains.map(chain => chain.id),
+    domain: cacaoPayload.domain,
+    statement: cacaoPayload.statement ?? undefined,
+    uri: cacaoPayload.uri,
+    resources: cacaoPayload.resources
+  }
 }
 
 export const createMessage = ({ address, ...args }: SIWECreateMessageArgs) => {
-    if (!registerParams) {
-      throw new Error("Can't create message if registerParams is undefined")
+  if (!registerParams) {
+    throw new Error("Can't create message if registerParams is undefined")
+  }
+
+  registerParams = {
+    ...registerParams,
+    cacaoPayload: {
+      ...registerParams?.cacaoPayload,
+      ...args
     }
+  }
 
-    registerParams = {
-      ...registerParams,
-      cacaoPayload: {
-        ...registerParams?.cacaoPayload,
-        ...args
-      }
-    }
+  const message = formatMessage(registerParams.cacaoPayload, address)
 
-    const message = formatMessage(registerParams.cacaoPayload, address)
+  // statement is generated in format message and not part of original payload.
+  const statement = message.split('\n')[3]
+  registerParams.cacaoPayload.statement = statement
 
-    // statement is generated in format message and not part of original payload.
-    const statement = message.split('\n')[3]
-    registerParams.cacaoPayload.statement = statement
-
-    return message
+  return message
 }
 
 export const getNonce = async () => {
@@ -63,23 +63,25 @@ export const getNonce = async () => {
 }
 
 export const getSession = async (client: Web3InboxClient | null) => {
-    const { address, chainId } = getAccount({ ...wagmiConfig })
+  const { address, chainId } = getAccount({ ...wagmiConfig })
 
-    console.log('>>> getSession')
+  await waitFor(async () => !!client)
 
-    const account = `eip155:${chainId}:${address}`
-    console.log('>>> getSession for account', account)
+  console.log('>>> getSession')
 
-    const identityKey = await client?.getAccountIsRegistered(account)
+  const account = `eip155:${chainId}:${address}`
+  console.log('>>> getSession for account', account)
 
-    const invalidSession = !(address && chainId && identityKey);
+  const identityKey = await client?.getAccountIsRegistered(account)
 
-    if (invalidSession) throw new Error("Failed to get account")
+  const invalidSession = !(address && chainId && identityKey)
 
-    return {
-      address,
-      chainId,
-    }
+  if (invalidSession) throw new Error('Failed to get account')
+
+  return {
+    address,
+    chainId
+  }
 }
 
 const verifySiweMessage = async (params: SIWEVerifyMessageArgs, client: Web3InboxClient | null) => {
@@ -124,19 +126,21 @@ const verifySiweMessage = async (params: SIWEVerifyMessageArgs, client: Web3Inbo
   return true
 }
 
-export const verifyMessage = async (params: SIWEVerifyMessageArgs, client: Web3InboxClient | null) => {
-    try {
-      const messageIsValid = await verifySiweMessage(params, client)
+export const verifyMessage = async (
+  params: SIWEVerifyMessageArgs,
+  client: Web3InboxClient | null
+) => {
+  try {
+    const messageIsValid = await verifySiweMessage(params, client)
 
-      const account = `${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`;
+    const account = `${getChainIdFromMessage(params.message)}:${getAddressFromMessage(params.message)}`
 
-      if(messageIsValid) {
-	await waitFor(() => client!.getAccountIsRegistered(account))
-      }
-
-      return messageIsValid
-    } catch (e) {
-      return false
+    if (messageIsValid) {
+      await waitFor(() => client!.getAccountIsRegistered(account))
     }
-}
 
+    return messageIsValid
+  } catch (e) {
+    return false
+  }
+}
