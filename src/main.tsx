@@ -29,42 +29,40 @@ import { createMessage, getMessageParams, getNonce, getSession, verifyMessage } 
 polyfill()
 initSentry()
 
-let client: Web3InboxClient | null = null
-
 const projectId = import.meta.env.VITE_PROJECT_ID
 if (!projectId) {
   throw new Error('VITE_PROJECT_ID is required')
 }
 
 
-const siweConfig = createSIWEConfig({
-  getMessageParams: () => getMessageParams(client),
-  createMessage: (params) => createMessage(params),
-  getNonce: () => getNonce(),
-  getSession: () => getSession(client),
-  verifyMessage: (params) => verifyMessage(params, client),
-  signOut: () => Promise.resolve(true),
-})
-
-createWeb3Modal({
-  wagmiConfig,
-  enableAnalytics: import.meta.env.PROD,
-  projectId,
-  termsConditionsUrl: TERMS_OF_SERVICE_URL,
-  privacyPolicyUrl: PRIVACY_POLICY_URL,
-  themeMode: 'light',
-  enableWalletFeatures: true,
-  siweConfig,
-  themeVariables: { '--w3m-z-index': 9999 },
-  metadata
-})
-
 initWeb3InboxClient({
   projectId,
   allApps: true,
   domain: window.location.hostname,
   logLevel: import.meta.env.PROD ? 'error' : import.meta.env.NEXT_PUBLIC_LOG_LEVEL || 'debug'
-}).then(w3iClient => (client = w3iClient))
+}).then(w3iClient => {
+  const siweConfig = createSIWEConfig({
+    getMessageParams: () => getMessageParams(w3iClient),
+    createMessage: (params) => createMessage(params),
+    getNonce: () => getNonce(),
+    getSession: () => getSession(w3iClient),
+    verifyMessage: (params) => verifyMessage(params, w3iClient),
+    signOut: () => Promise.resolve(true),
+  })
+
+  createWeb3Modal({
+    wagmiConfig,
+    enableAnalytics: import.meta.env.PROD,
+    projectId,
+    termsConditionsUrl: TERMS_OF_SERVICE_URL,
+    privacyPolicyUrl: PRIVACY_POLICY_URL,
+    themeMode: 'light',
+    enableWalletFeatures: true,
+    siweConfig,
+    themeVariables: { '--w3m-z-index': 9999 },
+    metadata
+  })
+})
 
 const queryClient = new QueryClient()
 
