@@ -30,7 +30,7 @@ const Login: React.FC = () => {
 
   if (userPubkey && notifyRegisteredKey) return <Navigate to={path} />
 
-  const connecting = !Boolean(userPubkey && !notifyRegisteredKey)
+  const connecting = Boolean(userPubkey && !notifyRegisteredKey)
 
   return (
     <TransitionDiv className="Login">
