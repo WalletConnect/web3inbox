@@ -31,7 +31,10 @@
     gap: 4rem;
 
     &__connect-button {
-      // min-width: fit-content;
+      .Spinner {
+        width: 1.5em;
+        height: 1.5em;
+      }
     }
 
     &__footer {
