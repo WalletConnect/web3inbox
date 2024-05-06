@@ -67,10 +67,7 @@ export const getSession = async (client: Web3InboxClient | null) => {
 
   await waitFor(async () => !!client)
 
-  console.log('>>> getSession')
-
   const account = `eip155:${chainId}:${address}`
-  console.log('>>> getSession for account', account)
 
   const identityKey = await client?.getAccountIsRegistered(account)
 
@@ -107,8 +104,6 @@ const verifySiweMessage = async (params: SIWEVerifyMessageArgs, client: Web3Inbo
   try {
     await client.unregister({ account })
   } catch (e) {}
-
-  console.log({ registerParams, paramsCacao: params.cacao?.p })
 
   await client.register({
     registerParams: {

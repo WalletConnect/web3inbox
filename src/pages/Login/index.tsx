@@ -23,11 +23,6 @@ const Login: React.FC = () => {
 
   const path = next ? decodeURIComponent(next) : '/'
 
-  console.log('>>><<<', {
-    userPubkey,
-    notifyRegisteredKey
-  })
-
   if (userPubkey && notifyRegisteredKey) return <Navigate to={path} />
 
   const connecting = Boolean(userPubkey && !notifyRegisteredKey)
