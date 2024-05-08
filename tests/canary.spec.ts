@@ -11,10 +11,22 @@ test.beforeEach(async ({ inboxPage, walletPage }) => {
   await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)
 })
 
-test.afterEach(async ({ inboxPage, inboxValidator, walletValidator }) => {
+test.afterEach(async ({ inboxPage, inboxValidator, walletValidator }, testInfo) => {
   await inboxPage.disconnect()
   await inboxValidator.expectDisconnected()
   await walletValidator.expectDisconnected()
+
+  if (ENV !== 'dev') {
+    const duration: number = testInfo.duration
+    await uploadCanaryResultsToCloudWatch(
+      ENV,
+      REGION,
+      'https://app.web3inbox.com/',
+      'HappyPath.subscribe',
+      testInfo.status === 'passed',
+      duration
+    )
+  }
 })
 
 test('it should subscribe, receive messages and unsubscribe', async ({
@@ -59,16 +71,4 @@ test('it should subscribe, receive messages and unsubscribe', async ({
   await inboxPage.page.getByText('Test Body').waitFor({ state: 'visible' })
 
   expect(await inboxPage.page.getByText('Test Body').isVisible()).toEqual(true)
-
-  if (ENV !== 'dev') {
-    const duration: number = Date.now() - startTime
-    await uploadCanaryResultsToCloudWatch(
-      ENV,
-      REGION,
-      'https://app.web3inbox.com/',
-      'HappyPath.subscribe',
-      true,
-      duration
-    )
-  }
 })
