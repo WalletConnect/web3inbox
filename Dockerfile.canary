@@ -14,5 +14,9 @@ RUN yarn build
 
 RUN yarn playwright:install
 
+# Seems that sometimes Playwright will get stuck on serving the HTML report server
+# Setting CI=true will prevent that
+ENV CI=true
+
 ENV PRE_BUILD=true
 CMD ["yarn", "playwright:test:canary"]
