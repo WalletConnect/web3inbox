@@ -20,4 +20,4 @@ RUN yarn playwright:install
 ENV CI=true
 
 ENV PRE_BUILD=true
-CMD ["bash", "./docker-canary.sh"]
+CMD ["timeout", "600", "./docker-canary.sh"]
