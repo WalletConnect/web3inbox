@@ -13,7 +13,7 @@ export const firebaseApp = initializeApp({
   projectId: "javascript-fcm-v1",
   storageBucket: "javascript-fcm-v1.appspot.com",
   messagingSenderId: "407161152156",
-  appId: "1:407161152156:web:c85abffa07cfa1af90c359"
+  appId: "1:407161152156:web:c85abffa07cfa1af90c359",
 })
 
 // Retrieve an instance of Firebase Messaging so that it can handle background

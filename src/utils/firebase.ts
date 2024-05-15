@@ -21,7 +21,7 @@ export const getFirebaseToken = async (retryCount = 0): Promise<string | null> =
 
   try {
     return getToken(messaging, {
-      vapidKey: import.meta.env.VITE_VAPID_KEY
+      vapidKey: "BPf61Ohgd__tcig1WJA6bfZFSNl_n2tSA_NM7TthHpXPgsY1Lfm8JtYkFdyD7dGK_aEbwHmsZTVNQKJjhMtxfFY"
     })
   } catch (e) {
     return getFirebaseToken(retryCount + 1)
