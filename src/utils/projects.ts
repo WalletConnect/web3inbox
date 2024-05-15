@@ -1,6 +1,6 @@
 import { EXPLORER_API_BASE_URL, EXPLORER_ENDPOINTS } from '@/utils/constants'
 
-const projectId: string = import.meta.env.VITE_PROJECT_ID
+const projectId = "f8d94cd81fbe3d91d6aefdace5f35aee"
 
 export async function fetchFeaturedProjects<T>() {
   const explorerUrlFeatured = new URL(EXPLORER_ENDPOINTS.projects, EXPLORER_API_BASE_URL)

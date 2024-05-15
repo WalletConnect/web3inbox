@@ -9,13 +9,12 @@ export const getFirebaseToken = async (retryCount = 0): Promise<string | null> =
   const { getMessaging, getToken } = await import('firebase/messaging')
 
   const firebaseApp = initializeApp({
-    apiKey: 'AIzaSyAtOP2BXP4RNK0pN_AEBMkVjgmYqklUlKc',
-    authDomain: 'javascript-48655.firebaseapp.com',
-    projectId: 'javascript-48655',
-    storageBucket: 'javascript-48655.appspot.com',
-    messagingSenderId: '295861682652',
-    appId: '1:295861682652:web:60f4b1e4e1d8adca230f19',
-    measurementId: 'G-0BLLC7N3KW'
+    apiKey: "AIzaSyC-tpdIHBkzdEvGXtpIc-pS6qwVhyNkTc4",
+    authDomain: "javascript-fcm-v1.firebaseapp.com",
+    projectId: "javascript-fcm-v1",
+    storageBucket: "javascript-fcm-v1.appspot.com",
+    messagingSenderId: "407161152156",
+    appId: "1:407161152156:web:c85abffa07cfa1af90c359"
   })
 
   const messaging = getMessaging(firebaseApp)

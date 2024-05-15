@@ -1,7 +1,7 @@
 import { arbitrum, avalanche, bsc, mainnet, polygon } from '@wagmi/core/chains'
 import { defaultWagmiConfig } from '@web3modal/wagmi'
 
-const projectId = import.meta.env.VITE_PROJECT_ID
+const projectId = "f8d94cd81fbe3d91d6aefdace5f35aee"
 if (!projectId) {
   throw new Error('VITE_PROJECT_ID is required')
 }
