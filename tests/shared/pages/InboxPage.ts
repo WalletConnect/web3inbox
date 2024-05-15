@@ -73,7 +73,7 @@ export class InboxPage {
   }
 
   async promptSiwe() {
-    await this.page.getByRole('button', { name: 'Sign in with wallet' }).click()
+    await this.page.getByRole('button', { name: 'Sign' }).click()
   }
 
   async rejectNotifications() {
