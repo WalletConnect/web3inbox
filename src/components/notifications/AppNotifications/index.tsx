@@ -86,7 +86,7 @@ const AppNotifications = () => {
           newUnreadToAdd.push(notification)
         }
       })
-      const newUnreadNotifications = [...currentUnread, ...newUnreadToAdd]
+      const newUnreadNotifications = [...newUnreadToAdd, ...currentUnread]
       return {
         unreadNotifications: newUnreadNotifications,
         notifications:
