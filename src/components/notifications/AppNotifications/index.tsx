@@ -39,7 +39,7 @@ const AppNotifications = () => {
 
   const { data: subscription } = useSubscription(undefined, domain)
 
-  const { isLoading, notifications, intersectionObserverRef, nextPage } =
+  const { isLoading, notifications, intersectionObserverRef, nextPage, } =
     useNotificationsInfiniteScroll(userPubkey, domain)
 
   const ref = useRef<HTMLDivElement>(null)
@@ -64,40 +64,12 @@ const AppNotifications = () => {
   }, [domain])
 
   useEffect(() => {
-    setNotificationsWrapper(({ unreadNotifications: currentUnread }) => {
-      const newUnreadToAdd: typeof currentUnread = []
-      notifications?.forEach(notification => {
-        const wasPreviouslyUnreadInView = currentUnread.some(
-          unreadNotification => unreadNotification.id === notification.id
-        )
-
-        if (wasPreviouslyUnreadInView) {
-          if (notification.isRead) {
-            // No need to guard this in an `if` as it is guaranteed to be valid because of the above `some` check.
-            const id = currentUnread.findIndex(
-              previouslyUnreadNotification => previouslyUnreadNotification.id === notification.id
-            )
-            currentUnread[id].isRead = true
-          }
-          return
-        }
-
-        if (!notification.isRead) {
-          newUnreadToAdd.push(notification)
-        }
+    if(notifications) {
+      setNotificationsWrapper({
+	unreadNotifications: notifications.filter(notification => !notification.isRead),
+	notifications: notifications.filter(notification => notification.isRead)
       })
-      const newUnreadNotifications = [...newUnreadToAdd, ...currentUnread]
-      return {
-        unreadNotifications: newUnreadNotifications,
-        notifications:
-          notifications?.filter(
-            notification =>
-              !newUnreadNotifications.some(
-                unreadNotification => unreadNotification.id === notification.id
-              )
-          ) ?? []
-      }
-    })
+    }
   }, [notifications])
 
   const onlyUnreadNotificationsVisible =
