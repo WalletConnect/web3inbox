@@ -3,7 +3,10 @@ import { type Locator, type Page, expect } from '@playwright/test'
 export class InboxPage {
   private readonly connectButton: Locator
 
-  constructor(public readonly page: Page, private readonly baseURL: string) {
+  constructor(
+    public readonly page: Page,
+    private readonly baseURL: string
+  ) {
     this.connectButton = this.page.getByRole('button', { name: 'Connect Wallet' })
   }
 
@@ -28,14 +31,14 @@ export class InboxPage {
   async getConnectUri(): Promise<string> {
     await this.page.goto(this.baseURL)
 
-    let retryModal = 0;
-    let qrCodeVisible = false;
+    let retryModal = 0
+    let qrCodeVisible = false
 
-      const qrCode = this.page.locator('wui-qr-code')
+    const qrCode = this.page.locator('wui-qr-code')
 
-    while(retryModal < 3 && !qrCodeVisible) {
+    while (retryModal < 3 && !qrCodeVisible) {
       await this.connectButton.waitFor({
-	state: 'visible'
+        state: 'visible'
       })
 
       await this.connectButton.click()
@@ -46,16 +49,16 @@ export class InboxPage {
       })
       await connect.click()
 
-      retryModal++;
+      retryModal++
       await qrCode.waitFor({
         state: 'visible',
         timeout: 10_000
       })
 
-      qrCodeVisible = await qrCode.isVisible();
+      qrCodeVisible = await qrCode.isVisible()
 
-      if(!qrCodeVisible) {
-	this.page.getByTestId('w3m-header-close').click()
+      if (!qrCodeVisible) {
+        this.page.getByTestId('w3m-header-close').click()
       }
     }
 

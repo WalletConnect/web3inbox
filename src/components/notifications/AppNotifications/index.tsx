@@ -39,7 +39,7 @@ const AppNotifications = () => {
 
   const { data: subscription } = useSubscription(undefined, domain)
 
-  const { isLoading, notifications, intersectionObserverRef, nextPage, } =
+  const { isLoading, notifications, intersectionObserverRef, nextPage } =
     useNotificationsInfiniteScroll(userPubkey, domain)
 
   const ref = useRef<HTMLDivElement>(null)
@@ -64,10 +64,10 @@ const AppNotifications = () => {
   }, [domain])
 
   useEffect(() => {
-    if(notifications) {
+    if (notifications) {
       setNotificationsWrapper({
-	unreadNotifications: notifications.filter(notification => !notification.isRead),
-	notifications: notifications.filter(notification => notification.isRead)
+        unreadNotifications: notifications.filter(notification => !notification.isRead),
+        notifications: notifications.filter(notification => notification.isRead)
       })
     }
   }, [notifications])
