@@ -38,7 +38,7 @@ export const Modals = () => {
   const explicitlyDeniedOnDesktop = !isMobile() && window.Notification?.permission === 'denied'
   const shouldShowChangeBrowserModal = isAppleMobile ? isNonSafari : false
   const shouldShowPWAModal = isMobileButNotInstalledOnHomeScreen && !shouldShowChangeBrowserModal
-  const shouldShowSignatureModal = isSignatureModalOpen && !shouldShowChangeBrowserModal;
+  const shouldShowSignatureModal = isSignatureModalOpen && !shouldShowChangeBrowserModal
   const shouldShowUnsubscribeModalOpen = isUnsubscribeModalOpen && !shouldShowChangeBrowserModal
   const shouldShowPreferencesModalOpen = isPreferencesModalOpen && !shouldShowChangeBrowserModal
 
@@ -53,20 +53,26 @@ export const Modals = () => {
     !shouldShowChangeBrowserModal
 
   useEffect(() => {
-    const shouldOpenSignatureModal = !notifyRegisteredKey &&
-    (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) &&
-    !shouldShowChangeBrowserModal
+    const shouldOpenSignatureModal =
+      !notifyRegisteredKey &&
+      (isSignatureModalOpen || (userPubkey && clientReady && !notifyRegisteredKey)) &&
+      !shouldShowChangeBrowserModal
 
-    if(shouldOpenSignatureModal) {
-      if(!isSigning) {
+    if (shouldOpenSignatureModal) {
+      if (!isSigning) {
         signatureModalService.openModal()
       }
-    }
-    else {
+    } else {
       signatureModalService.closeModal()
     }
-
-  }, [isSigning, isSignatureModalOpen, notifyRegisteredKey, userPubkey, clientReady, shouldShowChangeBrowserModal])
+  }, [
+    isSigning,
+    isSignatureModalOpen,
+    notifyRegisteredKey,
+    userPubkey,
+    clientReady,
+    shouldShowChangeBrowserModal
+  ])
 
   useEffect(() => {
     // Create an artificial delay to prevent modals being spammed one after the other

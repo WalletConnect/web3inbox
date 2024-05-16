@@ -14,7 +14,11 @@ import SettingsContext from '@/contexts/SettingsContext/context'
 import { getFirebaseToken } from '@/utils/firebase'
 import { useNotificationPermissionState } from '@/utils/hooks/notificationHooks'
 import { getDbEchoRegistrations } from '@/utils/idb'
-import { notificationsAvailableInBrowser, requireNotifyPermission, userEnabledNotification } from '@/utils/notifications'
+import {
+  notificationsAvailableInBrowser,
+  requireNotifyPermission,
+  userEnabledNotification
+} from '@/utils/notifications'
 import { showSuccessMessageToast } from '@/utils/toasts'
 
 import SettingsHeader from '../SettingsHeader'
@@ -58,7 +62,7 @@ const NotificationsSettings: React.FC = () => {
   }, [])
 
   const handleEnableNotifications = async () => {
-    if (client && await requireNotifyPermission()) {
+    if (client && (await requireNotifyPermission())) {
       const token = await getFirebaseToken()
       if (token) {
         await client.registerWithPushServer(token)

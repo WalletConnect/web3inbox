@@ -1,4 +1,4 @@
-const MAX_FIREBASE_RETRY_COUNT = 3;
+const MAX_FIREBASE_RETRY_COUNT = 3
 
 export const getFirebaseToken = async (retryCount = 0): Promise<string | null> => {
   if (retryCount >= MAX_FIREBASE_RETRY_COUNT) {

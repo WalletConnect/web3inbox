@@ -1,7 +1,10 @@
 import { type Locator, type Page, expect } from '@playwright/test'
 
 export class SettingsPage {
-  constructor(public readonly page: Page, private readonly baseURL: string) {}
+  constructor(
+    public readonly page: Page,
+    private readonly baseURL: string
+  ) {}
 
   async load() {}
 

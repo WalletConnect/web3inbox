@@ -8,7 +8,8 @@ test.beforeEach(async ({ inboxPage, walletPage, browserName }) => {
   }
   const uri = await inboxPage.getConnectUri()
   await walletPage.connectWithUri(uri)
-  await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)})
+  await walletPage.handleSessionProposal(DEFAULT_SESSION_PARAMS)
+})
 
 test.afterEach(async ({ inboxPage, inboxValidator, walletValidator }) => {
   await inboxPage.disconnect()
@@ -118,20 +119,44 @@ test('it should subscribe, receive messages and unsubscribe', async ({
 
   await inboxPage.subscribeAndNavigateToDapp(CUSTOM_TEST_DAPP.name)
 
-  const address = await inboxPage.getAddress()
+  // use fixed token to search for messages in a "human" way
+  const messageSearchToken = 'MESSAGE_QUERY'
 
-  await notifyServer.sendMessage({
+  const address = await inboxPage.getAddress()
+  const baseMessageParams = {
     accounts: [`eip155:1:${address}`],
-    body: 'Test Body',
-    title: 'Test Title',
     type: CUSTOM_TEST_DAPP.notificationType,
     url: CUSTOM_TEST_DAPP.appDomain,
     icon: CUSTOM_TEST_DAPP.icons[0],
     projectId: CUSTOM_TEST_DAPP.projectId,
     projectSecret: CUSTOM_TEST_DAPP.projectSecret
+  }
+
+  const test1Body = `${messageSearchToken} Test1 Body`
+  await notifyServer.sendMessage({
+    body: test1Body,
+    title: 'Test1 Title',
+    ...baseMessageParams
   })
 
-  await inboxPage.page.getByText('Test Body').waitFor({ state: 'visible' })
+  await inboxPage.page.getByText(test1Body).waitFor({ state: 'visible' })
 
-  expect(await inboxPage.page.getByText('Test Body').isVisible()).toEqual(true)
+  expect(await inboxPage.page.getByText(test1Body).isVisible()).toEqual(true)
+
+  const test2Body = `${messageSearchToken} Test2 Body`
+  await notifyServer.sendMessage({
+    body: test2Body,
+    title: 'Test2 Title',
+    ...baseMessageParams
+  })
+
+  await inboxPage.page.getByText(test2Body).waitFor({ state: 'visible' })
+
+  expect(await inboxPage.page.getByText(test2Body).isVisible()).toEqual(true)
+
+  const allMessages = await inboxPage.page.getByText(messageSearchToken, { exact: false }).all()
+
+  // Ensure messages are ordered correctly.
+  expect(await allMessages[0].innerHTML()).toEqual(test2Body)
+  expect(await allMessages[1].innerHTML()).toEqual(test1Body)
 })
