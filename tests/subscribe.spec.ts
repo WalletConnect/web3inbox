@@ -132,7 +132,7 @@ test('it should subscribe, receive messages and unsubscribe', async ({
     projectSecret: CUSTOM_TEST_DAPP.projectSecret
   }
 
-  const test1Body = `${messageSearchToken} Test Body`
+  const test1Body = `${messageSearchToken} Test1 Body`
   await notifyServer.sendMessage({
     body: test1Body,
     title: 'Test1 Title',
@@ -157,6 +157,6 @@ test('it should subscribe, receive messages and unsubscribe', async ({
   const allMessages = await inboxPage.page.getByText(messageSearchToken, { exact: false }).all()
 
   // Ensure messages are ordered correctly.
-  expect(allMessages[0].innerHTML).toEqual(test2Body)
-  expect(allMessages[1].innerHTML).toEqual(test1Body)
+  expect(await allMessages[0].innerHTML()).toEqual(test2Body)
+  expect(await allMessages[1].innerHTML()).toEqual(test1Body)
 })
