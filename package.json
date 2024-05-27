@@ -44,7 +44,7 @@
     "react-router-dom": "^6.4.4",
     "react-select": "^5.7.0",
     "viem": "2.10.5",
-    "vite-plugin-pwa": "^0.16.7",
+    "vite-plugin-pwa": "^0.20.0",
     "wagmi": "2.5.20"
   },
   "devDependencies": {
