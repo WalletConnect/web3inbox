@@ -143,8 +143,6 @@ export class InboxPage {
    *
    * @param {number} expectedCount - The expected number of dApps to wait for.
    * @returns {Promise<void>}
-  async promptSiwe() {
-    await this.page.getByRole('button', { name: 'Sign' }).click()
   }
 
    */
