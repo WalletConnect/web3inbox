@@ -27,10 +27,6 @@ export const modalsOpen = valtio.proxy({
   } as IAppSearchState,
   profileModalSubject: false,
   shareModalSubject: false,
-  signatureModalSubject: {
-    isOpen: false,
-    signing: false
-  },
   pwaModalSubject: false,
   notificationPwaModalSubject: false,
   contactsModalSubject: false,
@@ -91,42 +87,6 @@ export const shareModalService = {
   openModal: () => (modalsOpen.shareModalSubject = true),
   closeModal: () => (modalsOpen.shareModalSubject = false),
   getModalState: () => modalsOpen.shareModalSubject
-}
-
-export const signatureModalService = {
-  toggleModal: () =>
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      isOpen: !modalsOpen.signatureModalSubject.isOpen
-    }),
-  openModal: () =>
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      isOpen: true
-    }),
-  startSigning: () =>
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      signing: true
-    }),
-  stopSigning: () =>
-    (modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      signing: false
-    }),
-  closeModal: () => {
-    modalsOpen.signatureModalSubject = {
-      ...modalsOpen.signatureModalSubject,
-      isOpen: false
-    }
-    setTimeout(() => {
-      modalsOpen.signatureModalSubject = {
-        ...modalsOpen.signatureModalSubject,
-        signing: false
-      }
-    }, 500)
-  },
-  getModalState: () => modalsOpen.signatureModalSubject
 }
 
 export const pwaModalService = {

@@ -17,7 +17,6 @@ import {
   preferencesModalService,
   profileModalService,
   shareModalService,
-  signatureModalService,
   unsubscribeModalService
 } from './store'
 import { isMobile } from './ui'
@@ -178,8 +177,6 @@ export const useModals = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false)
   const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false)
-  const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
-  const [isSigning, setIsSigning] = useState(false)
   const [isNotificationPwaModalOpen, setIsNotificationPwaModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [preferencesModalAppId, setPreferencesModalAppId] = useState<string>()
@@ -192,8 +189,6 @@ export const useModals = () => {
   useEffect(() => {
     setIsProfileModalOpen(profileModalService.getModalState())
 
-    setIsSignatureModalOpen(signatureModalService.getModalState().isOpen)
-    setIsSigning(signatureModalService.getModalState().signing)
     setIsContactModalOpen(contactsModalService.getModalState())
     setIsShareModalOpen(shareModalService.getModalState())
     setIsNotificationPwaModalOpen(notificationPwaModalService.getModalState())
@@ -206,8 +201,6 @@ export const useModals = () => {
   return {
     isProfileModalOpen,
     isShareModalOpen,
-    isSignatureModalOpen,
-    isSigning,
     isContactModalOpen,
     isPreferencesModalOpen,
     isUnsubscribeModalOpen,

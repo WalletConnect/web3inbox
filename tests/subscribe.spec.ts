@@ -23,7 +23,6 @@ test('it should subscribe and unsubscribe', async ({
   settingsPage,
   walletValidator
 }) => {
-  await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()
@@ -42,7 +41,6 @@ test('it should subscribe, update preferences and unsubscribe', async ({
   settingsPage,
   walletValidator
 }) => {
-  await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()
@@ -62,7 +60,6 @@ test('it should subscribe and unsubscribe to and from multiple dapps', async ({
   settingsPage,
   walletValidator
 }) => {
-  await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()
@@ -102,7 +99,6 @@ test('it should subscribe, receive messages and unsubscribe', async ({
   walletValidator,
   notifyServer
 }) => {
-  await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()

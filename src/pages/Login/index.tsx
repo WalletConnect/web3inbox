@@ -1,17 +1,17 @@
 import React, { useContext, useEffect } from 'react'
 
 import { useWeb3Modal } from '@web3modal/wagmi/react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 
 import Button from '@/components/general/Button'
 import IntroWallet from '@/components/general/Icon/IntroWallet'
 import IntroContent from '@/components/general/IntroContent'
+import Spinner from '@/components/general/Spinner'
 import Text from '@/components/general/Text'
 import TransitionDiv from '@/components/general/TransitionDiv'
 import Sidebar from '@/components/layout/Sidebar'
 import { web3InboxURLs } from '@/constants/navigation'
 import W3iContext from '@/contexts/W3iContext/context'
-import { signatureModalService } from '@/utils/store'
 
 import './Login.scss'
 
@@ -19,21 +19,13 @@ const Login: React.FC = () => {
   const { userPubkey, notifyRegisteredKey } = useContext(W3iContext)
   const { search } = useLocation()
   const next = new URLSearchParams(search).get('next')
-  const nav = useNavigate()
-
   const modal = useWeb3Modal()
 
-  useEffect(() => {
-    const path = next ? decodeURIComponent(next) : '/'
+  const path = next ? decodeURIComponent(next) : '/'
 
-    if (userPubkey) {
-      if (notifyRegisteredKey) {
-        nav(path)
-      } else {
-        signatureModalService.openModal()
-      }
-    }
-  }, [userPubkey, next, notifyRegisteredKey, signatureModalService])
+  if (userPubkey && notifyRegisteredKey) return <Navigate to={path} />
+
+  const connecting = Boolean(userPubkey && !notifyRegisteredKey)
 
   return (
     <TransitionDiv className="Login">
@@ -46,12 +38,13 @@ const Login: React.FC = () => {
           button={
             <Button
               className="Main__connect-button"
+              disabled={connecting}
               onClick={() => {
                 modal.open()
               }}
               size="small"
             >
-              Connect Wallet
+              {connecting ? <Spinner /> : 'Connect Wallet'}
             </Button>
           }
           icon={<IntroWallet />}

@@ -18,14 +18,17 @@
     "playwright:test:canary": "playwright test --retries=0 --grep canary.spec.ts --project=chromium",
     "playwright:debug": "playwright test --debug"
   },
+  "resolutions": {
+    "@walletconnect/ethereum-provider": "2.12.1"
+  },
   "dependencies": {
     "@sentry/react": "^7.93.0",
     "@tanstack/react-query": "^5.20.1",
     "@walletconnect/identity-keys": "^2.0.1",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
-    "@web3inbox/core": "1.3.0",
-    "@web3inbox/react": "1.3.0",
-    "@web3modal/wagmi": "^4.0.13",
+    "@web3inbox/core": "1.4.0-16773f4",
+    "@web3inbox/react": "^1.4.0-efaaba3",
+    "@web3modal/wagmi": "4.2.1",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
     "detect-browser": "^5.3.0",
@@ -42,7 +45,7 @@
     "react-select": "^5.7.0",
     "viem": "2.10.5",
     "vite-plugin-pwa": "^0.16.7",
-    "wagmi": "^2.5.7"
+    "wagmi": "2.5.20"
   },
   "devDependencies": {
     "@aws-sdk/client-cloudwatch": "^3.535.0",

@@ -1,7 +1,9 @@
 import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Web3InboxClient } from '@web3inbox/core'
 import { initWeb3InboxClient } from '@web3inbox/react'
+import { createSIWEConfig } from '@web3modal/siwe'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
@@ -18,6 +20,7 @@ import { metadata, wagmiConfig } from '@/utils/wagmiConfig'
 
 import { Modals } from './Modals'
 import DevTimeStamp from './components/dev/DevTimeStamp'
+import { createMessage, getMessageParams, getNonce, getSession, verifyMessage } from './utils/siwe'
 
 import './index.css'
 
@@ -29,6 +32,26 @@ if (!projectId) {
   throw new Error('VITE_PROJECT_ID is required')
 }
 
+let client: Web3InboxClient | null = null
+
+initWeb3InboxClient({
+  projectId,
+  allApps: true,
+  domain: window.location.hostname,
+  logLevel: import.meta.env.PROD ? 'error' : import.meta.env.NEXT_PUBLIC_LOG_LEVEL || 'debug'
+}).then(w3iClient => {
+  client = w3iClient
+})
+
+const siweConfig = createSIWEConfig({
+  getMessageParams: () => getMessageParams(client),
+  createMessage: params => createMessage(params),
+  getNonce: () => getNonce(),
+  getSession: () => getSession(client),
+  verifyMessage: params => verifyMessage(params, client),
+  signOut: () => Promise.resolve(true)
+})
+
 createWeb3Modal({
   wagmiConfig,
   enableAnalytics: import.meta.env.PROD,
@@ -36,15 +59,10 @@ createWeb3Modal({
   termsConditionsUrl: TERMS_OF_SERVICE_URL,
   privacyPolicyUrl: PRIVACY_POLICY_URL,
   themeMode: 'light',
+  enableWalletFeatures: true,
+  siweConfig,
   themeVariables: { '--w3m-z-index': 9999 },
   metadata
-})
-
-initWeb3InboxClient({
-  projectId,
-  allApps: true,
-  domain: window.location.hostname,
-  logLevel: import.meta.env.PROD ? 'error' : import.meta.env.NEXT_PUBLIC_LOG_LEVEL || 'debug'
 })
 
 const queryClient = new QueryClient()
