@@ -38,7 +38,6 @@ test('it should subscribe, receive messages and unsubscribe', async ({
 }) => {
   let startTime = Date.now()
 
-  await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()
