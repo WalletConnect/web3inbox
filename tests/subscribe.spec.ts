@@ -23,7 +23,6 @@ test('it should subscribe and unsubscribe', async ({
   settingsPage,
   walletValidator
 }) => {
-  await inboxPage.promptSiwe()
   await walletValidator.expectReceivedSign({})
   await walletPage.handleRequest({ accept: true })
   await inboxPage.rejectNotifications()

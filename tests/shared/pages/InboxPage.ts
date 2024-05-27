@@ -68,12 +68,8 @@ export class InboxPage {
   }
 
   async disconnect() {
-    await this.page.locator('.Avatar').click()
+    await this.page.locator('.Avatar').first().click()
     await this.page.getByTestId('disconnect-button').click()
-  }
-
-  async promptSiwe() {
-    await this.page.getByRole('button', { name: 'Sign' }).click()
   }
 
   async rejectNotifications() {
@@ -147,6 +143,10 @@ export class InboxPage {
    *
    * @param {number} expectedCount - The expected number of dApps to wait for.
    * @returns {Promise<void>}
+  async promptSiwe() {
+    await this.page.getByRole('button', { name: 'Sign' }).click()
+  }
+
    */
   async waitForSubscriptions(expectedCount: number): Promise<void> {
     // Wait for a function that checks the length of a list or a set of elements
