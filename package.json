@@ -19,7 +19,7 @@
     "playwright:debug": "playwright test --debug"
   },
   "resolutions": {
-    "@walletconnect/ethereum-provider": "2.12.1"
+    "@walletconnect/ethereum-provider": "2.13.3"
   },
   "dependencies": {
     "@sentry/react": "^7.93.0",
