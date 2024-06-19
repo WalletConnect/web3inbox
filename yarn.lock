@@ -4944,9 +4944,9 @@
     valtio "1.11.2"
 
 "@web3inbox/react@^1.4.0-efaaba3":
-  version "1.4.0-fffaaeb"
-  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.4.0-fffaaeb.tgz#662d982ad8b57af351e8dfb8b8951ed355b63426"
-  integrity sha512-EknPQgbSz+Ygt7a+BIGPcZIa7Lmj0yEnJhhLwAsiaAl96D8HVNOpwnf4rK8VfxwXUox/HpvAGuie7fsPnIzWEg==
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@web3inbox/react/-/react-1.4.0.tgz#bbfa1ff2b6ee91cf80cc6280f4e4f095608f35b3"
+  integrity sha512-UwtR6kI7aifIozzlyV1hJmRlslXbCsOn7TgZYfAlOdaEjqk7ARJm+Z/i+wJSlBkkmohLwZqPjyZLt5K7QBg7Lg==
   dependencies:
     react "^18.2.0"
 
