@@ -26,7 +26,7 @@
     "@tanstack/react-query": "^5.20.1",
     "@walletconnect/identity-keys": "^2.0.1",
     "@walletconnect/notify-message-decrypter": "^0.1.0",
-    "@web3inbox/core": "1.4.0-16773f4",
+    "@web3inbox/core": "1.4.0",
     "@web3inbox/react": "^1.4.0-efaaba3",
     "@web3modal/wagmi": "4.2.3",
     "classnames": "^2.3.2",
