@@ -12,7 +12,7 @@ import {
 import { waitFor } from '@/utils/general'
 import { wagmiConfig } from '@/utils/wagmiConfig'
 
-let registerParams: Awaited<ReturnType<Web3InboxClient['prepareRegistrationViaRecaps']>> | null =
+let registerParams: Awaited<ReturnType<Web3InboxClient['prepareRegistrationWithRecaps']>> | null =
   null
 
 export const getMessageParams = async (client: Web3InboxClient | null) => {
@@ -20,7 +20,7 @@ export const getMessageParams = async (client: Web3InboxClient | null) => {
     throw new Error('Client not ready yet')
   }
 
-  registerParams = await client.prepareRegistrationViaRecaps({
+  registerParams = await client.prepareRegistrationWithRecaps({
     domain: window.location.hostname,
     allApps: true
   })
