@@ -45,7 +45,7 @@
     "react-select": "^5.7.0",
     "viem": "2.16.5",
     "vite-plugin-pwa": "^0.20.0",
-    "wagmi": "2.10.8"
+    "wagmi": "2.10.9"
   },
   "devDependencies": {
     "@aws-sdk/client-cloudwatch": "^3.535.0",
