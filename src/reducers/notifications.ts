@@ -1,5 +1,6 @@
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 
+// Notification state for each topic
 export interface TopicNotificationsState {
   fullNotifications: NotifyClientTypes.NotifyNotification[]
   existingIds: Set<string>
@@ -28,13 +29,13 @@ export type NotificationsActions =
       topic: string
     }
 
-
+// Updates the topic state, filters notifications
 function getUpdatedTopicState(
   topicState: TopicNotificationsState | undefined,
   notifications: NotifyClientTypes.NotifyNotification[]
 ) {
-  const existingIds = topicState?.existingIds || new Set<string>()
-  const filteredNotifications = notifications.filter(notification => !existingIds.has(notification.id))
+  const existingIds = topicState?.existingIds || new Set<string>() // Set of IDs for already existing notifications
+  const filteredNotifications = notifications.filter(notification => !existingIds.has(notification.id)) // Filters out new notifications
 
   const fullNotifications = topicState?.fullNotifications || []
   const updatedIds = new Set(existingIds)
@@ -48,6 +49,7 @@ function getUpdatedTopicState(
   }
 }
 
+// Reducer for handling notification actions
 export const notificationsReducer = (
   state: NotificationsState,
   action: NotificationsActions
@@ -56,6 +58,7 @@ export const notificationsReducer = (
 
   switch (action.type) {
     case 'FETCH_NOTIFICATIONS_LOADING': {
+      // Sets loading flag for the topic
       return topicState
         ? {
             ...state,
@@ -68,6 +71,7 @@ export const notificationsReducer = (
     }
 
     case 'UNSHIFT_NEW_NOTIFICATIONS': {
+      // Adds new notifications to the beginning of the list
       const { filteredNotifications, fullNotifications, updatedIds } = getUpdatedTopicState(
         topicState,
         action.notifications
@@ -87,6 +91,7 @@ export const notificationsReducer = (
     }
 
     case 'FETCH_NOTIFICATIONS_DONE': {
+      // Completes the loading of notifications
       const { filteredNotifications, fullNotifications, updatedIds } = getUpdatedTopicState(
         topicState,
         action.notifications
