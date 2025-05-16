@@ -55,9 +55,7 @@ export class WalletPage {
 
   async handleRequest({ accept }: { accept: boolean }) {
     const variant = accept ? `approve` : `reject`
-    // `.click` doesn't work here, so we use `.focus` and `Space`
     await this.page.getByTestId(`session-${variant}-button`).isEnabled()
-    await this.page.getByTestId(`session-${variant}-button`).focus()
-    await this.page.keyboard.press('Space')
+    await this.page.getByTestId(`session-${variant}-button`).click()
   }
 }
