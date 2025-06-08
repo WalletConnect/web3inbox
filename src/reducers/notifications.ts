@@ -1,5 +1,6 @@
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 
+// Notification state for each topic
 export interface TopicNotificationsState {
   fullNotifications: NotifyClientTypes.NotifyNotification[]
   existingIds: Set<string>
@@ -28,80 +29,88 @@ export type NotificationsActions =
       topic: string
     }
 
-// Opted for a reducer since the state changes are complex enough to warrant
-// changes to a set and an array. Having all that inside the hooks would
-// cause too many updates to the hooks, causing unnecessary rerenders.
+// Updates the topic state, filters notifications
+function getUpdatedTopicState(
+  topicState: TopicNotificationsState | undefined,
+  notifications: NotifyClientTypes.NotifyNotification[]
+) {
+  const existingIds = topicState?.existingIds || new Set<string>() // Set of IDs for already existing notifications
+  const filteredNotifications = notifications.filter(notification => !existingIds.has(notification.id)) // Filters out new notifications
+
+  const fullNotifications = topicState?.fullNotifications || []
+  const updatedIds = new Set(existingIds)
+
+  notifications.forEach(notification => updatedIds.add(notification.id))
+
+  return {
+    filteredNotifications,
+    fullNotifications,
+    updatedIds
+  }
+}
+
+// Reducer for handling notification actions
 export const notificationsReducer = (
   state: NotificationsState,
   action: NotificationsActions
 ): NotificationsState => {
-  const topicState = state[action.topic] as TopicNotificationsState | undefined
-
-  function getTopicState(notifications: NotifyClientTypes.NotifyNotification[]) {
-    const ids = topicState?.existingIds || new Set<string>()
-    const filteredNotifications = notifications.filter(val => !ids.has(val.id))
-    const notificationIds = notifications.map(notification => notification.id)
-
-    const fullNotifications = topicState?.fullNotifications || []
-    const newFullIdsSet = new Set(topicState?.existingIds || [])
-
-    for (const val of notificationIds) {
-      newFullIdsSet.add(val)
-    }
-
-    return {
-      filteredNotifications,
-      fullNotifications,
-      newFullIdsSet
-    }
-  }
+  const topicState = state[action.topic]
 
   switch (action.type) {
     case 'FETCH_NOTIFICATIONS_LOADING': {
-      if (topicState) {
-        return {
-          ...state,
-          [action.topic]: {
-            ...topicState,
-            isLoading: true
+      // Sets loading flag for the topic
+      return topicState
+        ? {
+            ...state,
+            [action.topic]: {
+              ...topicState,
+              isLoading: true
+            }
           }
-        }
-      }
-      return state
+        : state
     }
+
     case 'UNSHIFT_NEW_NOTIFICATIONS': {
-      const { filteredNotifications, fullNotifications, newFullIdsSet } = getTopicState(
+      // Adds new notifications to the beginning of the list
+      const { filteredNotifications, fullNotifications, updatedIds } = getUpdatedTopicState(
+        topicState,
         action.notifications
       )
-      const unshiftedNotifications = filteredNotifications.concat(fullNotifications)
+      const unshiftedNotifications = [...filteredNotifications, ...fullNotifications]
 
       return {
         ...state,
         [action.topic]: {
           ...topicState,
-          existingIds: newFullIdsSet,
+          existingIds: updatedIds,
           fullNotifications: unshiftedNotifications,
           hasMore: topicState?.hasMore || false,
           isLoading: false
         }
       }
     }
+
     case 'FETCH_NOTIFICATIONS_DONE': {
-      const { filteredNotifications, fullNotifications, newFullIdsSet } = getTopicState(
+      // Completes the loading of notifications
+      const { filteredNotifications, fullNotifications, updatedIds } = getUpdatedTopicState(
+        topicState,
         action.notifications
       )
-      const concatenatedNotification = fullNotifications.concat(filteredNotifications)
+      const concatenatedNotifications = [...fullNotifications, ...filteredNotifications]
 
       return {
         ...state,
         [action.topic]: {
           ...topicState,
-          existingIds: newFullIdsSet,
-          fullNotifications: concatenatedNotification,
+          existingIds: updatedIds,
+          fullNotifications: concatenatedNotifications,
           hasMore: action.hasMore,
           isLoading: false
         }
       }
     }
+
+    default:
+      return state
   }
 }
